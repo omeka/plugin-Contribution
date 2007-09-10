@@ -49,8 +49,10 @@ class ContributionController extends Kea_Controller_Action
 	
 	protected function createEntity()
 	{
+		$contrib = $_POST['contributor'];
+		
 		//Make an anonymous entity if they didn't give a name
-		if(empty($_POST['first_name']) and empty($_POST['last_name']) and empty($_POST['email'])) {
+		if(empty($contrib['first_name']) and empty($contrib['last_name']) and empty($contrib['email'])) {
 			require_once 'Anonymous.php';
 			$entity = new Anonymous;
 		}else {
@@ -149,7 +151,7 @@ class ContributionController extends Kea_Controller_Action
 				
 				
 			} catch (Exception $e) {
-				
+				var_dump( $e->getTraceAsString() );exit;
 				$this->flash($e->getMessage());
 				return false;
 			}
