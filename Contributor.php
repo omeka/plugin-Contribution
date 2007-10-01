@@ -3,7 +3,7 @@
  * Contributor
  * @package: Omeka
  */
-class Contributor extends Kea_Record
+class Contributor extends Omeka_Record
 {
     public function setTableDefinition()
     {
