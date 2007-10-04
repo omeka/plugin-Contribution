@@ -25,7 +25,7 @@
 					break;
 			}
 			
-			var uri = "<?php echo uri('contribution/'); ?>" + partial;
+			var uri = "<?php echo uri('contribution/contribution/'); ?>" + partial;
 			
 			new Ajax.Updater('contribution', uri, {
 				onComplete: function(t) {
@@ -64,7 +64,7 @@
 			<label>What kind of contribution will you be making?</label>
 			<?php 
 				select(array('name'=>'type', 'id'=>'contribution_type'), 
-					array('Document'=>'Story','Still Image'=>'Image','Moving Image'=>'Movie', 'Sound'=>'Audio'), $_POST['type']); 
+					array('Document'=>'Story','Still Image'=>'Image','Moving Image'=>'Movie', 'Sound'=>'Audio'), empty($_POST['type']) ? 'Document' : $_POST['type']); 
 			?>
 			
 			<input type="submit" name="pick_type" id="pick_a_type" value="Pick One" />

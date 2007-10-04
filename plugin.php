@@ -5,11 +5,19 @@ define('CONTRIBUTION_PLUGIN_VERSION', 1);
 
 add_plugin_hook('initialize', 'contribution_initialize');
 
+add_plugin_hook('add_routes', 'contribution_routes');
+
 function contribution_initialize()
 {
 	add_controllers('controllers');
-	add_route('contribute', new Zend_Controller_Router_Route('contribute/', array('controller'=>'contribution', 'action'=>'add')));
 	add_theme_pages('theme', 'public');
+}
+
+function contribution_routes($router)
+{
+	$router->addRoute('contribute', new Zend_Controller_Router_Route('contribute/', array('controller'=>'index', 'action'=>'add', 'module'=>'contribution')));
+	
+	$router->addRoute('contribute_actions', new Zend_Controller_Router_Route('contribution/:action', array('controller'=>'index', 'module'=>'contribution', 'action'=>'add')));
 }
 
 add_plugin_hook('install', 'contribution_install');
@@ -71,7 +79,7 @@ function contribution_delete_contributor($entity)
 
 function contribution_partial()
 {
-	$partial = Zend::Registry( 'contribution_partial' );
+	$partial = Zend_Registry::get( 'contribution_partial' );
 	common($partial, array('data'=>$_POST), 'contribution'); 
 }
  

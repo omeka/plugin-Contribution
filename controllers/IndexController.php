@@ -2,11 +2,11 @@
 /**
 * ContributionController
 */
-class ContributionController extends Omeka_Controller_Action
+class Contribution_IndexController extends Omeka_Controller_Action
 {	
 	public function init()
 	{
-		$this->session = new Zend_Session('Contribution');
+		$this->session = new Zend_Session_Namespace('Contribution');
 	}
 		
 	public function addAction()
@@ -19,6 +19,11 @@ class ContributionController extends Omeka_Controller_Action
 		}else {
 			return $this->renderContributeForm($item);
 		}		
+	}
+	
+	public function thankyouAction()
+	{
+		$this->render('contribution/thankyou.php');
 	}
 	
 	protected function renderContributeForm($item)
@@ -42,7 +47,7 @@ class ContributionController extends Omeka_Controller_Action
 			$partial = "_document";
 		}
 		
-		Zend::register('contribution_partial', $partial);
+		Zend_Registry::set('contribution_partial', $partial);
 		
 		return $this->render('contribution/add.php', compact('item'));		
 	}
@@ -58,19 +63,38 @@ class ContributionController extends Omeka_Controller_Action
 		}else {
 			require_once 'Person.php';
 			$entity = new Person;
-			$entity->setArray($_POST['contributor']);
+			$entity->setArray($contrib);
 		}
-		$entity->save();
+
+		$sql = "INSERT INTO entities (first_name, last_name, email, `type`) VALUES (:first_name, :last_name, :email, '{$entity->type}')";
 		
+		//Drop down to PDO b/c Doctrine is dying for some unknown reason
+		$conn = Doctrine_Manager::getInstance()->connection();
+		
+		try {
+			$pass = array('first_name'=>$contrib['first_name'], 'last_name'=>$contrib['last_name'], 'email'=>$contrib['email']);
+			$conn->exec($sql, $pass);
+			
+			$entity_id = $conn->lastInsertId();
+			
+		} catch (Exception $e) {
+			var_dump( get_class($e) );
+			var_dump( $e->getMessage() );exit;
+		}
+
 		$contributor = new Contributor;
 		
 		$contributor->setArray($_POST['contributor']);
 		
 		//Set the IP address and entity_id
 		$contributor->ip_address = $_SERVER['REMOTE_ADDR'];
-		$contributor->Entity = $entity;
+		$contributor->entity_id = $entity_id;
 		
-		$contributor->save();
+		if(!$contributor->trySave()) {
+			$error = $this->getErrorMsg();
+			
+			$this->flash($error);
+		}
 	}
 
 	/**
@@ -142,8 +166,7 @@ class ContributionController extends Omeka_Controller_Action
 					
 					$item->setAddedBy($entity);
 					//Put item in the session for the consent form to use
-					$session = new Zend_Session('Contribution');
-					$session->item_id = $item->id;
+					$this->session->item_id = $item->id;
 					return true;
 				}else {
 					return false;
@@ -166,7 +189,7 @@ class ContributionController extends Omeka_Controller_Action
 	 **/
 	public function submitAction()
 	{		
-		$session = new Zend_Session('Contribution');
+		$session = $this->session;
 
 		$item = $this->getTable('Item')->find($session->item_id);
 		
