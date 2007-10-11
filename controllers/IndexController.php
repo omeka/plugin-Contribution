@@ -95,6 +95,8 @@ class Contribution_IndexController extends Omeka_Controller_Action
 			
 			$this->flash($error);
 		}
+		
+		return Doctrine_Manager::getInstance()->getTable('Entity')->find($entity_id);
 	}
 
 	/**

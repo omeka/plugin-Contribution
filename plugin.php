@@ -1,4 +1,26 @@
 <?php 
+/**
+ * Notes on correct usage:
+ * This plugin will not work correctly if one or more of the following item Types has been removed:
+ *		Document
+ *		Still Image
+ *		Moving Image
+ * 		Sound
+ *
+ * Also, it will not work correctly if the Document type does not have a metafield called Text,
+ * which is a default setting in Omeka.  This is because the "story" for the item is stored in the Text field of a Document.
+ *
+ * 
+ * This plugin currently uses 5 hooks: initialize, add_routes, append_to_page, install, and delete_entity
+ *
+ * The text of the 'rights' field is stored in the themes/contribution/consent.php file, and it should be edited for each project.
+ *
+ * @author CHNM
+ * @version $Id$
+ * @copyright CHNM, 11 October, 2007
+ * @package Contribution
+ **/
+
 require_once 'Contributor.php';
 
 define('CONTRIBUTION_PLUGIN_VERSION', 1);
@@ -20,13 +42,24 @@ function contribution_routes($router)
 	$router->addRoute('contribute_actions', new Zend_Controller_Router_Route('contribution/:action', array('controller'=>'index', 'module'=>'contribution', 'action'=>'add')));
 }
 
+add_plugin_hook('append_to_page', 'contribution_append');
+
+function contribution_append($page, $options)
+{
+	$item = $options['item'];
+	
+	if($page == 'items/show') {
+		include 'show.php';
+	}
+}
+
 add_plugin_hook('install', 'contribution_install');
 
 function contribution_install()
 {	
 	define_metafield('Online Submission', 'Indicates whether or not this Item has been contributed from a front-end contribution form.');
 	
-	define_metafield('Posting Consent', 'Indicates whether or not the contributor of this Item has given permission to submit this to the archive. (Yes/No)');
+	define_metafield('Posting Consent', 'Indicates whether or not the contributor of this Item has given permission to post this to the archive. (Yes/No)');
 	
 	define_metafield('Submission Consent', 'Indicates whether or not the contributor of this Item has given permission to submit this to the archive. (Yes/No)');
 	
