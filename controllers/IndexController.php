@@ -107,7 +107,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * @return void
 	 **/
 	protected function processForm($item)
-	{
+	{		
 		if(!empty($_POST)) {
 			if(array_key_exists('pick_type', $_POST)) return false;
 			
@@ -169,6 +169,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 					$item->setAddedBy($entity);
 					//Put item in the session for the consent form to use
 					$this->session->item_id = $item->id;
+					$this->session->email = $_POST['contributor']['email'];
 					return true;
 				}else {
 					return false;
@@ -176,7 +177,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				
 			} catch (Exception $e) {
-				var_dump( $e->getTraceAsString() );exit;
+				echo debug_backtrace();exit;
 				$this->flash($e->getMessage());
 				return false;
 			}
@@ -201,10 +202,29 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		$item->save();
 		
-		unset($session->Item);
+		$this->sendEmailNotification($session->email, $item);
+		
+		unset($session->item_id);
+		unset($session->email);
 		
 		$this->_redirect('contribution/thankyou');
 	}
+	
+	protected function sendEmailNotification($email, $item)
+	{
+		$item_url = WEB_ROOT . DIRECTORY_SEPARATOR . 'items/show/' . $item->id;
+		
+		$body = "Thank you for your contribution to " . get_option('site_title') . ".  Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.
+			
+Contribution URL (pending review by project staff):\n\n\t$item_url";
+		
+		$title = "Your " . get_option('site_title') . " Contribution";
+  		
+		$header = "From: " . get_option('administrator_email') . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+		
+		$res = mail( $email, $title, $body, $header);		
+	}
+	
 	/**
 	 * Add the body of the consent form to the rights field for the item, 
 	 * if applicable.  Set Submission Consent metatext to the form value
