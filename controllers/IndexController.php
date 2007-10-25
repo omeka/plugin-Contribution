@@ -112,6 +112,21 @@ class Contribution_IndexController extends Omeka_Controller_Action
 			if(array_key_exists('pick_type', $_POST)) return false;
 			
 			try {
+				$contributor_email = $_POST['contributor']['email'];
+					
+				//Validate the email address					
+				if(!Zend_Validate::is($contributor_email, 'EmailAddress')) {
+					$this->flash('The email address you have provided is invalid.  Please provide another one.');
+					return false;
+				}
+
+				if(!Zend_Validate::is($_POST['contributor']['first_name'], 'Alnum') or 
+					!Zend_Validate::is($_POST['contributor']['last_name'], 'Alnum')) {
+					
+					$this->flash('The first/last name fields must be filled out.  Please provide a complete name.');
+					return false;	
+				} 
+
 				//Manipulate the array that will be processed by commitForm()
 				$clean = array();
 				
@@ -163,13 +178,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				$item->setMetatext('Posting Consent', $_POST['posting_consent']);
 				$item->setMetatext('Online Submission', 'Yes');
-									
+													
 				if($item->commitForm($clean, true, $options)) {
 					
 					$item->setAddedBy($entity);
 					//Put item in the session for the consent form to use
 					$this->session->item_id = $item->id;
-					$this->session->email = $_POST['contributor']['email'];
+					$this->session->email = $contributor_email;
 					return true;
 				}else {
 					return false;
@@ -177,7 +192,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				
 			} catch (Exception $e) {
-				echo debug_backtrace();exit;
 				$this->flash($e->getMessage());
 				return false;
 			}
@@ -212,6 +226,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	
 	protected function sendEmailNotification($email, $item)
 	{
+		$from_email = get_option('contribution_notification_email');
+		
+		//If this field is empty, don't send the email
+		if(empty($from_email)) {
+			return;
+		}
+		
 		$item_url = WEB_ROOT . DIRECTORY_SEPARATOR . 'items/show/' . $item->id;
 		
 		$body = "Thank you for your contribution to " . get_option('site_title') . ".  Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.
@@ -220,8 +241,8 @@ Contribution URL (pending review by project staff):\n\n\t$item_url";
 		
 		$title = "Your " . get_option('site_title') . " Contribution";
   		
-		$header = "From: " . get_option('administrator_email') . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-		
+		$header = "From: " . $from_email . "\r\n" . 'X-Mailer: PHP/' . phpversion();
+//var_dump( array($email, $title, $body, $header) );exit;		
 		$res = mail( $email, $title, $body, $header);		
 	}
 	

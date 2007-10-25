@@ -93,6 +93,22 @@ function contribution_install()
 	
 }
 
+add_plugin_hook('config_form', 'contribution_config_form');
+add_plugin_hook('config', 'contribution_config');
+
+function contribution_config_form()
+{
+	?>
+	<label for="contributor_email">Contributor 'From' Email Address:</label><p class="instructionText">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
+	<input type="text" name="contributor_email" value="<?php settings('contribution_notification_email'); ?>" />
+<?php
+}
+
+function contribution_config($post)
+{
+	set_option('contribution_notification_email', $post['contributor_email']);
+}
+
 add_plugin_hook('delete_entity', 'contribution_delete_contributor');
 /**
  * We want to delete the contributor associated with any entities that will be deleted
@@ -132,7 +148,5 @@ function submission_consent($item)
 {
 	return $item->getMetatext('Submission Consent');
 }
-
- 
 
 ?>

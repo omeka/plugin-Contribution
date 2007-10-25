@@ -1,9 +1,5 @@
 <?php head(); ?>
-<style type="text/css" media="screen">
-	#contribution {
-		overflow:hidden;
-	}
-</style>
+
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[
 
@@ -22,7 +18,9 @@
 					var partial = "_document";
 					break;
 				default:
+					return false;
 					break;
+					
 			}
 			
 			var uri = "<?php echo uri('contribution/contribution/'); ?>" + partial;
@@ -42,24 +40,22 @@
 <?php 
 	echo flash(); 
 ?>
+<div id="primary">
 
-	<h1>Make a Contribution</h1>
+<?php echo flash(); ?>
+
+	<h2>Contribute a Story or File</h2>
 
 <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
 
-	<fieldset>
-		<legend>Main Info</legend>
+		
+			
+		<div class="field">
+			<label>Title of Contribution (optional)</label>
+			<input type="text" name="title" class="textinput" value="<?php echo $_POST['title']; ?>" />
+		</div>
+	
 
-		<div class="field">
-			<label>Title (optional)</label>
-			<input type="text" name="title" value="<?php echo $_POST['title']; ?>" />
-		</div>
-	
-		<div class="field">
-			<label>Description (optional)</label>
-			<input type="text" name="description" value="<?php echo $_POST['description']; ?>" />
-		</div>
-	
 		<div class="field">
 			<label>What kind of contribution will you be making?</label>
 			<?php 
@@ -75,12 +71,12 @@
 			contribution_partial();
 		?>
 		</div>	
-	
+
 		<div class="field">
-			<label>Did you create this?</label>
-			<?php radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? $_POST['contributor_is_creator'] : 0); ?>
+			<p>Did you create this?</p>
+			<div class="radioinputs"><?php radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? $_POST['contributor_is_creator'] : 0); ?></div>
 			<label>If not, please provide the name of the creator</label>
-			<input type="text" name="creator" value="<?php echo $_POST['creator']; ?>" />
+			<input type="text" class="textinput" name="creator" value="<?php echo $_POST['creator']; ?>" />
 		</div>	
 		
 		<div class="field">
@@ -89,66 +85,56 @@
 				array('Yes'=>'Yes, including my name', 'Anonymously'=>'Yes, but don\'t use my name', 'No'=>'No, only researchers should see it.'), !empty($_POST['posting_consent']) ? $_POST['posting_consent'] : 'Yes'); 
 			?>
 		</div>
-		
-		
-	</fieldset>
 	
-	
-	<fieldset>
-		<legend>Keywords</legend>
-
-		<div class="field">
-			<label>Enter keywords separated by commas:</label>
-			<input type="text" name="tags" value="<?php echo $_POST['tags'] ?>" id="tags" />
-		</div>
-		
-		
-	</fieldset>
-
-	
-	<fieldset>
-		<legend>Your Info</legend>
 		<div class="field">
 			<label>First Name:</label>
-			<input type="text" name="contributor[first_name]" value="<?php echo $_POST['contributor']['first_name']; ?>" />
+			<input type="text" name="contributor[first_name]" class="textinput" value="<?php echo $_POST['contributor']['first_name']; ?>" />
 		</div>
 		
 		<div class="field"><label>Last Name:</label>
-		<input type="text" name="contributor[last_name]" value="<?php echo $_POST['contributor']['last_name']; ?>" /></div>
-		
+		<input type="text" name="contributor[last_name]" class="textinput" value="<?php echo $_POST['contributor']['last_name']; ?>" /></div>
 		<div class="field"><label>Email:</label>
-		<input type="text" name="contributor[email]" value="<?php echo $_POST['contributor']['email']; ?>" /></div>
-		
-		<div class="field"><label>Zipcode:</label>
-		<input type="text" name="contributor[zipcode]" value="<?php echo $_POST['contributor']['zipcode']; ?>" size="5" /></div>
+		<input type="text" class="textinput" name="contributor[email]" value="<?php echo $_POST['contributor']['email']; ?>" />
 		</div>
-		
+
+
 		<div class="field">
-			<label>Birth Year</label>
-			<input type="text" name="contributor[birth_year]" value="<?php echo $_POST['contributor']['birth_year']; ?>" id="birth_year" />
+			<label>Keywords (separated by comma):</label>
+			<input type="text" class="textinput" name="tags" value="<?php echo $_POST['tags'] ?>" id="tags" />
 		</div>
-		
-		<div class="field">
-			<label>Race:</label>
-			<input type="text" name="contributor[race]" value="<?php echo $_POST['contributor']['race']; ?>" id="race" />
-		</div>
-		
-		<div class="field">
+
+		<fieldset>
+			<legend>Optional Information</legend>
+			
+			<div class="field">
 			<label>Gender:</label>
 			<input type="text" name="contributor[gender]" value="<?php echo $_POST['contributor']['gender']; ?>" id="gender" />
-		</div>
-		
-		<div class="field">
-			<label>Occupation</label>
+			</div>
+
+			<div class="field">
+			<label>Race:</label>
+			<input type="text" name="contributor[race]" value="<?php echo $_POST['contributor']['race']; ?>" id="race" />
+			</div>
+
+			<div class="field">
+			<label>Occupation:</label>
 			<input type="text" name="contributor[occupation]" value="<?php echo $_POST['contributor']['occupation']; ?>" id="occupation" />
-		</div>
-	</fieldset>
+			</div>
 
-	
-	
+			<div class="field">
+			<label>Birth Year:</label>
+			<input type="text" name="contributor[birth_year]" value="<?php echo $_POST['contributor']['birth_year']; ?>" id="birth_year" />
+			</div>
 
-	<input type="submit" name="submit" value="Submit your Contribution --&gt;" />
+			<div class="field">
+			<label>Zipcode:</label>
+			<input type="text" name="contributor[zipcode]" value="<?php echo $_POST['contributor']['zipcode']; ?>" id="zipcode" />
+			</div>
+
+		</fieldset>
+	
+		<input type="hidden" name="">
+	<input type="submit" class="submitinput" name="submit" value="Submit" />
 </form>
-	
-
+</div>
 <?php foot(); ?>
