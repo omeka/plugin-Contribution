@@ -26,6 +26,39 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$this->render('contribution/thankyou.php');
 	}
 	
+	/**
+	 * Browse a list of contributors
+	 *
+	 * @return void
+	 **/
+	public function contributorsAction()
+	{
+		//Drop down to PDO for some basic processing
+		$pdo = Doctrine_Manager::getInstance()->connection()->getDbh();
+		
+		$entities_table = $this->getTable('Entity')->getTableName();
+		$contributors_table = $this->getTable('Contributor')->getTableName();
+		
+		//Pull down a full list of all the contributors
+		
+		//No idea whether this will kill the app, may need to implement pagination later
+		$sql = "SELECT 
+			e.id,
+			CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name) as name, 
+			e.email, c.birth_year, c.gender, c.race, c.occupation, c.zipcode, c.ip_address
+		FROM $entities_table e
+		INNER JOIN $contributors_table c ON c.entity_id = e.id";
+		
+		$stmt = $pdo->query($sql);
+		
+		//Fetch as simple objects
+		$stmt->setFetchMode(PDO::FETCH_CLASS, 'stdClass');
+		
+		$contributors = $stmt->fetchAll();
+		
+		$this->render('contribution/contributors.php', compact('contributors'));
+	}
+	
 	protected function renderContributeForm($item)
 	{
 		if($type = $this->_getParam('type')) {
@@ -212,7 +245,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		$item->rights = $_POST['rights'];
 		
-		$item->setMetatext('Submission Consent', $_POST['submission_consent']);
+		$submission_consent = $_POST['submission_consent'];
+		
+		if(!in_array($submission_consent, array('Yes','No'))) {
+			$submission_consent = 'No';
+		}
+		
+		$item->setMetatext('Submission Consent', $submission_consent);
 		
 		$item->save();
 		
@@ -220,6 +259,11 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		unset($session->item_id);
 		unset($session->email);
+		
+		//If they did not give their consent, it makes no sense to send them to the 'thankyou' page
+		if($submission_consent == 'No') {
+			$this->_redirect('');
+		}
 		
 		$this->_redirect('contribution/thankyou');
 	}

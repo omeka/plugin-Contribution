@@ -33,6 +33,8 @@ function contribution_initialize()
 {
 	add_controllers('controllers');
 	add_theme_pages('theme', 'public');
+	add_theme_pages('admin', 'admin');
+	add_navigation('Contributors', 'contribution/contributors', 'main');
 }
 
 function contribution_routes($router)
