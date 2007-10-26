@@ -21,6 +21,10 @@
  * @package Contribution
  **/
 
+if(get_magic_quotes_gpc()) {
+	$_POST = stripslashes_deep($_POST);
+}
+
 require_once 'Contributor.php';
 
 define('CONTRIBUTION_PLUGIN_VERSION', 0.1);
