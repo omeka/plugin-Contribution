@@ -133,7 +133,6 @@
 
 		</fieldset>
 	
-		<input type="hidden" name="">
 	<input type="submit" class="submitinput" name="submit" value="Submit" />
 </form>
 </div>

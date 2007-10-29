@@ -11,7 +11,6 @@
  * which is a default setting in Omeka.  This is because the "story" for the item is stored in the Text field of a Document.
  *
  * 
- * This plugin currently uses 5 hooks: initialize, add_routes, append_to_page, install, and delete_entity
  *
  * The text of the 'rights' field is stored in the themes/contribution/consent.php file, and it should be edited for each project.
  *
@@ -48,15 +47,35 @@ function contribution_routes($router)
 	$router->addRoute('contribute_actions', new Zend_Controller_Router_Route('contribution/:action', array('controller'=>'index', 'module'=>'contribution', 'action'=>'add')));
 }
 
-add_plugin_hook('append_to_page', 'contribution_append');
+add_plugin_hook('append_to_item_show', 'contribution_show_info');
 
-function contribution_append($page, $options)
+function contribution_show_info($item)
 {
-	$item = $options['item'];
-	
-	if($page == 'items/show') {
-		include 'show.php';
+	include 'show.php';
+}
+
+add_plugin_hook('append_to_item_form', 'contribution_edit_info');
+
+function contribution_edit_info($item)
+{
+	include 'form.php';
+}
+
+//We need a hook to actually save the input from contribution_edit_info()
+
+add_plugin_hook('save_item', 'contribution_save_info');
+
+function contribution_save_info($item)
+{
+	if(isset($_POST['posting_consent'])) {
+		$item->setMetatext('Posting Consent', $_POST['posting_consent']);
 	}
+	
+	if(isset($_POST['submission_consent'])) {
+		$item->setMetatext('Submission Consent', $_POST['submission_consent']);
+	}
+	
+	$item->saveMetatext();
 }
 
 add_plugin_hook('install', 'contribution_install');
@@ -153,6 +172,16 @@ function link_to_contribute($text, $options = array())
 function submission_consent($item)
 {
 	return $item->getMetatext('Submission Consent');
+}
+
+function submitted_through_contribution_form($item)
+{
+	return ($item->getMetatext('Online Submission') == 'Yes');
+}
+
+function contribution_is_anonymous($item)
+{
+	return ($item->getMetatext('Posting Consent') == 'Anonymously');
 }
 
 ?>
