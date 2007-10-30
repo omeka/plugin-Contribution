@@ -20,6 +20,11 @@
  * @package Contribution
  **/
 
+function strip_tags_recursive($input)
+{
+	return is_array($input) ?  array_map('strip_tags_recursive', $input) : strip_tags($input);
+}
+
 if(get_magic_quotes_gpc()) {
 	$_POST = stripslashes_deep($_POST);
 }
@@ -37,7 +42,7 @@ function contribution_initialize()
 	add_controllers('controllers');
 	add_theme_pages('theme', 'public');
 	add_theme_pages('admin', 'admin');
-	add_navigation('Contributors', 'contribution/contributors', 'main');
+	add_navigation('Contributors', 'contribution/contributors', 'main', array('Entities','add'));
 }
 
 function contribution_routes($router)

@@ -7,6 +7,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	public function init()
 	{
 		$this->session = new Zend_Session_Namespace('Contribution');
+		
+		//The admin interface allows inserting HTML tags into the text of the items, but the Contribution plugin shouldn't allow that.
+		$_POST = strip_tags_recursive($_POST);
+
 	}
 		
 	public function addAction()
@@ -33,6 +37,11 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 **/
 	public function contributorsAction()
 	{
+		//Put a quick permissions check in here		
+		if(!$this->isAllowed('add','Entities')) {
+			return $this->forbiddenAction();
+		}
+		
 		//Drop down to PDO for some basic processing
 		$pdo = Doctrine_Manager::getInstance()->connection()->getDbh();
 		
