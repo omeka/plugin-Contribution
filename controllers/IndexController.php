@@ -26,6 +26,12 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}		
 	}
 	
+	//Can't delete Contributors
+	public function deleteAction()
+	{
+		return $this->_forward('add');
+	}
+	
 	public function thankyouAction()
 	{
 		$this->render('contribution/thankyou.php');

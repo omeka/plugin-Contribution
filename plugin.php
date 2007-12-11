@@ -37,6 +37,12 @@ define('CONTRIBUTION_PLUGIN_VERSION', 0.1);
 add_plugin_hook('initialize', 'contribution_initialize');
 
 add_plugin_hook('add_routes', 'contribution_routes');
+add_plugin_hook('config_form', 'contribution_config_form');
+add_plugin_hook('config', 'contribution_config');
+add_plugin_hook('append_to_item_show', 'contribution_show_info');
+add_plugin_hook('before_update_item', 'contribution_save_info');
+add_plugin_hook('append_to_item_form', 'contribution_edit_info');
+add_plugin_hook('install', 'contribution_install');
 
 function contribution_initialize()
 {
@@ -53,14 +59,10 @@ function contribution_routes($router)
 	$router->addRoute('contribute_actions', new Zend_Controller_Router_Route('contribution/:action', array('controller'=>'index', 'module'=>'contribution', 'action'=>'add')));
 }
 
-add_plugin_hook('append_to_item_show', 'contribution_show_info');
-
 function contribution_show_info($item)
 {
 	include 'show.php';
 }
-
-add_plugin_hook('append_to_item_form', 'contribution_edit_info');
 
 function contribution_edit_info($item)
 {
@@ -68,8 +70,6 @@ function contribution_edit_info($item)
 }
 
 //We need a hook to actually save the input from contribution_edit_info()
-
-add_plugin_hook('save_item', 'contribution_save_info');
 
 function contribution_save_info($item)
 {
@@ -79,12 +79,10 @@ function contribution_save_info($item)
 	
 	if(isset($_POST['submission_consent'])) {
 		$item->setMetatext('Submission Consent', $_POST['submission_consent']);
-	}
-	
-	$item->saveMetatext();
+	}	
 }
 
-add_plugin_hook('install', 'contribution_install');
+
 
 function contribution_install()
 {	
@@ -111,8 +109,6 @@ function contribution_install()
 	
 }
 
-add_plugin_hook('config_form', 'contribution_config_form');
-add_plugin_hook('config', 'contribution_config');
 
 function contribution_config_form()
 {
@@ -125,23 +121,6 @@ function contribution_config_form()
 function contribution_config($post)
 {
 	set_option('contribution_notification_email', $post['contributor_email']);
-}
-
-add_plugin_hook('delete_entity', 'contribution_delete_contributor');
-/**
- * We want to delete the contributor associated with any entities that will be deleted
- *
- * @return void
- **/
-function contribution_delete_contributor($entity)
-{
-	$entity_id = $entity->id;
-	
-	$contributor = Doctrine_Manager::getInstance()->getTable('Contributor')->findByEntity_id($entity_id);
-	
-	if(!$contributor) return;
-	
-	$contributor->delete();			
 }
 
 function contribution_partial()
