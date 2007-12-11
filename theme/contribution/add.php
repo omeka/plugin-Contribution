@@ -37,9 +37,7 @@
 
 //]]>	
 </script>
-<?php 
-	echo flash(); 
-?>
+
 <div id="primary">
 
 <?php echo flash(); ?>
@@ -130,7 +128,7 @@
 			<label>Zipcode:</label>
 			<input type="text" name="contributor[zipcode]" value="<?php echo h($_POST['contributor']['zipcode']); ?>" id="zipcode" />
 			</div>
-
+						
 		</fieldset>
 	
 	<input type="submit" class="submitinput" name="submit" value="Submit" />

@@ -10,7 +10,8 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		//The admin interface allows inserting HTML tags into the text of the items, but the Contribution plugin shouldn't allow that.
 		$_POST = strip_tags_recursive($_POST);
-
+		
+		$this->_modelClass = 'Contributor';		
 	}
 		
 	public function addAction()
@@ -41,29 +42,8 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		if(!$this->isAllowed('add','Entities')) {
 			return $this->forbiddenAction();
 		}
-		
-		//Drop down to PDO for some basic processing
-		$pdo = Doctrine_Manager::getInstance()->connection()->getDbh();
-		
-		$entities_table = $this->getTable('Entity')->getTableName();
-		$contributors_table = $this->getTable('Contributor')->getTableName();
-		
-		//Pull down a full list of all the contributors
-		
-		//No idea whether this will kill the app, may need to implement pagination later
-		$sql = "SELECT 
-			e.id,
-			CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name) as name, 
-			e.email, c.birth_year, c.gender, c.race, c.occupation, c.zipcode, c.ip_address
-		FROM $entities_table e
-		INNER JOIN $contributors_table c ON c.entity_id = e.id";
-		
-		$stmt = $pdo->query($sql);
-		
-		//Fetch as simple objects
-		$stmt->setFetchMode(PDO::FETCH_CLASS, 'stdClass');
-		
-		$contributors = $stmt->fetchAll();
+
+		$contributors = $this->_table->findAll();
 		
 		$this->render('contribution/contributors.php', compact('contributors'));
 	}
@@ -94,51 +74,20 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		return $this->render('contribution/add.php', compact('item'));		
 	}
 	
-	protected function createEntity()
+	protected function createContributor()
 	{
+		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
 		$contrib = $_POST['contributor'];
-		
-		//Make an anonymous entity if they didn't give a name
-		if(empty($contrib['first_name']) and empty($contrib['last_name']) and empty($contrib['email'])) {
-			require_once 'Anonymous.php';
-			$entity = new Anonymous;
-		}else {
-			require_once 'Person.php';
-			$entity = new Person;
-			$entity->setArray($contrib);
-		}
-
-		$sql = "INSERT INTO entities (first_name, last_name, email, `type`) VALUES (:first_name, :last_name, :email, '{$entity->type}')";
-		
-		//Drop down to PDO b/c Doctrine is dying for some unknown reason
-		$conn = Doctrine_Manager::getInstance()->connection();
-		
-		try {
-			$pass = array('first_name'=>$contrib['first_name'], 'last_name'=>$contrib['last_name'], 'email'=>$contrib['email']);
-			$conn->exec($sql, $pass);
-			
-			$entity_id = $conn->lastInsertId();
-			
-		} catch (Exception $e) {
-			var_dump( get_class($e) );
-			var_dump( $e->getMessage() );exit;
-		}
 
 		$contributor = new Contributor;
 		
-		$contributor->setArray($_POST['contributor']);
+		$contributor->createEntity($contrib);
 		
-		//Set the IP address and entity_id
-		$contributor->ip_address = $_SERVER['REMOTE_ADDR'];
-		$contributor->entity_id = $entity_id;
+		$contributor->setArray($contrib);
 		
-		if(!$contributor->trySave()) {
-			$error = $this->getErrorMsg();
-			
-			$this->flash($error);
-		}
-		
-		return Doctrine_Manager::getInstance()->getTable('Entity')->find($entity_id);
+		$contributor->forceSave();
+				
+		return $contributor;
 	}
 
 	/**
@@ -154,28 +103,12 @@ class Contribution_IndexController extends Omeka_Controller_Action
 			if(array_key_exists('pick_type', $_POST)) return false;
 			
 			try {
-				$contributor_email = $_POST['contributor']['email'];
-					
-				//Validate the email address					
-				if(!Zend_Validate::is($contributor_email, 'EmailAddress')) {
-					$this->flash('The email address you have provided is invalid.  Please provide another one.');
-					return false;
-				}
-
-				if(!Zend_Validate::is($_POST['contributor']['first_name'], 'Alnum') or 
-					!Zend_Validate::is($_POST['contributor']['last_name'], 'Alnum')) {
-					
-					$this->flash('The first/last name fields must be filled out.  Please provide a complete name.');
-					return false;	
-				} 
-
 				//Manipulate the array that will be processed by commitForm()
 				$clean = array();
 				
 				
 				$clean['title'] = $_POST['title'];
-				$clean['description'] = $_POST['description'];
-				$clean['tags'] = $_POST['tags'];				
+				$clean['description'] = $_POST['description'];				
 				
 				//@todo Change how the creator/contributor info is set if we ever implement it as entity relationships
 				//Right now it is either the contributor who posted the item or it is whatever is in the text field
@@ -188,19 +121,16 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		*/	
 				//Create an entity using the data provided on the form and pass it as an option to the commitForm() call
 				
-				$entity = $this->createEntity();
-				$options = array();
-				$options['entity'] = $entity;
-				
+				$contributor = $this->createContributor();
 				
 				//Give the item the correct Type (find it by name, then assign)
-				$type = Doctrine_Manager::getInstance()->getTable('Type')->findByName($_POST['type']);
+				$type = $this->getTable('Type')->findBySql('name = ?', array($_POST['type']));
 				
 				if(!$type) {
 					throw new Exception( "Invalid type named {$_POST['type']} provided!");
 				}
 				
-				$item->Type = $type;
+				$item->type_id = $type->id;
 				
 				//Handle the metatext
 					//Document text (if applicable)
@@ -215,26 +145,28 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				//Don't trust the post content!
 				if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
-					throw new Exception( 'Invalid posting consent given!' );
+					throw new Omeka_Validator_Exception( 'Invalid posting consent given!' );
 				}
 				
 				$item->setMetatext('Posting Consent', $_POST['posting_consent']);
 				$item->setMetatext('Online Submission', 'Yes');
 													
-				if($item->commitForm($clean, true, $options)) {
+				if($item->saveForm($clean)) {
 					
-					$item->setAddedBy($entity);
+					$item->addTags($_POST['tags'], $contributor->Entity);
+					$item->setAddedBy($contributor->Entity);
+
 					//Put item in the session for the consent form to use
-					$this->session->item_id = $item->id;
-					$this->session->email = $contributor_email;
+					$this->session->item = $item;
+					$this->session->email = $_POST['contributor']['email'];
 					return true;
 				}else {
 					return false;
 				}	
 				
 				
-			} catch (Exception $e) {
-				$this->flash($e->getMessage());
+			} catch (Omeka_Validator_Exception $e) {
+				$this->flashValidationErrors($e);
 				return false;
 			}
 		}
@@ -250,7 +182,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	{		
 		$session = $this->session;
 
-		$item = $this->getTable('Item')->find($session->item_id);
+		$item = $session->item;
 		
 		$item->rights = $_POST['rights'];
 		

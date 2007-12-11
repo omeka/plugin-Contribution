@@ -1,4 +1,5 @@
 <?php 
+require_once 'Contributor.php';
 /**
  * Notes on correct usage:
  * This plugin will not work correctly if one or more of the following item Types has been removed:
@@ -93,21 +94,9 @@ function contribution_install()
 	
 	define_metafield('Submission Consent', 'Indicates whether or not the contributor of this Item has given permission to submit this to the archive. (Yes/No)');
 	
+	$db = get_db();
 	
-	//If the plugin version # is already stored in the DB, then we have created the contributors table before
-	if($version = get_option('contribution_plugin_version')) {
-		
-		switch ($version) {
-			//If we are on the first version of the plugin, do nothing
-			case 1:			
-			default:
-				# code...
-				break;
-		}
-	}
-	//Otherwise we have to create the table from scratch
-	else {		
-		db_query("CREATE TABLE IF NOT EXISTS `contributors` (
+	$db->exec("CREATE TABLE IF NOT EXISTS `$db->Contributor` (
 			`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 			`entity_id` BIGINT UNSIGNED NOT NULL ,
 			`birth_year` YEAR NULL,
@@ -118,8 +107,7 @@ function contribution_install()
 			`ip_address` TINYTEXT NOT NULL
 			) ENGINE = MYISAM ;");
 		
-		set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
-	}
+	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
 	
 }
 
