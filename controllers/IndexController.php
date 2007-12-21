@@ -130,12 +130,12 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				$contributor = $this->createContributor();
 				
 				//Give the item the correct Type (find it by name, then assign)
-				$type = $this->getTable('Type')->findBySql('name = ?', array($_POST['type']));
-				
+				$type = $this->getTable('Type')->findBySql('name = ?', array($_POST['type']), true);
+			
 				if(!$type) {
-					throw new Exception( "Invalid type named {$_POST['type']} provided!");
+					throw new Omeka_Validator_Exception( "Invalid type named {$_POST['type']} provided!");
 				}
-				
+
 				$item->type_id = $type->id;
 				
 				//Handle the metatext
@@ -156,7 +156,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				$item->setMetatext('Posting Consent', $_POST['posting_consent']);
 				$item->setMetatext('Online Submission', 'Yes');
-													
+												
 				if($item->saveForm($clean)) {
 					
 					$item->addTags($_POST['tags'], $contributor->Entity);
@@ -165,6 +165,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 					//Put item in the session for the consent form to use
 					$this->session->item = $item;
 					$this->session->email = $_POST['contributor']['email'];
+					
 					return true;
 				}else {
 					return false;
