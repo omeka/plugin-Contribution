@@ -80,19 +80,28 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		return $this->render('contribution/add.php', compact('item'));		
 	}
 	
-	protected function createContributor()
+	protected function createOrFindContributor()
 	{
 		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
 		$contrib = $_POST['contributor'];
+        
+        $firstName = $contrib['first_name'];
+        $lastName = $contrib['last_name'];
+        $email = $contrib['email'];
+                
+        //Try to locate an existing contributor entry based on a hash of first / last / email address
+        $contributor = get_db()->getTable('Contributor')->findByHash($firstName, $lastName, $email);
+        
+        if(!$contributor) {
+    		$contributor = new Contributor;
+		
+    		$contributor->createEntity($contrib);
+		
+    		$contributor->setArray($contrib);
+		
+    		$contributor->forceSave();            
+        }
 
-		$contributor = new Contributor;
-		
-		$contributor->createEntity($contrib);
-		
-		$contributor->setArray($contrib);
-		
-		$contributor->forceSave();
-				
 		return $contributor;
 	}
 
@@ -127,7 +136,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		*/	
 				//Create an entity using the data provided on the form and pass it as an option to the commitForm() call
 				
-				$contributor = $this->createContributor();
+				$contributor = $this->createOrFindContributor();
 				
 				//Give the item the correct Type (find it by name, then assign)
 				$type = $this->getTable('Type')->findBySql('name = ?', array($_POST['type']), true);

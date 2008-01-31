@@ -21,6 +21,22 @@ class ContributorTable extends Omeka_Table
 
 		return $this->fetchObjects($sql);	
 	}
+	
+	/**
+	 * Find a unique Contributor based on a hash of first/last name and email address that is provided
+	 *
+	 * @return Contributor|null
+	 **/
+	public function findByHash($firstName, $lastName, $email)
+	{
+	    $db = get_db();
+	    
+	    $sql = "SELECT c.* FROM $db->Contributor c 
+	            INNER JOIN $db->Entity e ON e.id = c.entity_id
+	            WHERE e.first_name = ? AND e.last_name = ? AND e.email = ? LIMIT 1";
+	            
+	    return $this->fetchObjects($sql, array($firstName, $lastName, $email), true);
+	}
 }
  
 ?>
