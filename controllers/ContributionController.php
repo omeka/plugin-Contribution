@@ -2,7 +2,7 @@
 /**
 * ContributionController
 */
-class Contribution_IndexController extends Omeka_Controller_Action
+class ContributionController extends Omeka_Controller_Action
 {	
 	public function init()
 	{

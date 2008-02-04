@@ -54,9 +54,7 @@ function contribution_initialize()
 
 function contribution_routes($router)
 {
-	$router->addRoute('contribute', new Zend_Controller_Router_Route('contribute/', array('controller'=>'index', 'action'=>'add', 'module'=>'contribution')));
-	
-	$router->addRoute('contribute_actions', new Zend_Controller_Router_Route('contribution/:action', array('controller'=>'index', 'module'=>'contribution', 'action'=>'add')));
+	$router->addRoute('contribute', new Zend_Controller_Router_Route('contribute/', array('controller'=>'contribution', 'action'=>'add')));
 }
 
 function contribution_show_info($item)
