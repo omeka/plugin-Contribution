@@ -1,5 +1,5 @@
 <?php 
-require_once 'Contributor.php';
+require_once 'models/Contributor.php';
 /**
  * Notes on correct usage:
  * This plugin will not work correctly if one or more of the following item Types has been removed:
@@ -45,8 +45,8 @@ add_plugin_hook('install', 'contribution_install');
 function contribution_initialize()
 {
 	add_controllers('controllers');
-	add_theme_pages('theme', 'public');
-	add_theme_pages('admin', 'admin');
+	add_theme_pages('views/public', 'public');
+	add_theme_pages('views/admin', 'admin');
 	add_navigation('Contributors', 'contribution/contributors', 'main', array('Entities','add'));
 }
 
