@@ -232,9 +232,7 @@ class ContributionController extends Omeka_Controller_Action
 	public function partialAction() 
 	{
 		$contributionType = $this->_getParam('contributiontype');
-        
-		Zend_Registry::set('contribution_partial', $contributionType);
-		contribution_partial();	
+		$this->render('contribution/'. $contributionType . '.php', array('data'=>$_POST));
 	}
 	
 	protected function sendEmailNotification($email, $item)

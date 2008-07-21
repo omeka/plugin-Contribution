@@ -21,11 +21,7 @@ require_once 'models/Contributor.php';
  * @package Contribution
  **/
 
-if(get_magic_quotes_gpc()) {
- 	$_POST = stripslashes_deep($_POST);
-}
-
-define('CONTRIBUTION_PLUGIN_VERSION', 0.1);
+define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
 define('CONTRIBUTION_PAGE_PATH', 'contribution/');
 
 add_plugin_hook('initialize', 'contribution_initialize');
@@ -73,7 +69,6 @@ function contribution_routes($router)
 
 function contribution_add_route($routeName, $controllerName, $actionName, $router) 
 {
-	//echo $routeName . '<br>';
 	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
 }
 
@@ -165,11 +160,8 @@ function contribution_config($post)
 
 function contribution_partial()
 {
-	$partial = Zend_Registry::get( 'contribution_partial' );
-	
-	$path = PLUGIN_DIR . DIRECTORY_SEPARATOR . 'Contribution' . DIRECTORY_SEPARATOR . 'views/public/contribution/' . $partial . '.php';
-	extract(array('data'=>$_POST));
-	include $path; 
+	$partial = Zend_Registry::get('contribution_partial');
+	common($partial, array('data'=>$_POST), 'contribution'); 
 }
 
 function contribution_page_url($page='') {
@@ -178,7 +170,7 @@ function contribution_page_url($page='') {
  
 function contribution_url($return = false)
 {
-	$url = WEB_ROOT . '/' . settings('contribution_page_path'); // generate_url(array('controller'=>'contribution','action'=>'add'), 'contribute');
+	$url = WEB_ROOT . '/' . settings('contribution_page_path');
 	if($return) return $url;
 	echo $url;
 }
@@ -217,7 +209,7 @@ function contribution_embed_consent_form() {
 <?php
 }
 
-function constribution_submitted_through_contribution_form($item)
+function contribution_submitted_through_contribution_form($item)
 {
 	return ($item->getMetatext('Online Submission') == 'Yes');
 }
