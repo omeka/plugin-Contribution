@@ -9,9 +9,14 @@ class ContributionController extends Omeka_Controller_Action
 		$this->session = new Zend_Session_Namespace('Contribution');
 		
 		//The admin interface allows inserting HTML tags into the text of the items, but the Contribution plugin shouldn't allow that.
-		$_POST = strip_tags_recursive($_POST);
+		$_POST = $this->strip_tags_recursive($_POST);
 		
 		$this->_modelClass = 'Contributor';		
+	}
+	
+	private function strip_tags_recursive($input)
+	{
+		return is_array($input) ?  array_map(array($this, __FUNCTION__), $input) : strip_tags($input);
 	}
 		
 	public function addAction()
@@ -20,7 +25,7 @@ class ContributionController extends Omeka_Controller_Action
 		
 		if($this->processForm($item))
 		{
-			$this->_redirect('contribution/consent');
+			$this->_redirect(contribution_page_url('consent'));
 		}else {
 			return $this->renderContributeForm($item);
 		}		
@@ -44,11 +49,12 @@ class ContributionController extends Omeka_Controller_Action
 	 **/
 	public function contributorsAction()
 	{
-		//Put a quick permissions check in here		
+		// Put a quick permissions check in here		
 		if(!$this->isAllowed('add','Entities')) {
 			return $this->forbiddenAction();
 		}
 
+		// gather all of the contributors with the most recent contributors first
 		$contributors = $this->_table->findAll();
 		
 		$this->render('contribution/contributors.php', compact('contributors'));
@@ -131,7 +137,7 @@ class ContributionController extends Omeka_Controller_Action
 				$clean['creator'] = $_POST['contributor_is_creator'] ? $clean['contributor'] : $_POST['creator'];
 				
 		/*
-					Zend::dump( $clean );
+				Zend::dump( $clean );
 				Zend::dump( $_POST );exit;
 		*/	
 				//Create an entity using the data provided on the form and pass it as an option to the commitForm() call
@@ -196,33 +202,39 @@ class ContributionController extends Omeka_Controller_Action
 	 **/
 	public function submitAction()
 	{		
-		$session = $this->session;
-
-		$item = $session->item;
-		
-		$item->rights = $_POST['rights'];
-		
-		$submission_consent = $_POST['submission_consent'];
+	
+		$submission_consent = $_POST['contribution_submission_consent'];
 		
 		if(!in_array($submission_consent, array('Yes','No'))) {
 			$submission_consent = 'No';
 		}
 		
-		$item->setMetatext('Submission Consent', $submission_consent);
+		//If they did not give their consent, redirect them to a new contribution page.
+		if($submission_consent == 'No') {
+			$this->_redirect(contribution_page_url(''));
+		}
 		
+		$session = $this->session;
+		$item = $session->item;
+
+		$item->rights = $_POST['contribution_consent_text'];
+		$item->setMetatext('Submission Consent', $submission_consent);
 		$item->save();
 		
 		$this->sendEmailNotification($session->email, $item);
 		
 		unset($session->item_id);
 		unset($session->email);
-		
-		//If they did not give their consent, it makes no sense to send them to the 'thankyou' page
-		if($submission_consent == 'No') {
-			$this->_redirect('');
-		}
-		
-		$this->_redirect('contribution/thankyou');
+				
+		$this->_redirect(contribution_page_url('thankyou'));
+	}
+	
+	public function partialAction() 
+	{
+		$contributionType = $this->_getParam('contributiontype');
+        
+		Zend_Registry::set('contribution_partial', $contributionType);
+		contribution_partial();	
 	}
 	
 	protected function sendEmailNotification($email, $item)

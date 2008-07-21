@@ -23,7 +23,7 @@
 					
 			}
 			
-			var uri = "<?php echo uri('contribution/'); ?>" + partial;
+			var uri = "<?php echo contribution_page_url('partial/'); ?>" + partial;
 			
 			new Ajax.Updater('contribution', uri, {
 				onComplete: function(t) {

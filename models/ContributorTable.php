@@ -17,7 +17,7 @@ class ContributorTable extends Omeka_Table
 			CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name) as name, 
 			e.email, c.birth_year, c.gender, c.race, c.occupation, c.zipcode, c.ip_address
 		FROM $db->Entity e
-		INNER JOIN $db->Contributor c ON c.entity_id = e.id";
+		INNER JOIN $db->Contributor c ON c.entity_id = e.id ORDER BY c.id DESC";
 
 		return $this->fetchObjects($sql);	
 	}

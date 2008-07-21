@@ -21,16 +21,12 @@ require_once 'models/Contributor.php';
  * @package Contribution
  **/
 
-function strip_tags_recursive($input)
-{
-	return is_array($input) ?  array_map('strip_tags_recursive', $input) : strip_tags($input);
-}
-
 if(get_magic_quotes_gpc()) {
-	$_POST = stripslashes_deep($_POST);
+ 	$_POST = stripslashes_deep($_POST);
 }
 
 define('CONTRIBUTION_PLUGIN_VERSION', 0.1);
+define('CONTRIBUTION_PAGE_PATH', 'contribution/');
 
 add_plugin_hook('initialize', 'contribution_initialize');
 
@@ -52,7 +48,33 @@ function contribution_initialize()
 
 function contribution_routes($router)
 {
-	$router->addRoute('contribute', new Zend_Controller_Router_Route('contribute/', array('controller'=>'contribution', 'action'=>'add')));
+	// get the base path
+	$bp = get_option('contribution_page_path');
+
+	//add the contribution page route
+	contribution_add_route($bp . '', 'contribution', 'add', $router);
+
+	//add the contribution add page route
+	contribution_add_route($bp . 'add', 'contribution', 'add', $router);
+
+	//add the contribution consent page route
+	contribution_add_route($bp . 'consent', 'contribution', 'consent', $router);
+
+	//add the contribution submit page route
+	contribution_add_route($bp . 'submit', 'contribution', 'submit', $router);
+
+	//add the contribution thankyou page route
+	contribution_add_route($bp . 'thankyou', 'contribution', 'thankyou', $router);
+	
+	//add the contribution partial route
+	contribution_add_route($bp . 'partial/:contributiontype', 'contribution', 'partial', $router);
+	
+}
+
+function contribution_add_route($routeName, $controllerName, $actionName, $router) 
+{
+	//echo $routeName . '<br>';
+	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
 }
 
 function contribution_show_info($item)
@@ -78,8 +100,6 @@ function contribution_save_info($item)
 	}	
 }
 
-
-
 function contribution_install()
 {	
 	define_metafield('Online Submission', 'Indicates whether or not this Item has been contributed from a front-end contribution form.');
@@ -102,47 +122,102 @@ function contribution_install()
 			) ENGINE = MYISAM ;");
 		
 	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
+	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
+	
 	
 }
 
 
 function contribution_config_form()
 {
+	$textInputSize = 30;
+	$textAreaRows = 10;
+	$textAreaCols = 50;
 	?>
-	<label for="contributor_email">Contributor 'From' Email Address:</label><p class="instructionText">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
-	<input type="text" name="contributor_email" value="<?php settings('contribution_notification_email'); ?>" />
+	
+	<label for="contribution_page_path">Relative Page Path From Project Root:</label>
+	<p class="instructionText">Please enter the relative page path from the project root where you want the contribution page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
+	<input type="text" name="contribution_page_path" value="<?php echo settings('contribution_page_path'); ?>" size="<?php echo $textInputSize; ?>" />
+	
+	<label for="contributor_email">Contributor 'From' Email Address:</label>
+	<p class="instructionText">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
+	<input type="text" name="contributor_email" value="<?php settings('contribution_notification_email'); ?>" size="<?php echo $textInputSize; ?>" />
+
+	<label for="contribution_consent_text">Consent Text:</label>
+	<p class="instructionText">Please enter the legal text of your consent form:</p>				
+	<textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
+	
+	
 <?php
 }
 
 function contribution_config($post)
 {
+	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
+	set_option('contribution_page_path', $post['contribution_page_path']);
+	
+	//if the page path is empty then make it the default page path
+	if (trim(get_option('contribution_page_path')) == '') {
+		set_option('contribution_page_path', rtrim(trim(CONTRIBUTION_PAGE_PATH), '/') . '/');
+	}
 }
 
 function contribution_partial()
 {
 	$partial = Zend_Registry::get( 'contribution_partial' );
-	common($partial, array('data'=>$_POST), 'contribution'); 
+	
+	$path = PLUGIN_DIR . DIRECTORY_SEPARATOR . 'Contribution' . DIRECTORY_SEPARATOR . 'views/public/contribution/' . $partial . '.php';
+	extract(array('data'=>$_POST));
+	include $path; 
+}
+
+function contribution_page_url($page='') {
+	return contribution_url(true) . $page;
 }
  
 function contribution_url($return = false)
 {
-	$url = generate_url(array('controller'=>'contribution','action'=>'add'), 'contribute');
+	$url = WEB_ROOT . '/' . settings('contribution_page_path'); // generate_url(array('controller'=>'contribution','action'=>'add'), 'contribute');
 	if($return) return $url;
 	echo $url;
 }
 
-function link_to_contribute($text, $options = array())
+function contribution_link_to_contribute($text, $options = array())
 {
 	echo '<a href="' . contribution_url(true) . '" ' . _tag_attributes($options) . ">$text</a>";
 }
 
-function submission_consent($item)
+function contribution_submission_consent($item)
 {
 	return $item->getMetatext('Submission Consent');
 }
 
-function submitted_through_contribution_form($item)
+function contribution_embed_consent_form() {
+?>
+	<form action="<?php echo contribution_page_url('submit'); ?>" id="consent" method="post" accept-charset="utf-8">
+
+			<h3>Please read this carefully:</h3>
+			
+			<div id="contribution_consent">
+				<p><?php echo settings('contribution_consent_text'); ?></p>
+				<textarea name="contribution_consent_text" style="display:none;"><?php echo settings('contribution_consent_text'); ?></textarea>
+			</div>
+			
+			<div class="field">
+				<p>Please give your consent below</p>
+				<div class="radioinputs"><?php radio(array('name'=>'contribution_submission_consent'), 
+						array(	'Yes'		=> 'I Agree. Please include my contribution.',
+								'No'		=> 'No, I do not agree.'), 'No'); ?></div>
+			</div>
+			
+	
+		<input type="submit" class="submitinput" name="submit" value="Submit" />
+	</form>
+<?php
+}
+
+function constribution_submitted_through_contribution_form($item)
 {
 	return ($item->getMetatext('Online Submission') == 'Yes');
 }

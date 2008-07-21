@@ -1,4 +1,4 @@
-<?php if(submitted_through_contribution_form($item)): ?>
+<?php if(contribution_submitted_through_contribution_form($item)): ?>
 	<h3>Permission to post contributor's submission to the archive:</h3>
 	<?php select(array('name'=>'submission_consent', 'id'=>'submission_consent'), array('Yes'=>'Yes', 'No'=>'No'), $item->getMetatext('Submission Consent')); ?>
 
