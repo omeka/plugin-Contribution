@@ -117,9 +117,8 @@ function contribution_install()
 			) ENGINE = MYISAM ;");
 		
 	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
-	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
-	
-	
+	set_option('contribution_page_path', contribution_clean_path(CONTRIBUTION_PAGE_PATH));
+	set_option('contribution_require_tos_and_pp', FALSE);
 }
 
 
@@ -142,20 +141,33 @@ function contribution_config_form()
 	<p class="instructionText">Please enter the legal text of your consent form:</p>				
 	<textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
 	
+	<?php if ( function_exists('terms_of_service_link_tos')):?>
+	
+		<label for="contribution_require_tos_and_pp">Require Terms of Service and Privacy Policy</label>
+		<p class="instructionText">Please check whether you want to require contributors to agree to the Terms of Service and Privacy Policy.</p>				
+		<?php checkbox(array('name'=> 'contribution_require_tos_and_pp', 'id'=> 'contribution_require_tos_and_pp'),  get_option('contribution_require_tos_and_pp'), null, null); ?>
+	
+	<?php endif;?>
 	
 <?php
+}
+
+function contribution_clean_path($path)
+{
+	return trim(trim($path), '/') . '/';
 }
 
 function contribution_config($post)
 {
 	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
-	set_option('contribution_page_path', $post['contribution_page_path']);
+	set_option('contribution_page_path',  contribution_clean_path($post['contribution_page_path']));
+	set_option('contribution_require_tos_and_pp', strtolower($post['contribution_require_tos_and_pp']) == 'on');
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('contribution_page_path')) == '') {
-		set_option('contribution_page_path', rtrim(trim(CONTRIBUTION_PAGE_PATH), '/') . '/');
-	}
+		set_option('contribution_page_path', contribution_clean_path(CONTRIBUTION_PAGE_PATH));
+	}	
 }
 
 function contribution_partial()
@@ -193,14 +205,19 @@ function contribution_embed_consent_form() {
 			
 			<div id="contribution_consent">
 				<p><?php echo settings('contribution_consent_text'); ?></p>
+				
+				<?php if (get_option('contribution_require_tos_and_pp') && function_exists('terms_of_service_link_tos')): ?>
+					<p>You understand and agree to the <?php echo terms_of_service_link_tos('Terms of Service'); ?> and <?php echo terms_of_service_link_privacy_policy('Privacy Policy'); ?>.</p>
+				<?php endif; ?>
+				
 				<textarea name="contribution_consent_text" style="display:none;"><?php echo settings('contribution_consent_text'); ?></textarea>
 			</div>
 			
 			<div class="field">
 				<p>Please give your consent below</p>
 				<div class="radioinputs"><?php radio(array('name'=>'contribution_submission_consent'), 
-						array(	'Yes'		=> 'I Agree. Please include my contribution.',
-								'No'		=> 'No, I do not agree.'), 'No'); ?></div>
+						array(	'Yes'		=> ' I Agree. Please include my contribution.',
+								'No'		=> ' No, I do not agree.'), 'No'); ?></div>
 			</div>
 			
 	
