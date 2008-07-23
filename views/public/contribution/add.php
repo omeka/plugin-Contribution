@@ -1,4 +1,4 @@
-<?php head(); ?>
+<?php head(array('title'=>'Make Your Contribution')); ?>
 
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[

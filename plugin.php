@@ -47,29 +47,11 @@ function contribution_routes($router)
 	// get the base path
 	$bp = get_option('contribution_page_path');
 
-	//add the contribution page route
-	contribution_add_route($bp . '', 'contribution', 'add', $router);
-
-	//add the contribution add page route
-	contribution_add_route($bp . 'add', 'contribution', 'add', $router);
-
-	//add the contribution consent page route
-	contribution_add_route($bp . 'consent', 'contribution', 'consent', $router);
-
-	//add the contribution submit page route
-	contribution_add_route($bp . 'submit', 'contribution', 'submit', $router);
-
-	//add the contribution thankyou page route
-	contribution_add_route($bp . 'thankyou', 'contribution', 'thankyou', $router);
-	
-	//add the contribution partial route
-	contribution_add_route($bp . 'partial/:contributiontype', 'contribution', 'partial', $router);
-	
-}
-
-function contribution_add_route($routeName, $controllerName, $actionName, $router) 
-{
-	$router->addRoute($routeName, new Zend_Controller_Router_Route($routeName, array('controller'=> $controllerName, 'action'=> $actionName)));
+    $router->addRoute('contribution_add', new Zend_Controller_Router_Route($bp, array('controller'=> 'contribution', 'action'=>'add')));
+    
+	$router->addRoute('contribution_links', new Zend_Controller_Router_Route($bp . ':action', array('controller'=> 'contribution')));
+    
+    $router->addRoute('contribution_partial', new Zend_Controller_Router_Route($bp . 'partial/:contributiontype', array('controller'=> 'contribution', 'action'=>'partial')));	
 }
 
 function contribution_show_info($item)
