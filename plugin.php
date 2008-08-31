@@ -1,4 +1,4 @@
-<?php 
+d<?php 
 require_once 'models/Contributor.php';
 /**
  * Notes on correct usage:
@@ -164,7 +164,7 @@ function contribution_page_url($page='') {
  
 function contribution_url($return = false)
 {
-	$url = WEB_ROOT . '/' . settings('contribution_page_path');
+	$url = WEB_ROOT . '/' . get_option('contribution_page_path');
 	if($return) return $url;
 	echo $url;
 }
