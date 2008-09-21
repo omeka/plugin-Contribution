@@ -1,4 +1,4 @@
-d<?php 
+<?php 
 require_once 'models/Contributor.php';
 /**
  * Notes on correct usage:
