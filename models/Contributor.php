@@ -1,6 +1,4 @@
 <?php
-get_db()->addTable('Contributor', 'contributors');
-
 require_once 'ContributorTable.php';
 /**
  * Contributor
@@ -85,12 +83,10 @@ class Contributor extends Omeka_Record
 	//Create the entity that the Contributor will be linked to, but don't save it just yet
 	public function createEntity(array $input)
 	{
-		require_once 'Person.php';
-		$entity = new Person;
+		require_once 'Entity.php';
+		$entity = new Entity;
 		$entity->setArray($input);
 
 		$this->Entity = $entity;
 	}
 }
-
-?>

@@ -57,7 +57,7 @@
 		<div class="field">
 			<label>What kind of contribution will you be making?</label>
 			<?php 
-				select(array('name'=>'type', 'id'=>'contribution_type'), 
+				echo select(array('name'=>'type', 'id'=>'contribution_type'), 
 					array('Document'=>'Story','Still Image'=>'Image','Moving Image'=>'Movie', 'Sound'=>'Audio'), empty($_POST['type']) ? 'Document' : h($_POST['type'])); 
 			?>
 			

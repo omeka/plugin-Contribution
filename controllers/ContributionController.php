@@ -1,17 +1,18 @@
 <?php 
-/**
-* ContributionController
-*/
-class ContributionController extends Omeka_Controller_Action
+require_once 'Contributor.php';
+
+class Contribution_ContributionController extends Omeka_Controller_Action
 {	
 	public function init()
 	{
+		$this->_modelClass = 'Contributor';		
+
+		require_once 'Zend/Session.php';
 		$this->session = new Zend_Session_Namespace('Contribution');
 		
 		//The admin interface allows inserting HTML tags into the text of the items, but the Contribution plugin shouldn't allow that.
+		//todo: replace this with the HTMLPurifier plugin
 		$_POST = $this->strip_tags_recursive($_POST);
-		
-		$this->_modelClass = 'Contributor';		
 	}
 	
 	private function strip_tags_recursive($input)
@@ -39,7 +40,7 @@ class ContributionController extends Omeka_Controller_Action
 	
 	public function thankyouAction()
 	{
-		$this->render('contribution/thankyou.php');
+		$this->render('thankyou');
 	}
 	
 	/**
@@ -49,15 +50,10 @@ class ContributionController extends Omeka_Controller_Action
 	 **/
 	public function contributorsAction()
 	{
-		// Put a quick permissions check in here		
-		if(!$this->isAllowed('add','Entities')) {
-			return $this->forbiddenAction();
-		}
-
 		// gather all of the contributors with the most recent contributors first
 		$contributors = $this->_table->findAll();
 		
-		$this->render('contribution/contributors.php', compact('contributors'));
+		$this->render('contributors', compact('contributors'));
 	}
 	
 	protected function renderContributeForm($item)
@@ -83,7 +79,7 @@ class ContributionController extends Omeka_Controller_Action
 		
 		Zend_Registry::set('contribution_partial', $partial);
 		
-		return $this->render('contribution/add.php', compact('item'));		
+		return $this->render('add', compact('item'));		
 	}
 	
 	protected function createOrFindContributor()
@@ -97,8 +93,9 @@ class ContributionController extends Omeka_Controller_Action
                 
         //Try to locate an existing contributor entry based on a hash of first / last / email address
         $contributor = get_db()->getTable('Contributor')->findByHash($firstName, $lastName, $email);
-        
+
         if(!$contributor) {
+            
     		$contributor = new Contributor;
 		
     		$contributor->createEntity($contrib);
@@ -145,7 +142,7 @@ class ContributionController extends Omeka_Controller_Action
 				$contributor = $this->createOrFindContributor();
 				
 				//Give the item the correct Type (find it by name, then assign)
-				$type = $this->getTable('Type')->findBySql('name = ?', array($_POST['type']), true);
+				$type = $this->getTable('ItemType')->findBySql('name = ?', array($_POST['type']), true);
 			
 				if(!$type) {
 					throw new Omeka_Validator_Exception( "Invalid type named {$_POST['type']} provided!");
@@ -265,8 +262,6 @@ Contribution URL (pending review by project staff):\n\n\t$item_url";
 	 **/
 	public function consentAction()
 	{		
-		$this->render('contribution/consent.php');
+		$this->render('consent');
 	}
 }
- 
-?>

@@ -2,7 +2,7 @@
 /**
 * 
 */
-class ContributorTable extends Omeka_Table
+class ContributorTable extends Omeka_Db_Table
 {
 	public function findAll()
 	{
@@ -38,5 +38,3 @@ class ContributorTable extends Omeka_Table
 	    return $this->fetchObjects($sql, array($firstName, $lastName, $email), true);
 	}
 }
- 
-?>

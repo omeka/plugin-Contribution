@@ -1,5 +1,4 @@
 <?php 
-require_once 'models/Contributor.php';
 /**
  * Notes on correct usage:
  * This plugin will not work correctly if one or more of the following item Types has been removed:
@@ -11,47 +10,39 @@ require_once 'models/Contributor.php';
  * Also, it will not work correctly if the Document type does not have a metafield called Text,
  * which is a default setting in Omeka.  This is because the "story" for the item is stored in the Text field of a Document.
  *
- * 
- *
- * The text of the 'rights' field is stored in the themes/contribution/consent.php file, and it should be edited for each project.
+ * The text of the 'rights' field is stored in the views/public/contribution/consent.php file, and it should be edited for each project.
  *
  * @author CHNM
  * @version $Id$
- * @copyright CHNM, 11 October, 2007
+ * @copyright CHNM, 2007-2008
  * @package Contribution
  **/
 
 define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
 define('CONTRIBUTION_PAGE_PATH', 'contribution/');
 
-add_plugin_hook('initialize', 'contribution_initialize');
-
-add_plugin_hook('add_routes', 'contribution_routes');
+add_plugin_hook('define_routes', 'contribution_routes');
 add_plugin_hook('config_form', 'contribution_config_form');
 add_plugin_hook('config', 'contribution_config');
-add_plugin_hook('append_to_item_show', 'contribution_show_info');
 add_plugin_hook('before_update_item', 'contribution_save_info');
-add_plugin_hook('append_to_item_form', 'contribution_edit_info');
+// temporarily commented out
+//add_plugin_hook('append_to_item_show', 'contribution_show_info');
+//add_plugin_hook('append_to_item_form', 'contribution_edit_info');
 add_plugin_hook('install', 'contribution_install');
 
-function contribution_initialize()
-{
-	add_controllers('controllers');
-	add_theme_pages('views/public', 'public');
-	add_theme_pages('views/admin', 'admin');
-	add_navigation('Contributors', 'contribution/contributors', 'main', array('Entities','add'));
-}
+add_filter('public_navigation_main', 'contribution_public_main_nav');
+add_filter('admin_navigation_main', 'contribution_admin_nav');
 
 function contribution_routes($router)
 {
 	// get the base path
 	$bp = get_option('contribution_page_path');
 
-    $router->addRoute('contribution_add', new Zend_Controller_Router_Route($bp, array('controller'=> 'contribution', 'action'=>'add')));
+    $router->addRoute('contribution_add', new Zend_Controller_Router_Route($bp, array('module' => 'contribution', 'controller'=> 'contribution', 'action'=>'add')));
     
-	$router->addRoute('contribution_links', new Zend_Controller_Router_Route($bp . ':action', array('controller'=> 'contribution')));
+	$router->addRoute('contribution_links', new Zend_Controller_Router_Route($bp . ':action', array('module' => 'contribution', 'controller'=> 'contribution')));
     
-    $router->addRoute('contribution_partial', new Zend_Controller_Router_Route($bp . 'partial/:contributiontype', array('controller'=> 'contribution', 'action'=>'partial')));	
+    $router->addRoute('contribution_partial', new Zend_Controller_Router_Route($bp . 'partial/:contributiontype', array('module' => 'contribution', 'controller'=> 'contribution', 'action'=>'partial')));	
 }
 
 function contribution_show_info($item)
@@ -218,4 +209,12 @@ function contribution_is_anonymous($item)
 	return ($item->getMetatext('Posting Consent') == 'Anonymously');
 }
 
-?>
+function contribution_admin_nav($navArray) 
+{
+    return $navArray += array('Contributers'=> uri('contribution/contributors'));
+}
+
+function contribution_public_main_nav($navArray) {
+    $navArray['Contribute'] = uri('contribution');
+    return $navArray;
+}
