@@ -61,20 +61,20 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 		if($type = $this->_getParam('type')) {
 			switch ($type) {
 				case 'Document':
-					$partial = "_document";
+					$partial = "-document";
 					break;
 				case 'Still Image':
 				case 'Moving Image':
 				case 'Sound':
-					$partial = "_file";
+					$partial = "-file";
 					break;
 				default:
-					$partial = "_document";
+					$partial = "-document";
 					break;
 			}
 
 		}else {
-			$partial = "_document";
+			$partial = "-document";
 		}
 		
 		Zend_Registry::set('contribution_partial', $partial);
@@ -229,7 +229,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	public function partialAction() 
 	{
 		$contributionType = $this->_getParam('contributiontype');
-		$this->render('contribution/'. $contributionType . '.php', array('data'=>$_POST));
+		$this->render($contributionType, array('data'=>$_POST));
 	}
 	
 	protected function sendEmailNotification($email, $item)

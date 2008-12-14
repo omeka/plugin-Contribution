@@ -12,15 +12,14 @@
 				case 'Still Image':
 				case 'Moving Image':
 				case 'Sound':
-					var partial = "_file";
+					var partial = "-file";
 					break;
 				case 'Document':
-					var partial = "_document";
+					var partial = "-document";
 					break;
 				default:
 					return false;
 					break;
-					
 			}
 			
 			var uri = "<?php echo contribution_page_url('partial/'); ?>" + partial;
