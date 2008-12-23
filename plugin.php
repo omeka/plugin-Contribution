@@ -346,3 +346,56 @@ function contribution_insert_item($itemMetadata = array(), $elementTexts = array
 
     return $item;
 }
+
+/**
+ * @see contribution_add_item()
+ * @param Item|int $item Either an Item object or the ID for the item.
+ * @param array $itemMetadata Set of options that can be passed to the item.  This
+ * has a few options that are different from contribution_add_item():
+ *      'overwriteElementTexts' (boolean) -- determines whether or not to overwrite
+ * existing element texts.  If true, this will loop through the element texts
+ * provided in $elementTexts, and it will update existing records where possible.
+ * All texts that are not yet in the DB will be added in the usual manner.  
+ * False by default.
+ *      
+ * @param array $elementTexts
+ * @return Item
+ **/
+function contribution_update_item($item, $itemMetadata = array(), $elementTexts = array())
+{
+    if (is_int($item)) {
+        $item = get_db()->getTable('Item')->find($item);
+    } else if (!($item instanceof Item)) {
+        throw new Exception('$item must be either an Item record or the item ID!');
+    }
+    
+    // If this option is set, it will loop through the $elementTexts provided,
+    // find each one and manually update it (provided it exists).
+    // The rest of the element texts will get added as per usual.
+    if (array_key_exists('overwriteElementTexts', $itemMetadata)) {
+        foreach ($elementTexts as $elementSetName => $textArray) {
+            foreach ($textArray as $elementName => $elementTextSet) {
+                $etRecordSet = $item->getElementTextsByElementNameAndSetName($elementName, $elementSetName);
+                foreach ($elementTextSet as $elementTextIndex => $textAttr) {
+                    // If we have an existing ElementText record, use that
+                    // instead of adding a new one.
+                    if (array_key_exists($elementTextIndex, $etRecordSet)) {
+                        $etRecord = $etRecordSet[$elementTextIndex];
+                        $etRecord->text = $textAttr['text'];
+                        $etRecord->html = $textAttr['html'];
+                        $etRecord->forceSave();
+                    } else {
+                        // Otherwise we should just append the new text to the 
+                        // pre-existing ones.
+                        $elementRecord = $item->getElementByNameAndSetName($elementName, $elementSetName);
+                        $item->addTextForElement($elementRecord, $textAttr['text'], $textAttr['html']);
+                    }
+                }
+            }
+        }
+    }
+    
+    $item->saveElementTexts();
+    
+    return $item;
+}
