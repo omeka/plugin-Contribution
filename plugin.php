@@ -281,3 +281,68 @@ function contribution_acl($acl)
 {
     $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
 }
+
+/**
+ * A prototype of the insert_item() helper, which will be in the core in 1.0.
+ *
+ * @param array $itemMetadata Array which can include the following properties:
+ *      'public' (boolean)
+ *      'featured' (boolean)
+ *      'collection_id' (integer)
+ *      'item_type_name' (string)
+ *      'tags' (string, comma-delimited)
+ *      'tag_entity' (Entity, optional and only checked if 'tags' is given)
+ * @param array $elementTexts Array of element texts to assign to the item.  This
+ * takes the format: array('Element Set Name'=>array('Element Name'=>array(array('text'=>(string), 'html'=>(boolean))))).
+ * @return Item
+ * @throws Omeka_Validator_Exception
+ **/
+function contribution_insert_item($itemMetadata = array(), $elementTexts = array())
+{
+    // Insert a new Item
+    $item = new Item;
+
+    // Item Metadata
+    $item->public           = $itemMetadata['public'];
+    $item->featured         = $itemMetadata['featured'];
+    $item->collection_id    = $itemMetadata['collection_id'];
+
+    if (array_key_exists('item_type_name', $itemMetadata)) {
+        $itemType = get_db()->getTable('ItemType')->findBySql('name = ?', array($itemMetadata['item_type_name']), true);
+
+        if(!$itemType) {
+            throw new Omeka_Validator_Exception( "Invalid type named {$_POST['type']} provided!");
+        }
+
+        $item->item_type_id = $itemType->id;
+    }
+
+    foreach ($elementTexts as $elementSetName => $elements) {
+        foreach ($elements as $elementName => $elementTexts) {
+            $element = $item->getElementByNameAndSetName($elementName, $elementSetName);
+            foreach ($elementTexts as $elementText) {
+                if (!array_key_exists('text', $elementText)) {
+                    throw new Exception('Element texts are formatted incorrectly for insert_item()!');
+                }
+                $item->addTextForElement($element, $elementText['text'], $elementText['html']);
+            }
+        }
+    }
+
+    // Save Item and all of its metadata.  Throw exception if it fails.
+    $item->forceSave();
+
+    // Add tags for the item.
+    if (array_key_exists('tags', $itemMetadata) and !empty($itemMetadata['tags'])) {
+        // As of 0.10 we still need to tag for a specific entity.
+        // This may change in future versions.
+        $entityToTag = array_key_exists('tag_entity', $itemMetadata) ?
+            $itemMetadata['tag_entity'] : current_user()->Entity;
+        $item->addTags($itemMetadata['tags'], $entityToTag);
+    }
+
+    // Save Element Texts (necessary)
+    $item->saveElementTexts();
+
+    return $item;
+}
