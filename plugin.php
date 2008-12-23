@@ -32,6 +32,7 @@ add_plugin_hook('before_update_item', 'contribution_save_info');
 //add_plugin_hook('append_to_item_form', 'contribution_edit_info');
 add_plugin_hook('install', 'contribution_install');
 add_plugin_hook('initialize', 'contribution_initialize');
+add_plugin_hook('define_acl', 'contribution_acl');
 
 add_filter('public_navigation_main', 'contribution_public_main_nav');
 add_filter('admin_navigation_main', 'contribution_admin_nav');
@@ -244,7 +245,10 @@ function contribution_is_anonymous($item)
 
 function contribution_admin_nav($navArray) 
 {
-    return $navArray += array('Contributors'=> uri(array('action'=>'browse'), 'contributionLinks'));
+    if (has_permission('Contribution_Index', 'browse')) {
+        $navArray += array('Contributors'=> uri(array('action'=>'browse'), 'contributionLinks'));
+    }
+    return $navArray;
 }
 
 function contribution_public_main_nav($navArray) {
@@ -271,4 +275,9 @@ function contribution_upgrade()
         // Bump up the database's migration #
         set_option('contribution_db_migration', CONTRIBUTION_MIGRATION);
     }
+}
+
+function contribution_acl($acl)
+{
+    $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
 }
