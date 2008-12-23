@@ -1,7 +1,7 @@
 <?php 
 require_once 'Contributor.php';
 
-class Contribution_ContributionController extends Omeka_Controller_Action
+class Contribution_IndexController extends Omeka_Controller_Action
 {	
 	public function init()
 	{
