@@ -40,9 +40,7 @@ function contribution_routes($router)
 
     $router->addRoute('contributionAdd', new Zend_Controller_Router_Route($bp, array('module' => 'contribution', 'controller'=> 'index', 'action'=>'add')));
     
-	$router->addRoute('contributionLinks', new Zend_Controller_Router_Route($bp . ':action', array('module' => 'contribution', 'controller'=> 'index')));
-    
-    $router->addRoute('contributionFormPartial', new Zend_Controller_Router_Route($bp . 'partial/:contributiontype', array('module' => 'contribution', 'controller'=> 'index', 'action'=>'partial')));	
+	$router->addRoute('contributionLinks', new Zend_Controller_Router_Route($bp . ':action', array('module' => 'contribution', 'controller'=> 'index')));    
 }
 
 function contribution_show_info($item)
@@ -137,12 +135,6 @@ function contribution_config($post)
 	if (trim(get_option('contribution_page_path')) == '') {
 		set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
 	}	
-}
-
-function contribution_partial()
-{
-	$partial = Zend_Registry::get('contribution_partial');
-	common($partial, array('data'=>$_POST), 'contribution'); 
 }
 
 function contribution_link_to_contribute($text, $options = array())

@@ -28,7 +28,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		{
 			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
 		}else {
-			return $this->renderContributeForm($item);
+            $this->view->item = $item;
 		}		
 	}
 	
@@ -54,32 +54,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$contributors = $this->_table->findAll();
 		
 		$this->render('contributors', compact('contributors'));
-	}
-	
-	protected function renderContributeForm($item)
-	{
-		if($type = $this->_getParam('type')) {
-			switch ($type) {
-				case 'Document':
-					$partial = "-document";
-					break;
-				case 'Still Image':
-				case 'Moving Image':
-				case 'Sound':
-					$partial = "-file";
-					break;
-				default:
-					$partial = "-document";
-					break;
-			}
-
-		}else {
-			$partial = "-document";
-		}
-		
-		Zend_Registry::set('contribution_partial', $partial);
-		
-		return $this->render('add', compact('item'));		
 	}
 	
 	protected function createOrFindContributor()
@@ -229,7 +203,20 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	public function partialAction() 
 	{
 		$contributionType = $this->_getParam('contributiontype');
-		$this->render($contributionType, array('data'=>$_POST));
+		switch ($contributionType) {
+			case 'Document':
+				$partial = "-document";
+				break;
+			case 'Still Image':
+			case 'Moving Image':
+			case 'Sound':
+				$partial = "-file";
+				break;
+			default:
+				$partial = "-document";
+				break;
+		}
+		$this->render($partial);
 	}
 	
 	protected function sendEmailNotification($email, $item)

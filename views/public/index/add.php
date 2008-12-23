@@ -5,26 +5,13 @@
 
 	Event.observe(window,'load', function() {
 		$('contribution_type').onchange = function() {
-			var type = $F(this);
-			
-			//This logic is duplicated in the contribution controller (any way to abstract it out?)
-			switch(type) {
-				case 'Still Image':
-				case 'Moving Image':
-				case 'Sound':
-					var partial = "-file";
-					break;
-				case 'Document':
-					var partial = "-document";
-					break;
-				default:
-					return false;
-					break;
-			}
-			
-			var uri = "<?php echo uri(array(), 'contributionFormPartial'); ?>" + partial;
+			var type = $F(this);			
+			var uri = "<?php echo uri(array('action'=>'partial'), 'contributionLinks'); ?>";
 			
 			new Ajax.Updater('contribution', uri, {
+			    parameters: {
+			        contributiontype: type
+			    },
 				onComplete: function(t) {
 					new Effect.Highlight('contribution');
 				}
@@ -65,7 +52,7 @@
 	
 		<div id="contribution">
 		<?php 
-			contribution_partial();
+			echo $this->action('partial', 'index', 'contribution');
 		?>
 		</div>	
 
