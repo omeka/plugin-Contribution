@@ -90,7 +90,7 @@ function contribution_install()
 			) ENGINE = MYISAM ;");
 		
 	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
-	set_option('contribution_page_path', contribution_clean_path(CONTRIBUTION_PAGE_PATH));
+	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
 	set_option('contribution_require_tos_and_pp', FALSE);
 }
 
@@ -125,21 +125,17 @@ function contribution_config_form()
 <?php
 }
 
-function contribution_clean_path($path)
-{
-	return trim(trim($path), '/') . '/';
-}
-
 function contribution_config($post)
 {
 	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
-	set_option('contribution_page_path',  contribution_clean_path($post['contribution_page_path']));
+	set_option('contribution_page_path', $post['contribution_page_path']);
+    // set_option('contribution_page_path',  trim($post['contribution_page_path'], '/') . '/');
 	set_option('contribution_require_tos_and_pp', strtolower($post['contribution_require_tos_and_pp']) == 'on');
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('contribution_page_path')) == '') {
-		set_option('contribution_page_path', contribution_clean_path(CONTRIBUTION_PAGE_PATH));
+		set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
 	}	
 }
 
@@ -200,7 +196,7 @@ function contribution_is_anonymous($item)
 
 function contribution_admin_nav($navArray) 
 {
-    return $navArray += array('Contributers'=> uri('contribution/contributors'));
+    return $navArray += array('Contributers'=> uri(array('action'=>'contributors'), 'contributionLinks'));
 }
 
 function contribution_public_main_nav($navArray) {
