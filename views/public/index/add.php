@@ -58,14 +58,14 @@
 
 		<div class="field">
 			<p>Did you create this?</p>
-			<div class="radioinputs"><?php radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? h($_POST['contributor_is_creator']) : 0); ?></div>
+			<div class="radioinputs"><?php echo radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? h($_POST['contributor_is_creator']) : 0); ?></div>
 			<label>If not, please provide the name of the creator</label>
 			<input type="text" class="textinput" name="creator" value="<?php echo h($_POST['creator']); ?>" />
 		</div>	
 		
 		<div class="field">
 			<label>In addition to saving your contribution to the archive, may we post it on this site?</label>
-			<?php select(array('name'=>'posting_consent'), 
+			<?php echo select(array('name'=>'posting_consent'), 
 				array('Yes'=>'Yes, including my name', 'Anonymously'=>'Yes, but don\'t use my name', 'No'=>'No, only researchers should see it.'), !empty($_POST['posting_consent']) ? h($_POST['posting_consent']) : 'Yes'); 
 			?>
 		</div>

@@ -35,6 +35,6 @@ class ContributorTable extends Omeka_Db_Table
 	            INNER JOIN $db->Entity e ON e.id = c.entity_id
 	            WHERE e.first_name = ? AND e.last_name = ? AND e.email = ? LIMIT 1";
 	            
-	    return $this->fetchObjects($sql, array($firstName, $lastName, $email), true);
+	    return $this->fetchObject($sql, array($firstName, $lastName, $email));
 	}
 }

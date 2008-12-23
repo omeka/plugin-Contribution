@@ -81,75 +81,81 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		if(!empty($_POST)) {
 			if(array_key_exists('pick_type', $_POST)) return false;
 			
-			try {
-				//Manipulate the array that will be processed by commitForm()
-				$clean = array();
-				
-				
-				$clean['title'] = $_POST['title'];
-				$clean['description'] = $_POST['description'];				
-				
-				//@todo Change how the creator/contributor info is set if we ever implement it as entity relationships
-				//Right now it is either the contributor who posted the item or it is whatever is in the text field
-				$clean['contributor'] = $_POST['contributor']['first_name'] . ' ' . $_POST['contributor']['last_name'];
-				$clean['creator'] = $_POST['contributor_is_creator'] ? $clean['contributor'] : $_POST['creator'];
-				
-		/*
-				Zend::dump( $clean );
-				Zend::dump( $_POST );exit;
-		*/	
-				//Create an entity using the data provided on the form and pass it as an option to the commitForm() call
-				
-				$contributor = $this->createOrFindContributor();
-				
-				//Give the item the correct Type (find it by name, then assign)
-				$type = $this->getTable('ItemType')->findBySql('name = ?', array($_POST['type']), true);
-			
-				if(!$type) {
-					throw new Omeka_Validator_Exception( "Invalid type named {$_POST['type']} provided!");
-				}
-
-				$item->type_id = $type->id;
-				
-				//Handle the metatext
-					//Document text (if applicable)
-					//Posting Consent
-					//Submission Consent
-				if(!empty($_POST['text'])) {
-					$item->setMetatext('Text', $_POST['text']);
-				}
-				
-				//At this point we should set the submission consent to No (just in case it doesn't make it to the page)
-				$item->setMetatext('Submission Consent', 'No');
-				
+			try {				
 				//Don't trust the post content!
 				if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
 					throw new Omeka_Validator_Exception( 'Invalid posting consent given!' );
 				}
 				
-				$item->setMetatext('Posting Consent', $_POST['posting_consent']);
-				$item->setMetatext('Online Submission', 'Yes');
+				$itemMetadata = array(
+				    'public'=>false,
+				    'featured'=>false,
+				    // Do not set the collection_id.
+				    'item_type_name'=>$_POST['type'],
+				    'tags'=>$_POST['tags']);
+				
+				$contributorName = $_POST['contributor']['first_name'] . ' ' . $_POST['contributor']['last_name'];
+				
+				$elementTexts = array(
+				    'Dublin Core'=>array(
+				        'Title'=>array(array(
+				            'text'=>(string)$_POST['title'], 
+				            'html'=>false)),
+				        'Description'=>array(array(
+				            'text'=>(string)$_POST['description'], 
+				            'html'=>false)),
+				        'Contributor'=> array(array(
+				            'text'=>$contributorName,
+				            'html'=>false)),
+				        'Creator'=>array(array(
+				            'text'=>$_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'],
+				            'html'=>false))),
+				    'Contribution Form'=>array(
+				        'Online Submission'=>array(array(
+				            'text'=>'Yes', // We're submitting through the contribution form.
+				            'html'=>false)),
+				        'Submission Consent'=>array(array( 
+				            'text'=>'No', // This will be overridden by the consent form.
+				            'html'=>false)),
+				        'Posting Consent'=>array(array(
+				            'text'=>$_POST['posting_consent'],
+				            'html'=>false)))
+				    );
+				
+				// Add the text for Document item types, if necessary.    
+				if (array_key_exists('text', $_POST)) {
+				    $elementTexts['Item Type Metadata']['Text'][] = array('text'=>$_POST['text'], 'html'=>false);
+				}	
 												
-				if($item->saveForm($clean)) {
-					
-					$item->addTags($_POST['tags'], $contributor->Entity);
+				$contributor = $this->createOrFindContributor();
+				
+				// Needed to tag the items properly.
+				$itemMetadata['tag_entity'] = $contributor->Entity;					
+				$item = contribution_insert_item($itemMetadata, $elementTexts);
+																				
+				if($item->exists()) {
+				    // Also this is needed, apparently.
 					$item->setAddedBy($contributor->Entity);
 
 					//Put item in the session for the consent form to use
-					$this->session->item = $item;
+					$this->session->itemId = $item->id;
 					$this->session->email = $_POST['contributor']['email'];
 					
+					// Success.
 					return true;
 				}else {
+				    // Failure?  Should this even get here?  It should probably throw if the item doesn't save.
 					return false;
 				}	
 				
 				
 			} catch (Omeka_Validator_Exception $e) {
 				$this->flashValidationErrors($e);
+				// Validation errors.
 				return false;
 			}
 		}
+		// No POST.
 		return false;
 	}
 	
@@ -173,15 +179,22 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}
 		
 		$session = $this->session;
-		$item = $session->item;
-
-		$item->rights = $_POST['contribution_consent_text'];
-		$item->setMetatext('Submission Consent', $submission_consent);
-		$item->save();
+		$itemId = $session->itemId;
+        
+        if (!is_int($itemId)) {
+            throw new Exception('Cannot provide consent without first contributing an item!');
+        }
+        
+        $item = contribution_update_item($itemId, array('overwriteElementTexts'=>true), array(
+            'Dublin Core'=>array(
+                'Rights'=>array(array('text'=>$_POST['contribution_consent_text'], 'html'=>false))),
+            'Contribution Form'=>array(
+                'Submission Consent'=>array(array('text'=>$submission_consent, 'html'=>false)))
+            ));
 		
 		$this->sendEmailNotification($session->email, $item);
 		
-		unset($session->item_id);
+		unset($session->itemId);
 		unset($session->email);
 				
 		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');

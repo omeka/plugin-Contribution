@@ -222,7 +222,7 @@ function contribution_embed_consent_form() {
 			
 			<div class="field">
 				<p>Please give your consent below</p>
-				<div class="radioinputs"><?php radio(array('name'=>'contribution_submission_consent'), 
+				<div class="radioinputs"><?php echo radio(array('name'=>'contribution_submission_consent'), 
 						array(	'Yes'		=> ' I Agree. Please include my contribution.',
 								'No'		=> ' No, I do not agree.'), 'No'); ?></div>
 			</div>
