@@ -19,6 +19,8 @@
  **/
 
 define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
+// Define this migration constant to help with upgrading the plugin.
+define('CONTRIBUTION_MIGRATION', 1);
 define('CONTRIBUTION_PAGE_PATH', 'contribution/');
 
 add_plugin_hook('define_routes', 'contribution_routes');
@@ -29,6 +31,7 @@ add_plugin_hook('before_update_item', 'contribution_save_info');
 //add_plugin_hook('append_to_item_show', 'contribution_show_info');
 //add_plugin_hook('append_to_item_form', 'contribution_edit_info');
 add_plugin_hook('install', 'contribution_install');
+add_plugin_hook('initialize', 'contribution_initialize');
 
 add_filter('public_navigation_main', 'contribution_public_main_nav');
 add_filter('admin_navigation_main', 'contribution_admin_nav');
@@ -68,14 +71,10 @@ function contribution_save_info($item)
 
 function contribution_install()
 {	
-	define_metafield('Online Submission', 'Indicates whether or not this Item has been contributed from a front-end contribution form.');
-	
-	define_metafield('Posting Consent', 'Indicates whether or not the contributor of this Item has given permission to post this to the archive. (Yes/No)');
-	
-	define_metafield('Submission Consent', 'Indicates whether or not the contributor of this Item has given permission to submit this to the archive. (Yes/No)');
-	
 	$db = get_db();
 	
+	contribution_build_element_set(true);
+
 	$db->exec("CREATE TABLE IF NOT EXISTS `$db->Contributor` (
 			`id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 			`entity_id` BIGINT UNSIGNED NOT NULL ,
@@ -90,8 +89,65 @@ function contribution_install()
 	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
 	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
 	set_option('contribution_require_tos_and_pp', FALSE);
+	set_option('contribution_db_migration', CONTRIBUTION_MIGRATION);
 }
 
+function contribution_build_element_set($buildElements=true)
+{
+    try {
+        $elementSet = new ElementSet;
+	    $elementSet->name = "Contribution Form";
+	    $elementSet->description = "The set of elements containing metadata from the Contribution form.";
+
+	    if ($buildElements) {
+	        $elementSet->addElements(array(
+	             array(
+	                'name'=>'Online Submission',
+	                'description'=>'Indicates whether or not this Item has been contributed from a front-end contribution form.',
+	                'record_type'=>'Item'),
+	             array(
+	                 'name'=>'Posting Consent',
+	                 'description'=>'Indicates whether or not the contributor of this Item has given permission to post this to the archive. (Yes/No)',
+	                 'record_type'=>'Item'),
+	             array(
+	                 'name'=>'Submission Consent',
+	                 'description'=>'Indicates whether or not the contributor of this Item has given permission to submit this to the archive. (Yes/No)',
+	                 'record_type'=>'Item')));
+	    }
+
+	    // Die if this doesn't save properly.
+	    $elementSet->forceSave();
+    } catch (Exception $e) {
+        var_dump($e);exit;
+    }
+    return $elementSet->id;
+}
+
+function contribution_convert_existing_elements()
+{
+    // Retrieve the existing elements and modify them to belong to the Contribution Form element set.
+    $db = get_db();
+    $sql  = "SELECT id FROM $db->ElementSet WHERE name = 'Additional Item Metadata'";
+    $additionalItemElementSetId = $db->fetchOne($sql);
+
+    // If the Additional Item Metadata element set does not exist for whatever
+    // reason, there is no pre-existing plugin data to convert so just build
+    // the whole thing from scratch.  Otherwise just make the new element set
+    // w/o the new elements and convert the old ones.
+    $newElementSetId = contribution_build_element_set(!$additionalItemElementSetId);
+
+    // Update the existing elements w/o interacting with the ElementSet models.
+    try {
+        $db->query(
+	            "UPDATE $db->Element SET element_set_id = ? 
+	            WHERE element_set_id = ? AND name IN (" . $db->quote(
+	                array('Online Submission', 'Posting Consent', 'Submission Consent')) .
+	            ") LIMIT 3",
+	            array($newElementSetId, $additionalItemElementSetId));
+    } catch (Exception $e) {
+        var_dump($e);exit;
+    }
+}
 
 function contribution_config_form()
 {
@@ -194,4 +250,25 @@ function contribution_admin_nav($navArray)
 function contribution_public_main_nav($navArray) {
     $navArray['Contribute'] = uri(array(), 'contributionAdd');
     return $navArray;
+}
+
+/**
+ * Use this initialize hook to check to see whether or not we need to upgrade the plugin.
+ * 
+ * @param string
+ * @return void
+ **/
+function contribution_initialize()
+{
+    contribution_upgrade();
+}
+
+function contribution_upgrade()
+{
+    $pluginVersion = get_option('contribution_db_migration');
+    if ($pluginVersion < CONTRIBUTION_MIGRATION) {
+        contribution_convert_existing_elements();
+        // Bump up the database's migration #
+        set_option('contribution_db_migration', CONTRIBUTION_MIGRATION);
+    }
 }
