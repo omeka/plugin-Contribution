@@ -22,7 +22,7 @@
 					break;
 			}
 			
-			var uri = "<?php echo contribution_page_url('partial/'); ?>" + partial;
+			var uri = "<?php echo uri(array(), 'contributionFormPartial'); ?>" + partial;
 			
 			new Ajax.Updater('contribution', uri, {
 				onComplete: function(t) {

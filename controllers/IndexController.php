@@ -26,7 +26,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		if($this->processForm($item))
 		{
-			$this->_redirect(contribution_page_url('consent'));
+			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
 		}else {
 			return $this->renderContributeForm($item);
 		}		
@@ -40,7 +40,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	
 	public function thankyouAction()
 	{
-		$this->render('thankyou');
+
 	}
 	
 	/**
@@ -208,7 +208,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		//If they did not give their consent, redirect them to a new contribution page.
 		if($submission_consent == 'No') {
-			$this->_redirect(contribution_page_url(''));
+			$this->redirect->gotoRoute(array(), 'contributionAdd');
 		}
 		
 		$session = $this->session;
@@ -223,7 +223,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		unset($session->item_id);
 		unset($session->email);
 				
-		$this->_redirect(contribution_page_url('thankyou'));
+		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');
 	}
 	
 	public function partialAction() 

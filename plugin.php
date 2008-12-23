@@ -149,20 +149,9 @@ function contribution_partial()
 	common($partial, array('data'=>$_POST), 'contribution'); 
 }
 
-function contribution_page_url($page='') {
-	return contribution_url(true) . $page;
-}
- 
-function contribution_url($return = false)
-{
-	$url = WEB_ROOT . '/' . get_option('contribution_page_path');
-	if($return) return $url;
-	echo $url;
-}
-
 function contribution_link_to_contribute($text, $options = array())
 {
-	echo '<a href="' . contribution_url(true) . '" ' . _tag_attributes($options) . ">$text</a>";
+	echo '<a href="' . uri(array(), 'contributionAdd') . '" ' . _tag_attributes($options) . ">$text</a>";
 }
 
 function contribution_submission_consent($item)
@@ -172,7 +161,7 @@ function contribution_submission_consent($item)
 
 function contribution_embed_consent_form() {
 ?>
-	<form action="<?php echo contribution_page_url('submit'); ?>" id="consent" method="post" accept-charset="utf-8">
+	<form action="<?php echo uri(array('action'=>'submit'), 'contributionLinks'); ?>" id="consent" method="post" accept-charset="utf-8">
 
 			<h3>Please read this carefully:</h3>
 			
