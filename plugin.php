@@ -37,6 +37,10 @@ add_plugin_hook('define_acl', 'contribution_acl');
 add_filter('public_navigation_main', 'contribution_public_main_nav');
 add_filter('admin_navigation_main', 'contribution_admin_nav');
 
+add_filter(array('Form', 'Item', 'Contribution Form', 'Posting Consent'), 'contribution_posting_consent_form');
+add_filter(array('Form', 'Item', 'Contribution Form', 'Submission Consent'), 'contribution_submission_consent_form');
+add_filter(array('Form', 'Item', 'Contribution Form', 'Online Submission'), 'contribution_is_online_submission_form');
+
 function contribution_routes($router)
 {
 	// get the base path
@@ -398,4 +402,19 @@ function contribution_update_item($item, $itemMetadata = array(), $elementTexts 
     $item->saveElementTexts();
     
     return $item;
+}
+
+function contribution_posting_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
+{
+    return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'Yes'=>'Yes', 'No'=>'No', 'Anonymously'=>'Anonymously'));
+}
+
+function contribution_submission_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
+{
+    return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'No'=>'No', 'Yes'=>'Yes'));
+}
+
+function contribution_is_online_submission_form($html, $inputNameStem, $consent, $options, $item, $element)
+{
+    return __v()->formSelect($inputNameStem . '[text]', $consent, null, array('No'=>'No', 'Yes'=>'Yes'));
 }
