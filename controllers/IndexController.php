@@ -42,20 +42,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	{
 
 	}
-	
-	/**
-	 * Browse a list of contributors
-	 *
-	 * @return void
-	 **/
-	public function contributorsAction()
-	{
-		// gather all of the contributors with the most recent contributors first
-		$contributors = $this->_table->findAll();
 		
-		$this->render('contributors', compact('contributors'));
-	}
-	
 	protected function createOrFindContributor()
 	{
 		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input

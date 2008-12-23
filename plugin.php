@@ -188,10 +188,10 @@ function contribution_is_anonymous($item)
 
 function contribution_admin_nav($navArray) 
 {
-    return $navArray += array('Contributers'=> uri(array('action'=>'contributors'), 'contributionLinks'));
+    return $navArray += array('Contributors'=> uri(array('action'=>'browse'), 'contributionLinks'));
 }
 
 function contribution_public_main_nav($navArray) {
-    $navArray['Contribute'] = uri('contribution');
+    $navArray['Contribute'] = uri(array(), 'contributionAdd');
     return $navArray;
 }

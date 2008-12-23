@@ -16,6 +16,21 @@ class Contributor extends Omeka_Record
 	
 	protected $_related = array('Entity'=>'getEntity');
 	
+	public function __get($property)
+	{
+	    switch ($property) {
+	       case 'name':
+	           return $this->Entity->first_name . ' ' . $this->Entity->last_name;
+	           break;
+	       case 'email':
+	           return $this->Entity->email;
+	           break;
+	       default:
+	           return parent::__get($property);
+	           break;
+	    }
+	}
+	
 	/**
 	 * Use ZF's Zend_Filter_Input mechanism to properly clean all the user input
 	 *
