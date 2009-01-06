@@ -135,24 +135,38 @@ function contribution_config_form()
 	$textAreaCols = 50;
 	?>
 	
+	<div class="field">
 	<label for="contribution_page_path">Relative Page Path From Project Root:</label>
-	<p class="instructionText">Please enter the relative page path from the project root where you want the contribution page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
-	<input type="text" name="contribution_page_path" value="<?php echo settings('contribution_page_path'); ?>" size="<?php echo $textInputSize; ?>" />
+	<div class="inputs">
+	    <input type="text" name="contribution_page_path" value="<?php echo settings('contribution_page_path'); ?>" size="<?php echo $textInputSize; ?>" />
+    	<p class="explanation">Please enter the relative page path from the project root where you want the contribution page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
+	</div>
+	</div>
 	
+	<div class="field">
 	<label for="contributor_email">Contributor 'From' Email Address:</label>
-	<p class="instructionText">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
-	<input type="text" name="contributor_email" value="<?php settings('contribution_notification_email'); ?>" size="<?php echo $textInputSize; ?>" />
-
+	<div class="inputs">
+	    <input type="text" name="contributor_email" value="<?php echo settings('contribution_notification_email'); ?>" size="<?php echo $textInputSize; ?>" />
+    	<p class="explanation">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
+	</div>
+    </div>
+    
+    <div class="field">
 	<label for="contribution_consent_text">Consent Text:</label>
-	<p class="instructionText">Please enter the legal text of your consent form:</p>				
-	<textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
+	<div class="inputs">
+	    <textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
+    	<p class="explanation">Please enter the legal text of your consent form:</p>
+	</div>
+	</div>
 	
-	<?php if ( function_exists('terms_of_service_link_tos')):?>
-	
+	<?php if ( defined('TERMS_OF_SERVICE_VERSION')):?>
+	    <div class="field">
 		<label for="contribution_require_tos_and_pp">Require Terms of Service and Privacy Policy</label>
-		<p class="instructionText">Please check whether you want to require contributors to agree to the Terms of Service and Privacy Policy.</p>				
-		<?php checkbox(array('name'=> 'contribution_require_tos_and_pp', 'id'=> 'contribution_require_tos_and_pp'),  get_option('contribution_require_tos_and_pp'), null, null); ?>
-	
+		<div class="inputs">
+		    <?php echo checkbox(array('name'=> 'contribution_require_tos_and_pp', 'id'=> 'contribution_require_tos_and_pp'),  get_option('contribution_require_tos_and_pp'), null, null); ?>
+			<p class="explanation">Please check whether you want to require contributors to agree to the Terms of Service and Privacy Policy.</p>
+		</div>
+	    </div>
 	<?php endif;?>
 	
 <?php
@@ -163,8 +177,7 @@ function contribution_config($post)
 	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
 	set_option('contribution_page_path', $post['contribution_page_path']);
-    // set_option('contribution_page_path',  trim($post['contribution_page_path'], '/') . '/');
-	set_option('contribution_require_tos_and_pp', strtolower($post['contribution_require_tos_and_pp']) == 'on');
+	set_option('contribution_require_tos_and_pp', (boolean)$post['contribution_require_tos_and_pp']);
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('contribution_page_path')) == '') {
