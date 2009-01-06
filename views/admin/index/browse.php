@@ -2,7 +2,11 @@
 
 <div id="primary">
 	
-	<h2>Browse Contributors</h2>
+	<h2>Browse Contributors (<?php echo $totalContributors; ?> total)</h2>
+
+    <div class="pagination">
+        <?php echo pagination_links(); ?>
+    </div>
 
 	<table>
 		<thead>

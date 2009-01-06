@@ -32,6 +32,24 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}		
 	}
 	
+	public function browseAction()
+	{
+	    $this->_setParam('per_page', CONTRIBUTORS_PER_PAGE);
+
+	    $criteria = $this->_getAllParams();
+
+	    $contributors = $this->getTable('Contributor')->findBy($criteria);
+	    $totalContributors = $this->getTable('Contributor')->count($criteria);
+
+	    Zend_Registry::set('pagination', array(
+	        'page'=>$this->_getParam('page', 1),
+	        'total_results'=>$totalContributors,
+	        'per_page'=>$this->_getParam('per_page')));
+
+	    $this->view->contributors = $contributors;
+	    $this->view->totalContributors = $totalContributors;
+	}
+
 	//Can't delete Contributors
 	public function deleteAction()
 	{

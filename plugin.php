@@ -22,6 +22,7 @@ define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
 // Define this migration constant to help with upgrading the plugin.
 define('CONTRIBUTION_MIGRATION', 1);
 define('CONTRIBUTION_PAGE_PATH', 'contribution/');
+define('CONTRIBUTORS_PER_PAGE', 10);
 
 add_plugin_hook('define_routes', 'contribution_routes');
 add_plugin_hook('config_form', 'contribution_config_form');
@@ -213,7 +214,10 @@ function contribution_is_anonymous($item)
 function contribution_admin_nav($navArray) 
 {
     if (has_permission('Contribution_Index', 'browse')) {
-        $navArray += array('Contributors'=> uri(array('action'=>'browse'), 'contributionLinks'));
+        // This section of the admin should use the default routing construction
+        // mechanism in ZF, because otherwise pagination_links() will not recognize
+        // the 'page' routing parameter that is in the pagination control.
+        $navArray += array('Contributors'=> uri(array('module'=>'contribution', 'controller'=>'index', 'action'=>'browse'), 'default'));
     }
     return $navArray;
 }
