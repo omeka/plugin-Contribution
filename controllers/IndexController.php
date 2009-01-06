@@ -246,17 +246,15 @@ class Contribution_IndexController extends Omeka_Controller_Action
 			return;
 		}
 		
-		$item_url = WEB_ROOT . DIRECTORY_SEPARATOR . 'items/show/' . $item->id;
-		
-		$body = "Thank you for your contribution to " . get_option('site_title') . ".  Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.
-			
-Contribution URL (pending review by project staff):\n\n\t$item_url";
-		
-		$title = "Your " . get_option('site_title') . " Contribution";
-  		
-		$header = "From: " . $from_email . "\r\n" . 'X-Mailer: PHP/' . phpversion();
-//var_dump( array($email, $title, $body, $header) );exit;		
-		$res = mail( $email, $title, $body, $header);		
+		$this->view->item = $item;
+		$item->view->email = $email;
+				
+		$mail = new Zend_Mail();
+        $mail->setBodyText($this->view->render('index/email.php'));
+        $mail->setFrom($from_email, get_option('site_title') . ' Administrator');
+        $mail->addTo($email);
+        $mail->setSubject("Your " . get_option('site_title') . " Contribution");
+        $mail->send();
 	}
 	
 	/**
