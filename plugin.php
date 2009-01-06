@@ -208,7 +208,7 @@ function contribution_embed_consent_form() {
 
 function contribution_is_anonymous($item)
 {
-	return ($item->getMetatext('Posting Consent') == 'Anonymously');
+	return (item('Contribution Form', 'Posting Consent') == 'Anonymously');
 }
 
 function contribution_admin_nav($navArray) 
