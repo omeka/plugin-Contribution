@@ -269,119 +269,37 @@ function contribution_acl($acl)
 /**
  * A prototype of the insert_item() helper, which will be in the core in 1.0.
  *
- * @param array $itemMetadata Array which can include the following properties:
- *      'public' (boolean)
- *      'featured' (boolean)
- *      'collection_id' (integer)
- *      'item_type_name' (string)
- *      'tags' (string, comma-delimited)
- *      'tag_entity' (Entity, optional and only checked if 'tags' is given)
- * @param array $elementTexts Array of element texts to assign to the item.  This
- * takes the format: array('Element Set Name'=>array('Element Name'=>array(array('text'=>(string), 'html'=>(boolean))))).
+ * @uses InsertItemHelper
+ * @param array $itemMetadata 
+ * @param array $elementTexts 
  * @return Item
  * @throws Omeka_Validator_Exception
+ * @throws Exception
  **/
 function contribution_insert_item($itemMetadata = array(), $elementTexts = array())
 {
-    // Insert a new Item
-    $item = new Item;
-
-    // Item Metadata
-    $item->public           = $itemMetadata['public'];
-    $item->featured         = $itemMetadata['featured'];
-    $item->collection_id    = $itemMetadata['collection_id'];
-
-    if (array_key_exists('item_type_name', $itemMetadata)) {
-        $itemType = get_db()->getTable('ItemType')->findBySql('name = ?', array($itemMetadata['item_type_name']), true);
-
-        if(!$itemType) {
-            throw new Omeka_Validator_Exception( "Invalid type named {$_POST['type']} provided!");
-        }
-
-        $item->item_type_id = $itemType->id;
-    }
-
-    foreach ($elementTexts as $elementSetName => $elements) {
-        foreach ($elements as $elementName => $elementTexts) {
-            $element = $item->getElementByNameAndSetName($elementName, $elementSetName);
-            foreach ($elementTexts as $elementText) {
-                if (!array_key_exists('text', $elementText)) {
-                    throw new Exception('Element texts are formatted incorrectly for insert_item()!');
-                }
-                $item->addTextForElement($element, $elementText['text'], $elementText['html']);
-            }
-        }
-    }
-
-    // Save Item and all of its metadata.  Throw exception if it fails.
-    $item->forceSave();
-
-    // Add tags for the item.
-    if (array_key_exists('tags', $itemMetadata) and !empty($itemMetadata['tags'])) {
-        // As of 0.10 we still need to tag for a specific entity.
-        // This may change in future versions.
-        $entityToTag = array_key_exists('tag_entity', $itemMetadata) ?
-            $itemMetadata['tag_entity'] : current_user()->Entity;
-        $item->addTags($itemMetadata['tags'], $entityToTag);
-    }
-
-    // Save Element Texts (necessary)
-    $item->saveElementTexts();
-
-    return $item;
+    require_once 'InsertItemHelper.php';
+    // Passing null means this will create a new item.
+    $helper = new InsertItemHelper(null, $itemMetadata, $elementTexts);
+    $helper->run();
+    return $helper->getItem();
 }
 
 /**
  * @see contribution_add_item()
+ * @uses InsertItemHelper
+ * @see InsertItemHelper::__construct()
  * @param Item|int $item Either an Item object or the ID for the item.
- * @param array $itemMetadata Set of options that can be passed to the item.  This
- * has a few options that are different from contribution_add_item():
- *      'overwriteElementTexts' (boolean) -- determines whether or not to overwrite
- * existing element texts.  If true, this will loop through the element texts
- * provided in $elementTexts, and it will update existing records where possible.
- * All texts that are not yet in the DB will be added in the usual manner.  
- * False by default.
- *      
+ * @param array $itemMetadata Set of options that can be passed to the item.
  * @param array $elementTexts
  * @return Item
  **/
 function contribution_update_item($item, $itemMetadata = array(), $elementTexts = array())
 {
-    if (is_int($item)) {
-        $item = get_db()->getTable('Item')->find($item);
-    } else if (!($item instanceof Item)) {
-        throw new Exception('$item must be either an Item record or the item ID!');
-    }
-    
-    // If this option is set, it will loop through the $elementTexts provided,
-    // find each one and manually update it (provided it exists).
-    // The rest of the element texts will get added as per usual.
-    if (array_key_exists('overwriteElementTexts', $itemMetadata)) {
-        foreach ($elementTexts as $elementSetName => $textArray) {
-            foreach ($textArray as $elementName => $elementTextSet) {
-                $etRecordSet = $item->getElementTextsByElementNameAndSetName($elementName, $elementSetName);
-                foreach ($elementTextSet as $elementTextIndex => $textAttr) {
-                    // If we have an existing ElementText record, use that
-                    // instead of adding a new one.
-                    if (array_key_exists($elementTextIndex, $etRecordSet)) {
-                        $etRecord = $etRecordSet[$elementTextIndex];
-                        $etRecord->text = $textAttr['text'];
-                        $etRecord->html = $textAttr['html'];
-                        $etRecord->forceSave();
-                    } else {
-                        // Otherwise we should just append the new text to the 
-                        // pre-existing ones.
-                        $elementRecord = $item->getElementByNameAndSetName($elementName, $elementSetName);
-                        $item->addTextForElement($elementRecord, $textAttr['text'], $textAttr['html']);
-                    }
-                }
-            }
-        }
-    }
-    
-    $item->saveElementTexts();
-    
-    return $item;
+    require_once 'InsertItemHelper.php';
+    $helper = new InsertItemHelper($item, $itemMetadata, $elementTexts);
+    $helper->run();
+    return $helper->getItem();
 }
 
 function contribution_posting_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
