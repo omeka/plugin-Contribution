@@ -114,6 +114,12 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				$contributorName = $_POST['contributor']['first_name'] . ' ' . $_POST['contributor']['last_name'];
 				
+				$creatorName = $_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'];
+				
+				if (empty($creatorName)) {
+				    throw new Omeka_Validator_Exception('Creator: Please provide a valid name for the creator.');
+				}
+				
 				$elementTexts = array(
 				    'Dublin Core'=>array(
 				        'Title'=>array(array(
@@ -126,7 +132,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				            'text'=>$contributorName,
 				            'html'=>false)),
 				        'Creator'=>array(array(
-				            'text'=>$_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'],
+				            'text'=>$creatorName,
 				            'html'=>false))),
 				    'Contribution Form'=>array(
 				        'Online Submission'=>array(array(
