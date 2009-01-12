@@ -157,18 +157,7 @@ function contribution_config_form()
 	    <textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
     	<p class="explanation">Please enter the legal text of your consent form:</p>
 	</div>
-	</div>
-	
-	<?php if ( defined('TERMS_OF_SERVICE_VERSION')):?>
-	    <div class="field">
-		<label for="contribution_require_tos_and_pp">Require Terms of Service and Privacy Policy</label>
-		<div class="inputs">
-		    <?php echo checkbox(array('name'=> 'contribution_require_tos_and_pp', 'id'=> 'contribution_require_tos_and_pp'),  get_option('contribution_require_tos_and_pp'), null, null); ?>
-			<p class="explanation">Please check whether you want to require contributors to agree to the Terms of Service and Privacy Policy.</p>
-		</div>
-	    </div>
-	<?php endif;?>
-	
+	</div>	
 <?php
 }
 
@@ -198,11 +187,7 @@ function contribution_embed_consent_form() {
 			
 			<div id="contribution_consent">
 				<p><?php echo settings('contribution_consent_text'); ?></p>
-				
-				<?php if (get_option('contribution_require_tos_and_pp') && function_exists('terms_of_service_link_tos')): ?>
-					<p>You understand and agree to the <?php echo terms_of_service_link_tos('Terms of Service'); ?> and <?php echo terms_of_service_link_privacy_policy('Privacy Policy'); ?>.</p>
-				<?php endif; ?>
-				
+
 				<textarea name="contribution_consent_text" style="display:none;"><?php echo settings('contribution_consent_text'); ?></textarea>
 			</div>
 			
