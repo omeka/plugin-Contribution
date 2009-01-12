@@ -149,7 +149,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				// Add the text for Document item types, if necessary.    
 				if (array_key_exists('text', $_POST)) {
 				    $elementTexts['Item Type Metadata']['Text'][] = array('text'=>$_POST['text'], 'html'=>false);
-				}	
+				    if (empty($_POST['text'])) {
+				        throw new Omeka_Validator_Exception('Story: Please provide the text of the story.');
+				    }
+				}
 												
 				$contributor = $this->createOrFindContributor();
 				
