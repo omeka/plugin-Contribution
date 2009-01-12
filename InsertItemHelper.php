@@ -43,6 +43,9 @@ class InsertItemHelper
             $item = new Item;
         } else if (is_int($item)) {
             $item = get_db()->getTable('Item')->find($item);
+            if (!$item) {
+                throw new Exception('Item could not be retrieved for update based on the ID given!');
+            }
         } else if (!($item instanceof Item)) {
             throw new Exception('$item must be either an Item record or the item ID!');
         }
