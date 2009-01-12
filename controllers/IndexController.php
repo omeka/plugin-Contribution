@@ -203,6 +203,19 @@ class Contribution_IndexController extends Omeka_Controller_Action
             throw new Exception('Cannot provide consent without first contributing an item!');
         }
         
+        // Session needs to save either the item ID # (to retrieve it later) or the
+        // Item record itself (to manipulate later). Using the item ID causes
+        // problems b/c the system can't access a non-public item through the DB
+        // when no user is logged in. The following is a hack that involves
+        // granting temporary ACL privileges just to the consent form so the script
+        // has enough permissions to tweak the metadata for a private item.
+        // 
+        // IMPORTANT TO REMEMBER: saving the item record in the session bonks the
+        // mysqli database object so that it's unusable for further data
+        // manipulation (seems like a PHP bug). This might be fixable in 1.0 (by
+        // disconnecting the database object from the record), need more info.
+        get_acl()->allow(null, 'Items', 'showNotPublic');
+        
         $item = contribution_update_item($itemId, array('overwriteElementTexts'=>true), array(
             'Dublin Core'=>array(
                 'Rights'=>array(array('text'=>$_POST['contribution_consent_text'], 'html'=>false))),
