@@ -63,7 +63,7 @@ class Contributor extends Omeka_Record
 			$this->addError('email', 'The email address you have provided is invalid.  Please provide another one.');
 		}
 		
-		if(!Zend_Validate::is($this->first_name, 'Alnum') or !Zend_Validate::is($this->last_name, 'Alnum')) {
+		if(empty($this->first_name) or empty($this->last_name)) {
 			$this->addError('name', 'The first/last name fields must be filled out.  Please provide a complete name.');		
 		}
 	}
