@@ -353,6 +353,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	public function partialAction() 
 	{
 		$contributionType = $this->_getParam('contributiontype');
+		if (($text = $this->_getParam('text')) or ($text = $this->_getParam('description'))) {
+		    $this->view->text = $text;
+		}
 		switch ($contributionType) {
 			case 'Document':
 				$partial = "-document";

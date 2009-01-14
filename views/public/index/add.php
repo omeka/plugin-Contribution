@@ -8,9 +8,12 @@
 			var type = $F(this);			
 			var uri = "<?php echo uri(array('action'=>'partial'), 'contributionLinks'); ?>";
 			
+			var textOfPartial = $('description') ? $F('description') : $F('text');
+			
 			new Ajax.Updater('contribution', uri, {
 			    parameters: {
-			        contributiontype: type
+			        contributiontype: type,
+			        text: textOfPartial
 			    },
 				onComplete: function(t) {
 					new Effect.Highlight('contribution');
@@ -52,7 +55,10 @@
 	
 		<div id="contribution">
 		<?php 
-			echo $this->action('partial', 'index', 'contribution');
+			echo $this->action('partial', 'index', 'contribution', array(
+			    'contributiontype'=>$_POST['type'], 
+			    'description'=>$_POST['description'], 
+			    'text'=>$_POST['text']));
 		?>
 		</div>	
 
