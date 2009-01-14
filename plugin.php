@@ -157,16 +157,34 @@ function contribution_config_form()
 	    <textarea id="contribution_consent_text" name="contribution_consent_text" rows="<?php echo $textAreaRows; ?>" cols="<?php echo $textAreaCols; ?>"><?php echo settings('contribution_consent_text'); ?></textarea>
     	<p class="explanation">Please enter the legal text of your consent form:</p>
 	</div>
-	</div>	
+	</div>
+	
+	<div class="field">
+	<label for="recaptcha_public_key">reCAPTCHA Public Key</label>
+	<div class="inputs">
+	    <input type="text" name="recaptcha_public_key" value="<?php echo settings('contribution_recaptcha_public_key') ?>" id="recaptcha_public_key" />
+	    <p class="explanation">To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">ReCAPTCHA</a> API key and enter the relevant values.</p>
+	</div>
+	</div>
+	
+	<div class="field">
+	<label for="recaptcha_private_key">reCAPTCHA Private Key</label>
+	<div class="inputs">
+	    <input type="text" name="recaptcha_private_key" value="<?php echo settings('contribution_recaptcha_private_key') ?>" id="recaptcha_private_key" />
+	</div>
+	</div>
 <?php
 }
 
 function contribution_config($post)
 {
+    set_option('contribution_recaptcha_public_key', $_POST['recaptcha_public_key']);
+    set_option('contribution_recaptcha_private_key', $_POST['recaptcha_private_key']);
 	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
 	set_option('contribution_page_path', $post['contribution_page_path']);
 	set_option('contribution_require_tos_and_pp', (boolean)$post['contribution_require_tos_and_pp']);
+	
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('contribution_page_path')) == '') {

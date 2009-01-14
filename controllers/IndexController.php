@@ -3,6 +3,8 @@ require_once 'Contributor.php';
 
 class Contribution_IndexController extends Omeka_Controller_Action
 {	
+    protected $_captcha;
+    
 	public function init()
 	{
 		$this->_modelClass = 'Contributor';		
@@ -24,11 +26,17 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	{
 		$item = new Item;
 		
+		$this->_captcha = $this->_setupCaptcha();
+		
 		if($this->processForm($item))
 		{
 			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
 		}else {
             $this->view->item = $item;
+            if ($this->_captcha) {
+                // Requires a blank Zend_View instance b/c ZF forces it to.
+                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+            }
 		}		
 	}
 	
@@ -97,6 +105,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	protected function processForm($item)
 	{		
 		if(!empty($_POST)) {
+		    
+		    // ReCaptcha ignores the first argument.
+		    if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
+                $this->flashError('Your CAPTCHA submission was invalid, please try again.');
+                return false;
+		    }
+		    
 			if(array_key_exists('pick_type', $_POST)) return false;
 			
 			try {				
@@ -184,6 +199,28 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}
 		// No POST.
 		return false;
+	}
+	
+	/**
+	 * @internal This is copied almost exactly from the SimpleContactForm.
+	 * 
+	 * @return Zend_Captcha_Recaptcha|null
+	 **/
+	protected function _setupCaptcha()
+	{
+	    $publicKey = get_option('contribution_recaptcha_public_key');
+	    $privateKey = get_option('contribution_recaptcha_private_key');
+
+	    if (empty($publicKey) or empty($privateKey)) {
+	       return;
+	    }
+	    
+        // Originating request:
+        $captcha = new Zend_Captcha_ReCaptcha(array(
+            'pubKey'=>$publicKey, 
+            'privKey'=>$privateKey));
+
+        return $captcha;
 	}
 	
 	/**

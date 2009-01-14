@@ -117,7 +117,10 @@
 						
 		</fieldset>
 	
-	<input type="submit" class="submitinput" name="submit" value="Submit" />
+	    <fieldset>
+	        <?php echo $captchaScript; ?>
+	        <input type="submit" class="submitinput" name="submit" value="Submit" />
+	    </fieldset>
 </form>
 </div>
 <?php foot(); ?>
