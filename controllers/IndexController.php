@@ -94,7 +94,65 @@ class Contribution_IndexController extends Omeka_Controller_Action
 
 		return $contributor;
 	}
-
+    
+    /**
+     * @internal TODO This mostly duplicates Item::_saveFiles().
+     * 
+     * @param Item
+     * @return File|false Returns false if the upload failed.
+     **/
+    protected function _uploadFileToItem($item)
+    {   
+        try {
+            $file = new File();
+            // The key is 0 since that is the first index for the uploaded $_FILES array.
+            $file->upload('file', 0);
+            $file->item_id = $item->id;
+            $file->forceSave();
+        } catch (Omeka_Upload_Exception $e) {
+            if (!$file->exists()) {
+                $file->unlinkFile();
+            }
+            $this->flashError($e->getMessage());
+            return false;
+        }
+        
+        // Should this hook be fired?  Do other plugins need to hook into the
+        // contribution form?  What about the Geolocation plugin?
+        fire_plugin_hook('after_upload_file', $file, $item);
+        
+        return $file;
+    }
+    
+    /**
+     * Preconditions: This runs assuming that a user is uploading a file.
+     * 
+     * @return boolean
+     **/
+    protected function _fileUploadIsValid()
+    {
+        $isValid = true;
+        
+        // So, due to quirks with the way File::handleUploadErrors() works, we need
+        // $_FILES['file'] to be a multi-dimensional array even though there can
+        // only be one file upload at a time.
+        
+        // If attempting to upload more than one file.
+        if (count($_FILES['file']['name']) > 1) {
+            $this->flashError("File upload error: Not allowed to upload more than one file through the Contribution form!");
+            $isValid = false;
+        }
+        
+        try {
+            File::handleUploadErrors('file');
+        } catch (Omeka_Upload_Exception $e) {
+            $this->flashError("File upload error: " . $e->getMessage());
+            $isValid = false;
+        }
+        
+        return $isValid;
+    }
+    
 	/**
 	 * Validate and save the contribution to the DB, save the new item in the session
 	 * then redirect to the consent form, 
@@ -113,6 +171,15 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		    }
 		    
 			if(array_key_exists('pick_type', $_POST)) return false;
+			
+            // Documents do not contain files to be uploaded (does this even make
+            // sense? - what about PDFs/text files?)
+			$isFileUpload = !empty($_FILES["file"]['name'][0]) and 
+			    ($_POST['type'] != 'Document');
+			
+			if ($isFileUpload and !$this->_fileUploadIsValid()) {
+			    return false;
+			}
 			
 			try {				
 				//Don't trust the post content!
@@ -174,6 +241,12 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				// Needed to tag the items properly.
 				$itemMetadata['tag_entity'] = $contributor->Entity;					
 				$item = contribution_insert_item($itemMetadata, $elementTexts);
+				
+				if ($isFileUpload) {
+				    if (!$this->_uploadFileToItem($item)) {
+				        return false;
+				    }
+				}
 																				
 				if($item->exists()) {
 				    // Also this is needed, apparently.
