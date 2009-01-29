@@ -5,5 +5,5 @@
 </div>	
 <div class="field">
 	<label>Description (optional)</label>
-	<?php echo $this->formText('description', $this->text, array('class'=>'textinput')); ?>
+	<?php echo $this->formTextarea('description', $this->text, array('class'=>'textinput')); ?>
 </div>

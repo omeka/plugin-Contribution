@@ -35,7 +35,7 @@
 
 <form method="post" enctype="multipart/form-data" accept-charset="utf-8">
 
-		
+		<fieldset>
 			
 		<div class="field">
 			<label>Title of Contribution (optional)</label>
@@ -61,13 +61,6 @@
 			    'text'=>$_POST['text']));
 		?>
 		</div>	
-
-		<div class="field">
-			<p>Did you create this?</p>
-			<div class="radioinputs"><?php echo radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? h($_POST['contributor_is_creator']) : 0); ?></div>
-			<label>If not, please provide the name of the creator</label>
-			<input type="text" class="textinput" name="creator" value="<?php echo h($_POST['creator']); ?>" />
-		</div>	
 		
 		<div class="field">
 			<label>In addition to saving your contribution to the archive, may we post it on this site?</label>
@@ -86,13 +79,20 @@
 		<div class="field"><label>Email:</label>
 		<input type="text" class="textinput" name="contributor[email]" value="<?php echo h($_POST['contributor']['email']); ?>" />
 		</div>
-
+		
+        <div class="field">
+			<p>Did you create this?</p>
+			<div class="radioinputs"><?php echo radio(array('name'=>'contributor_is_creator'), array('1'=>'Yes', '0'=>'No'), !empty($_POST['contributor_is_creator']) ? h($_POST['contributor_is_creator']) : 1); ?></div>
+			<label>If not, please provide the name of the creator</label>
+			<input type="text" class="textinput" name="creator" value="<?php echo h($_POST['creator']); ?>" />
+		</div>
 
 		<div class="field">
 			<label>Keywords (separated by comma):</label>
 			<input type="text" class="textinput" name="tags" value="<?php echo h($_POST['tags']) ?>" id="tags" />
 		</div>
-
+        </fieldset>
+        
 		<fieldset>
 			<legend>Optional Information</legend>
 			
