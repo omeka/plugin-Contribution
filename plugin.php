@@ -38,6 +38,8 @@ add_filter(array('Form', 'Item', 'Contribution Form', 'Posting Consent'), 'contr
 add_filter(array('Form', 'Item', 'Contribution Form', 'Submission Consent'), 'contribution_submission_consent_form');
 add_filter(array('Form', 'Item', 'Contribution Form', 'Online Submission'), 'contribution_is_online_submission_form');
 
+add_filter(array('Display', 'Item', 'Dublin Core', 'Contributor'), 'contribution_show_anonymous_contributor');
+
 function contribution_routes($router)
 {
 	// get the base path
@@ -222,9 +224,17 @@ function contribution_embed_consent_form() {
 <?php
 }
 
+/**
+ * @internal The following implementation could be replaced with a call to
+ * item() for the 1.0 release of the plugin
+ * 
+ * @param Item $item
+ * @return boolean
+ **/
 function contribution_is_anonymous($item)
 {
-	return (item('Contribution Form', 'Posting Consent') == 'Anonymously');
+    list($postingConsentTextRecord) = $item->getElementTextsByElementNameAndSetName('Posting Consent', 'Contribution Form');
+    return 'Anonymously' == $postingConsentTextRecord->getText();
 }
 
 function contribution_admin_nav($navArray) 
@@ -318,4 +328,21 @@ function contribution_submission_consent_form($html, $inputNameStem, $consent, $
 function contribution_is_online_submission_form($html, $inputNameStem, $consent, $options, $item, $element)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array('No'=>'No', 'Yes'=>'Yes'));
+}
+
+function contribution_show_anonymous_contributor($contributorName, $item)
+{
+    // Always show the contributor's name if we're logged in through the admin.
+    if (is_admin_theme()) {
+        return $contributorName;
+    }
+    
+    // Determine whether or not the Contributor's name is supposed to be
+    // anonymous.
+    $isAnonymous = contribution_is_anonymous($item);
+    if ($isAnonymous) {
+        return 'Anonymous';
+    }
+
+    return $contributorName;
 }
