@@ -28,7 +28,6 @@ add_plugin_hook('define_routes', 'contribution_routes');
 add_plugin_hook('config_form', 'contribution_config_form');
 add_plugin_hook('config', 'contribution_config');
 add_plugin_hook('install', 'contribution_install');
-add_plugin_hook('initialize', 'contribution_initialize');
 add_plugin_hook('define_acl', 'contribution_acl');
 
 add_filter('public_navigation_main', 'contribution_public_main_nav');
@@ -132,6 +131,8 @@ function contribution_convert_existing_elements()
 
 function contribution_config_form()
 {
+    contribution_upgrade();
+    
 	$textInputSize = 30;
 	$textAreaRows = 10;
 	$textAreaCols = 50;
@@ -251,17 +252,6 @@ function contribution_admin_nav($navArray)
 function contribution_public_main_nav($navArray) {
     $navArray['Contribute'] = uri(array(), 'contributionAdd');
     return $navArray;
-}
-
-/**
- * Use this initialize hook to check to see whether or not we need to upgrade the plugin.
- * 
- * @param string
- * @return void
- **/
-function contribution_initialize()
-{
-    contribution_upgrade();
 }
 
 function contribution_upgrade()
