@@ -36,6 +36,7 @@ add_filter('admin_navigation_main', 'contribution_admin_nav');
 add_filter(array('Form', 'Item', 'Contribution Form', 'Posting Consent'), 'contribution_posting_consent_form');
 add_filter(array('Form', 'Item', 'Contribution Form', 'Submission Consent'), 'contribution_submission_consent_form');
 add_filter(array('Form', 'Item', 'Contribution Form', 'Online Submission'), 'contribution_is_online_submission_form');
+add_filter(array('Form', 'Item', 'Contribution Form', 'Contributor is Creator'), 'contribution_creator_is_contributor_form');
 
 add_filter(array('Display', 'Item', 'Dublin Core', 'Contributor'), 'contribution_display_anonymous');
 add_filter(array('Display', 'Item', 'Dublin Core', 'Creator'), 'contribution_display_anonymous');
@@ -193,6 +194,11 @@ function contribution_posting_consent_form($html, $inputNameStem, $consent, $opt
 function contribution_submission_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'No'=>'No', 'Yes'=>'Yes'));
+}
+
+function contribution_creator_is_contributor_form($html, $inputNameStem, $isSame, $options, $item, $element)
+{
+    return __v()->formSelect($inputNameStem . '[text]', $isSame, null, array(''=>'Not Applicable', 'No'=>'No', 'Yes'=>'Yes'));
 }
 
 function contribution_is_online_submission_form($html, $inputNameStem, $consent, $options, $item, $element)
