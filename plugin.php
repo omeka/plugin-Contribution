@@ -37,7 +37,8 @@ add_filter(array('Form', 'Item', 'Contribution Form', 'Posting Consent'), 'contr
 add_filter(array('Form', 'Item', 'Contribution Form', 'Submission Consent'), 'contribution_submission_consent_form');
 add_filter(array('Form', 'Item', 'Contribution Form', 'Online Submission'), 'contribution_is_online_submission_form');
 
-add_filter(array('Display', 'Item', 'Dublin Core', 'Contributor'), 'contribution_show_anonymous_contributor');
+add_filter(array('Display', 'Item', 'Dublin Core', 'Contributor'), 'contribution_display_anonymous');
+add_filter(array('Display', 'Item', 'Dublin Core', 'Creator'), 'contribution_display_anonymous');
 
 function contribution_routes($router)
 {
@@ -152,16 +153,15 @@ function contribution_embed_consent_form() {
 }
 
 /**
- * @internal The following implementation could be replaced with a call to
- * item() for the 1.0 release of the plugin
+ * Determine whether or not the user contribution is supposed to be considered
+ * anonymous.
  * 
  * @param Item $item
  * @return boolean
  **/
 function contribution_is_anonymous($item)
 {
-    list($postingConsentTextRecord) = $item->getElementTextsByElementNameAndSetName('Posting Consent', 'Contribution Form');
-    return 'Anonymously' == $postingConsentTextRecord->getText();
+    return 'Anonymously' == item('Contribution Form', 'Posting Consent', array(), $item);
 }
 
 function contribution_admin_nav($navArray) 
@@ -200,21 +200,20 @@ function contribution_is_online_submission_form($html, $inputNameStem, $consent,
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array('No'=>'No', 'Yes'=>'Yes'));
 }
 
-function contribution_show_anonymous_contributor($contributorName, $item)
-{
-    // Always show the contributor's name if we're logged in through the admin.
-    if (is_admin_theme()) {
-        return $contributorName;
-    }
-    
-    // Determine whether or not the Contributor's name is supposed to be
-    // anonymous.
-    $isAnonymous = contribution_is_anonymous($item);
-    if ($isAnonymous) {
-        return 'Anonymous';
-    }
-
-    return $contributorName;
+/**
+ * Display the provided name or 'Anonymous', depending on whether the item in
+ * question was flagged as anonymous.
+ * 
+ * Also, if logged in to the admin theme, this will always allow the user to
+ * see the original name.
+ * 
+ * @param string $name
+ * @param Item $item
+ * @return string Either the original $name or 'Anonymous'.
+ **/
+function contribution_display_anonymous($name, $item)
+{    
+    return (contribution_is_anonymous($item) && !is_admin_theme()) ? 'Anonymous' : $name;
 }
 
 /**
