@@ -45,7 +45,11 @@ function contribution_routes($router)
 {
 	// get the base path
 	$bp = get_option('contribution_page_path');
-
+    
+    if (!$bp) {
+        return;
+    }
+    
     $router->addRoute('contributionAdd', new Zend_Controller_Router_Route($bp, array('module' => 'contribution', 'controller'=> 'index', 'action'=>'add')));
     
 	$router->addRoute('contributionLinks', new Zend_Controller_Router_Route($bp . ':action', array('module' => 'contribution', 'controller'=> 'index')));    
