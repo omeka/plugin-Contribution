@@ -225,7 +225,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				            'html'=>false)),
 				        'Posting Consent'=>array(array(
 				            'text'=>$_POST['posting_consent'],
-				            'html'=>false)))
+				            'html'=>false)),
+				        'Contributor is Creator'=>array(array(
+				            'text'=>$_POST['contributor_is_creator'] ? 'Yes' : 'No')))
 				    );
 				
 				// Add the text for Document item types, if necessary.    
