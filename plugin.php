@@ -185,44 +185,6 @@ function contribution_acl($acl)
     $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
 }
 
-/**
- * A prototype of the insert_item() helper, which will be in the core in 1.0.
- *
- * FIXME: Remove this and the InsertItemHelper in this plugin.
- * 
- * @uses InsertItemHelper
- * @param array $itemMetadata 
- * @param array $elementTexts 
- * @return Item
- * @throws Omeka_Validator_Exception
- * @throws Exception
- **/
-function contribution_insert_item($itemMetadata = array(), $elementTexts = array())
-{
-    require_once 'InsertItemHelper.php';
-    // Passing null means this will create a new item.
-    $helper = new InsertItemHelper(null, $itemMetadata, $elementTexts);
-    $helper->run();
-    return $helper->getItem();
-}
-
-/**
- * @see contribution_add_item()
- * @uses InsertItemHelper
- * @see InsertItemHelper::__construct()
- * @param Item|int $item Either an Item object or the ID for the item.
- * @param array $itemMetadata Set of options that can be passed to the item.
- * @param array $elementTexts
- * @return Item
- **/
-function contribution_update_item($item, $itemMetadata = array(), $elementTexts = array())
-{
-    require_once 'InsertItemHelper.php';
-    $helper = new InsertItemHelper($item, $itemMetadata, $elementTexts);
-    $helper->run();
-    return $helper->getItem();
-}
-
 function contribution_posting_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'Yes'=>'Yes', 'No'=>'No', 'Anonymously'=>'Anonymously'));

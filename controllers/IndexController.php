@@ -240,7 +240,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				// Needed to tag the items properly.
 				$itemMetadata['tag_entity'] = $contributor->Entity;					
-				$item = contribution_insert_item($itemMetadata, $elementTexts);
+				$item = insert_item($itemMetadata, $elementTexts);
 				
 				if ($isFileUpload) {
 				    if (!$this->_uploadFileToItem($item)) {
@@ -335,7 +335,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
         // disconnecting the database object from the record), need more info.
         get_acl()->allow(null, 'Items', 'showNotPublic');
         
-        $item = contribution_update_item($itemId, array('overwriteElementTexts'=>true), array(
+        $item = update_item($itemId, array('overwriteElementTexts'=>true), array(
             'Dublin Core'=>array(
                 'Rights'=>array(array('text'=>$_POST['contribution_consent_text'], 'html'=>false))),
             'Contribution Form'=>array(
