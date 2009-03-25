@@ -197,22 +197,75 @@ function contribution_acl($acl)
     $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
 }
 
+/**
+ * Filter the admin items form to create a select menu for the 'Posting Consent'
+ * field.
+ * 
+ * Possible values: 'Not Applicable, 'Yes', 'No', 'Anonymously'. 
+ * 
+ * @param string $html Default HTML for the form input (ignored).
+ * @param string $inputNameStem The form name for the input.  Note that [text]
+ * must be appended for this to work.
+ * @param string $consent The value of this field from the database.
+ * @param array $options Any options passed to the ElementForm view helper 
+ * (ignored).
+ * @param Item $item The item that is represented on the form (ignored).
+ * @param Element $element The Element record corresponding to the element being
+ * displayed (ignored).
+ * @return string HTML
+ **/
 function contribution_posting_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'Yes'=>'Yes', 'No'=>'No', 'Anonymously'=>'Anonymously'));
 }
 
-function contribution_submission_consent_form($html, $inputNameStem, $consent, $options, $item, $element)
+/**
+ * Filter the admin items form to create a select menu for the 'Submission 
+ * Consent' field.
+ * 
+ * Possible values: 'Not Applicable', 'Yes', 'No'
+ * 
+ * @see contribution_posting_consent_form()
+ * @param string
+ * @param string
+ * @param string
+ * @return string
+ **/
+function contribution_submission_consent_form($html, $inputNameStem, $consent)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array(''=>'Not Applicable', 'No'=>'No', 'Yes'=>'Yes'));
 }
 
-function contribution_creator_is_contributor_form($html, $inputNameStem, $isSame, $options, $item, $element)
+/**
+ * Filter the admin items form to create a select menu for the 'Creator is 
+ * Contributor' field.
+ * 
+ * Possible values: 'Not Applicable', 'Yes', 'No'
+ * 
+ * @see contribution_posting_consent_form()
+ * @param string
+ * @param string
+ * @param string
+ * @return string
+ **/
+function contribution_creator_is_contributor_form($html, $inputNameStem, $isSame)
 {
     return __v()->formSelect($inputNameStem . '[text]', $isSame, null, array(''=>'Not Applicable', 'No'=>'No', 'Yes'=>'Yes'));
 }
 
-function contribution_is_online_submission_form($html, $inputNameStem, $consent, $options, $item, $element)
+/**
+ * Filter the admin items form to create a select menu for the 'Online 
+ * Submission' field.
+ * 
+ * Possible values: 'Yes', 'No'
+ * 
+ * @see contribution_posting_consent_form()
+ * @param string
+ * @param string
+ * @param string
+ * @return string
+ **/
+function contribution_is_online_submission_form($html, $inputNameStem, $consent)
 {
     return __v()->formSelect($inputNameStem . '[text]', $consent, null, array('No'=>'No', 'Yes'=>'Yes'));
 }
