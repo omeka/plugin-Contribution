@@ -154,68 +154,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 
 		return $contributor;
 	}
-    
-    /**
-     * @internal TODO This mostly duplicates Item::_saveFiles().
-     * 
-     * FIXME: Replace this method with insert_files_for_item() or just use
-     * insert_item() with the 'Upload' strategy.
-     * @param Item
-     * @return File|false Returns false if the upload failed.
-     **/
-    protected function _uploadFileToItem($item)
-    {   
-        try {
-            $file = new File();
-            // The key is 0 since that is the first index for the uploaded $_FILES array.
-            $file->upload('file', 0);
-            $file->item_id = $item->id;
-            $file->forceSave();
-        } catch (Omeka_Upload_Exception $e) {
-            if (!$file->exists()) {
-                $file->unlinkFile();
-            }
-            $this->flashError($e->getMessage());
-            return false;
-        }
-        
-        // Should this hook be fired?  Do other plugins need to hook into the
-        // contribution form?  What about the Geolocation plugin?
-        fire_plugin_hook('after_upload_file', $file, $item);
-        
-        return $file;
-    }
-    
-    /**
-     * Preconditions: This runs assuming that a user is uploading a file.
-     * 
-     * FIXME: Remove and replace with appropriate calls to insert_item().
-     * @return boolean
-     **/
-    protected function _fileUploadIsValid()
-    {
-        $isValid = true;
-        
-        // So, due to quirks with the way File::handleUploadErrors() works, we need
-        // $_FILES['file'] to be a multi-dimensional array even though there can
-        // only be one file upload at a time.
-        
-        // If attempting to upload more than one file.
-        if (count($_FILES['file']['name']) > 1) {
-            $this->flashError("File upload error: Not allowed to upload more than one file through the Contribution form!");
-            $isValid = false;
-        }
-        
-        try {
-            File::handleUploadErrors('file');
-        } catch (Omeka_Upload_Exception $e) {
-            $this->flashError("File upload error: " . $e->getMessage());
-            $isValid = false;
-        }
-        
-        return $isValid;
-    }
-    
+            
 	/**
 	 * Handle the POST for adding an item via the public form.
 	 * 
@@ -227,6 +166,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * FIXME: Split this into smaller methods.
 	 * FIXME: Coding standards.
 	 * TODO: Make sure this still works without Javascript.
+	 * FIXME: Exceptions from uploading files should be a different class than
+	 * Omeka_Validator_Exception so as to differentiate in how to catch those
+	 * errors.
 	 * @return void
 	 **/
 	protected function processForm($item)
@@ -287,16 +229,33 @@ class Contribution_IndexController extends Omeka_Controller_Action
 												
 				$contributor = $this->createOrFindContributor();
 				
+				$fileUploadOptions = array(
+                    'files'=>'contributed_file', // Form input name
+                    'file_transfer_type'=>'Upload',
+                    'file_ingest_options'=>array(
+                        // Ignore a lack of uploaded files if we aren't requiring
+                        // file uploads for a given Item Type.
+                        'ignoreNoFile'=> !$this->_uploadedFileIsRequired($_POST['type'])
+                    )
+                );
+                                				
 				// Needed to tag the items properly.
 				$itemMetadata['tag_entity'] = $contributor->Entity;					
-				$item = insert_item($itemMetadata, $elementTexts);
-				
-				if ($isFileUpload) {
-				    if (!$this->_uploadFileToItem($item)) {
-				        return false;
+				try {
+				    $item = insert_item($itemMetadata, 
+					                    $elementTexts, 
+					                    $fileUploadOptions);
+				} catch (Exception $e) {
+				    // HACK: grep the exception to determine whether this is
+				    // related to file uploads.
+				    if (strstr($e->getMessage(), 
+				               "The file 'contributed_file' was not uploaded")) {
+				       $this->flashError("File: A file must be uploaded.");
+				    } else {
+				        throw $e;
 				    }
 				}
-																				
+																								
 				if($item->exists()) {
 				    // Also this is needed, apparently.
 					$item->setAddedBy($contributor->Entity);
@@ -324,13 +283,27 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
+	 * Determine whether or not we are requiring that a file be uploaded for
+	 * a given Item Type.
+	 * 
+	 * Files are currently required for: Moving Image, Still Image, Sound.
+	 * 
+	 * @param string $itemTypeName
+	 * @return boolean
+	 **/
+	protected function _uploadedFileIsRequired($itemTypeName)
+	{
+	    $fileRequiredItemTypes = array('Moving Image', 'Still Image', 'Sound');
+	    return in_array($itemTypeName, $fileRequiredItemTypes, true);
+	}
+	
+	/**
 	 * Validate the contribution form submission.
 	 * 
 	 * Will flash validation errors that occur.
 	 * 
 	 * Verify the validity of the following form elements:
 	 *      Captcha (if exists)
-	 *      File Upload
 	 *      Posting Consent
 	 *      Story text (if exists)
 	 *      Creator Name
@@ -350,15 +323,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
             $errors[] = 'Your CAPTCHA submission was invalid, please try again.';
             $isValid = false;
 	    }	    
-
-        // Documents do not contain files to be uploaded (does this even make
-        // sense? - what about PDFs/text files?)
-		$isFileUpload = !empty($_FILES["file"]['name'][0]) and 
-		    ($_POST['type'] != 'Document');
-		
-		if ($isFileUpload and !$this->_fileUploadIsValid()) {
-		    return false;
-		}
 
 		//Don't trust the post content!
 		if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
