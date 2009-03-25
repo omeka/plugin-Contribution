@@ -126,9 +126,17 @@ function contribution_config()
 	}	
 }
 
-function contribution_link_to_contribute($text, $options = array())
+/**
+ * Create a link to the contribution form.
+ * 
+ * @since 0.3 Returns string instead of echoing automatically.
+ * @param string $text HTML text of the link.
+ * @param array $attributes optional Attributes for the link.
+ * @return string
+ **/
+function contribution_link_to_contribute($text, $attributes = array())
 {
-	echo '<a href="' . uri(array(), 'contributionAdd') . '" ' . _tag_attributes($options) . ">$text</a>";
+	return '<a href="' . uri(array(), 'contributionAdd') . '" ' . _tag_attributes($attributes) . ">$text</a>";
 }
 
 function contribution_embed_consent_form() {
