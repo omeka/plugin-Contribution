@@ -52,7 +52,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		$this->_captcha = $this->_setupCaptcha();
 		
-		if($this->processForm($item))
+		if($this->_processForm($item))
 		{
 			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
 		}else {
@@ -125,11 +125,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * properties.  Returns that, otherwise creates and saves a new Contributor
 	 * with all of those properties.
 	 * 
-	 * FIXME: Name should follow ZF conventions for protected methods.
 	 * @throws Omeka_Validator_Exception
 	 * @return Contributor
 	 **/	
-	protected function createOrFindContributor()
+	protected function _createOrFindContributor()
 	{
 		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
 		$contrib = $_POST['contributor'];
@@ -164,14 +163,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * If validation fails, render the Contribution form again with errors.
 	 *
 	 * FIXME: Split this into smaller methods.
-	 * FIXME: Coding standards.
 	 * TODO: Make sure this still works without Javascript.
 	 * FIXME: Exceptions from uploading files should be a different class than
 	 * Omeka_Validator_Exception so as to differentiate in how to catch those
 	 * errors.
 	 * @return void
 	 **/
-	protected function processForm($item)
+	protected function _processForm($item)
 	{		
 		if(!empty($_POST)) {
 		    		    
@@ -227,7 +225,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				    $elementTexts['Item Type Metadata']['Text'][] = array('text'=>$_POST['text'], 'html'=>false);
 				}
 												
-				$contributor = $this->createOrFindContributor();
+				$contributor = $this->_createOrFindContributor();
 				
 				$fileUploadOptions = array(
                     'files'=>'contributed_file', // Form input name
@@ -429,7 +427,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
                 'Submission Consent'=>array(array('text'=>$submission_consent, 'html'=>false)))
             ));
 		
-		$this->sendEmailNotification($session->email, $item);
+		$this->_sendEmailNotification($session->email, $item);
 		
 		unset($session->itemId);
 		unset($session->email);
@@ -482,7 +480,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * @param Item $item Item that was contributed via the form.
 	 * @return void
 	 **/
-	protected function sendEmailNotification($email, $item)
+	protected function _sendEmailNotification($email, $item)
 	{
 		$from_email = get_option('contribution_notification_email');
 		
