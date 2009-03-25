@@ -118,7 +118,6 @@ function contribution_config($post)
 	set_option('contribution_consent_text', $post['contribution_consent_text']);
 	set_option('contribution_notification_email', $post['contributor_email']);
 	set_option('contribution_page_path', $post['contribution_page_path']);
-	set_option('contribution_require_tos_and_pp', (boolean)$post['contribution_require_tos_and_pp']);
 	
 	
 	//if the page path is empty then make it the default page path
@@ -270,7 +269,6 @@ class ContributionUpgrader
     	
     	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
     	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
-    	set_option('contribution_require_tos_and_pp', FALSE);
     	set_option('contribution_db_migration', CONTRIBUTION_MIGRATION);
     }
     
