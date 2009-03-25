@@ -225,35 +225,17 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * If validation fails, render the Contribution form again with errors.
 	 *
 	 * FIXME: Split this into smaller methods.
+	 * FIXME: Coding standards.
 	 * TODO: Make sure this still works without Javascript.
 	 * @return void
 	 **/
 	protected function processForm($item)
 	{		
 		if(!empty($_POST)) {
-		    
-		    // ReCaptcha ignores the first argument.
-		    if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
-                $this->flashError('Your CAPTCHA submission was invalid, please try again.');
-                return false;
-		    }
-		    
+		    		    
 			if(array_key_exists('pick_type', $_POST)) return false;
-			
-            // Documents do not contain files to be uploaded (does this even make
-            // sense? - what about PDFs/text files?)
-			$isFileUpload = !empty($_FILES["file"]['name'][0]) and 
-			    ($_POST['type'] != 'Document');
-			
-			if ($isFileUpload and !$this->_fileUploadIsValid()) {
-			    return false;
-			}
-			
+					
 			try {				
-				//Don't trust the post content!
-				if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
-					throw new Omeka_Validator_Exception( 'Invalid posting consent given!' );
-				}
 				
 				$itemMetadata = array(
 				    'public'=>false,
@@ -266,10 +248,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				
 				$creatorName = $_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'];
 				
-				if (empty($creatorName)) {
-				    throw new Omeka_Validator_Exception('Creator: Please provide a valid name for the creator.');
-				}
-				
+				if (!$this->_validateContribution($creatorName)) {
+                    return false;
+                }
+								
 				$elementTexts = array(
 				    'Dublin Core'=>array(
 				        'Title'=>array(array(
@@ -301,9 +283,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				// Add the text for Document item types, if necessary.    
 				if (array_key_exists('text', $_POST)) {
 				    $elementTexts['Item Type Metadata']['Text'][] = array('text'=>$_POST['text'], 'html'=>false);
-				    if (empty($_POST['text'])) {
-				        throw new Omeka_Validator_Exception('Story: Please provide the text of the story.');
-				    }
 				}
 												
 				$contributor = $this->createOrFindContributor();
@@ -343,6 +322,69 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		// No POST.
 		return false;
 	}
+	
+	/**
+	 * Validate the contribution form submission.
+	 * 
+	 * Will flash validation errors that occur.
+	 * 
+	 * Verify the validity of the following form elements:
+	 *      Captcha (if exists)
+	 *      File Upload
+	 *      Posting Consent
+	 *      Story text (if exists)
+	 *      Creator Name
+	 * 
+	 * FIXME: Calling flashError() multiple times needs to display all of the 
+	 * flashed errors.
+	 * @return boolean
+	 **/
+	protected function _validateContribution($creatorName)
+	{
+	    $isValid = true;
+	    
+	    $errors = array();
+	    
+	    // ReCaptcha ignores the first argument.
+	    if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
+            $errors[] = 'Your CAPTCHA submission was invalid, please try again.';
+            $isValid = false;
+	    }	    
+
+        // Documents do not contain files to be uploaded (does this even make
+        // sense? - what about PDFs/text files?)
+		$isFileUpload = !empty($_FILES["file"]['name'][0]) and 
+		    ($_POST['type'] != 'Document');
+		
+		if ($isFileUpload and !$this->_fileUploadIsValid()) {
+		    return false;
+		}
+
+		//Don't trust the post content!
+		if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
+			$errors[] = 'Invalid posting consent given!';
+			$isValid = false;
+		}
+        
+        $storyText = trim($_POST['text']);
+        if (array_key_exists('text', $_POST) and empty($storyText)) {
+            $errors[] = 'Story: Please provide the text of the story.';
+            $isValid = false;
+        }
+        
+        $creatorName = trim($creatorName);
+        if (empty($creatorName)) {
+		    $errors[] = 'Creator: Please provide a valid name for the creator.';
+		    $isValid = false;
+		}
+		
+        if ($errors) {
+            $this->flashError(join("\n", $errors));
+        }
+		
+		return $isValid;
+	}
+	
 	
 	/**
 	 * @internal This is copied almost exactly from the SimpleContactForm.
