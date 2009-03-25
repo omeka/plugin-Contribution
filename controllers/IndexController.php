@@ -1,10 +1,27 @@
 <?php 
+// FIXME: This include may be unnecessary if autoloader works properly.
 require_once 'Contributor.php';
 
+/**
+ * 
+ *
+ * @package Contribution
+ * @copyright Center for History and New Media, 2009
+ **/
 class Contribution_IndexController extends Omeka_Controller_Action
 {	
     protected $_captcha;
     
+    /**
+     * Set up the Contribution controller.
+     * 
+     * Instantiates a session namespace for passing data between the 3 pages of
+     * the form on the Contribution plugin.
+     * 
+     * TODO: Should not strip tags (all data entered will not be displayed as HTML,
+     * so it shouldn't be stripped).
+     * @return void
+     **/
 	public function init()
 	{
 		$this->_modelClass = 'Contributor';		
@@ -21,7 +38,14 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	{
 		return is_array($input) ?  array_map(array($this, __FUNCTION__), $input) : strip_tags($input);
 	}
-		
+	
+	/**
+	 * Add (contribute) a new item through a public-facing form.
+	 * 
+	 * Accessible only through the public interface.
+	 * 
+	 * @return void
+	 **/	
 	public function addAction()
 	{
 		$item = new Item;
@@ -40,6 +64,14 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}		
 	}
 	
+	/**
+	 * Browse the list of contributors.
+	 * 
+	 * Only accessible from the admin interface.
+	 * 
+	 * TODO: Needs to have pagination.
+	 * @return void
+	 **/
 	public function browseAction()
 	{
 	    $this->_setParam('per_page', CONTRIBUTORS_PER_PAGE);
@@ -58,17 +90,45 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	    $this->view->totalContributors = $totalContributors;
 	}
 
-	//Can't delete Contributors
+	/**
+	 * Disables the 'delete' action for Contributor records.
+	 * 
+	 * FIXME: This should be controlled through the ACL and allowed through 
+	 * the admin interface.
+	 * @return void
+	 **/
 	public function deleteAction()
 	{
 		return $this->_forward('add');
 	}
 	
+	/**
+	 * Display a "Thank You" message to users who have contributed an item 
+	 * through the public form.
+	 * 
+	 * Redirects here from the 'submit' action.
+	 * 
+	 * @see Contribution_IndexController::submitAction()
+	 * @return void
+	 **/
 	public function thankyouAction()
 	{
 
 	}
-		
+	
+	/**
+	 * Retrieve or create a new Contributor record based on parameters passed 
+	 * through the POST. 
+	 * 
+	 * This takes first name, last name and email address from the POST.  With 
+	 * that, it searches the database for an existing contributor with all those
+	 * properties.  Returns that, otherwise creates and saves a new Contributor
+	 * with all of those properties.
+	 * 
+	 * FIXME: Name should follow ZF conventions for protected methods.
+	 * @throws Omeka_Validator_Exception
+	 * @return Contributor
+	 **/	
 	protected function createOrFindContributor()
 	{
 		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
@@ -98,6 +158,8 @@ class Contribution_IndexController extends Omeka_Controller_Action
     /**
      * @internal TODO This mostly duplicates Item::_saveFiles().
      * 
+     * FIXME: Replace this method with insert_files_for_item() or just use
+     * insert_item() with the 'Upload' strategy.
      * @param Item
      * @return File|false Returns false if the upload failed.
      **/
@@ -127,6 +189,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
     /**
      * Preconditions: This runs assuming that a user is uploading a file.
      * 
+     * FIXME: Remove and replace with appropriate calls to insert_item().
      * @return boolean
      **/
     protected function _fileUploadIsValid()
@@ -154,10 +217,15 @@ class Contribution_IndexController extends Omeka_Controller_Action
     }
     
 	/**
-	 * Validate and save the contribution to the DB, save the new item in the session
-	 * then redirect to the consent form, 
-	 * otherwise render the contribution form again
+	 * Handle the POST for adding an item via the public form.
+	 * 
+	 * Validate and save the contribution to the database.  Save the ID of the
+	 * new item to the session.  Redirect to the consent form. 
+	 * 
+	 * If validation fails, render the Contribution form again with errors.
 	 *
+	 * FIXME: Split this into smaller methods.
+	 * TODO: Make sure this still works without Javascript.
 	 * @return void
 	 **/
 	protected function processForm($item)
@@ -299,8 +367,19 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Final submission, add the consent info and redirect to a thank-you page
-	 *
+	 * Submit the consent form that accompanies every new contribution.
+	 * 
+	 * This determines whether or not consent has been given, retrieves the 
+	 * Item based on the ID passed to the session, updates the Dublin Core 
+	 * 'Rights' and Contribution Form 'Submission Consent' with the appropriate
+	 * data, sends an email notification, and redirects to the 'thankyou' page.
+	 * 
+	 * The consent form itself is part of the 'consent' action.
+	 * 
+	 * NOTE: The 'Rights' field does not currently store that text as HTML.
+	 * 
+	 * FIXME: Does this spit errors if someone tries to access it without having
+	 * contributed a specific item?
 	 * @return void
 	 **/
 	public function submitAction()
@@ -352,6 +431,19 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');
 	}
 	
+	/**
+	 * Retrieve the form partial to display on the Contribution form for a 
+	 * specific Item Type.   
+	 * 
+	 * The following Item Types will display a file form input and an optional
+	 * 'Description' input: Still Image, Moving Image, Sound
+	 * 
+	 * All other Item Types will display as a textarea labeled 'Your Story'.
+	 * 
+	 * TODO: This should be extensible so that new forms can be written for 
+	 * custom Item Types.
+	 * @return void
+	 **/
 	public function partialAction() 
 	{
 		$contributionType = $this->_getParam('contributiontype');
@@ -359,14 +451,13 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		    $this->view->text = $text;
 		}
 		switch ($contributionType) {
-			case 'Document':
-				$partial = "-document";
-				break;
+		    // Display a file input for uploading a single file to Omeka.
 			case 'Still Image':
 			case 'Moving Image':
 			case 'Sound':
 				$partial = "-file";
 				break;
+			// Document and everything else will display as a textarea
 			default:
 				$partial = "-document";
 				break;
@@ -374,6 +465,17 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$this->render($partial);
 	}
 	
+	/**
+	 * Send an email notification to the user who contributed the Item.
+	 * 
+	 * This email will appear to have been sent from the address specified via
+	 * the 'contribution_notification_email' option.
+	 * 
+	 * FIXME: Coding standards.
+	 * @param string $email Address to send to.
+	 * @param Item $item Item that was contributed via the form.
+	 * @return void
+	 **/
 	protected function sendEmailNotification($email, $item)
 	{
 		$from_email = get_option('contribution_notification_email');
@@ -395,13 +497,16 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Add the body of the consent form to the rights field for the item, 
-	 * if applicable.  Set Submission Consent metatext to the form value
+	 * Display the consent form for any items contributed through the public 
+	 * form.
+	 * 
+	 * All successful form submissions will redirect to this action.  This 
+	 * action contains a form that POSTs to the 'submit' action.
 	 *
 	 * @return void
 	 **/
 	public function consentAction()
 	{		
-		$this->render('consent');
+		
 	}
 }
