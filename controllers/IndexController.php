@@ -227,15 +227,20 @@ class Contribution_IndexController extends Omeka_Controller_Action
 												
 				$contributor = $this->_createOrFindContributor();
 				
-				$fileUploadOptions = array(
-                    'files'=>'contributed_file', // Form input name
-                    'file_transfer_type'=>'Upload',
-                    'file_ingest_options'=>array(
-                        // Ignore a lack of uploaded files if we aren't requiring
-                        // file uploads for a given Item Type.
-                        'ignoreNoFile'=> !$this->_uploadedFileIsRequired($_POST['type'])
-                    )
-                );
+				// If a particular contribution type implies (requires) a file
+				// to be uploaded, add necessary options for insert_item().
+				// FIXME: This wouldn't account for situations where uploads are
+				// optional, such as documents.
+				if ($this->_uploadedFileIsRequired($_POST['type'])) {
+				    $fileUploadOptions = array(
+                        'files'=>'contributed_file', // Form input name
+                        'file_transfer_type'=>'Upload',
+                        'file_ingest_options'=>array(
+                            'ignoreNoFile'=> false));
+				} else {
+				    $fileUploadOptions = array();
+				}
+				
                                 				
 				// Needed to tag the items properly.
 				$itemMetadata['tag_entity'] = $contributor->Entity;					
