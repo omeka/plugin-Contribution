@@ -7,21 +7,33 @@
  *		Moving Image
  * 		Sound
  *
- * Also, it will not work correctly if the Document type does not have a metafield called Text,
- * which is a default setting in Omeka.  This is because the "story" for the item is stored in the Text field of a Document.
- *
- * The text of the 'rights' field is stored in the views/public/contribution/consent.php file, and it should be edited for each project.
- *
  * @author CHNM
  * @version $Id$
- * @copyright CHNM, 2007-2008
+ * @copyright CHNM, 2007-2009
  * @package Contribution
  **/
 
+/**
+ * Plugin version.
+ */
 define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
-// Define this migration constant to help with upgrading the plugin.
+
+/**
+ * Migration #.  Useful for upgrading the plugin.
+ */
 define('CONTRIBUTION_MIGRATION', 2);
+
+/**
+ * The default relative URL for the public-facing contribution form.  Can be
+ * changed through the config form.
+ */
 define('CONTRIBUTION_PAGE_PATH', 'contribution/');
+
+/**
+ * Number of contributors to display per page on the admin form.
+ * FIXME: This should also be set in the controller, though leaving it here 
+ * makes it easier for plugin hackers to edit.
+ */
 define('CONTRIBUTORS_PER_PAGE', 10);
 
 add_plugin_hook('define_routes', 'contribution_routes');
@@ -41,6 +53,15 @@ add_filter(array('Form', 'Item', 'Contribution Form', 'Contributor is Creator'),
 add_filter(array('Display', 'Item', 'Dublin Core', 'Contributor'), 'contribution_display_anonymous');
 add_filter(array('Display', 'Item', 'Dublin Core', 'Creator'), 'contribution_display_anonymous');
 
+/**
+ * Add routes for the customized URL that points to the contribution form.
+ * 
+ * For example, if the stored path is like foobar/, the form will be reachable 
+ * through http://your.omeka.site/foobar/.
+ * 
+ * @param Zend_Controller_Router_Rewrite $router
+ * @return void
+ **/
 function contribution_routes($router)
 {
 	// get the base path
@@ -52,9 +73,21 @@ function contribution_routes($router)
     
     $router->addRoute('contributionAdd', new Zend_Controller_Router_Route($bp, array('module' => 'contribution', 'controller'=> 'index', 'action'=>'add')));
     
+    // Secondary actions (thankyou, consent form, etc.) also need the URL.
 	$router->addRoute('contributionLinks', new Zend_Controller_Router_Route($bp . ':action', array('module' => 'contribution', 'controller'=> 'index')));    
 }
 
+/**
+ * HTML for the configuration form.
+ * 
+ * The following fields are configurable:
+ *      contribution form URL
+ *      contribution form email 'from' address
+ *      consent text
+ *      reCAPTCHA API keys
+ * 
+ * @return void
+ **/
 function contribution_config_form()
 {
     // Deal with upgrading the plugin if necessary.
@@ -74,7 +107,7 @@ function contribution_config_form()
 	<label for="contribution_page_path">Relative Page Path From Project Root:</label>
 	<div class="inputs">
 	    <input type="text" name="contribution_page_path" value="<?php echo settings('contribution_page_path'); ?>" size="<?php echo $textInputSize; ?>" />
-    	<p class="explanation">Please enter the relative page path from the project root where you want the contribution page to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
+    	<p class="explanation">Please enter the relative page path from the project root where you want the contribution form to be located. Use forward slashes to indicate subdirectories, but do not begin with a forward slash.</p>
 	</div>
 	</div>
 	
@@ -111,6 +144,15 @@ function contribution_config_form()
 <?php
 }
 
+/**
+ * Saves the Contribution configuration form to the database.
+ * 
+ * Since the URL for contribution_page_path cannot be empty, it will save
+ * the default URL if erased.
+ * 
+ * @see contribution_config_form()
+ * @return void
+ **/
 function contribution_config()
 {
     set_option('contribution_recaptcha_public_key', $_POST['recaptcha_public_key']);
@@ -139,6 +181,12 @@ function contribution_link_to_contribute($text, $attributes = array())
 	return '<a href="' . uri(array(), 'contributionAdd') . '" ' . _tag_attributes($attributes) . ">$text</a>";
 }
 
+/**
+ * Create the HTML for the consent form that must accompany all contributions
+ * through the public form.
+ * 
+ * @return void
+ **/
 function contribution_embed_consent_form() {
 ?>
 	<form action="<?php echo uri(array('action'=>'submit'), 'contributionLinks'); ?>" id="consent" method="post" accept-charset="utf-8">
@@ -176,6 +224,12 @@ function contribution_is_anonymous($item)
     return 'Anonymously' == item('Contribution Form', 'Posting Consent', array(), $item);
 }
 
+/**
+ * Append a link to the list of contributors to the admin panel navigation.
+ * 
+ * @param array $navArray The array of navigation elements to filter.
+ * @return array
+ **/
 function contribution_admin_nav($navArray) 
 {
     if (has_permission('Contribution_Index', 'browse')) {
@@ -187,11 +241,30 @@ function contribution_admin_nav($navArray)
     return $navArray;
 }
 
+/**
+ * Append a link to the contribution form to the public navigation.
+ * 
+ * TODO: This may need to be configurable (text of the link as well as whether
+ * or not to display it).
+ * @param array $navArray Navigation elements to filter.
+ * @return array
+ **/
 function contribution_public_main_nav($navArray) {
     $navArray['Contribute'] = uri(array(), 'contributionAdd');
     return $navArray;
 }
 
+/**
+ * Adds ACL settings controlling access to 'browse', 'edit' and 'delete' actions
+ * within the Contribution Index controller.
+ * 
+ * By default, admin and super users have access to these.
+ * 
+ * TODO: Edit and delete access is controlled, but there still needs to be an 
+ * administrative interface for these actions.  
+ * @param Omeka_Acl $acl
+ * @return void
+ **/
 function contribution_acl($acl)
 {
     $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
