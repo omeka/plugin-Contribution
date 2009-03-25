@@ -111,13 +111,13 @@ function contribution_config_form()
 <?php
 }
 
-function contribution_config($post)
+function contribution_config()
 {
     set_option('contribution_recaptcha_public_key', $_POST['recaptcha_public_key']);
     set_option('contribution_recaptcha_private_key', $_POST['recaptcha_private_key']);
-	set_option('contribution_consent_text', $post['contribution_consent_text']);
-	set_option('contribution_notification_email', $post['contributor_email']);
-	set_option('contribution_page_path', $post['contribution_page_path']);
+	set_option('contribution_consent_text', $_POST['contribution_consent_text']);
+	set_option('contribution_notification_email', $_POST['contributor_email']);
+	set_option('contribution_page_path', $_POST['contribution_page_path']);
 	
 	
 	//if the page path is empty then make it the default page path
