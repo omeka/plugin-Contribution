@@ -2,7 +2,7 @@
 
 <div id="primary">
 	
-	<h2>Browse Contributors (<?php echo $totalContributors; ?> total)</h2>
+	<h2>Browse Contributors (<?php echo $total_records; ?> total)</h2>
 
     <div class="pagination">
         <?php echo pagination_links(); ?>

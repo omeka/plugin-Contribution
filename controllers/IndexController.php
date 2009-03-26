@@ -1,6 +1,10 @@
 <?php 
-// FIXME: This include may be unnecessary if autoloader works properly.
-require_once 'Contributor.php';
+/**
+ * @version $Id$
+ * @copyright Center for History and New Media, 2009
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @package Contribution
+ **/
 
 /**
  * 
@@ -11,6 +15,17 @@ require_once 'Contributor.php';
 class Contribution_IndexController extends Omeka_Controller_Action
 {	
     protected $_captcha;
+    
+    /**
+     * @var integer Represents the total # of results to display per page 
+     * when browsing the list of contributors.
+     * 
+     * This also takes advantage of the built-in 'browse' action of the base
+     * class, which displays a list of Contributors.  Access to that action is
+     * controlled via the ACL.
+     * @see Omeka_Controller_Action::browseAction()
+     */
+    protected $_browseRecordsPerPage = CONTRIBUTORS_PER_PAGE;
     
     /**
      * Set up the Contribution controller.
@@ -64,32 +79,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		}		
 	}
 	
-	/**
-	 * Browse the list of contributors.
-	 * 
-	 * Only accessible from the admin interface.
-	 * 
-	 * TODO: Needs to have pagination.
-	 * @return void
-	 **/
-	public function browseAction()
-	{
-	    $this->_setParam('per_page', CONTRIBUTORS_PER_PAGE);
-
-	    $criteria = $this->_getAllParams();
-
-	    $contributors = $this->getTable('Contributor')->findBy($criteria);
-	    $totalContributors = $this->getTable('Contributor')->count($criteria);
-
-	    Zend_Registry::set('pagination', array(
-	        'page'=>$this->_getParam('page', 1),
-	        'total_results'=>$totalContributors,
-	        'per_page'=>$this->_getParam('per_page')));
-
-	    $this->view->contributors = $contributors;
-	    $this->view->totalContributors = $totalContributors;
-	}
-
 	/**
 	 * Disables the 'delete' action for Contributor records.
 	 * 
