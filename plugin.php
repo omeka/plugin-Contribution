@@ -30,7 +30,7 @@ if(get_magic_quotes_gpc()) {
 	$_POST = stripslashes_deep($_POST);
 }
 
-define('CONTRIBUTION_PLUGIN_VERSION', 0.1);
+define('CONTRIBUTION_PLUGIN_VERSION', '0.1');
 
 add_plugin_hook('initialize', 'contribution_initialize');
 
