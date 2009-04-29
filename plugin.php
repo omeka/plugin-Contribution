@@ -16,7 +16,7 @@
 /**
  * Plugin version.
  */
-define('CONTRIBUTION_PLUGIN_VERSION', 0.2);
+define('CONTRIBUTION_PLUGIN_VERSION', get_plugin_ini('Contribution', 'version'));
 
 /**
  * Migration #.  Useful for upgrading the plugin.
