@@ -25,14 +25,14 @@
 		<tbody>
 		<?php foreach ($contributors as $contributor): ?>
 			<tr>
-				<td><?php echo h($contributor->name); ?></td>
-				<td><?php echo h($contributor->email); ?></td>
-				<td><?php echo h($contributor->race); ?></td>
-				<td><?php echo h($contributor->gender); ?></td>
-				<td><?php echo h($contributor->occupation); ?></td>
-				<td><?php echo h($contributor->zipcode); ?></td>
-				<td><?php echo h($contributor->birth_year); ?></td>
-				<td><?php echo h($contributor->ip_address); ?></td>
+				<td><?php echo html_escape($contributor->name); ?></td>
+				<td><?php echo html_escape($contributor->email); ?></td>
+				<td><?php echo html_escape($contributor->race); ?></td>
+				<td><?php echo html_escape($contributor->gender); ?></td>
+				<td><?php echo html_escape($contributor->occupation); ?></td>
+				<td><?php echo html_escape($contributor->zipcode); ?></td>
+				<td><?php echo html_escape($contributor->birth_year); ?></td>
+				<td><?php echo html_escape($contributor->ip_address); ?></td>
 				<td><a href="<?php echo uri('items/browse', array('entity'=>$contributor->id)); ?>">View</a></td>
 			</tr>
 		<?php endforeach ?>
