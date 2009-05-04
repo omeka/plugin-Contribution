@@ -153,9 +153,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 *
 	 * FIXME: Split this into smaller methods.
 	 * TODO: Make sure this still works without Javascript.
-	 * FIXME: Exceptions from uploading files should be a different class than
-	 * Omeka_Validator_Exception so as to differentiate in how to catch those
-	 * errors.
 	 * @return void
 	 **/
 	protected function _processForm($item)
@@ -230,6 +227,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				    $fileUploadOptions = array();
 				}
 				
+				// Add the whitelists for uploaded files.
+				$fileValidation = new Contribution_FileValidation($itemMetadata['item_type_name']);
+				$fileValidation->enableFilter();
                                 				
 				// Needed to tag the items properly.
 				$itemMetadata['tag_entity'] = $contributor->Entity;					
@@ -237,15 +237,17 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				    $item = insert_item($itemMetadata, 
 					                    $elementTexts, 
 					                    $fileUploadOptions);
-				} catch (Exception $e) {
+				} catch (Omeka_File_Ingest_InvalidException $e) {
 				    // HACK: grep the exception to determine whether this is
 				    // related to file uploads.
 				    if (strstr($e->getMessage(), 
 				               "The file 'contributed_file' was not uploaded")) {
 				       $this->flashError("File: A file must be uploaded.");
 				    } else {
-				        throw $e;
+				        $this->flashError($e->getMessage());
 				    }
+				} catch (Exception $e) {
+				    $this->flashError($e->getMessage());
 				}
 																								
 				if($item->exists()) {
