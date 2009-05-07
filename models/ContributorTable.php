@@ -24,33 +24,6 @@ class ContributorTable extends Omeka_Db_Table
 	    return $select;
 	}
 	
-	public function applySearchFilters($select, $params)
-	{
-	    if (array_key_exists('per_page', $params)) {
-	       $page = (int)$params['page'] or $page = 1;
-	       $perPage = (int)$params['per_page'];
-	       $select->limitPage($page, $perPage);
-	    }
-	}
-
-	/**
-	 * Bug fix that may need to be incorporated into the main code base when
-	 * pagination is built into the table classes by default.
-	 * 
-	 * This will unset the 'per_page' parameter for counts so that OFFSET is not
-	 * applied to the SELECT COUNT() query, which would cause the query to always
-	 * return false.
-	 * 
-	 * @param array
-	 * @return int
-	 **/
-	public function count($params)
-	{
-	    unset($params['per_page']);
-	    unset($params['page']);
-	    return parent::count($params);
-	}
-
 	/**
 	 * Find a unique Contributor based on a hash of first/last name and email address that is provided
 	 *
