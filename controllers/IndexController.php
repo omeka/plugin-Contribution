@@ -42,16 +42,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$this->_modelClass = 'Contributor';		
 
 		require_once 'Zend/Session.php';
-		$this->session = new Zend_Session_Namespace('Contribution');
-		
-		//The admin interface allows inserting HTML tags into the text of the items, but the Contribution plugin shouldn't allow that.
-		//todo: replace this with the HTMLPurifier plugin
-		$_POST = $this->strip_tags_recursive($_POST);
-	}
-	
-	private function strip_tags_recursive($input)
-	{
-		return is_array($input) ?  array_map(array($this, __FUNCTION__), $input) : strip_tags($input);
+		$this->session = new Zend_Session_Namespace('Contribution');		
 	}
 	
 	/**
