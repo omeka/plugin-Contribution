@@ -1,25 +1,27 @@
 <?php 
 /**
-* 
-*/
-class ContributorTable extends Omeka_Db_Table
-{
-	public function findAll()
-	{
-		//Drop down to PDO for some basic processing
-		$db = get_db();
-			
-		//Pull down a full list of all the contributors
-		
-		//No idea whether this will kill the app, may need to implement pagination later
-		$sql = "SELECT 
-			e.id,
-			CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name) as name, 
-			e.email, c.birth_year, c.gender, c.race, c.occupation, c.zipcode, c.ip_address
-		FROM $db->Entity e
-		INNER JOIN $db->Contributor c ON c.entity_id = e.id ORDER BY c.id DESC";
+ * @version $Id$
+ * @copyright Center for History and New Media, 2009
+ * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @package Contribution
+ **/
 
-		return $this->fetchObjects($sql);	
+/**
+ * Finder methods for Contributors.
+ *
+ * @package Contribution
+ * @copyright Center for History and New Media, 2009
+ **/
+class ContributorTable extends Omeka_Db_Table
+{	
+	public function getSelect()
+	{
+	    $select = parent::getSelect();
+	    $select->joinInner(
+	        array('e'=>$this->getDb()->Entity), 
+	        'e.id = c.entity_id', 
+	        array("CONCAT_WS(' ', e.first_name, e.middle_name, e.last_name) as name"));
+	    return $select;
 	}
 	
 	public function applySearchFilters($select, $params)
