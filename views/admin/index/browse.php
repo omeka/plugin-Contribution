@@ -33,7 +33,7 @@
 				<td><?php echo html_escape($contributor->zipcode); ?></td>
 				<td><?php echo html_escape($contributor->birth_year); ?></td>
 				<td><?php echo html_escape($contributor->ip_address); ?></td>
-				<td><a href="<?php echo uri('items/browse', array('entity'=>$contributor->id)); ?>">View</a></td>
+				<td><a href="<?php echo uri('items/browse', array('contributor'=>$contributor->id)); ?>">View</a></td>
 			</tr>
 		<?php endforeach ?>
 		</tbody>

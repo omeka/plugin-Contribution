@@ -41,6 +41,7 @@ add_plugin_hook('config_form', 'contribution_config_form');
 add_plugin_hook('config', 'contribution_config');
 add_plugin_hook('install', array('ContributionUpgrader', 'install'));
 add_plugin_hook('define_acl', 'contribution_acl');
+add_plugin_hook('item_browse_sql', 'contribution_view_items');
 
 add_filter('public_navigation_main', 'contribution_public_main_nav');
 add_filter('admin_navigation_main', 'contribution_admin_nav');
@@ -306,6 +307,36 @@ function contribution_public_main_nav($navArray) {
 function contribution_acl($acl)
 {
     $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
+}
+
+/**
+ * Filter the SQL statement for browsing items so that users can view items that
+ * are associated with a single Contributor.
+ * 
+ * @param Omeka_Db_Select $select
+ * @param array $params
+ * @return void
+ **/
+function contribution_view_items($select, $params)
+{
+    if (array_key_exists('contributor', $_GET)) {
+        $contributorId = (int)$_GET['contributor'];
+        $db = get_db();
+        
+        // Join the following tables: items --> entities_relations 
+        // --> entity_relationships --> entities --> contributors.
+        $select->joinInner(array('con_er'=>$db->EntitiesRelations), 
+            'con_er.relation_id = i.id AND con_er.type = "Item"', array())
+        ->joinInner(array('con_e'=>$db->Entity), 
+            'con_e.id = con_er.entity_id', array())
+        ->joinInner(array('con'=>$db->Contributor), 
+            'con.entity_id = con_e.id', array())
+        ->joinInner(array('con_rel'=>$db->EntityRelationships), 
+            'con_rel.id = con_er.relationship_id AND con_rel.name = "Added"', array())
+            
+        // And search based on the contributor that was provided.
+        ->where('con.id = ?', $contributorId);
+    }
 }
 
 /**
