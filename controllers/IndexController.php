@@ -418,7 +418,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
         
         $item = update_item($itemId, array('overwriteElementTexts'=>true), array(
             'Dublin Core'=>array(
-                'Rights'=>array(array('text'=>$_POST['contribution_consent_text'], 'html'=>false))),
+                'Rights'=>array(array('text'=>get_option('contribution_consent_text'), 'html'=>true))),
             'Contribution Form'=>array(
                 'Submission Consent'=>array(array('text'=>$submission_consent, 'html'=>false)))
             ));

@@ -103,6 +103,8 @@ function contribution_config_form()
 	$textAreaCols = 50;
 	?>
 	
+	<?php contribution_config_form_js(); ?>
+	
 	<div class="field">
 	<label for="contribution_page_path">Relative Page Path From Project Root:</label>
 	<div class="inputs">
@@ -142,6 +144,44 @@ function contribution_config_form()
 	</div>
 	</div>
 <?php
+}
+
+/**
+ * Include the Javascript for the Wysiwyg editor on the Contribution config form.
+ * 
+ * This is adapted directly from items/form.php on admin theme.
+ * 
+ * @return void
+ **/
+function contribution_config_form_js()
+{
+    echo js('tiny_mce/tiny_mce'); ?>
+	<script type="text/javascript" charset="utf-8">
+	    Event.observe(window, 'load', function(){
+	        // Advanced config bombs out in IE6 for some reason. 
+	        if (Prototype.Browser.IE) {
+	            var config = {};
+	        } else {
+	            var config = {
+	                theme: "advanced",
+            		force_br_newlines : true,
+            		forced_root_block : '', // Needed for 3.x
+            		remove_linebreaks : true,
+            		fix_content_duplication : false,
+            		fix_list_elements : true,
+            		valid_child_elements:"ul[li],ol[li]",
+                   	theme_advanced_toolbar_location : "top",
+                   	theme_advanced_buttons1 : "bold,italic,underline,justifyleft,justifycenter,justifyright,bullist,numlist,link,formatselect,code",
+            		theme_advanced_buttons2 : "",
+            		theme_advanced_buttons3 : "",
+            		theme_advanced_toolbar_align : "left"
+	            };
+	        };
+	        tinyMCE.init(config);
+	        tinyMCE.execCommand("mceAddControl", false, 'contribution_consent_text');
+	    });
+	</script>
+<?php    
 }
 
 /**
@@ -194,9 +234,7 @@ function contribution_embed_consent_form() {
 			<h3>Please read this carefully:</h3>
 			
 			<div id="contribution_consent">
-				<p><?php echo settings('contribution_consent_text'); ?></p>
-
-				<textarea name="contribution_consent_text" style="display:none;"><?php echo settings('contribution_consent_text'); ?></textarea>
+				<p><?php echo get_option('contribution_consent_text'); // Will be valid HTML. ?></p>
 			</div>
 			
 			<div class="field">
