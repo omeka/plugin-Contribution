@@ -42,6 +42,8 @@ add_plugin_hook('config', 'contribution_config');
 add_plugin_hook('install', array('ContributionUpgrader', 'install'));
 add_plugin_hook('define_acl', 'contribution_acl');
 add_plugin_hook('item_browse_sql', 'contribution_view_items');
+add_plugin_hook('after_validate_item', 'contribution_validate_item_contributor');
+add_plugin_hook('before_insert_item', 'contribution_save_item_contributor');
 
 add_filter('public_navigation_main', 'contribution_public_main_nav');
 add_filter('admin_navigation_main', 'contribution_admin_nav');
@@ -336,6 +338,49 @@ function contribution_view_items($select, $params)
             
         // And search based on the contributor that was provided.
         ->where('con.id = ?', $contributorId);
+    }
+}
+
+/**
+ * Validate the Contributor prior to inserting the Item.  Ensure that any 
+ * validation errors from the Contributor also appear on the form.
+ * 
+ * @param Item $item
+ * @return void
+ **/
+function contribution_validate_item_contributor($item)
+{
+    // Check if we are actually contributing something via the public form.
+    if (Zend_Registry::isRegistered('contributor')) {
+        // Validate the Contributor only if it's not persistent in the database
+        // yet.
+        if (($contributor = Zend_Registry::get('contributor')) &&
+            !$contributor->exists() &&
+            !$contributor->isValid()) {
+                // Validate and attach any error messages to the item.
+                $item->addError('Contributor', $contributor->getErrors());    
+        }
+    }
+}
+
+/**
+ * Save the Contributor record to the database (if necessary).  
+ * 
+ * Happens in the before_insert hook so that tags can be properly added AFTER
+ * the item is inserted.
+ * 
+ * @see contribution_validate_item_contributor()
+ * @param Item $item
+ * @return void
+ **/
+function contribution_save_item_contributor($item)
+{
+    if (Zend_Registry::isRegistered('contributor')) {
+        if (($contributor = Zend_Registry::get('contributor')) &&
+            !$contributor->exists()) {
+            // Will throw exceptions if necessary (if something went wrong).
+            $contributor->forceSave();
+        }
     }
 }
 

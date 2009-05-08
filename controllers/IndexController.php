@@ -102,10 +102,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * 
 	 * This takes first name, last name and email address from the POST.  With 
 	 * that, it searches the database for an existing contributor with all those
-	 * properties.  Returns that, otherwise creates and saves a new Contributor
-	 * with all of those properties.
+	 * properties.  Returns that, otherwise creates a new Contributor with all 
+	 * of those properties.
 	 * 
-	 * @throws Omeka_Validator_Exception
 	 * @return Contributor
 	 **/	
 	protected function _createOrFindContributor()
@@ -127,8 +126,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
     		$contributor->createEntity($contrib);
 		
     		$contributor->setArray($contrib);
-		
-    		$contributor->forceSave();            
         }
 
 		return $contributor;
@@ -203,6 +200,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				}
 												
 				$contributor = $this->_createOrFindContributor();
+				Zend_Registry::set('contributor', $contributor);
 				
 				// If a particular contribution type implies (requires) a file
 				// to be uploaded, add necessary options for insert_item().
