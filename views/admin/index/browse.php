@@ -1,4 +1,19 @@
 <?php head(); ?>
+<script type="text/javascript" charset="utf-8">
+    Event.observe(window, 'load', function(){
+        $('check-all').observe('click', function(e){
+            e.stop();
+            var checkboxes = $$('input[type="checkbox"]');
+            if (this.innerHTML == 'Check All') {
+                checkboxes.invoke('setAttribute', 'checked', true);
+                this.update('Uncheck All');
+            } else {
+                checkboxes.invoke('removeAttribute', 'checked');
+                this.update('Check All');
+            };
+        });
+    });
+</script>
 
 <div id="primary">
 	
@@ -16,7 +31,7 @@
 	<table>
 		<thead>
 			<tr>
-			    <th>&nbsp;</th>
+			    <th><a href="#" id="check-all">Check All</a></th>
 				<th>Name</th>
 				<th>Email</th>
 				<th>Race</th>
