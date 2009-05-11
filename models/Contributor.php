@@ -104,4 +104,27 @@ class Contributor extends Omeka_Record
 
 		$this->Entity = $entity;
 	}
+	
+	/**
+	 * Delete the Contributor, optionally delete items associated with the
+	 * Contributor.
+	 * 
+	 * @param boolean $deleteItems Whether or not to delete items that were added
+	 * by this contributor.
+	 * @return boolean
+	 **/
+	public function delete($deleteItems = false)
+	{
+	    if ($deleteItems) {
+	       // Find all the items associated with this contributor.
+	       $contributedItems = $this->getTable('Item')->findBy(array(
+	           'contributor'=>$this->id));
+	       
+	       foreach ($contributedItems as $item) {
+	           $item->delete();
+	       }
+	    }
+	    	    
+	    return parent::delete();
+	}
 }

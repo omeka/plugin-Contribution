@@ -308,7 +308,7 @@ function contribution_public_main_nav($navArray) {
  **/
 function contribution_acl($acl)
 {
-    $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete')));
+    $acl->loadResourceList(array('Contribution_Index'=>array('browse', 'edit', 'delete', 'batch')));
 }
 
 /**
@@ -321,24 +321,30 @@ function contribution_acl($acl)
  **/
 function contribution_view_items($select, $params)
 {
+    // Could come from $_GET or from $params.
     if (array_key_exists('contributor', $_GET)) {
         $contributorId = (int)$_GET['contributor'];
-        $db = get_db();
-        
-        // Join the following tables: items --> entities_relations 
-        // --> entity_relationships --> entities --> contributors.
-        $select->joinInner(array('con_er'=>$db->EntitiesRelations), 
-            'con_er.relation_id = i.id AND con_er.type = "Item"', array())
-        ->joinInner(array('con_e'=>$db->Entity), 
-            'con_e.id = con_er.entity_id', array())
-        ->joinInner(array('con'=>$db->Contributor), 
-            'con.entity_id = con_e.id', array())
-        ->joinInner(array('con_rel'=>$db->EntityRelationships), 
-            'con_rel.id = con_er.relationship_id AND con_rel.name = "Added"', array())
-            
-        // And search based on the contributor that was provided.
-        ->where('con.id = ?', $contributorId);
+    } else if (array_key_exists('contributor', $params)) {
+        $contributorId = (int)$params['contributor'];
+    } else {
+        return;
     }
+            
+    $db = get_db();
+    
+    // Join the following tables: items --> entities_relations 
+    // --> entity_relationships --> entities --> contributors.
+    $select->joinInner(array('con_er'=>$db->EntitiesRelations), 
+        'con_er.relation_id = i.id AND con_er.type = "Item"', array())
+    ->joinInner(array('con_e'=>$db->Entity), 
+        'con_e.id = con_er.entity_id', array())
+    ->joinInner(array('con'=>$db->Contributor), 
+        'con.entity_id = con_e.id', array())
+    ->joinInner(array('con_rel'=>$db->EntityRelationships), 
+        'con_rel.id = con_er.relationship_id AND con_rel.name = "Added"', array())
+        
+    // And search based on the contributor that was provided.
+    ->where('con.id = ?', $contributorId);
 }
 
 /**

@@ -39,4 +39,16 @@ class ContributorTable extends Omeka_Db_Table
 	            
 	    return $this->fetchObject($sql, array($firstName, $lastName, $email));
 	}
+	
+	/**
+	 * Retrieve all the Contributors that match a set of IDs.
+	 * 
+	 * @param array $ids Set of contributor IDs (integers).
+	 * @return array
+	 **/
+	public function findByIds(array $ids)
+	{
+	    $select = $this->getSelect()->where('c.id IN (?)', $ids);
+	    return $this->fetchObjects($select);
+	}
 }

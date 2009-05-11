@@ -71,17 +71,43 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Disables the 'delete' action for Contributor records.
-	 * 
-	 * FIXME: This should be controlled through the ACL and allowed through 
-	 * the admin interface.
-	 * @return void
+	 * Delete an existing Contributor (and all the items, if specified).
 	 **/
 	public function deleteAction()
 	{
-		return $this->_forward('add');
+	    $req = $this->getRequest();
+	    $contributorIds = $req->get('contributor_id');
+	    
+	    // Check for a flag submitted from the confirmation form to see if we need
+	    // to actually delete this stuff.
+	    if ($req->has('do_delete')) {	       
+	       $deleteItems = (boolean)$req->get('delete_items');
+	       // Compressed into a string on the confirm form.
+	       $contributorIds = explode(',', $contributorIds);
+	       
+	       if (empty($contributorIds)) {
+	           $this->flashError("No contributors were scheduled for deletion.");
+	           $this->_helper->redirector->goto('browse');
+	       }
+	       
+	       $contributors = $this->getTable()->findByIds($contributorIds);
+	       foreach ($contributors as $contributor) {
+	           $contributor->delete($deleteItems);
+	       }
+	       
+	       // Give us a nice message to let us know it worked.
+	       $successMsg = count($contributors) . " contributor(s) " 
+	                   . ($deleteItems ? " and their associated items " : "") 
+	                   . "were successfully deleted.";
+	       $this->flashSuccess($successMsg);
+	       
+	       // Go back to the browse page.
+	       $this->_helper->redirector->goto('browse');
+	    }
+	    
+	    $this->view->contributors = $this->getTable()->findByIds($contributorIds);
 	}
-	
+		
 	/**
 	 * Display a "Thank You" message to users who have contributed an item 
 	 * through the public form.
@@ -498,4 +524,45 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	{		
 		
 	}
+	
+	/**
+	 * Batch processing for contributors.
+	 * 
+	 * Currently available actions include 'delete'.
+	 **/
+	public function batchAction()
+	{
+	    $req = $this->getRequest();
+	    $errorMsg = null;
+	    
+	    if ($req->getMethod() != 'POST') {
+	        $errorMsg = "Batch processing requires POST!";
+	    }
+	    
+	    // Update this list if more are added.
+	    $validActions = array('delete');
+	    
+	    if (!($action = $req->get('batch_action')) ||
+	        !in_array($action, $validActions)) {
+	        $errorMsg = "Batch processing must have a valid action!";
+	    }
+	    
+	    if (!($contributorIds = $req->get('contributor_id')) ||
+	        !is_array($contributorIds)) {
+	        $errorMsg = "Batch processing must be given a list of contributor IDs!";    
+	    }
+	    
+	    // Check permissions for each batch action.
+	    if (!$this->isAllowed($action)) {
+	       $errorMsg = "Insufficient permissions for action given!";
+	    }
+	    
+	    // Put out the fire.
+	    if ($errorMsg) {
+	       $this->flashError($errorMsg);
+	       $this->_helper->redirector->goto('browse');
+	    }
+	    
+	    $this->_forward($action);
+	}	
 }
