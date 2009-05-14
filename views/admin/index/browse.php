@@ -25,39 +25,49 @@
         <?php echo pagination_links(); ?>
     </div>
     
-    <form action="<?php echo uri(array('action'=>'batch', 'controller'=>'index', 'module'=>'contribution'), 'default', array(), true); ?>" method="post" accept-charset="utf-8">
-        
+    <form class="clear" action="<?php echo uri(array('action'=>'batch', 'controller'=>'index', 'module'=>'contribution'), 'default', array(), true); ?>" method="post" accept-charset="utf-8">
     
-	<table>
+	<table class="browse-list simple vertical-headings" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr>
 			    <th><a href="#" id="check-all">Check All</a></th>
-				<th>Name</th>
-				<th>Email</th>
-				<th>Race</th>
-				<th>Gender</th>
-				<th>Occupation</th>
-				<th>Zipcode</th>
-				<th>Birth Year</th>
-				<th>IP Address</th>
-				<th>Contribution(s)</th>
+				<th>Contributor Name</th>
+				<th colspan="2">Information</th>
 			</tr>
 		</thead>
 		<tbody>
 		<?php foreach ($contributors as $contributor): ?>
 			<tr>
-			    <td><?php echo $this->formCheckbox('contributor_id[]', $contributor->id); ?></td>
-				<td><?php echo html_escape($contributor->name); ?></td>
+				<td rowspan="7" style="width:12%;"><?php echo $this->formCheckbox('contributor_id[]', $contributor->id); ?></td>
+				<th scope="row" rowspan="7"><a href="<?php echo uri('items/browse', array('contributor'=>$contributor->id)); ?>" title="View items contributed by <?php echo html_escape($contributor->name); ?>."><?php echo html_escape($contributor->name); ?></a></th>
+				<th scope="row">Email</th>
 				<td><?php echo html_escape($contributor->email); ?></td>
-				<td><?php echo html_escape($contributor->race); ?></td>
-				<td><?php echo html_escape($contributor->gender); ?></td>
-				<td><?php echo html_escape($contributor->occupation); ?></td>
-				<td><?php echo html_escape($contributor->zipcode); ?></td>
-				<td><?php echo html_escape($contributor->birth_year); ?></td>
-				<td><?php echo html_escape($contributor->ip_address); ?></td>
-				<td><a href="<?php echo uri('items/browse', array('contributor'=>$contributor->id)); ?>">View</a></td>
 			</tr>
-		<?php endforeach ?>
+			<tr>
+				<th scope="row">Race</th>
+				<td><?php echo html_escape($contributor->race); ?></td>
+			</tr>
+			<tr>
+				<th>Gender</th>
+				<td><?php echo html_escape($contributor->gender); ?></td>
+			</tr>
+			<tr>
+				<th>Occupation</th>
+				<td><?php echo html_escape($contributor->occupation); ?></td>	
+			</tr>
+			<tr>
+				<th>Zipcode</th>
+				<td><?php echo html_escape($contributor->zipcode); ?></td>
+			</tr>
+			<tr>
+				<th>Birth Year</th>
+				<td><?php echo html_escape($contributor->birth_year); ?></td>
+			</tr>
+			<tr>
+				<th>IP Address</th>
+				<td><?php echo html_escape($contributor->ip_address); ?></td>
+			</tr>
+		<?php endforeach; ?>
 		</tbody>
 		
 	</table>
