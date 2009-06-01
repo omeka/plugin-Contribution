@@ -97,7 +97,17 @@ function contribution_config_form()
     $pluginVersion = (int)get_option('contribution_db_migration');
     // Skip the migrations if we don't need it.
     if ($pluginVersion < CONTRIBUTION_MIGRATION) {
-        ContributionUpgrader::upgrade($pluginVersion, CONTRIBUTION_MIGRATION);
+        try {
+            if (ContributionUpgrader::upgrade($pluginVersion, CONTRIBUTION_MIGRATION)) {
+	            echo '<div class="success">Contribution plugin was successfully upgraded!</div>';  
+	        }
+        } catch (Exception $e) {
+            echo '<div class="error">An error occurred when attempting to ',
+                 'upgrade your Contribution plugin: ', $e->getMessage() ,
+                 '. Please notify your administrator and/or the plugin developers',
+                 ' of this issue.<br /><br />',
+                 '<pre>Error Trace: ', $e->getTraceAsString(), '</pre></div>';
+        }
     }    
     
     
@@ -536,14 +546,18 @@ class ContributionUpgrader
     public static function upgrade($from, $to)
     {
         $upgrader = new self;
+        $wasUpgraded = false;
         
         $currentMigration = $from;
         while ($currentMigration < $to) {
             $migrateMethod = '_to' . ++$currentMigration;
             $upgrader->$migrateMethod();
+            $wasUpgraded = true;
         }
 
         set_option('contribution_db_migration', $to);
+        
+        return $wasUpgraded;
     }
     
     /**
@@ -578,16 +592,12 @@ class ContributionUpgrader
         } else {
             // Otherwise, convert the existing elements.
             // Update the existing elements w/o interacting with the ElementSet models.
-            try {
-                $db->query(
+            $db->query(
         	            "UPDATE $db->Element SET element_set_id = ? 
         	            WHERE element_set_id = ? AND name IN (" . $db->quote(
         	                array('Online Submission', 'Posting Consent', 'Submission Consent')) .
         	            ") LIMIT 3",
         	            array($contributionFormElementSet->id, $additionalItemElementSetId));
-            } catch (Exception $e) {
-                var_dump($e);exit;
-            }
         }
     }
     
