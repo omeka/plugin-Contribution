@@ -184,6 +184,11 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				    'item_type_name'=>$_POST['type'],
 				    'tags'=>$_POST['tags']);
 				
+				$collectionId = get_option('contribution_collection_id');
+				if (!empty($collectionId) && is_numeric($collectionId)) {
+				    $itemMetadata['collection_id'] = (int) $collectionId;
+				}
+				
 				$contributorName = $_POST['contributor']['first_name'] . ' ' . $_POST['contributor']['last_name'];
 				
 				$creatorName = $_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'];

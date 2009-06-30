@@ -127,9 +127,9 @@ function contribution_config_form()
 	</div>
 	
 	<div class="field">
-	<label for="contributor_email">Contributor 'From' Email Address:</label>
+	<label for="contribution_contributor_email">Contributor 'From' Email Address:</label>
 	<div class="inputs">
-	    <input type="text" name="contributor_email" value="<?php echo settings('contribution_notification_email'); ?>" size="<?php echo $textInputSize; ?>" />
+	    <input type="text" name="contribution_contributor_email" value="<?php echo settings('contribution_notification_email'); ?>" size="<?php echo $textInputSize; ?>" />
     	<p class="explanation">Please enter the email address that you would like to appear in the 'From' field for all notification emails for new contributions.  Leave this field blank if you would not like to email a contributor whenever he/she makes a new contribution:</p>
 	</div>
     </div>
@@ -143,17 +143,25 @@ function contribution_config_form()
 	</div>
 	
 	<div class="field">
-	<label for="recaptcha_public_key">reCAPTCHA Public Key</label>
+	<label for="contribution_collection_id">Default Collection For Contributed Items:</label>
 	<div class="inputs">
-	    <input type="text" name="recaptcha_public_key" value="<?php echo settings('contribution_recaptcha_public_key') ?>" id="recaptcha_public_key" />
+	    <?php echo select_collection(array('name'=>'contribution_collection_id'), settings('contribution_collection_id'), null); ?>
+	    <p class="explanation">(Optional) Please select the default collection for contributed items.<br/>Note: Changing the collection will not affect the collections of items that have already been contributed.</p>
+	</div>
+	</div>
+	
+	<div class="field">
+	<label for="contribution_recaptcha_public_key">reCAPTCHA Public Key</label>
+	<div class="inputs">
+	    <input type="text" name="contribution_recaptcha_public_key" value="<?php echo settings('contribution_recaptcha_public_key') ?>" id="contribution_recaptcha_public_key" />
 	    <p class="explanation">To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">ReCAPTCHA</a> API key and enter the relevant values.</p>
 	</div>
 	</div>
 	
 	<div class="field">
-	<label for="recaptcha_private_key">reCAPTCHA Private Key</label>
+	<label for="contribution_recaptcha_private_key">reCAPTCHA Private Key</label>
 	<div class="inputs">
-	    <input type="text" name="recaptcha_private_key" value="<?php echo settings('contribution_recaptcha_private_key') ?>" id="recaptcha_private_key" />
+	    <input type="text" name="contribution_recaptcha_private_key" value="<?php echo settings('contribution_recaptcha_private_key') ?>" id="contribution_recaptcha_private_key" />
 	</div>
 	</div>
 <?php
@@ -208,12 +216,12 @@ function contribution_config_form_js()
  **/
 function contribution_config()
 {
-    set_option('contribution_recaptcha_public_key', $_POST['recaptcha_public_key']);
-    set_option('contribution_recaptcha_private_key', $_POST['recaptcha_private_key']);
+    set_option('contribution_recaptcha_public_key', $_POST['contribution_recaptcha_public_key']);
+    set_option('contribution_recaptcha_private_key', $_POST['contribution_recaptcha_private_key']);
 	set_option('contribution_consent_text', $_POST['contribution_consent_text']);
-	set_option('contribution_notification_email', $_POST['contributor_email']);
+	set_option('contribution_notification_email', $_POST['contribution_contributor_email']);
 	set_option('contribution_page_path', $_POST['contribution_page_path']);
-	
+	set_option('contribution_collection_id', $_POST['contribution_collection_id']);
 	
 	//if the page path is empty then make it the default page path
 	if (trim(get_option('contribution_page_path')) == '') {
@@ -240,7 +248,8 @@ function contribution_link_to_contribute($text, $attributes = array())
  * 
  * @return void
  **/
-function contribution_embed_consent_form() {
+function contribution_embed_consent_form() 
+{
 ?>
 	<form action="<?php echo uri(array('action'=>'submit'), 'contributionLinks'); ?>" id="consent" method="post" accept-charset="utf-8">
 
@@ -300,7 +309,8 @@ function contribution_admin_nav($navArray)
  * @param array $navArray Navigation elements to filter.
  * @return array
  **/
-function contribution_public_main_nav($navArray) {
+function contribution_public_main_nav($navArray) 
+{
     $navArray['Contribute'] = uri(array(), 'contributionAdd');
     return $navArray;
 }
