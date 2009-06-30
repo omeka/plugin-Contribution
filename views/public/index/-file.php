@@ -4,6 +4,6 @@
 	<input type="file" class="textinput" name="contributed_file" id="file-upload" class="fileinput" />	
 </div>	
 <div class="field">
-	<label>Description (optional)</label>
+	<label for="description">Description (optional)</label>
 	<?php echo $this->formTextarea('description', $this->text, array('class'=>'textinput')); ?>
 </div>
