@@ -14,11 +14,6 @@
  **/
 
 /**
- * Plugin version.
- */
-define('CONTRIBUTION_PLUGIN_VERSION', get_plugin_ini('Contribution', 'version'));
-
-/**
  * Migration #.  Useful for upgrading the plugin.
  */
 define('CONTRIBUTION_MIGRATION', 2);
@@ -39,7 +34,10 @@ define('CONTRIBUTORS_PER_PAGE', 10);
 add_plugin_hook('define_routes', 'contribution_routes');
 add_plugin_hook('config_form', 'contribution_config_form');
 add_plugin_hook('config', 'contribution_config');
+
 add_plugin_hook('install', array('Contribution_Upgrader', 'install'));
+add_plugin_hook('uninstall', 'contribution_uninstall');
+
 add_plugin_hook('define_acl', 'contribution_acl');
 add_plugin_hook('item_browse_sql', 'contribution_view_items');
 add_plugin_hook('after_validate_item', 'contribution_validate_item_contributor');
@@ -81,6 +79,22 @@ function contribution_routes($router)
 }
 
 /**
+ * Uninstalls the plugin
+ * 
+ * @return void
+ **/
+function contribution_uninstall()
+{
+    // delete the plugin options
+    delete_option('contribution_page_path');
+    delete_option('contribution_notification_email');
+    delete_option('contribution_consent_text');
+    delete_option('contribution_collection_id');
+    delete_option('contribution_recaptcha_public_key');
+    delete_option('contribution_recaptcha_private_key');
+}
+
+/**
  * HTML for the configuration form.
  * 
  * The following fields are configurable:
@@ -94,11 +108,12 @@ function contribution_routes($router)
 function contribution_config_form()
 {
     // Deal with upgrading the plugin if necessary.
-    $pluginVersion = (int)get_option('contribution_db_migration');
+    $pluginMigration = (int)get_option('contribution_db_migration');
+    
     // Skip the migrations if we don't need it.
-    if ($pluginVersion < CONTRIBUTION_MIGRATION) {
+    if ($pluginMigration < CONTRIBUTION_MIGRATION) {
         try {
-            if (Contribution_Upgrader::upgrade($pluginVersion, CONTRIBUTION_MIGRATION)) {
+            if (Contribution_Upgrader::upgrade($pluginMigration, CONTRIBUTION_MIGRATION)) {
 	            echo '<div class="success">Contribution plugin was successfully upgraded!</div>';  
 	        }
         } catch (Exception $e) {

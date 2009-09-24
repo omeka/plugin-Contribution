@@ -43,7 +43,6 @@ class Contribution_Upgrader
         self::_addElementsToElementSet(self::$_contributionElements, $elementSet);
         self::_addContributorsTable();
     	
-    	set_option('contribution_plugin_version', CONTRIBUTION_PLUGIN_VERSION);
     	set_option('contribution_page_path', CONTRIBUTION_PAGE_PATH);
     	set_option('contribution_db_migration', CONTRIBUTION_MIGRATION);
     }

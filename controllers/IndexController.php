@@ -4,14 +4,9 @@
  * @copyright Center for History and New Media, 2009
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @package Contribution
- **/
-
-/**
- * 
- *
- * @package Contribution
  * @copyright Center for History and New Media, 2009
  **/
+ 
 class Contribution_IndexController extends Omeka_Controller_Action
 {	
     protected $_captcha;
@@ -58,10 +53,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		$this->_captcha = $this->_setupCaptcha();
 		
-		if($this->_processForm($item))
-		{
+		if ($this->_processForm($item)) {
 			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
-		}else {
+		} else {
             $this->view->item = $item;
             if ($this->_captcha) {
                 // Requires a blank Zend_View instance b/c ZF forces it to.
@@ -145,12 +139,9 @@ class Contribution_IndexController extends Omeka_Controller_Action
         //Try to locate an existing contributor entry based on a hash of first / last / email address
         $contributor = get_db()->getTable('Contributor')->findByHash($firstName, $lastName, $email);
 
-        if(!$contributor) {
-            
+        if (!$contributor) { 
     		$contributor = new Contributor;
-		
     		$contributor->createEntity($contrib);
-		
     		$contributor->setArray($contrib);
         }
 
@@ -171,7 +162,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 **/
 	protected function _processForm($item)
 	{		
-		if(!empty($_POST)) {
+		if (!empty($_POST)) {
 		    		    
 			if(array_key_exists('pick_type', $_POST)) return false;
 					
@@ -270,17 +261,17 @@ class Contribution_IndexController extends Omeka_Controller_Action
 				    $this->flashError($e->getMessage());
 				}
 																								
-				if($item->exists()) {
+				if ($item->exists()) {
 				    // Also this is needed, apparently.
 					$item->setAddedBy($contributor->Entity);
 
 					//Put item in the session for the consent form to use
 					$this->session->itemId = $item->id;
-					$this->session->email = $_POST['contributor']['email'];
+					$this->session->email = trim($_POST['contributor']['email']);
 					
 					// Success.
 					return true;
-				}else {
+				} else {
 				    // Failure?  Should this even get here?  It should probably throw if the item doesn't save.
 					return false;
 				}	
@@ -496,22 +487,22 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * @param Item $item Item that was contributed via the form.
 	 * @return void
 	 **/
-	protected function _sendEmailNotification($email, $item)
+	protected function _sendEmailNotification($toEmail, $item)
 	{
-		$from_email = get_option('contribution_notification_email');
+		$fromEmail = get_option('contribution_notification_email');
 		
 		//If this field is empty, don't send the email
-		if(empty($from_email)) {
+		if(empty($fromEmail)) {
 			return;
 		}
 		
 		$this->view->item = $item;
-		$item->view->email = $email;
+		$item->view->email = $toEmail;
 				
 		$mail = new Zend_Mail();
         $mail->setBodyText($this->view->render('index/email.php'));
-        $mail->setFrom($from_email, get_option('site_title') . ' Administrator');
-        $mail->addTo($email);
+        $mail->setFrom($fromEmail, get_option('site_title') . ' Administrator');
+        $mail->addTo($toEmail);
         $mail->setSubject("Your " . get_option('site_title') . " Contribution");
         $mail->send();
 	}
