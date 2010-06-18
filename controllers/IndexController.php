@@ -1,11 +1,11 @@
 <?php 
 /**
  * @version $Id$
- * @copyright Center for History and New Media, 2009
+ * @author CHNM
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
+ * @copyright Center for History and New Media, 2010
  * @package Contribution
- * @copyright Center for History and New Media, 2009
- **/
+ */
  
 class Contribution_IndexController extends Omeka_Controller_Action
 {	
@@ -38,6 +38,11 @@ class Contribution_IndexController extends Omeka_Controller_Action
 
 		require_once 'Zend/Session.php';
 		$this->session = new Zend_Session_Namespace('Contribution');		
+	}
+	
+	public function indexAction()
+	{
+		$this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
 	}
 	
 	/**
