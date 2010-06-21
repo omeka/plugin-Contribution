@@ -7,6 +7,8 @@
  * @package Contribution
  */
 
+require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+
 /**
  * Overrides Omeka's ElementForm helper to allow for custom display of fields.
  */
@@ -20,7 +22,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
         $this->_contributionTypeElement = $contributionTypeElement;
         $element = $contributionTypeElement->getElement();
         
-        parent::elementForm($element, $record, $options);
+        return parent::elementForm($element, $record, $options);
     }
     
     /**
