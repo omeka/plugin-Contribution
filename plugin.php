@@ -12,6 +12,9 @@ define('CONTRIBUTION_HELPERS_DIR', CONTRIBUTION_PLUGIN_DIR
                                  . DIRECTORY_SEPARATOR
                                  . 'helpers');
 
+require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
+                                      . 'ThemeHelpers.php';
+
 /**
 * Contribution plugin class
 */
