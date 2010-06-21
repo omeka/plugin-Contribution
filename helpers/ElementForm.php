@@ -12,8 +12,22 @@
  */
 class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
 {
+    protected $_contributionTypeElement;
+    
+    public function elementForm(ContributionTypeElement $contributionTypeElement, 
+                                Omeka_Record $record, $options = array())
+    {
+        $this->_contributionTypeElement = $contributionTypeElement;
+        $element = $contributionTypeElement->getElement();
+        
+        parent::elementForm($element, $record, $options);
+    }
+    
+    /**
+     * Uses the type's alias to display rather than the element name.
+     */
 	protected function _getFieldLabel()
 	{
-		
+		return html_escape($this->_contributionTypeElement->alias);
 	}
 }

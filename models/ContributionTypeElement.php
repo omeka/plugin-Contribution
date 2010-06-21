@@ -10,9 +10,11 @@
 class ContributionTypeElement extends Omeka_Record
 {
     public $type_id;
+    public $element_id;
     public $alias;
     
-    protected $_related = array('ContributionType' => 'getType');
+    protected $_related = array('ContributionType' => 'getType',
+                                'Element'          => 'getElement');
     
     protected function initializeMixins()
     {
@@ -27,5 +29,15 @@ class ContributionTypeElement extends Omeka_Record
     public function getType()
     {
         return $this->_db->getTable('ContributionType')->find($this->type_id);
+    }
+    
+    /**
+     * Get the Element associated with this type element.
+     *
+     * @return Element
+     */
+    public function getElement()
+    {
+        return $this->_db->getTable('Element')->find($this->element_id);
     }
 }

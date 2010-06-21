@@ -59,9 +59,11 @@ class Contribution
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_type_elements` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `type_id` INT UNSIGNED NOT NULL,
+            `element_id` INT UNSIGNED NOT NULL,
             `alias` VARCHAR(255) NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `type_id` (`type_id`)
+            UNIQUE KEY `type_id` (`type_id`),
+            KEY `element_id` (`element_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
