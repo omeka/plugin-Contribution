@@ -9,5 +9,5 @@
 
 class ContributionContributedItem extends Omeka_Record
 {
-	public $item_id;
+    public $item_id;
 }

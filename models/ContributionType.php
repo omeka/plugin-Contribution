@@ -9,34 +9,34 @@
 
 class ContributionType extends Omeka_Record
 {
-	public $item_type_id;
-	public $alias;
-	public $file_allowed;
-	public $file_required;
-	
-	protected $_related = array('ContributionTypeElements' => 'getTypeElements',
-	                            'ItemType' => 'getItemType');
-	
-	protected function initializeMixins()
-	{
-		$this->mixins[] = new Relatable($this);
-	}
-	
-	/**
-	 * Get the type elements associated with this type.
-	 * @todo actually implement
-	 */
-	public function getTypeElements()
-	{
-		
-	}
-	
-	/**
-	 * Get the item type associated with this type.
-	 * @todo actually implement
-	 */
-	public function getItemType()
-	{
-		
-	}
+    public $item_type_id;
+    public $alias;
+    public $file_allowed;
+    public $file_required;
+    
+    protected $_related = array('ContributionTypeElements' => 'getTypeElements',
+                                'ItemType' => 'getItemType');
+    
+    protected function initializeMixins()
+    {
+        $this->mixins[] = new Relatable($this);
+    }
+    
+    /**
+     * Get the type elements associated with this type.
+     * @todo actually implement
+     */
+    public function getTypeElements()
+    {
+        
+    }
+    
+    /**
+     * Get the item type associated with this type.
+     * @todo actually implement
+     */
+    public function getItemType()
+    {
+        
+    }
 }

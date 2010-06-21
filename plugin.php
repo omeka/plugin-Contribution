@@ -64,9 +64,9 @@ class Contribution
 
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributors` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-			`name` VARCHAR(255) NOT NULL,
+            `name` VARCHAR(255) NOT NULL,
             `email` VARCHAR(255) NOT NULL,
-			`ip_address` INT UNSIGNED NOT NULL,
+            `ip_address` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `email` (`email`)
             ) ENGINE=MyISAM;";
@@ -99,12 +99,12 @@ class Contribution
             $recordType->delete();
         }
 
-		$elementSetTable = $this->_db->getTable('ElementSet');
-		$elementSetId = $elementSetTable->findIdFromName('Contributor Information');
-		if ($elementSetId !== null) {
-			$elementSet = $elementSetTable->find($elementSetId);
-			$elementSet->delete();
-		}
+        $elementSetTable = $this->_db->getTable('ElementSet');
+        $elementSetId = $elementSetTable->findIdFromName('Contributor Information');
+        if ($elementSetId !== null) {
+            $elementSet = $elementSetTable->find($elementSetId);
+            $elementSet->delete();
+        }
         
         // For now, leave the element set there
         // Probably will make sense to delete it, since the contributors it
