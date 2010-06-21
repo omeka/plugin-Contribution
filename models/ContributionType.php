@@ -24,19 +24,21 @@ class ContributionType extends Omeka_Record
     
     /**
      * Get the type elements associated with this type.
-     * @todo actually implement
+     *
+     * @return array
      */
     public function getTypeElements()
     {
-        
+        return $this->_db->getTable('ContributionTypeElement')->findByType($this);
     }
     
     /**
      * Get the item type associated with this type.
-     * @todo actually implement
+     *
+     * @return ItemType
      */
     public function getItemType()
     {
-        
+        return $this->_db->getTable('ItemType')->find($this->item_type_id);
     }
 }

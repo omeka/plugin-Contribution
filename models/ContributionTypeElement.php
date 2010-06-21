@@ -21,10 +21,11 @@ class ContributionTypeElement extends Omeka_Record
     
     /**
      * Get the type associated with this type element.
-     * @todo actually implement
+     *
+     * @return ContributionType
      */
     public function getType()
     {
-        
+        return $this->_db->getTable('ContributionType')->find($this->type_id);
     }
 }
