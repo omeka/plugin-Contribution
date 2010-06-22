@@ -32,4 +32,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
 	{
 		return html_escape($this->_contributionTypeElement->alias);
 	}
+	
+	protected function _displayFormControls()
+	{}
 }

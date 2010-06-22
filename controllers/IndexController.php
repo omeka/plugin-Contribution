@@ -34,12 +34,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
      **/
 	public function init()
 	{
-		$this->_modelClass = 'Contributor';		
-
 		require_once 'Zend/Session.php';
 		$this->session = new Zend_Session_Namespace('Contribution');		
 	}
-	
+
 	public function contributeAction()
 	{
 	    // Override default element form display	    
@@ -103,11 +101,15 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	
 	public function typeFormAction()
 	{
+	    $this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
 	    $typeId = $_POST['typeId'];
 	    $type = get_db()->getTable('ContributionType')->find($typeId);
 	    
 	    if ($type) {
 	        $this->view->type = $type;
+	        $this->view->item = new Item;
+	    } else {
+	        throw new Omeka_Controller_Exception_404;
 	    }
 	}
 	
