@@ -29,7 +29,7 @@ function displayTypeForm() {
                });
             });
         }
-        });
+    });
 }
 
 jQuery(document).ready(function() {
@@ -38,6 +38,13 @@ jQuery(document).ready(function() {
     jQuery('#contribution-type').change(displayTypeForm);
 });
 </script>
+<style type="text/css">
+#captcha textarea {
+    float: none;
+    height: auto;
+    width: auto;
+}
+</style>
 
 <div id="primary">
     <h1><?php echo $head['title']; ?></h1>
@@ -50,8 +57,8 @@ jQuery(document).ready(function() {
         <div id="contribution-type-form">
         <?php if (isset($typeForm)): echo $typeForm; endif; ?>
         </div>
-        <div id="captcha-submit">
-            <?php echo $captchaScript; ?>
+        <div id="captcha-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
+            <div id="captcha"><?php echo $captchaScript; ?></div>
             <input type="submit" name="form-submit" id="form-submit" value="Contribute" />
         </div>
     </form>
