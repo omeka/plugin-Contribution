@@ -17,19 +17,25 @@ jQuery.noConflict();
 function displayTypeForm() {
     var form = jQuery('#contribution-type-form');
     var value = this.value;
-    form.slideUp(400, function() { form.empty(); 
+    jQuery('#captcha-submit').hide();
+    form.slideUp(400, function() { 
+        form.empty(); 
         if (value != "") {
             form.hide();
-            jQuery.post('type-form', {typeId: value}, function(data) {
+            jQuery.post('type-form', {contribution_type: value}, function(data) {
                form.append(data); 
-               form.slideDown();
+               form.slideDown(400, function() {
+                   jQuery('#captcha-submit').show();
+               });
             });
         }
         });
 }
 
 jQuery(document).ready(function() {
-   jQuery('#contribution-type').change(displayTypeForm);
+    jQuery('#submit-type').remove();
+    jQuery('#captcha-submit').hide();
+    jQuery('#contribution-type').change(displayTypeForm);
 });
 </script>
 
@@ -38,9 +44,15 @@ jQuery(document).ready(function() {
     <form method="POST">
         <div class="inputs">
             <label for="contribution_type">What type of item do you want to contribute?</label>
-            <?php echo contribution_select_type(array( 'name' => 'contribution-type', 'id' => 'contribution-type')); ?>
+            <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type')); ?>
+            <input type="submit" name="submit-type" id="submit-type" value="Select" />
         </div>
         <div id="contribution-type-form">
+        <?php if (isset($typeForm)): echo $typeForm; endif; ?>
+        </div>
+        <div id="captcha-submit">
+            <?php echo $captchaScript; ?>
+            <input type="submit" name="form-submit" id="form-submit" value="Contribute" />
         </div>
     </form>
 </div>

@@ -37,20 +37,44 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		require_once 'Zend/Session.php';
 		$this->session = new Zend_Session_Namespace('Contribution');		
 	}
-
+	
+	/**
+	 * Action for main contribution form.
+	 */
 	public function contributeAction()
 	{
-	    // Override default element form display	    
-		$this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
-		
-		$item = new Item;
-		
-		$this->_captcha = $this->_setupCaptcha();
-		
-		$this->view->item = $item;
+	    $this->_captcha = $this->_setupCaptcha();
         if ($this->_captcha) {
             $this->view->captchaScript = $this->_captcha->render(new Zend_View);
         }
+	    	
+	    if (isset($_POST['submit-type'])) {
+	        $this->_setupContributeSubmit();
+	        $this->view->typeForm = $this->view->render('index/type-form.php');
+	    }
+	}
+	
+	/**
+	 * Action for AJAX request from contribute form.
+	 */
+	public function typeFormAction()
+	{
+	    $this->_setupContributeSubmit();
+	}
+	
+	/**
+	 * Common tasks whenever displaying submit form for contribution.
+	 */
+	public function _setupContributeSubmit()
+	{
+	    // Override default element form display	    
+		$this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
+	    $item = new Item;
+		$this->view->item = $item;
+        
+        $typeId = $_POST['contribution_type'];
+	    $type = get_db()->getTable('ContributionType')->find($typeId);
+	    $this->view->type = $type;
 	}
 	
 	/**
@@ -97,20 +121,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
 		}		
-	}
-	
-	public function typeFormAction()
-	{
-	    $this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
-	    $typeId = $_POST['typeId'];
-	    $type = get_db()->getTable('ContributionType')->find($typeId);
-	    
-	    if ($type) {
-	        $this->view->type = $type;
-	        $this->view->item = new Item;
-	    } else {
-	        throw new Omeka_Controller_Exception_404;
-	    }
 	}
 	
 	/**
@@ -337,21 +347,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Determine whether or not we are requiring that a file be uploaded for
-	 * a given Item Type.
-	 * 
-	 * Files are currently required for: Moving Image, Still Image, Sound.
-	 * 
-	 * @param string $itemTypeName
-	 * @return boolean
-	 **/
-	protected function _uploadedFileIsRequired($itemTypeName)
-	{
-	    $fileRequiredItemTypes = array('Moving Image', 'Still Image', 'Sound');
-	    return in_array($itemTypeName, $fileRequiredItemTypes, true);
-	}
-	
-	/**
 	 * Validate the contribution form submission.
 	 * 
 	 * Will flash validation errors that occur.
@@ -466,40 +461,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		unset($session->email);
 				
 		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');
-	}
-	
-	/**
-	 * Retrieve the form partial to display on the Contribution form for a 
-	 * specific Item Type.   
-	 * 
-	 * The following Item Types will display a file form input and an optional
-	 * 'Description' input: Still Image, Moving Image, Sound
-	 * 
-	 * All other Item Types will display as a textarea labeled 'Your Story'.
-	 * 
-	 * TODO: This should be extensible so that new forms can be written for 
-	 * custom Item Types.
-	 * @return void
-	 **/
-	public function partialAction() 
-	{
-		$contributionType = $this->_getParam('contributiontype');
-		if (($text = $this->_getParam('text')) or ($text = $this->_getParam('description'))) {
-		    $this->view->text = $text;
-		}
-		switch ($contributionType) {
-		    // Display a file input for uploading a single file to Omeka.
-			case 'Still Image':
-			case 'Moving Image':
-			case 'Sound':
-				$partial = "-file";
-				break;
-			// Document and everything else will display as a textarea
-			default:
-				$partial = "-document";
-				break;
-		}
-		$this->render($partial);
 	}
 	
 	/**
