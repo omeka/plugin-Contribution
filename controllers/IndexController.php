@@ -40,9 +40,41 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		$this->session = new Zend_Session_Namespace('Contribution');		
 	}
 	
-	public function indexAction()
+	public function contributeAction()
 	{
+	    // Override default element form display	    
 		$this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
+		
+		$item = new Item;
+		
+		$this->_captcha = $this->_setupCaptcha();
+		
+		$this->view->item = $item;
+        if ($this->_captcha) {
+            $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+        }
+	}
+	
+	/**
+	 * Creates the reCAPTCHA object and returns it.
+	 * 
+	 * @return Zend_Captcha_Recaptcha|null
+	 */
+	protected function _setupCaptcha()
+	{
+	    $publicKey = get_option('contribution_recaptcha_public_key');
+	    $privateKey = get_option('contribution_recaptcha_private_key');
+
+	    if (empty($publicKey) or empty($privateKey)) {
+	       return;
+	    }
+	    
+        // Originating request:
+        $captcha = new Zend_Captcha_ReCaptcha(array(
+            'pubKey' => $publicKey, 
+            'privKey' => $privateKey));
+
+        return $captcha;
 	}
 	
 	/**
@@ -67,6 +99,16 @@ class Contribution_IndexController extends Omeka_Controller_Action
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
 		}		
+	}
+	
+	public function typeFormAction()
+	{
+	    $typeId = $_POST['typeId'];
+	    $type = get_db()->getTable('ContributionType')->find($typeId);
+	    
+	    if ($type) {
+	        $this->view->type = $type;
+	    }
 	}
 	
 	/**
@@ -357,29 +399,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
         }
 		
 		return $isValid;
-	}
-	
-	
-	/**
-	 * @internal This is copied almost exactly from the SimpleContactForm.
-	 * 
-	 * @return Zend_Captcha_Recaptcha|null
-	 **/
-	protected function _setupCaptcha()
-	{
-	    $publicKey = get_option('contribution_recaptcha_public_key');
-	    $privateKey = get_option('contribution_recaptcha_private_key');
-
-	    if (empty($publicKey) or empty($privateKey)) {
-	       return;
-	    }
-	    
-        // Originating request:
-        $captcha = new Zend_Captcha_ReCaptcha(array(
-            'pubKey'=>$publicKey, 
-            'privKey'=>$privateKey));
-
-        return $captcha;
 	}
 	
 	/**
