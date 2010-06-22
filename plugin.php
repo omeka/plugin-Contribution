@@ -62,8 +62,7 @@ class Contribution
             `element_id` INT UNSIGNED NOT NULL,
             `alias` VARCHAR(255) NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `type_id` (`type_id`),
-            KEY `element_id` (`element_id`)
+            UNIQUE KEY `type_id_element_id` (`type_id`, `element_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
@@ -86,15 +85,16 @@ class Contribution
         $this->_db->query($sql);
 
         $this->_createContributorElementSet();
+        $this->_createDefaultContributionTypes();
     }
 
     public function uninstall()
     {
         $sql = "DROP TABLE IF EXISTS
-            {$this->_db->prefix}contribution_types,
-            {$this->_db->prefix}contriubtion_type_elements,
-            {$this->_db->prefix}contribution_contributors,
-            {$this->_db->prefix}contribution_contributed_items;";
+            `{$this->_db->prefix}contribution_types`,
+            `{$this->_db->prefix}contribution_type_elements`,
+            `{$this->_db->prefix}contribution_contributors`,
+            `{$this->_db->prefix}contribution_contributed_items`;";
         $this->_db->query($sql);
 
         $recordTypeTable = $this->_db->getTable('RecordType');
@@ -105,15 +105,39 @@ class Contribution
         }
 
         $elementSetTable = $this->_db->getTable('ElementSet');
-        $elementSetId = $elementSetTable->findIdFromName('Contributor Information');
-        if ($elementSetId !== null) {
-            $elementSet = $elementSetTable->find($elementSetId);
+        $elementSet = $elementSetTable->findByName('Contributor Information');
+        if ($elementSet !== null) {
             $elementSet->delete();
         }
+    }
+    
+    private function _createDefaultContributionTypes()
+    {
+        $storyType = new ContributionType;
+        $storyType->item_type_id = 1;
+        $storyType->alias = 'Story';
+        $storyType->file_allowed = 1;
+        $storyType->file_required = 0;
+        $storyType->save();
         
-        // For now, leave the element set there
-        // Probably will make sense to delete it, since the contributors it
-        // goes with will be gone.
+        $textElement = new ContributionTypeElement;
+        $textElement->type_id = $storyType->id;
+        $textElement->element_id = 1;
+        $textElement->alias = 'Story Text';
+        $textElement->save();
+        
+        $imageType = new ContributionType;
+        $imageType->item_type_id = 6;
+        $imageType->alias = 'Image';
+        $imageType->file_allowed = 1;
+        $imageType->file_required = 1;
+        $imageType->save();
+        
+        $descriptionElement = new ContributionTypeElement;
+        $descriptionElement->type_id = $imageType->id;
+        $descriptionElement->element_id = 41;
+        $descriptionElement->alias = 'Image Description';
+        $descriptionElement->save();
     }
     
     private function _createContributorElementSet()
