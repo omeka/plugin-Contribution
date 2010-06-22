@@ -16,8 +16,9 @@ jQuery.noConflict();
 
 function displayTypeForm() {
     var form = jQuery('#contribution-type-form');
+    var submit = jQuery('#captcha-submit');
     var value = this.value;
-    jQuery('#captcha-submit').hide();
+    submit.hide();
     form.slideUp(400, function() { 
         form.empty(); 
         if (value != "") {
@@ -25,7 +26,7 @@ function displayTypeForm() {
             jQuery.post('type-form', {contribution_type: value}, function(data) {
                form.append(data); 
                form.slideDown(400, function() {
-                   jQuery('#captcha-submit').show();
+                   submit.show();
                });
             });
         }
