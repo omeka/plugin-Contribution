@@ -14,6 +14,9 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 {	
     protected $_captcha;
 	
+	/**
+	 * Index action; simply forwards to contributeAction.
+	 */
 	public function indexAction()
 	{
 	    $this->_forward('contribute');
@@ -48,19 +51,17 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	    $this->_setupContributeSubmit();
 	}
 	
+	/**
+	 * Displays terms of service for contribution.
+	 */
 	public function termsAction()
 	{
 	}
 	
 	/**
-	 * Display a "Thank You" message to users who have contributed an item 
+	 * Displays a "Thank You" message to users who have contributed an item 
 	 * through the public form.
-	 * 
-	 * Redirects here from the 'submit' action.
-	 * 
-	 * @see Contribution_IndexController::submitAction()
-	 * @return void
-	 **/
+	 */
 	public function thankyouAction()
 	{
 	}
@@ -109,7 +110,9 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	 * new item to the session.  Redirect to the consent form. 
 	 * 
 	 * If validation fails, render the Contribution form again with errors.
-	 * @return void
+	 *
+	 * @param array $post POST array
+	 * @return bool
 	 */
 	protected function _processForm($post)
 	{		
@@ -154,7 +157,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
                 return false;
             }
             
-			$this->_addElementsToItem($item, $post['Elements']);
+			$this->_addElementTextsToItem($item, $post['Elements']);
 			$item->save();
 			
 			return true;
@@ -162,6 +165,13 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 		return false;
 	}
 	
+	/**
+	 * Deals with files specified on the contribution form.
+	 *
+	 * @param ItemBuilder $builder Builder for item to be contributed.
+	 * @param ContributionType $contributionType Type of contribution.
+	 * @return bool False only if errors occurred.
+	 */
 	protected function _processFileUpload($builder, $contributionType) {
 	    if ($contributionType->file_allowed) {
             $options = array();
@@ -191,9 +201,16 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 			    return false;
 			}
         }
+        return true;
 	}
 	
-	protected function _addElementsToItem($item, $elements)
+	/**
+	 * Adds ElementTexts to item.
+	 *
+	 * @param Item $item Item to add texts to.
+	 * @param array $elements Array of element inputs from form
+	 */
+	protected function _addElementTextsToItem($item, $elements)
 	{
 	    $elementTable = get_db()->getTable('Element');
 	    foreach($elements as $elementId => $elementTexts) {
@@ -213,7 +230,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	 *      Captcha (if set up)
 	 *      Terms agreement
 	 *      
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function _validateContribution($post)
 	{
@@ -249,7 +266,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	 * of those properties.
 	 * 
 	 * @return Contributor
-	 **/	
+	 * @todo Update for new Contribution
+	 */	
 	protected function _createOrFindContributor()
 	{
 		//Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
@@ -277,11 +295,11 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	 * This email will appear to have been sent from the address specified via
 	 * the 'contribution_notification_email' option.
 	 * 
-	 * FIXME: Coding standards.
 	 * @param string $email Address to send to.
 	 * @param Item $item Item that was contributed via the form.
 	 * @return void
-	 **/
+	 * @todo Update for new Contribution
+	 */
 	protected function _sendEmailNotification($toEmail, $item)
 	{
 		$fromEmail = get_option('contribution_notification_email');
