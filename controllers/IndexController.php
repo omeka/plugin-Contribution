@@ -43,11 +43,18 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 */
 	public function contributeAction()
 	{
-	    $this->_captcha = $this->_setupCaptcha();
-        if ($this->_captcha) {
-            $this->view->captchaScript = $this->_captcha->render(new Zend_View);
-        }
-	    	
+	    if (!isset($_POST['form-submit'])) {
+	        $this->_captcha = $this->_setupCaptcha();
+            if ($this->_captcha) {
+                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+            }
+	    } else {
+	        //$item = new Item;
+	        //$item->saveForm($_POST);
+	        $this->_processForm();
+	        echo var_dump($_POST);
+	        die();
+	    }
 	    if (isset($_POST['submit-type'])) {
 	        $this->_setupContributeSubmit();
 	        $this->view->typeForm = $this->view->render('index/type-form.php');
@@ -100,65 +107,97 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Add (contribute) a new item through a public-facing form.
+	 * Handle the POST for adding an item via the public form.
 	 * 
-	 * Accessible only through the public interface.
+	 * Validate and save the contribution to the database.  Save the ID of the
+	 * new item to the session.  Redirect to the consent form. 
 	 * 
+	 * If validation fails, render the Contribution form again with errors.
 	 * @return void
-	 **/	
-	public function addAction()
-	{
-		$item = new Item;
-		
-		$this->_captcha = $this->_setupCaptcha();
-		
-		if ($this->_processForm($item)) {
-			$this->redirect->gotoRoute(array('action'=>'consent'), 'contributionLinks');
-		} else {
-            $this->view->item = $item;
-            if ($this->_captcha) {
-                // Requires a blank Zend_View instance b/c ZF forces it to.
-                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
-            }
-		}		
-	}
-	
-	/**
-	 * Delete an existing Contributor (and all the items, if specified).
-	 **/
-	public function deleteAction()
-	{
-	    $req = $this->getRequest();
-	    $contributorIds = $req->get('contributor_id');
-	    
-	    // Check for a flag submitted from the confirmation form to see if we need
-	    // to actually delete this stuff.
-	    if ($req->has('do_delete')) {	       
-	       $deleteItems = (boolean)$req->get('delete_items');
-	       // Compressed into a string on the confirm form.
-	       $contributorIds = explode(',', $contributorIds);
-	       
-	       if (empty($contributorIds)) {
-	           $this->flashError("No contributors were scheduled for deletion.");
-	           $this->_helper->redirector->goto('browse');
-	       }
-	       
-	       $contributors = $this->getTable()->findByIds($contributorIds);
-	       foreach ($contributors as $contributor) {
-	           $contributor->delete($deleteItems);
-	       }
-	       
-	       // Give us a nice message to let us know it worked.
-	       $successMsg = count($contributors) . " contributor(s) " 
-	                   . ($deleteItems ? " and their associated items " : "") 
-	                   . "were successfully deleted.";
-	       $this->flashSuccess($successMsg);
-	       
-	       // Go back to the browse page.
-	       $this->_helper->redirector->goto('browse');
-	    }
-	    
-	    $this->view->contributors = $this->getTable()->findByIds($contributorIds);
+	 */
+	protected function _processForm()
+	{		
+	    /**
+	     * Internal testing ONLY! Form submissions are not currently validated
+	     */
+		if (!empty($_POST)) {
+			try {
+			    $item = new Item;
+			    
+			    $contributionTypeId = $_POST['contribution_type'];
+			    $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
+			    $itemTypeId = $contributionType->getItemType()->id;				
+			    $item->public = false;
+                $item->featured = false;
+                $item->item_type_id = $itemTypeId;
+				$collectionId = get_option('contribution_collection_id');
+				if (!empty($collectionId) && is_numeric($collectionId)) {
+				    $item->collection_id = (int) $collectionId;
+				}
+				/*
+				if (!$this->_validateContribution($creatorName)) {
+                    return false;
+                }*/
+                
+				$elementTable = get_db()->getTable('Element');
+				$elements = $_POST['Elements'];
+				foreach($elements as $elementId => $elementTexts) {
+				    $element = $elementTable->find($elementId);
+				    foreach($elementTexts as $elementText) {
+				        $item->addTextForElement($element, $elementText['text']);
+				    }
+				}
+				$item->save();
+				/*
+				// Add the text for Document item types, if necessary.    
+												
+				$contributor = $this->_createOrFindContributor();
+				Zend_Registry::set('contributor', $contributor);
+				
+				// If a particular contribution type implies (requires) a file
+				// to be uploaded, add necessary options for insert_item().
+				// FIXME: This wouldn't account for situations where uploads are
+				// optional, such as documents.
+				if ($this->_uploadedFileIsRequired($_POST['type'])) {
+				    $fileUploadOptions = array(
+                        'files' => 'contributed_file', // Form input name
+                        'file_transfer_type' => 'Upload',
+                        'file_ingest_options' => array('ignoreNoFile'=> false));
+				} else {
+				    $fileUploadOptions = array();
+				}
+				
+				// Add the whitelists for uploaded files.
+				$fileValidation = new Contribution_FileValidation($itemMetadata['item_type_name']);
+				$fileValidation->enableFilter();
+                                				
+				// Needed to tag the items properly.
+				$itemMetadata['tag_entity'] = $contributor->Entity;					
+				try {
+				    $item = insert_item($itemMetadata, 
+					                    $elementTexts, 
+					                    $fileUploadOptions);
+				} catch (Omeka_File_Ingest_InvalidException $e) {
+				    // HACK: grep the exception to determine whether this is
+				    // related to file uploads.
+				    if (strstr($e->getMessage(), 
+				               "The file 'contributed_file' was not uploaded")) {
+				       $this->flashError("File: A file must be uploaded.");
+				    } else {
+				        $this->flashError($e->getMessage());
+				    }
+				} catch (Exception $e) {
+				    $this->flashError($e->getMessage());
+				} */
+				return true;
+			} catch (Omeka_Validator_Exception $e) {
+				$this->flashValidationErrors($e);
+				// Validation errors.
+				return false;
+			}
+		}
+		// No POST.
+		return false;
 	}
 		
 	/**
@@ -205,145 +244,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
         }
 
 		return $contributor;
-	}
-            
-	/**
-	 * Handle the POST for adding an item via the public form.
-	 * 
-	 * Validate and save the contribution to the database.  Save the ID of the
-	 * new item to the session.  Redirect to the consent form. 
-	 * 
-	 * If validation fails, render the Contribution form again with errors.
-	 *
-	 * FIXME: Split this into smaller methods.
-	 * TODO: Make sure this still works without Javascript.
-	 * @return void
-	 **/
-	protected function _processForm($item)
-	{		
-		if (!empty($_POST)) {
-		    		    
-			if(array_key_exists('pick_type', $_POST)) return false;
-					
-			try {				
-				
-				$itemMetadata = array(
-				    'public'=>false,
-				    'featured'=>false,
-				    // Do not set the collection_id.
-				    'item_type_name'=>$_POST['type'],
-				    'tags'=>$_POST['tags']);
-				
-				$collectionId = get_option('contribution_collection_id');
-				if (!empty($collectionId) && is_numeric($collectionId)) {
-				    $itemMetadata['collection_id'] = (int) $collectionId;
-				}
-				
-				$contributorName = $_POST['contributor']['first_name'] . ' ' . $_POST['contributor']['last_name'];
-				
-				$creatorName = $_POST['contributor_is_creator'] ? $contributorName : (string)$_POST['creator'];
-				
-				if (!$this->_validateContribution($creatorName)) {
-                    return false;
-                }
-								
-				$elementTexts = array(
-				    'Dublin Core'=>array(
-				        'Title'=>array(array(
-				            'text'=>(string)$_POST['title'], 
-				            'html'=>false)),
-				        'Description'=>array(array(
-				            'text'=>(string)$_POST['description'], 
-				            'html'=>false)),
-				        'Contributor'=> array(array(
-				            'text'=>$contributorName,
-				            'html'=>false)),
-				        'Creator'=>array(array(
-				            'text'=>$creatorName,
-				            'html'=>false))),
-				    'Contribution Form'=>array(
-				        'Online Submission'=>array(array(
-				            'text'=>'Yes', // We're submitting through the contribution form.
-				            'html'=>false)),
-				        'Submission Consent'=>array(array( 
-				            'text'=>'No', // This will be overridden by the consent form.
-				            'html'=>false)),
-				        'Posting Consent'=>array(array(
-				            'text'=>$_POST['posting_consent'],
-				            'html'=>false)),
-				        'Contributor is Creator'=>array(array(
-				            'text'=>$_POST['contributor_is_creator'] ? 'Yes' : 'No')))
-				    );
-				
-				// Add the text for Document item types, if necessary.    
-				if (array_key_exists('text', $_POST)) {
-				    $elementTexts['Item Type Metadata']['Text'][] = array('text'=>$_POST['text'], 'html'=>false);
-				}
-												
-				$contributor = $this->_createOrFindContributor();
-				Zend_Registry::set('contributor', $contributor);
-				
-				// If a particular contribution type implies (requires) a file
-				// to be uploaded, add necessary options for insert_item().
-				// FIXME: This wouldn't account for situations where uploads are
-				// optional, such as documents.
-				if ($this->_uploadedFileIsRequired($_POST['type'])) {
-				    $fileUploadOptions = array(
-                        'files'=>'contributed_file', // Form input name
-                        'file_transfer_type'=>'Upload',
-                        'file_ingest_options'=>array(
-                            'ignoreNoFile'=> false));
-				} else {
-				    $fileUploadOptions = array();
-				}
-				
-				// Add the whitelists for uploaded files.
-				$fileValidation = new Contribution_FileValidation($itemMetadata['item_type_name']);
-				$fileValidation->enableFilter();
-                                				
-				// Needed to tag the items properly.
-				$itemMetadata['tag_entity'] = $contributor->Entity;					
-				try {
-				    $item = insert_item($itemMetadata, 
-					                    $elementTexts, 
-					                    $fileUploadOptions);
-				} catch (Omeka_File_Ingest_InvalidException $e) {
-				    // HACK: grep the exception to determine whether this is
-				    // related to file uploads.
-				    if (strstr($e->getMessage(), 
-				               "The file 'contributed_file' was not uploaded")) {
-				       $this->flashError("File: A file must be uploaded.");
-				    } else {
-				        $this->flashError($e->getMessage());
-				    }
-				} catch (Exception $e) {
-				    $this->flashError($e->getMessage());
-				}
-																								
-				if ($item->exists()) {
-				    // Also this is needed, apparently.
-					$item->setAddedBy($contributor->Entity);
-
-					//Put item in the session for the consent form to use
-					$this->session->itemId = $item->id;
-					$this->session->email = trim($_POST['contributor']['email']);
-					
-					// Success.
-					return true;
-				} else {
-				    // Failure?  Should this even get here?  It should probably throw if the item doesn't save.
-					return false;
-				}	
-				
-				
-			} catch (Omeka_Validator_Exception $e) {
-				$this->flashValidationErrors($e);
-				// Validation errors.
-				return false;
-			}
-		}
-		// No POST.
-		return false;
 	}
 	
 	/**
@@ -416,7 +316,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 **/
 	public function submitAction()
 	{		
-	
 		$submission_consent = $_POST['contribution_submission_consent'];
 		
 		if(!in_array($submission_consent, array('Yes','No'))) {
