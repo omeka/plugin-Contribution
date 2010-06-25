@@ -153,7 +153,7 @@ class Contribution
 
             if ($bp) {
                 $router->addRoute('contributionCustom', 
-                    new Zend_Controller_Router_Route("{$bp}:action/*", 
+                    new Zend_Controller_Router_Route("{$bp}/:action/*",
                         array('module' => 'contribution',
                               'controller' => 'contribution',
                               'action' => 'contribute')));
