@@ -67,6 +67,23 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	    $this->_setupContributeSubmit();
 	}
 	
+	public function termsAction()
+	{
+	}
+	
+	/**
+	 * Display a "Thank You" message to users who have contributed an item 
+	 * through the public form.
+	 * 
+	 * Redirects here from the 'submit' action.
+	 * 
+	 * @see Contribution_IndexController::submitAction()
+	 * @return void
+	 **/
+	public function thankyouAction()
+	{
+	}
+	
 	/**
 	 * Common tasks whenever displaying submit form for contribution.
 	 */
@@ -121,6 +138,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		        return false;
 		    }
 		    
+		    if (!$this->_validateContribution($post)) {
+                return false;
+            }
+		    
 		    $contributionTypeId = trim($post['contribution_type']);
 		    if ($contributionTypeId !== "" && is_numeric($contributionTypeId)) {
     		    $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
@@ -140,10 +161,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 			}
 			
 			$builder = new ItemBuilder($itemMetadata);
-			
-			if (!$this->_validateContribution($post)) {
-                return false;
-            }
             
             if (!$this->_processFileUpload($builder, $contributionType)) {
                 return false;
@@ -261,20 +278,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		
 		return $isValid;
 	}
-		
-	/**
-	 * Display a "Thank You" message to users who have contributed an item 
-	 * through the public form.
-	 * 
-	 * Redirects here from the 'submit' action.
-	 * 
-	 * @see Contribution_IndexController::submitAction()
-	 * @return void
-	 **/
-	public function thankyouAction()
-	{
-
-	}
 	
 	/**
 	 * Retrieve or create a new Contributor record based on parameters passed 
@@ -309,74 +312,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	}
 	
 	/**
-	 * Submit the consent form that accompanies every new contribution.
-	 * 
-	 * This determines whether or not consent has been given, retrieves the 
-	 * Item based on the ID passed to the session, updates the Dublin Core 
-	 * 'Rights' and Contribution Form 'Submission Consent' with the appropriate
-	 * data, sends an email notification, and redirects to the 'thankyou' page.
-	 * 
-	 * The consent form itself is part of the 'consent' action.
-	 * 
-	 * NOTE: The 'Rights' field does not currently store that text as HTML.
-	 * 
-	 * FIXME: Does this spit errors if someone tries to access it without having
-	 * contributed a specific item?
-	 * @return void
-	 **/
-	public function submitAction()
-	{		
-		$submission_consent = $_POST['contribution_submission_consent'];
-		
-		if(!in_array($submission_consent, array('Yes','No'))) {
-			$submission_consent = 'No';
-		}
-		
-		//If they did not give their consent, redirect them to a new contribution page.
-		if($submission_consent == 'No') {
-			$this->redirect->gotoRoute(array(), 'contributionAdd');
-		}
-		
-		$session = $this->session;
-		$itemId = $session->itemId;
-        
-        if (!is_int($itemId)) {
-            throw new Exception('Cannot provide consent without first contributing an item!');
-        }
-        
-        // Session needs to save either the item ID # (to retrieve it later) or the
-        // Item record itself (to manipulate later). Using the item ID causes
-        // problems b/c the system can't access a non-public item through the DB
-        // when no user is logged in. The following is a hack that involves
-        // granting temporary ACL privileges just to the consent form so the script
-        // has enough permissions to tweak the metadata for a private item.
-        // 
-        // IMPORTANT TO REMEMBER: saving the item record in the session bonks the
-        // mysqli database object so that it's unusable for further data
-        // manipulation (seems like a PHP bug). This might be fixable in 1.0 (by
-        // disconnecting the database object from the record), need more info.
-        get_acl()->allow(null, 'Items', 'showNotPublic');
-        
-        $item = update_item($itemId, array('overwriteElementTexts'=>true), array(
-            'Dublin Core'=>array(
-                'Rights'=>array(array('text'=>(string)get_option('contribution_consent_text'), 'html'=>true))),
-            'Contribution Form'=>array(
-                'Submission Consent'=>array(array('text'=>$submission_consent, 'html'=>false)))
-            ));
-		
-		$this->_sendEmailNotification($session->email, $item);
-		
-		unset($session->itemId);
-		unset($session->email);
-				
-		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');
-	}
-	
-	public function termsAction()
-	{
-	}
-	
-	/**
 	 * Send an email notification to the user who contributed the Item.
 	 * 
 	 * This email will appear to have been sent from the address specified via
@@ -406,59 +341,4 @@ class Contribution_IndexController extends Omeka_Controller_Action
         $mail->setSubject("Your " . get_option('site_title') . " Contribution");
         $mail->send();
 	}
-	
-	/**
-	 * Display the consent form for any items contributed through the public 
-	 * form.
-	 * 
-	 * All successful form submissions will redirect to this action.  This 
-	 * action contains a form that POSTs to the 'submit' action.
-	 *
-	 * @return void
-	 **/
-	public function consentAction()
-	{		
-		
-	}
-	
-	/**
-	 * Batch processing for contributors.
-	 * 
-	 * Currently available actions include 'delete'.
-	 **/
-	public function batchAction()
-	{
-	    $req = $this->getRequest();
-	    $errorMsg = null;
-	    
-	    if ($req->getMethod() != 'POST') {
-	        $errorMsg = "Batch processing requires POST!";
-	    }
-	    
-	    // Update this list if more are added.
-	    $validActions = array('delete');
-	    
-	    if (!($action = $req->get('batch_action')) ||
-	        !in_array($action, $validActions)) {
-	        $errorMsg = "Batch processing must have a valid action!";
-	    }
-	    
-	    if (!($contributorIds = $req->get('contributor_id')) ||
-	        !is_array($contributorIds)) {
-	        $errorMsg = "Batch processing must be given a list of contributor IDs!";    
-	    }
-	    
-	    // Check permissions for each batch action.
-	    if (!$this->isAllowed($action)) {
-	       $errorMsg = "Insufficient permissions for action given!";
-	    }
-	    
-	    // Put out the fire.
-	    if ($errorMsg) {
-	       $this->flashError($errorMsg);
-	       $this->_helper->redirector->goto('browse');
-	    }
-	    
-	    $this->_forward($action);
-	}	
 }
