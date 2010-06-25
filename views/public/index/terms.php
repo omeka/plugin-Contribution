@@ -1,0 +1,1 @@
+<?php echo contribution_embed_consent_form(); ?>

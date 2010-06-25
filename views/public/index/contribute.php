@@ -48,8 +48,10 @@ jQuery(document).ready(function() {
 </style>
 
 <div id="primary">
+<?php echo flash(); ?>
+    
     <h1><?php echo $head['title']; ?></h1>
-    <form method="POST">
+    <form method="POST" enctype="multipart/form-data">
         <div class="inputs">
             <label for="contribution_type">What type of item do you want to contribute?</label>
             <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type')); ?>
@@ -59,9 +61,16 @@ jQuery(document).ready(function() {
         <?php if (isset($typeForm)): echo $typeForm; endif; ?>
         </div>
         <div id="captcha-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <div id="captcha"><?php echo $captchaScript; ?></div>
-            <input type="submit" name="form-submit" id="form-submit" value="Contribute" />
+            <fieldset>
+            <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
+            <p>In order to contribute, you must read and agree to the <a href="terms" target="_blank">Terms and Conditions.</a></p>
+            <div class="inputs">
+                <input type="checkbox" name="terms-agree" id="terms-agree" />
+                <label for="terms-agree">I agree to the Terms and Conditions.</label>
+            </div>
+            <input type="submit" class="submitinput" name="form-submit" id="form-submit" value="Contribute" />
         </div>
+        </fieldset>
     </form>
 </div>
 <?php foot();

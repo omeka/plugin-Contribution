@@ -43,21 +43,19 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 */
 	public function contributeAction()
 	{
-	    if (!isset($_POST['form-submit'])) {
-	        $this->_captcha = $this->_setupCaptcha();
-            if ($this->_captcha) {
+	    $this->_captcha = $this->_setupCaptcha();
+	    
+	    if ($this->_processForm($_POST)) {
+	        echo 'Submission Succeeded.';
+	        die(); 
+	    } else {
+	        if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
-	    } else {
-	        //$item = new Item;
-	        //$item->saveForm($_POST);
-	        $this->_processForm();
-	        echo var_dump($_POST);
-	        die();
-	    }
-	    if (isset($_POST['submit-type'])) {
-	        $this->_setupContributeSubmit();
-	        $this->view->typeForm = $this->view->render('index/type-form.php');
+            if (isset($_POST['submit-type'])) {
+    	        $this->_setupContributeSubmit();
+    	        $this->view->typeForm = $this->view->render('index/type-form.php');
+    	    }
 	    }
 	}
 	
@@ -115,89 +113,153 @@ class Contribution_IndexController extends Omeka_Controller_Action
 	 * If validation fails, render the Contribution form again with errors.
 	 * @return void
 	 */
-	protected function _processForm()
+	protected function _processForm($post)
 	{		
-	    /**
-	     * Internal testing ONLY! Form submissions are not currently validated
-	     */
-		if (!empty($_POST)) {
-			try {
-			    $item = new Item;
-			    
-			    $contributionTypeId = $_POST['contribution_type'];
-			    $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
-			    $itemTypeId = $contributionType->getItemType()->id;				
-			    $item->public = false;
-                $item->featured = false;
-                $item->item_type_id = $itemTypeId;
-				$collectionId = get_option('contribution_collection_id');
-				if (!empty($collectionId) && is_numeric($collectionId)) {
-				    $item->collection_id = (int) $collectionId;
-				}
-				/*
-				if (!$this->_validateContribution($creatorName)) {
-                    return false;
-                }*/
-                
-				$elementTable = get_db()->getTable('Element');
-				$elements = $_POST['Elements'];
-				foreach($elements as $elementId => $elementTexts) {
-				    $element = $elementTable->find($elementId);
-				    foreach($elementTexts as $elementText) {
-				        $item->addTextForElement($element, $elementText['text']);
-				    }
-				}
-				$item->save();
-				/*
-				// Add the text for Document item types, if necessary.    
-												
-				$contributor = $this->_createOrFindContributor();
-				Zend_Registry::set('contributor', $contributor);
-				
-				// If a particular contribution type implies (requires) a file
-				// to be uploaded, add necessary options for insert_item().
-				// FIXME: This wouldn't account for situations where uploads are
-				// optional, such as documents.
-				if ($this->_uploadedFileIsRequired($_POST['type'])) {
-				    $fileUploadOptions = array(
-                        'files' => 'contributed_file', // Form input name
-                        'file_transfer_type' => 'Upload',
-                        'file_ingest_options' => array('ignoreNoFile'=> false));
-				} else {
-				    $fileUploadOptions = array();
-				}
-				
-				// Add the whitelists for uploaded files.
-				$fileValidation = new Contribution_FileValidation($itemMetadata['item_type_name']);
-				$fileValidation->enableFilter();
-                                				
-				// Needed to tag the items properly.
-				$itemMetadata['tag_entity'] = $contributor->Entity;					
-				try {
-				    $item = insert_item($itemMetadata, 
-					                    $elementTexts, 
-					                    $fileUploadOptions);
-				} catch (Omeka_File_Ingest_InvalidException $e) {
-				    // HACK: grep the exception to determine whether this is
-				    // related to file uploads.
-				    if (strstr($e->getMessage(), 
-				               "The file 'contributed_file' was not uploaded")) {
-				       $this->flashError("File: A file must be uploaded.");
-				    } else {
-				        $this->flashError($e->getMessage());
-				    }
-				} catch (Exception $e) {
-				    $this->flashError($e->getMessage());
-				} */
-				return true;
-			} catch (Omeka_Validator_Exception $e) {
-				$this->flashValidationErrors($e);
-				// Validation errors.
-				return false;
+		if (!empty($post)) {
+		    // The final form submit was not pressed.
+		    if (!isset($post['form-submit'])) {
+		        return false;
+		    }
+		    
+		    $contributionTypeId = trim($post['contribution_type']);
+		    if ($contributionTypeId !== "" && is_numeric($contributionTypeId)) {
+    		    $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
+    		    $itemTypeId = $contributionType->getItemType()->id;
+		    } else {
+		        $this->flashError('You must select a type for your contribution.');
+		        return false;
+		    }
+		    
+		    $itemMetadata = array('public'       => false,
+		                          'featured'     => false,
+		                          'item_type_id' => $itemTypeId);
+		    
+			$collectionId = get_option('contribution_collection_id');
+			if (!empty($collectionId) && is_numeric($collectionId)) {
+			    $itemMetadata['collection_id'] = (int) $collectionId;
 			}
+			
+			$builder = new ItemBuilder($itemMetadata);
+			
+			if (!$this->_validateContribution($post)) {
+                return false;
+            }
+            
+            if (!$this->_processFileUpload($builder, $contributionType)) {
+                return false;
+            }
+            
+            try {
+                $item = $builder->build();
+            } catch(Omeka_Validator_Exception $e) {
+                $this->flashValidatonErrors($e);
+                return false;
+            }
+            
+			$this->_addElementsToItem($item, $post['Elements']);
+			$item->save();
+			
+			return true;
 		}
-		// No POST.
 		return false;
+	}
+	
+	protected function _processFileUpload($builder, $contributionType) {
+	    if ($contributionType->file_allowed) {
+            $options = array();
+            if ($contributionType->file_required) {
+                $options['ignoreNoFile'] = false;
+            } else {
+                $options['ignoreNoFile'] = true;
+            }
+            
+            // Add the whitelists for uploaded files
+            $fileValidation = new ContributionFileValidation;
+			$fileValidation->enableFilter();
+            
+            try {
+                $builder->addFiles('Upload', 'contributed_file', $options);
+            } catch (Omeka_File_Ingest_InvalidException $e) {
+                // Copying this cruddy hack
+                if (strstr($e->getMessage(), 
+			               "The file 'contributed_file' was not uploaded")) {
+			       $this->flashError("File: A file must be uploaded.");
+			    } else {
+			        $this->flashError($e->getMessage());
+			    }
+			    return false;
+            } catch (Exception $e) {
+			    $this->flashError($e->getMessage());
+			    return false;
+			}
+        }
+	}
+	
+	protected function _addElementsToItem($item, $elements)
+	{
+	    $elementTable = get_db()->getTable('Element');
+	    foreach($elements as $elementId => $elementTexts) {
+		    $element = $elementTable->find($elementId);
+		    foreach($elementTexts as $elementText) {
+		        $item->addTextForElement($element, $elementText['text']);
+		    }
+		}
+	}
+	
+	/**
+	 * Validate the contribution form submission.
+	 * 
+	 * Will flash validation errors that occur.
+	 * 
+	 * Verify the validity of the following form elements:
+	 *      Captcha (if exists)
+	 *      Posting Consent
+	 *      Story text (if exists)
+	 *      Creator Name
+	 *
+	 * @return boolean
+	 */
+	protected function _validateContribution($post)
+	{
+	    $isValid = true;
+	    
+	    $errors = array();
+
+	    // ReCaptcha ignores the first argument.
+	    if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
+            $errors[] = 'Your CAPTCHA submission was invalid, please try again.';
+            $isValid = false;
+	    }
+	    
+	    if (!isset($post['terms-agree'])) {
+	        $errors[] = 'You must agree to the Terms and Conditions.';
+	        $isValid = false;
+	    }
+	    
+	    /*
+		//Don't trust the post content!
+		if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
+			$errors[] = 'Invalid posting consent given!';
+			$isValid = false;
+		}
+        
+        $storyText = trim($_POST['text']);
+        if (array_key_exists('text', $_POST) and empty($storyText)) {
+            $errors[] = 'Story: Please provide the text of the story.';
+            $isValid = false;
+        }
+        
+        $creatorName = trim($creatorName);
+        if (empty($creatorName)) {
+		    $errors[] = 'Creator: Please provide a valid name for the creator.';
+		    $isValid = false;
+		}
+		*/
+        if ($errors) {
+            $this->flashError(join("\n", $errors));
+        }
+		
+		return $isValid;
 	}
 		
 	/**
@@ -244,58 +306,6 @@ class Contribution_IndexController extends Omeka_Controller_Action
         }
 
 		return $contributor;
-	}
-	
-	/**
-	 * Validate the contribution form submission.
-	 * 
-	 * Will flash validation errors that occur.
-	 * 
-	 * Verify the validity of the following form elements:
-	 *      Captcha (if exists)
-	 *      Posting Consent
-	 *      Story text (if exists)
-	 *      Creator Name
-	 * 
-	 * FIXME: Calling flashError() multiple times needs to display all of the 
-	 * flashed errors.
-	 * @return boolean
-	 **/
-	protected function _validateContribution($creatorName)
-	{
-	    $isValid = true;
-	    
-	    $errors = array();
-	    
-	    // ReCaptcha ignores the first argument.
-	    if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
-            $errors[] = 'Your CAPTCHA submission was invalid, please try again.';
-            $isValid = false;
-	    }	    
-
-		//Don't trust the post content!
-		if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
-			$errors[] = 'Invalid posting consent given!';
-			$isValid = false;
-		}
-        
-        $storyText = trim($_POST['text']);
-        if (array_key_exists('text', $_POST) and empty($storyText)) {
-            $errors[] = 'Story: Please provide the text of the story.';
-            $isValid = false;
-        }
-        
-        $creatorName = trim($creatorName);
-        if (empty($creatorName)) {
-		    $errors[] = 'Creator: Please provide a valid name for the creator.';
-		    $isValid = false;
-		}
-		
-        if ($errors) {
-            $this->flashError(join("\n", $errors));
-        }
-		
-		return $isValid;
 	}
 	
 	/**
@@ -360,6 +370,10 @@ class Contribution_IndexController extends Omeka_Controller_Action
 		unset($session->email);
 				
 		$this->redirect->gotoRoute(array('action'=>'thankyou'), 'contributionLinks');
+	}
+	
+	public function termsAction()
+	{
 	}
 	
 	/**

@@ -1,19 +1,20 @@
 <?php
 /**
  * @version $Id$
- * @copyright Center for History and New Media, 2009
+ * @author CHNM
+ * @copyright Center for History and New Media, 2010
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @package Contribution
- **/
+ */
 
 /**
- * Manipulate the set of file ingest validators that are active for the 
+ * Manipulates the set of file ingest validators that are active for the 
  * Contribution form.
  *
  * @package Contribution
- * @copyright Center for History and New Media, 2009
- **/
-class Contribution_FileValidation
+ * @copyright Center for History and New Media, 2010
+ */
+class ContributionFileValidation
 {
     const FILTER_NAME = 'file_ingest_validators';
         
