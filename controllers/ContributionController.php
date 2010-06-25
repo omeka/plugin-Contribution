@@ -210,11 +210,9 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	 * Will flash validation errors that occur.
 	 * 
 	 * Verify the validity of the following form elements:
-	 *      Captcha (if exists)
-	 *      Posting Consent
-	 *      Story text (if exists)
-	 *      Creator Name
-	 *
+	 *      Captcha (if set up)
+	 *      Terms agreement
+	 *      
 	 * @return boolean
 	 */
 	protected function _validateContribution($post)
@@ -234,25 +232,6 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 	        $isValid = false;
 	    }
 	    
-	    /*
-		//Don't trust the post content!
-		if(!in_array($_POST['posting_consent'], array('Yes', 'No', 'Anonymously'))) {
-			$errors[] = 'Invalid posting consent given!';
-			$isValid = false;
-		}
-        
-        $storyText = trim($_POST['text']);
-        if (array_key_exists('text', $_POST) and empty($storyText)) {
-            $errors[] = 'Story: Please provide the text of the story.';
-            $isValid = false;
-        }
-        
-        $creatorName = trim($creatorName);
-        if (empty($creatorName)) {
-		    $errors[] = 'Creator: Please provide a valid name for the creator.';
-		    $isValid = false;
-		}
-		*/
         if ($errors) {
             $this->flashError(join("\n", $errors));
         }
