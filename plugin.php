@@ -38,6 +38,7 @@ class Contribution
     {
         add_plugin_hook('install', array($this, 'install'));
         add_plugin_hook('uninstall', array($this, 'uninstall'));
+        add_plugin_hook('define_acl', array($this, 'defineAcl'));
         add_plugin_hook('define_routes', array($this, 'defineRoutes'));
     }
     
@@ -116,6 +117,21 @@ class Contribution
     }
     
     /**
+     * Contribution define_acl hook
+     * Restricts access to admin-only controllers and actions.
+     */
+    public function defineAcl($acl)
+    {
+        $resource = new Omeka_Acl_Resource('Contribution_Settings');
+        $resource->add(array('edit'));
+        $acl->add($resource);
+        
+        $acl->deny(null, 'Contribution_Settings');
+        $acl->allow('super', 'Contribution_Settings');
+        $acl->allow('admin', 'Contribution_Settings');
+    }
+    
+    /**
      * Contribution define_routes hook
      * Defines public-only routes that set the contribution controller as the
      * only accessible one.
@@ -125,7 +141,7 @@ class Contribution
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
-        if (!is_admin_theme()) {        
+        if (!defined('ADMIN')) {        
             $router->addRoute('contributionPublic',
                 new Zend_Controller_Router_Route('contribution/:action/*',
                     array('module'     => 'contribution',
