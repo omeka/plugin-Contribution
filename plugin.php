@@ -38,6 +38,7 @@ class Contribution
     {
         add_plugin_hook('install', array($this, 'install'));
         add_plugin_hook('uninstall', array($this, 'uninstall'));
+        add_plugin_hook('define_routes', array($this, 'defineRoutes'));
     }
     
     /**
@@ -88,6 +89,9 @@ class Contribution
         $this->_createDefaultContributionTypes();
     }
 
+    /**
+     * Contribution uninstall hook
+     */
     public function uninstall()
     {
         $sql = "DROP TABLE IF EXISTS
@@ -108,6 +112,36 @@ class Contribution
         $elementSet = $elementSetTable->findByName('Contributor Information');
         if ($elementSet !== null) {
             $elementSet->delete();
+        }
+    }
+    
+    /**
+     * Contribution define_routes hook
+     * Defines public-only routes that set the contribution controller as the
+     * only accessible one.
+     */
+    public function defineRoutes($router)
+    {
+        // Only apply custom routes on public theme.
+        // The wildcards on both routes make these routes always apply for the
+        // contribution controller.
+        if (!is_admin_theme()) {        
+            $router->addRoute('contributionPublic',
+                new Zend_Controller_Router_Route('contribution/:action/*',
+                    array('module'     => 'contribution',
+                          'controller' => 'contribution',
+                          'action'     => 'contribute')));
+        
+            // get the base path
+        	$bp = get_option('contribution_page_path');
+
+            if ($bp) {
+                $router->addRoute('contributionCustom', 
+                    new Zend_Controller_Router_Route("{$bp}:action/*", 
+                        array('module' => 'contribution',
+                              'controller' => 'contribution',
+                              'action' => 'contribute')));
+            }
         }
     }
     

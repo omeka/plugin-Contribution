@@ -7,35 +7,16 @@
  * @package Contribution
  */
  
-class Contribution_IndexController extends Omeka_Controller_Action
+/**
+ * Controller for contributions themselves.
+ */
+class Contribution_ContributionController extends Omeka_Controller_Action
 {	
     protected $_captcha;
-    
-    /**
-     * @var integer Represents the total # of results to display per page 
-     * when browsing the list of contributors.
-     * 
-     * This also takes advantage of the built-in 'browse' action of the base
-     * class, which displays a list of Contributors.  Access to that action is
-     * controlled via the ACL.
-     * @see Omeka_Controller_Action::browseAction()
-     */
-    protected $_browseRecordsPerPage = CONTRIBUTORS_PER_PAGE;
-    
-    /**
-     * Set up the Contribution controller.
-     * 
-     * Instantiates a session namespace for passing data between the 3 pages of
-     * the form on the Contribution plugin.
-     * 
-     * TODO: Should not strip tags (all data entered will not be displayed as HTML,
-     * so it shouldn't be stripped).
-     * @return void
-     **/
-	public function init()
+	
+	public function indexAction()
 	{
-		require_once 'Zend/Session.php';
-		$this->session = new Zend_Session_Namespace('Contribution');		
+	    $this->_forward('contribute');
 	}
 	
 	/**
@@ -54,7 +35,7 @@ class Contribution_IndexController extends Omeka_Controller_Action
             }
             if (isset($_POST['submit-type'])) {
     	        $this->_setupContributeSubmit();
-    	        $this->view->typeForm = $this->view->render('index/type-form.php');
+    	        $this->view->typeForm = $this->view->render('contribution/type-form.php');
     	    }
 	    }
 	}
