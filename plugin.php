@@ -20,6 +20,13 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
 */
 class Contribution
 {
+    public static $options = array('contribution_page_path',
+                                   'contribution_contributor_email',
+                                   'contribution_consent_text',
+                                   'contribution_collection_id',
+                                   'contribution_recaptcha_public_key',
+                                   'contribution_recaptcha_private_key');
+
     private $_db;
     
     /**

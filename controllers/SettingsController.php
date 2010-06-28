@@ -11,19 +11,7 @@
  * Controller for editing and viewing Contribution plugin settings.
  */
 class Contribution_SettingsController extends Omeka_Controller_Action
-{	 
-    /**
-     * Options that are set for Contribution.
-     * This controls which options are gotten and which are set.
-     * @var array
-     */
-    private $_options = array('contribution_page_path',
-                              'contribution_contributor_email',
-                              'contribution_consent_text',
-                              'contribution_collection_id',
-                              'contribution_recaptcha_public_key',
-                              'contribution_recaptcha_private_key');
-    	
+{
 	/**
 	 * Index action; simply forwards to contributeAction.
 	 */
@@ -63,7 +51,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
 	private function _getOptions()
 	{
 	    $options = array();
-	    foreach ($this->_options as $option) {
+	    foreach (Contribution::$options as $option) {
 	        $options[$option] = get_option($option);
 	    }
 	    return $options;
@@ -82,7 +70,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
 	    }
 	       
 	    foreach ($newOptions as $optionName => $optionValue) {
-	        if (in_array($optionName, $this->_options)) {
+	        if (in_array($optionName, Contribution::$options)) {
 	            set_option($optionName, $optionValue);
 	        }
 	    }
