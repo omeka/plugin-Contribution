@@ -9,8 +9,15 @@
 
 $head = array('title' => 'Contribution Settings',
               'bodyClass' => 'contribution primary');
-head(array('title' => $head['title'])); ?>
-
+head(array('title' => $head['title']));
+echo js('jquery'); ?>
+<script type="text/javascript">
+jQuery.noConflict();
+</script>
+<?php
+echo js('tiny_mce/tiny_mce');
+echo js('contribution-settings-tinymce');
+?>
 <div id="primary">
 <?php echo flash(); ?>
     <h1><?php echo $head['title']; ?></h1>
