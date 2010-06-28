@@ -19,7 +19,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
      */
     private $_options = array('contribution_page_path',
                               'contribution_contributor_email',
-                              'contribution_terms_text',
+                              'contribution_consent_text',
                               'contribution_collection_id',
                               'contribution_recaptcha_public_key',
                               'contribution_recaptcha_private_key');

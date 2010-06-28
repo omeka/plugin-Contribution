@@ -30,7 +30,7 @@ class Contribution_Form_Settings extends Omeka_Form
                            . 'contributors.',
             'validators'  => array('EmailAddress')
         ));
-        $this->addElement('textarea', 'contribution_terms_text', array(
+        $this->addElement('textarea', 'contribution_consent_text', array(
             'label'       => 'Text of Terms',
             'description' => 'The text of the legal disclaimer contributors '
                            . 'will agree to.'
@@ -54,7 +54,7 @@ class Contribution_Form_Settings extends Omeka_Form
         
         $this->addDisplayGroup(
             array('contribution_page_path', 'contribution_contributor_email',
-                'contribution_terms_text', 'contribution_collection_id',
+                'contribution_consent_text', 'contribution_collection_id',
                 'contribution_recaptcha_public_key',
                 'contribution_recaptcha_private_key'), 'contribution_settings');
                 
