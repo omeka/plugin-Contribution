@@ -93,6 +93,7 @@ class Contribution
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
+        // !! marked for removal
         $this->_createContributorElementSet();
         $this->_createDefaultContributionTypes();
     }
@@ -102,20 +103,30 @@ class Contribution
      */
     public function uninstall()
     {
+        // Delete all the Contribution options
+        foreach (self::$options as $option) {
+            delete_option($option);
+        }
+        
+        // Drop all the Contribution tables
         $sql = "DROP TABLE IF EXISTS
             `{$this->_db->prefix}contribution_types`,
             `{$this->_db->prefix}contribution_type_elements`,
             `{$this->_db->prefix}contribution_contributors`,
             `{$this->_db->prefix}contribution_contributed_items`;";
         $this->_db->query($sql);
-
+        
+        // Remove the ContributionContributor record type
+        // !! marked for removal
         $recordTypeTable = $this->_db->getTable('RecordType');
         $recordTypeId = $recordTypeTable->findIdFromName('ContributionContributor');
         if ($recordTypeId !== null) {
             $recordType = $recordTypeTable->find($recordTypeId);
             $recordType->delete();
         }
-
+        
+        // Remove the Contributor Information set
+        // !! marked for removal
         $elementSetTable = $this->_db->getTable('ElementSet');
         $elementSet = $elementSetTable->findByName('Contributor Information');
         if ($elementSet !== null) {
