@@ -20,6 +20,12 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
 */
 class Contribution
 {
+    private static $hooks = array('install', 
+                                  'uninstall',
+                                  'admin_append_to_plugin_uninstall_message',
+                                  'define_acl',
+                                  'define_routes');
+    
     public static $options = array('contribution_page_path',
                                    'contribution_contributor_email',
                                    'contribution_consent_text',
@@ -43,10 +49,10 @@ class Contribution
      */
     public function addHooksAndFilters()
     {
-        add_plugin_hook('install', array($this, 'install'));
-        add_plugin_hook('uninstall', array($this, 'uninstall'));
-        add_plugin_hook('define_acl', array($this, 'defineAcl'));
-        add_plugin_hook('define_routes', array($this, 'defineRoutes'));
+        foreach (self::$hooks as $hookName) {
+            $functionName = Inflector::variablize($hookName);
+            add_plugin_hook($hookName, array($this, $functionName));
+        }
     }
     
     /**
@@ -132,6 +138,14 @@ class Contribution
         if ($elementSet !== null) {
             $elementSet->delete();
         }
+    }
+    
+    public function adminAppendToPluginUninstallMessage()
+    {
+        echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin 
+            will remove all information about contributors, as well as the
+            data that marks which items in the archive were contributed.</p>
+            <p>The contributed items themselves will remain.</p>';
     }
     
     /**
