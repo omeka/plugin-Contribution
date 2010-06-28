@@ -14,7 +14,7 @@ class Contribution_Form_Settings extends Omeka_Form
         parent::init();
         
         $this->setMethod('post');
-        $this->setAttrib('id', 'contribution-settings-form');
+        $this->setAttrib('id', 'settings-form');
         
         // Should have a StringTrim('/') here, but it's broken until 1.10
         $this->addElement('text', 'contribution_page_path', array(
