@@ -98,9 +98,26 @@ class Contribution
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
+        
+        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_fields` (
+            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            `name` VARCHAR(255) NOT NULL,
+            `description` VARCHAR(255),
+            `type` ENUM('Text', 'Tiny Text') NOT NULL,
+            PRIMARY KEY (`id`)
+            ) ENGINE=MyISAM;";
+        $this->_db->query($sql);
+        
+        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_values` (
+            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
+            `field_id` INT UNSIGNED NOT NULL,
+            `contributor_id` INT UNSIGNED NOT NULL,
+            `value` TEXT NOT NULL,
+            PRIMARY KEY (`id`),
+            UNIQUE KEY `field_id_contributor_id` (`field_id`, `contributor_id`)
+            ) ENGINE=MyISAM;";
+        $this->_db->query($sql);
 
-        // !! marked for removal
-        $this->_createContributorElementSet();
         $this->_createDefaultContributionTypes();
     }
 
@@ -119,25 +136,10 @@ class Contribution
             `{$this->_db->prefix}contribution_types`,
             `{$this->_db->prefix}contribution_type_elements`,
             `{$this->_db->prefix}contribution_contributors`,
-            `{$this->_db->prefix}contribution_contributed_items`;";
+            `{$this->_db->prefix}contribution_contributed_items`,
+            `{$this->_db->prefix}contribution_contributor_fields`,
+            `{$this->_db->prefix}contribution_contributor_values`;";
         $this->_db->query($sql);
-        
-        // Remove the ContributionContributor record type
-        // !! marked for removal
-        $recordTypeTable = $this->_db->getTable('RecordType');
-        $recordTypeId = $recordTypeTable->findIdFromName('ContributionContributor');
-        if ($recordTypeId !== null) {
-            $recordType = $recordTypeTable->find($recordTypeId);
-            $recordType->delete();
-        }
-        
-        // Remove the Contributor Information set
-        // !! marked for removal
-        $elementSetTable = $this->_db->getTable('ElementSet');
-        $elementSet = $elementSetTable->findByName('Contributor Information');
-        if ($elementSet !== null) {
-            $elementSet->delete();
-        }
     }
     
     public function adminAppendToPluginUninstallMessage()
@@ -220,27 +222,6 @@ class Contribution
         $descriptionElement->element_id = 41;
         $descriptionElement->alias = 'Image Description';
         $descriptionElement->save();
-    }
-    
-    private function _createContributorElementSet()
-    {
-        $recordType = new RecordType;
-        $recordType->name = 'ContributionContributor';
-        $recordType->description = 'Installed by the Contribution plugin. Elements assigned to this record type apply only to Contributors.';
-        $recordType->save();
-
-        $elementSet = new ElementSet;
-        $elementSet->name = 'Contributor Information';
-        $elementSet->description = 'Installed by the Contribution plugin. Stores metadata about contributors.';
-        $elementSet->record_type_id = $recordType->id;
-        $elementSet->save();
-
-        $element = new Element;
-        $element->name = 'Contributor Name';
-        $element->description = 'Name';
-        $element->element_set_id = $elementSet->id;
-        $element->record_type_id = $recordType->id;
-        $element->save();
     }
 }
 new Contribution;
