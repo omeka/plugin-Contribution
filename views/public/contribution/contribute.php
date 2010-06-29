@@ -12,6 +12,9 @@ $head = array('title' => 'Contribute',
 head(array('title' => $head['title'])); ?>
 <?php echo js('jquery'); ?>
 <?php echo js('contribution-public-form'); ?>
+<script type="text/javascript">
+enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); ?>);
+</script>
 <style type="text/css">
 #captcha textarea {
     float: none;
@@ -42,8 +45,8 @@ head(array('title' => $head['title'])); ?>
                 <label for="terms-agree">I agree to the Terms and Conditions.</label>
             </div>
             <input type="submit" class="submitinput" name="form-submit" id="form-submit" value="Contribute" />
+            </fieldset>
         </div>
-        </fieldset>
     </form>
 </div>
 <?php foot();
