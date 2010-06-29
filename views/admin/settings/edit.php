@@ -20,7 +20,7 @@ jQuery.noConflict();
 echo js('tiny_mce/tiny_mce');
 echo js('contribution-settings-tinymce');
 ?>
-<h1><a href="<?php echo uri('contribution') ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
+<h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
 <div id="primary">
 <?php echo flash(); ?>
 <?php echo $form; ?>
