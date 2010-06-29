@@ -26,24 +26,26 @@ head(array('title' => $head['title']));
 ?>
 
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
-<p id="edit-types" class="edit-button"><a href="<?php echo uri('contribution/types/edit');?>" class="edit">Edit Types</a></p>
+<p id="add-type" class="add-button"><a href="<?php echo uri('contribution/types/add');?>" class="add">Add a Type</a></p>
 <div id="primary">
     <?php echo flash(); ?>
     <table>
         <thead>
             <tr>
-                <th>Display Name</th>
+                <th>Name</th>
                 <th>Item Type</th>
+                <th>Contributed Fields</th>
                 <th>File Upload</th>
             </tr>
         </thead>
         <tbody>
 <?php foreach ($typeInfoArray as $typeInfo): ?>
-            <tr>
-                <td><?php echo $typeInfo['alias']; ?></td>
-                <td><a href="<?php echo uri('item-types/show/'.$typeInfo['item_type_id']); ?>"><?php echo $typeInfo['item_type_name']; ?></a></td>
-                <td><?php echo display_file_upload($typeInfo['file_allowed'], $typeInfo['file_required']); ?></td>
-            </tr>
+    <tr>
+        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo $typeInfo['alias']; ?></a></td>
+        <td><?php echo $typeInfo['item_type_name']; ?></a></td>
+        <td></td>
+        <td><?php echo display_file_upload($typeInfo['file_allowed'], $typeInfo['file_required']); ?></td>
+    </tr>
 <?php endforeach; ?>
         </tbody>
     </table>

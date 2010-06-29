@@ -19,10 +19,10 @@ class ContributionTypeTable extends Omeka_Db_Table
     public function getBrowseData()
     {
         $db = $this->getDb();
-        $sql = "SELECT ct.*, it.`name` AS `item_type_name`
-                FROM {$this->getTableName()} AS ct
-                INNER JOIN {$db->ItemType} AS it
-                ON ct.`item_type_id` = it.`id`;";
+        $sql = "SELECT `ct`.*, `it`.`name` AS `item_type_name`
+                FROM `{$this->getTableName()}` AS `ct`
+                INNER JOIN `{$db->ItemType}` AS `it`
+                ON `ct`.`item_type_id` = `it`.`id`;";
         return $db->fetchAssoc($sql);
     }
 } 

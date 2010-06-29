@@ -12,6 +12,11 @@
  */
 class Contribution_TypesController extends Omeka_Controller_Action
 {
+    public function init()
+    {
+        $this->_modelClass = 'ContributionType';
+    }
+    
 	/**
 	 * Index action; simply forwards to contributeAction.
 	 */
@@ -29,5 +34,10 @@ class Contribution_TypesController extends Omeka_Controller_Action
 	    $typeInfoArray = $table->getBrowseData();
 	    
 	    $this->view->typeInfoArray = $typeInfoArray;
+	}
+	
+	public function addAction()
+	{
+	    
 	}
 }
