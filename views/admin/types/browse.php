@@ -25,9 +25,10 @@ $head = array('title' => "$h1 | $h2",
 head(array('title' => $head['title']));
 ?>
 
+<h1><a href="<?php echo uri('contribution') ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
+<p id="edit-types" class="edit-button"><a href="<?php echo uri('contribution/types/edit');?>" class="edit">Edit Types</a></p>
 <div id="primary">
-<?php echo flash(); ?>
-    <h1><a href="<?php echo uri('contribution') ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
+    <?php echo flash(); ?>
     <table>
         <thead>
             <tr>
