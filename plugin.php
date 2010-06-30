@@ -163,6 +163,14 @@ class Contribution
         $acl->deny(null, 'Contribution_Settings');
         $acl->allow('super', 'Contribution_Settings');
         $acl->allow('admin', 'Contribution_Settings');
+        
+        $resource = new Omeka_Acl_Resource('Contribution_Types');
+        $resource->add(array('browse', 'add', 'edit'));
+        $acl->add($resource);
+        
+        $acl->deny(null, 'Contribution_Types');
+        $acl->allow('super', 'Contribution_Types');
+        $acl->allow('admin', 'Contribution_Types');
     }
     
     /**
