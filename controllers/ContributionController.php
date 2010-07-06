@@ -158,6 +158,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             }
             
 			$this->_addElementTextsToItem($item, $post['Elements']);
+			// Allow plugins to deal with the inputs they may have added to the form.
+			fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
 			$item->save();
 			
 			return true;
