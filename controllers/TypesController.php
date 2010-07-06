@@ -18,7 +18,7 @@ class Contribution_TypesController extends Omeka_Controller_Action
     }
     
 	/**
-	 * Index action; simply forwards to contributeAction.
+	 * Index action; simply forwards to browse.
 	 */
 	public function indexAction()
 	{
@@ -38,6 +38,7 @@ class Contribution_TypesController extends Omeka_Controller_Action
 	
 	public function addAction()
 	{
+	    $table = get_db()->getTable('ContributionType');
 	    
 	}
 }

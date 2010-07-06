@@ -23,14 +23,23 @@ $h2 = 'Types';
 $head = array('title' => "$h1 | $h2",
               'bodyClass' => 'contribution primary');
 head(array('title' => $head['title']));
+echo js('jquery');
 ?>
-
+<script type="text/javascript">
+jQuery.noConflict();
+jQuery(document).ready(function() {
+    jQuery('#add-type').click(function() {
+        jQuery('#types-table-body').append('<tr><td><input type="text"></input></td></tr>');
+        return false;
+    });
+});
+</script>
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
-<p id="add-type" class="add-button"><a href="<?php echo uri('contribution/types/add');?>" class="add">Add a Type</a></p>
+<p class="add-button"><a href="<?php echo uri('contribution/types/add');?>" class="add" id="add-type">Add a Type</a></p>
 <div id="primary">
     <?php echo flash(); ?>
     <table>
-        <thead>
+        <thead id="types-table-head">
             <tr>
                 <th>Name</th>
                 <th>Item Type</th>
@@ -38,11 +47,11 @@ head(array('title' => $head['title']));
                 <th>File Upload</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody id="types-table-body">
 <?php foreach ($typeInfoArray as $typeInfo): ?>
     <tr>
         <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo $typeInfo['alias']; ?></a></td>
-        <td><?php echo $typeInfo['item_type_name']; ?></a></td>
+        <td><?php echo $typeInfo['item_type_name']; ?></td>
         <td></td>
         <td><?php echo display_file_upload($typeInfo['file_allowed'], $typeInfo['file_required']); ?></td>
     </tr>
