@@ -191,7 +191,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
                 // Copying this cruddy hack
                 if (strstr($e->getMessage(), 
 			               "The file 'contributed_file' was not uploaded")) {
-			       $this->flashError("File: A file must be uploaded.");
+			       $this->flashError("You must upload a file when contributing a {$contributionType->alias}.");
 			    } else {
 			        $this->flashError($e->getMessage());
 			    }
