@@ -10,8 +10,8 @@
 $h1 = 'Contribution';
 $h2 = 'Settings';
 $head = array('title' => "$h1 | $h2",
-              'bodyClass' => 'contribution primary');
-head(array('title' => $head['title']));
+              'bodyclass' => 'contribution primary');
+head($head);
 echo js('jquery'); ?>
 <script type="text/javascript">
 jQuery.noConflict();

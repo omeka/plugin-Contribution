@@ -21,8 +21,8 @@ function display_file_upload($fileAllowed, $fileRequired)
 $h1 = 'Contribution';
 $h2 = 'Types';
 $head = array('title' => "$h1 | $h2",
-              'bodyClass' => 'contribution primary');
-head(array('title' => $head['title']));
+              'bodyclass' => 'contribution primary');
+head($head);
 echo js('jquery');
 ?>
 <script type="text/javascript">
