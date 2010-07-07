@@ -19,18 +19,43 @@ function display_file_upload($fileAllowed, $fileRequired)
 }
 
 $h1 = 'Contribution';
-$h2 = "Type &ldquo;$contributionType->alias&rdquo";
-$head = array('title' => "$h1 | $h2",
-              'bodyClass' => 'contribution primary');
-head(array('title' => $head['title']));
+$h2 = 'Types';
+$h3 = "&ldquo;$contributionType->alias&rdquo;";
+$head = array('title' => "$h1 | $h2 | $h3",
+              'bodyclass' => 'contribution primary');
+head($head);
 ?>
 
-<h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
+<h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <a href="<?php echo uri('contribution/types'); ?>"><?php echo $h2; ?></a> | <?php echo $h3; ?></h1>
 <div id="primary">
     <?php echo flash(); ?>
-<?php foreach ($elements as $element): ?>
-    <p><?php echo $element->name; ?></p>
+<h2>Type Description</h2>
+<p><?php echo html_escape($itemType->description); ?>
+
+<h2>Type Elements</h2>
+<form method="POST">
+    <table>
+        <thead>
+            <tr>
+                <th></th>
+                <th>Element Name</th>
+                <th>Description</th>
+                <th>Prompt</th>
+            </tr>
+        </thead>
+        <tbody>
+<?php foreach ($elements as $element): 
+$id = $element->id; ?>
+            <tr>
+                <td><?php echo $this->formCheckbox("Elements[$id][enabled]", null, array('checked' => true))?></td>
+                <td><?php echo html_escape($element->name); ?></td>
+                <td><?php echo html_escape($element->description); ?></td>
+                <td><?php echo $this->formTextarea("Elements[$id][alias]", null, array('rows' => 2, 'cols' => 40)); ?></td>
+            </tr>
 <?php endforeach; ?>
+        </tbody>
+    </table>
+</form>
 </div>
 
 <?php foot();
