@@ -19,7 +19,7 @@ function display_file_upload($fileAllowed, $fileRequired)
 }
 
 $h1 = 'Contribution';
-$h2 = "Type &ldquo;$contributiontype->alias&rdquo";
+$h2 = "Type &ldquo;$contributionType->alias&rdquo";
 $head = array('title' => "$h1 | $h2",
               'bodyClass' => 'contribution primary');
 head(array('title' => $head['title']));
@@ -28,7 +28,9 @@ head(array('title' => $head['title']));
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
 <div id="primary">
     <?php echo flash(); ?>
-    <p>Some content here for actually giving useful information about the type.</p>
+<?php foreach ($elements as $element): ?>
+    <p><?php echo $element->name; ?></p>
+<?php endforeach; ?>
 </div>
 
 <?php foot();

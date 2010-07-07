@@ -30,7 +30,7 @@ class Contribution_TypesController extends Omeka_Controller_Action
 	 */
 	public function browseAction()
 	{
-	    $table = get_db()->getTable('ContributionType');
+	    $table = $this->getTable();
 	    $typeInfoArray = $table->getBrowseData();
 	    
 	    $this->view->typeInfoArray = $typeInfoArray;
@@ -38,7 +38,17 @@ class Contribution_TypesController extends Omeka_Controller_Action
 	
 	public function addAction()
 	{
-	    $table = get_db()->getTable('ContributionType');
+	    $table = $this->getTable();
+	}
+	
+	public function editAction()
+	{
+	    $contributionType = $this->findById();
+	    $itemType = $contributionType->ItemType;
+	    $elements = $itemType->Elements;
 	    
+	    $this->view->contributionType = $contributionType;
+	    $this->view->itemType = $itemType;
+	    $this->view->elements = $elements;
 	}
 }

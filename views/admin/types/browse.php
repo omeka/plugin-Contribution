@@ -29,7 +29,7 @@ echo js('jquery');
 jQuery.noConflict();
 jQuery(document).ready(function() {
     jQuery('#add-type').click(function() {
-        jQuery('#types-table-body').append('<tr><td><input type="text"></input></td></tr>');
+        jQuery('#types-table-body').append('<tr><td><input type="text"/></td></tr>');
         return false;
     });
 });
