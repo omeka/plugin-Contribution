@@ -25,6 +25,8 @@ class Contribution
                                   'admin_append_to_plugin_uninstall_message',
                                   'define_acl',
                                   'define_routes');
+                                  
+    private static $filters = array('admin_navigation_main');
     
     public static $options = array('contribution_page_path',
                                    'contribution_contributor_email',
@@ -52,6 +54,11 @@ class Contribution
         foreach (self::$hooks as $hookName) {
             $functionName = Inflector::variablize($hookName);
             add_plugin_hook($hookName, array($this, $functionName));
+        }
+        
+        foreach (self::$filters as $filterName) {
+            $functionName = Inflector::variablize($filterName);
+            add_filter($filterName, array($this, $functionName));
         }
     }
     
@@ -201,6 +208,12 @@ class Contribution
                               'action' => 'contribute')));
             }
         }
+    }
+    
+    public function adminNavigationMain($nav)
+    {
+        $nav['Contribution'] = uri('contribution');
+        return $nav;
     }
     
     private function _createDefaultContributionTypes()
