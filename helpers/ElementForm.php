@@ -57,20 +57,20 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
     /**
      * Uses the type's alias to display rather than the element name.
      */
-	protected function _getFieldLabel()
-	{
-		return html_escape($this->_contributionTypeElement->alias);
-	}
-	
-	/**
-	 * Removes "Add input" button from element output
-	 */
-	protected function _displayFormControls()
-	{}
-	
-	/**
-	 * Removes "Use HTML" checkbox from element output
-	 */
-	protected function _displayHtmlFlag($inputNameStem, $index)
+    protected function _getFieldLabel()
+    {
+        return html_escape($this->_contributionTypeElement->alias);
+    }
+    
+    /**
+     * Removes "Add input" button from element output
+     */
+    protected function _displayFormControls()
+    {}
+    
+    /**
+     * Removes "Use HTML" checkbox from element output
+     */
+    protected function _displayHtmlFlag($inputNameStem, $index)
     {}
 }

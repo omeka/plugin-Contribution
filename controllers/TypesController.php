@@ -17,38 +17,38 @@ class Contribution_TypesController extends Omeka_Controller_Action
         $this->_modelClass = 'ContributionType';
     }
     
-	/**
-	 * Index action; simply forwards to browse.
-	 */
-	public function indexAction()
-	{
-	    $this->_forward('browse');
-	}
-	
-	/**
-	 * Browse action
-	 */
-	public function browseAction()
-	{
-	    $table = $this->getTable();
-	    $typeInfoArray = $table->getBrowseData();
-	    
-	    $this->view->typeInfoArray = $typeInfoArray;
-	}
-	
-	public function addAction()
-	{
-	    $table = $this->getTable();
-	}
-	
-	public function editAction()
-	{
-	    $contributionType = $this->findById();
-	    $itemType = $contributionType->ItemType;
-	    $elements = $itemType->Elements;
-	    
-	    $this->view->contributionType = $contributionType;
-	    $this->view->itemType = $itemType;
-	    $this->view->elements = $elements;
-	}
+    /**
+     * Index action; simply forwards to browse.
+     */
+    public function indexAction()
+    {
+        $this->_forward('browse');
+    }
+    
+    /**
+     * Browse action
+     */
+    public function browseAction()
+    {
+        $table = $this->getTable();
+        $typeInfoArray = $table->getBrowseData();
+        
+        $this->view->typeInfoArray = $typeInfoArray;
+    }
+    
+    public function addAction()
+    {
+        $table = $this->getTable();
+    }
+    
+    public function editAction()
+    {
+        $contributionType = $this->findById();
+        $itemType = $contributionType->ItemType;
+        $elements = $itemType->Elements;
+        
+        $this->view->contributionType = $contributionType;
+        $this->view->itemType = $itemType;
+        $this->view->elements = $elements;
+    }
 }
