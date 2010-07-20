@@ -16,9 +16,12 @@ head(array('title' => $head['title'])); ?>
 enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); ?>);
 </script>
 <style type="text/css">
+textarea {
+    height: auto;
+}
+
 #captcha textarea {
     float: none;
-    height: auto;
     width: auto;
 }
 </style>
