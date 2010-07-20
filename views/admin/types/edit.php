@@ -34,6 +34,7 @@ head($head);
 <div id="primary">
     <?php echo flash(); ?>
 <h2>Type Description</h2>
+<h3><?php echo html_escape($itemType->name); ?></h3>
 <p><?php echo html_escape($itemType->description); ?>
 
 <h2>Type Elements</h2>
@@ -42,9 +43,9 @@ head($head);
         <thead>
             <tr>
                 <th></th>
+                <th>Prompt</th>
                 <th>Element Name</th>
                 <th>Description</th>
-                <th>Prompt</th>
             </tr>
         </thead>
         <tbody>
@@ -52,9 +53,9 @@ head($head);
 $id = $element->id; ?>
             <tr>
                 <td><?php echo $this->formCheckbox("Elements[$id][enabled]", null, array('checked' => true))?></td>
+                <td><?php echo $this->formTextarea("Elements[$id][prompt]", $element->prompt, array('rows' => 2, 'cols' => 40)); ?></td>
                 <td><?php echo html_escape($element->Element->name); ?></td>
                 <td><?php echo html_escape($element->Element->description); ?></td>
-                <td><?php echo $this->formTextarea("Elements[$id][prompt]", $element->prompt, array('rows' => 2, 'cols' => 40)); ?></td>
             </tr>
 <?php endforeach; ?>
         </tbody>
