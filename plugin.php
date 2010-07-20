@@ -236,7 +236,7 @@ class Contribution
         $textElement->type_id = $storyType->id;
         $textElement->element_id = 1;
         $textElement->prompt = 'Story Text';
-        $textElement->order = 1;
+        $textElement->order = 2;
         $textElement->save();
         
         $imageType = new ContributionType;
