@@ -9,7 +9,8 @@
 
 $h1 = 'Contribution';
 $head = array('title' => $h1,
-              'bodyclass' => 'contribution primary');
+              'bodyclass' => 'contribution primary',
+              'content_class' => 'horizontal-nav');
 head($head);
 echo js('jquery'); ?>
 <script type="text/javascript">
@@ -20,10 +21,11 @@ echo js('tiny_mce/tiny_mce');
 echo js('contribution-settings-tinymce');
 ?>
 <h1><?php echo $h1; ?></h1>
+<ul id="section-nav" class="navigation">
+<?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
+</ul>
 <div id="primary">
 <?php echo flash(); ?>
-    <p><a href="<?php echo uri('contribution/settings'); ?>">Settings</a></p>
-    <p><a href="<?php echo uri('contribution/types'); ?>">Types</a></p>
 </div>
 
 <?php foot();

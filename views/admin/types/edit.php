@@ -22,11 +22,15 @@ $h1 = 'Contribution';
 $h2 = 'Types';
 $h3 = "&ldquo;$contributionType->display_name&rdquo;";
 $head = array('title' => "$h1 | $h2 | $h3",
-              'bodyclass' => 'contribution primary');
+              'bodyclass' => 'contribution primary',
+              'content_class' => 'horizontal-nav');
 head($head);
 ?>
 
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <a href="<?php echo uri('contribution/types'); ?>"><?php echo $h2; ?></a> | <?php echo $h3; ?></h1>
+<ul id="section-nav" class="navigation">
+<?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
+</ul>
 <div id="primary">
     <?php echo flash(); ?>
 <h2>Type Description</h2>

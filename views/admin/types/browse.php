@@ -21,7 +21,8 @@ function display_file_upload($fileAllowed, $fileRequired)
 $h1 = 'Contribution';
 $h2 = 'Types';
 $head = array('title' => "$h1 | $h2",
-              'bodyclass' => 'contribution primary');
+              'bodyclass' => 'contribution primary',
+              'content_class' => 'horizontal-nav');
 head($head);
 echo js('jquery');
 ?>
@@ -36,6 +37,9 @@ jQuery(document).ready(function() {
 </script>
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
 <p class="add-button"><a href="<?php echo uri('contribution/types/add');?>" class="add" id="add-type">Add a Type</a></p>
+<ul id="section-nav" class="navigation">
+<?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
+</ul>
 <div id="primary">
     <?php echo flash(); ?>
     <table>
