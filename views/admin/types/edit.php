@@ -44,13 +44,13 @@ head($head);
             </tr>
         </thead>
         <tbody>
-<?php foreach ($elements as $element): 
+<?php foreach ($contributionTypeElements as $element): 
 $id = $element->id; ?>
             <tr>
                 <td><?php echo $this->formCheckbox("Elements[$id][enabled]", null, array('checked' => true))?></td>
-                <td><?php echo html_escape($element->name); ?></td>
-                <td><?php echo html_escape($element->description); ?></td>
-                <td><?php echo $this->formTextarea("Elements[$id][prompt]", null, array('rows' => 2, 'cols' => 40)); ?></td>
+                <td><?php echo html_escape($element->Element->name); ?></td>
+                <td><?php echo html_escape($element->Element->description); ?></td>
+                <td><?php echo $this->formTextarea("Elements[$id][prompt]", $element->prompt, array('rows' => 2, 'cols' => 40)); ?></td>
             </tr>
 <?php endforeach; ?>
         </tbody>

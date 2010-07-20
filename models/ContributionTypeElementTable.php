@@ -27,4 +27,11 @@ class ContributionTypeElementTable extends Omeka_Db_Table
         
         return $this->findBySql('type_id = ?', array($typeId));
     }
+    
+    public function getSelect()
+    {
+        $select = parent::getSelect();
+        $select->order('order ASC');
+        return $select;
+    }
 } 
