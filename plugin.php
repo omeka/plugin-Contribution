@@ -71,7 +71,7 @@ class Contribution
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
-            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required'),
+            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') DEFAULT 'Disallowed',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -222,9 +222,15 @@ class Contribution
         $storyType = new ContributionType;
         $storyType->item_type_id = 1;
         $storyType->display_name = 'Story';
-        $storyType->file_allowed = 1;
-        $storyType->file_required = 0;
+        $storyType->file_permissions = 'Allowed';
         $storyType->save();
+        
+        $textElement = new ContributionTypeElement;
+        $textElement->type_id = $storyType->id;
+        $textElement->element_id = 50;
+        $textElement->prompt = 'Title';
+        $textElement->order = 1;
+        $textElement->save();
         
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
@@ -236,8 +242,7 @@ class Contribution
         $imageType = new ContributionType;
         $imageType->item_type_id = 6;
         $imageType->display_name = 'Image';
-        $imageType->file_allowed = 1;
-        $imageType->file_required = 1;
+        $imageType->file_permissions = 'Required';
         $imageType->save();
         
         $descriptionElement = new ContributionTypeElement;
