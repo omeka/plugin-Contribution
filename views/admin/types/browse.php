@@ -7,17 +7,6 @@
  * @package Contribution
  */
 
-function display_file_upload($fileAllowed, $fileRequired)
-{
-    if($fileAllowed) {
-        if($fileRequired) {
-            return 'Required';
-        }
-        return 'Allowed';
-    }
-    return 'Not Allowed';
-}
-
 $h1 = 'Contribution';
 $h2 = 'Types';
 $head = array('title' => "$h1 | $h2",
@@ -54,10 +43,10 @@ jQuery(document).ready(function() {
         <tbody id="types-table-body">
 <?php foreach ($typeInfoArray as $typeInfo): ?>
     <tr>
-        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo $typeInfo['display_name']; ?></a></td>
-        <td><?php echo $typeInfo['item_type_name']; ?></td>
+        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo html_escape($typeInfo['display_name']); ?></a></td>
+        <td><?php echo html_escape($typeInfo['item_type_name']); ?></td>
         <td></td>
-        <td><?php echo display_file_upload($typeInfo['file_allowed'], $typeInfo['file_required']); ?></td>
+        <td><?php echo html_escape($typeInfo['file_permissions']); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
