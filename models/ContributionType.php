@@ -10,9 +10,8 @@
 class ContributionType extends Omeka_Record
 {
     public $item_type_id;
-    public $alias;
-    public $file_allowed;
-    public $file_required;
+    public $display_name;
+    public $file_permissions;
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');

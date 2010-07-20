@@ -39,7 +39,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
         <div id="captcha-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
             <fieldset>
             <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
-            <p>In order to contribute, you must read and agree to the <a href="terms" target="_blank">Terms and Conditions.</a></p>
+            <p>In order to contribute, you must read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
             <div class="inputs">
                 <input type="checkbox" name="terms-agree" id="terms-agree" />
                 <label for="terms-agree">I agree to the Terms and Conditions.</label>

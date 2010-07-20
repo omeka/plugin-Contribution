@@ -13,7 +13,7 @@ class ContributionTypeTable extends Omeka_Db_Table
     
     protected function _getColumnPairs()
     {
-        return array($this->_alias . '.id', $this->_alias . '.alias');
+        return array($this->_alias . '.id', $this->_alias . '.display_name');
     }
     
     public function getBrowseData()

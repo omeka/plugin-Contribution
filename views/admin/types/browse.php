@@ -50,7 +50,7 @@ jQuery(document).ready(function() {
         <tbody id="types-table-body">
 <?php foreach ($typeInfoArray as $typeInfo): ?>
     <tr>
-        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo $typeInfo['alias']; ?></a></td>
+        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo $typeInfo['display_name']; ?></a></td>
         <td><?php echo $typeInfo['item_type_name']; ?></td>
         <td></td>
         <td><?php echo display_file_upload($typeInfo['file_allowed'], $typeInfo['file_required']); ?></td>

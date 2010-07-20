@@ -20,7 +20,7 @@ function display_file_upload($fileAllowed, $fileRequired)
 
 $h1 = 'Contribution';
 $h2 = 'Types';
-$h3 = "&ldquo;$contributionType->alias&rdquo;";
+$h3 = "&ldquo;$contributionType->display_name&rdquo;";
 $head = array('title' => "$h1 | $h2 | $h3",
               'bodyclass' => 'contribution primary');
 head($head);
@@ -50,7 +50,7 @@ $id = $element->id; ?>
                 <td><?php echo $this->formCheckbox("Elements[$id][enabled]", null, array('checked' => true))?></td>
                 <td><?php echo html_escape($element->name); ?></td>
                 <td><?php echo html_escape($element->description); ?></td>
-                <td><?php echo $this->formTextarea("Elements[$id][alias]", null, array('rows' => 2, 'cols' => 40)); ?></td>
+                <td><?php echo $this->formTextarea("Elements[$id][prompt]", null, array('rows' => 2, 'cols' => 40)); ?></td>
             </tr>
 <?php endforeach; ?>
         </tbody>

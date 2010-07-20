@@ -70,9 +70,8 @@ class Contribution
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_types` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_type_id` INT UNSIGNED NOT NULL,
-            `alias` VARCHAR(255) NOT NULL,
-            `file_allowed` TINYINT(1) NOT NULL,
-            `file_required` TINYINT(1) NOT NULL,
+            `display_name` VARCHAR(255) NOT NULL,
+            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required'),
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -82,7 +81,8 @@ class Contribution
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `type_id` INT UNSIGNED NOT NULL,
             `element_id` INT UNSIGNED NOT NULL,
-            `alias` VARCHAR(255) NOT NULL,
+            `prompt` VARCHAR(255) NOT NULL,
+            `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `type_id_element_id` (`type_id`, `element_id`)
             ) ENGINE=MyISAM;";
@@ -111,6 +111,7 @@ class Contribution
             `name` VARCHAR(255) NOT NULL,
             `description` VARCHAR(255),
             `type` ENUM('Text', 'Tiny Text') NOT NULL,
+            `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
@@ -220,7 +221,7 @@ class Contribution
     {
         $storyType = new ContributionType;
         $storyType->item_type_id = 1;
-        $storyType->alias = 'Story';
+        $storyType->display_name = 'Story';
         $storyType->file_allowed = 1;
         $storyType->file_required = 0;
         $storyType->save();
@@ -228,12 +229,13 @@ class Contribution
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
         $textElement->element_id = 1;
-        $textElement->alias = 'Story Text';
+        $textElement->prompt = 'Story Text';
+        $textElement->order = 1;
         $textElement->save();
         
         $imageType = new ContributionType;
         $imageType->item_type_id = 6;
-        $imageType->alias = 'Image';
+        $imageType->display_name = 'Image';
         $imageType->file_allowed = 1;
         $imageType->file_required = 1;
         $imageType->save();
@@ -241,7 +243,8 @@ class Contribution
         $descriptionElement = new ContributionTypeElement;
         $descriptionElement->type_id = $imageType->id;
         $descriptionElement->element_id = 41;
-        $descriptionElement->alias = 'Image Description';
+        $descriptionElement->prompt = 'Image Description';
+        $descriptionElement->order = 1;
         $descriptionElement->save();
     }
 }
