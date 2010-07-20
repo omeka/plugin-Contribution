@@ -59,7 +59,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
      */
     protected function _getFieldLabel()
     {
-        return html_escape($this->_contributionTypeElement->alias);
+        return html_escape($this->_contributionTypeElement->prompt);
     }
     
     /**
