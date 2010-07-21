@@ -23,6 +23,8 @@ class ContributionType extends Omeka_Record
     protected function initializeMixins()
     {
         $this->mixins[] = new Relatable($this);
+        $this->mixins[] = new Orderable($this, 'ContributionTypeElement',
+                'contribution_type_id', 'Elements');
     }
     
     /**
@@ -78,5 +80,13 @@ class ContributionType extends Omeka_Record
             self::FILE_PERMISSION_ALLOWED => self::FILE_PERMISSION_ALLOWED,
             self::FILE_PERMISSION_REQUIRED => self::FILE_PERMISSION_REQUIRED
             );
+    }
+
+    public function afterSaveForm($post)
+    {
+        foreach($post['Elements'] as $elementId => $elementData) {
+            $element = $this->getDb()->getTable('ContributionTypeElement')->find($elementId);
+            $element->saveForm($elementData);
+        }
     }
 }

@@ -23,9 +23,15 @@ echo js('jquery');
     }
 </style>
 <script type="text/javascript">
+    function getNewElementRow(index) {
+        return '<tr><td><input name="newElements[' + index + '][prompt]" class="textinput" /></td><td colspan="4">' + <?php echo js_escape(select_element()); ?> + '</td></tr>';
+    }
+
     jQuery.noConflict();
+    var index = 0;
     jQuery(document).ready(function() {
         jQuery('#add-element').click(function() {
+            jQuery('#add-element-row').before(getNewElementRow(index++));
             return false;
         });
     });
@@ -61,6 +67,7 @@ echo js('jquery');
                     <th>Element</th>
                     <th>Set</th>
                     <th>Description</th>
+                    <th>Order</th>
                     <th>Delete?</th>
                 </tr>
             </thead>
@@ -72,10 +79,11 @@ echo js('jquery');
                     <td><?php echo html_escape($element->Element->name); ?></td>
                     <td><?php echo html_escape($element->Element->getElementSet()->name); ?></td>
                     <td><?php echo html_escape($element->Element->description); ?></td>
+                    <td><?php echo $this->formText("Elements[$id][order]", $element->order, array('class' => 'textinput')); ?></td>
                     <td><?php echo $this->formCheckbox("Elements[$id][delete]", null, array('checked' => false))?></td>
                 </tr>
     <?php endforeach; ?>
-                <tr>
+                <tr id="add-element-row">
                     <td colspan="5"><input type="submit" class="add-element" id="add-element" value="Add an Element" /></td>
                 </tr>
             </tbody>

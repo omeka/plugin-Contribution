@@ -44,13 +44,19 @@ class Contribution_TypesController extends Omeka_Controller_Action
     public function editAction()
     {
         $contributionType = $this->findById();
-        $contributionTypeElements = $contributionType->ContributionTypeElements;
-        $itemType = $contributionType->ItemType;
-        $elements = $itemType->Elements;
-        
-        $this->view->contributionType = $contributionType;
-        $this->view->itemType = $itemType;
-        $this->view->elements = $elements;
-        $this->view->contributionTypeElements = $contributionTypeElements;
+
+        if(!empty($_POST)) {
+            $contributionType->saveForm($_POST);
+            $this->redirect->gotoSimple('');
+        } else {
+            $contributionTypeElements = $contributionType->ContributionTypeElements;
+            $itemType = $contributionType->ItemType;
+            $elements = $itemType->Elements;
+
+            $this->view->contributionType = $contributionType;
+            $this->view->itemType = $itemType;
+            $this->view->elements = $elements;
+            $this->view->contributionTypeElements = $contributionTypeElements;
+        }
     }
 }
