@@ -24,7 +24,10 @@ echo js('jquery');
 </style>
 <script type="text/javascript">
     function getNewElementRow(index) {
-        return '<tr><td><input name="newElements[' + index + '][prompt]" class="textinput" /></td><td colspan="4">' + <?php echo js_escape(select_element()); ?> + '</td></tr>';
+        var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
+        var selectElement = <?php echo js_escape(select_element(array('name' => 'newElements[REPLACE][element_id]'))); ?>;
+        selectElement = selectElement.replace('REPLACE', index);
+        return '<tr><td>' + promptElement + '</td><td colspan="6">' + selectElement + '</td></tr>';
     }
 
     jQuery.noConflict();
@@ -84,7 +87,7 @@ echo js('jquery');
                 </tr>
     <?php endforeach; ?>
                 <tr id="add-element-row">
-                    <td colspan="5"><input type="submit" class="add-element" id="add-element" value="Add an Element" /></td>
+                    <td colspan="6"><input type="submit" class="add-element" id="add-element" value="Add an Element" /></td>
                 </tr>
             </tbody>
         </table>

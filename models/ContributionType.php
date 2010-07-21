@@ -20,11 +20,10 @@ class ContributionType extends Omeka_Record
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
     
-    protected function initializeMixins()
+    protected function _initializeMixins()
     {
-        $this->mixins[] = new Relatable($this);
-        $this->mixins[] = new Orderable($this, 'ContributionTypeElement',
-                'contribution_type_id', 'Elements');
+        $this->_mixins[] = new ContributionOrderable($this,
+                'ContributionTypeElement', 'type_id', 'Elements');
     }
     
     /**
@@ -86,6 +85,15 @@ class ContributionType extends Omeka_Record
     {
         foreach($post['Elements'] as $elementId => $elementData) {
             $element = $this->getDb()->getTable('ContributionTypeElement')->find($elementId);
+            if($elementData['delete']) {
+                $element->delete();
+            } else {
+                $element->saveForm($elementData);
+            }
+        }
+        foreach($post['newElements'] as $elementData) {
+            $element = new ContributionTypeElement;
+            $this->addChild($element);
             $element->saveForm($elementData);
         }
     }

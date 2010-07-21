@@ -17,11 +17,6 @@ class ContributionTypeElement extends Omeka_Record
     protected $_related = array('ContributionType' => 'getType',
                                 'Element'          => 'getElement');
     
-    protected function initializeMixins()
-    {
-        $this->mixins[] = new Relatable($this);
-    }
-    
     /**
      * Get the type associated with this type element.
      *
