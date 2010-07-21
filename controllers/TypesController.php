@@ -46,8 +46,12 @@ class Contribution_TypesController extends Omeka_Controller_Action
         $contributionType = $this->findById();
 
         if(!empty($_POST)) {
-            $contributionType->saveForm($_POST);
-            $this->redirect->gotoSimple('');
+            if ($contributionType->saveForm($_POST)) {
+                $this->flashSuccess('Contribution type updated.');
+            } else if($contributionType->hasErrors()) {
+                $contributionType->flashValidationErrors();
+            }
+            $this->redirect->goto('');
         } else {
             $contributionTypeElements = $contributionType->ContributionTypeElements;
             $itemType = $contributionType->ItemType;
