@@ -12,6 +12,10 @@ class ContributionType extends Omeka_Record
     public $item_type_id;
     public $display_name;
     public $file_permissions;
+
+    const FILE_PERMISSION_DISALLOWED = 'Disallowed';
+    const FILE_PERMISSION_ALLOWED = 'Allowed';
+    const FILE_PERMISSION_REQUIRED = 'Required';
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
@@ -39,5 +43,40 @@ class ContributionType extends Omeka_Record
     public function getItemType()
     {
         return $this->_db->getTable('ItemType')->find($this->item_type_id);
+    }
+
+    /**
+     * Return whether file uploads are allowed for this type.
+     *
+     * @return boolean
+     */
+    public function isFileAllowed()
+    {
+        return $this->file_permissions == self::FILE_PERMISSION_ALLOWED
+            || $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
+    }
+
+    /**
+     * Return whether file uploads are required for contributions of this type.
+     *
+     * @return boolean
+     */
+    public function isFileRequired()
+    {
+        return $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
+    }
+
+    /**
+     * Get an array of the possible file permission levels.
+     *
+     * @return array
+     */
+    public static function getPossibleFilePermissions()
+    {
+        return array(
+            self::FILE_PERMISSION_DISALLOWED => self::FILE_PERMISSION_DISALLOWED,
+            self::FILE_PERMISSION_ALLOWED => self::FILE_PERMISSION_ALLOWED,
+            self::FILE_PERMISSION_REQUIRED => self::FILE_PERMISSION_REQUIRED
+            );
     }
 }

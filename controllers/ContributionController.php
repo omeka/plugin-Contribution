@@ -175,9 +175,9 @@ class Contribution_ContributionController extends Omeka_Controller_Action
      * @return bool False only if errors occurred.
      */
     protected function _processFileUpload($builder, $contributionType) {
-        if ($contributionType->file_allowed) {
+        if ($contributionType->isFileAllowed()) {
             $options = array();
-            if ($contributionType->file_required) {
+            if ($contributionType->isFileRequired()) {
                 $options['ignoreNoFile'] = false;
             } else {
                 $options['ignoreNoFile'] = true;

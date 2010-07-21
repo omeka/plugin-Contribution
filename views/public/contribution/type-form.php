@@ -2,7 +2,8 @@
 <p>You must choose a contribution type to continue.</p>
 <?php 
 else:
-if ($type->file_allowed && $type->file_required):
+if ($type->isFileRequired()):
+    $required = true;
 ?>
 <div class="field">
 	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
@@ -14,7 +15,7 @@ endif;
 foreach ($type->getTypeElements() as $element) {
     echo $this->elementForm($element, $item);
 }
-if ($type->file_allowed && !$type->file_required):
+if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">
 	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
