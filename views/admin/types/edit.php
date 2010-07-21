@@ -7,17 +7,6 @@
  * @package Contribution
  */
 
-function display_file_upload($fileAllowed, $fileRequired)
-{
-    if($fileAllowed) {
-        if($fileRequired) {
-            return 'Required';
-        }
-        return 'Allowed';
-    }
-    return 'Not Allowed';
-}
-
 $h1 = 'Contribution';
 $h2 = 'Types';
 $h3 = "&ldquo;$contributionType->display_name&rdquo;";
@@ -25,41 +14,76 @@ $head = array('title' => "$h1 | $h2 | $h3",
               'bodyclass' => 'contribution primary',
               'content_class' => 'horizontal-nav');
 head($head);
+echo js('jquery');
 ?>
-
+<style type="text/css">
+    table input.textinput
+    {
+        font-size: 1.0em;
+    }
+</style>
+<script type="text/javascript">
+    jQuery.noConflict();
+    jQuery(document).ready(function() {
+        jQuery('#add-element').click(function() {
+            return false;
+        });
+    });
+</script>
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <a href="<?php echo uri('contribution/types'); ?>"><?php echo $h2; ?></a> | <?php echo $h3; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
 </ul>
 <div id="primary">
     <?php echo flash(); ?>
-<h2>Type Description</h2>
-<h3><?php echo html_escape($itemType->name); ?></h3>
-<p><?php echo html_escape($itemType->description); ?>
-
-<h2>Type Elements</h2>
 <form method="POST">
-    <table>
-        <thead>
-            <tr>
-                <th></th>
-                <th>Prompt</th>
-                <th>Element Name</th>
-                <th>Description</th>
-            </tr>
-        </thead>
-        <tbody>
-<?php foreach ($contributionTypeElements as $element): 
-$id = $element->id; ?>
-            <tr>
-                <td><?php echo $this->formCheckbox("Elements[$id][enabled]", null, array('checked' => true))?></td>
-                <td><?php echo $this->formTextarea("Elements[$id][prompt]", $element->prompt, array('rows' => 2, 'cols' => 40)); ?></td>
-                <td><?php echo html_escape($element->Element->name); ?></td>
-                <td><?php echo html_escape($element->Element->description); ?></td>
-            </tr>
-<?php endforeach; ?>
-        </tbody>
-    </table>
+    <fieldset>
+        <legend>Type Metadata</legend>
+        <div class="field">
+            <?php echo $this->formLabel('display_name', 'Display Name'); ?>
+            <div class="input">
+                <?php echo $this->formText('display_name', $contributionType->display_name, array('class' => 'textinput')); ?>
+            </div>
+        </div>
+        <div class="field">
+            <?php echo $this->formLabel('file_permissions', 'File Permissions'); ?>
+            <div class="input">
+                <?php echo $this->formSelect('file_permissions', $contributionType->file_permissions, null, ContributionType::getPossibleFilePermissions()); ?>
+            </div>
+        </div>
+    </fieldset>
+    <fieldset>
+        <legend>Contributed Elements</legend>
+        <table>
+            <thead>
+                <tr>
+                    <th>Prompt</th>
+                    <th>Element</th>
+                    <th>Set</th>
+                    <th>Description</th>
+                    <th>Delete?</th>
+                </tr>
+            </thead>
+            <tbody>
+    <?php foreach ($contributionTypeElements as $element):
+    $id = $element->id; ?>
+                <tr>
+                    <td><?php echo $this->formText("Elements[$id][prompt]", $element->prompt, array('class' => 'textinput')); ?></td>
+                    <td><?php echo html_escape($element->Element->name); ?></td>
+                    <td><?php echo html_escape($element->Element->getElementSet()->name); ?></td>
+                    <td><?php echo html_escape($element->Element->description); ?></td>
+                    <td><?php echo $this->formCheckbox("Elements[$id][delete]", null, array('checked' => false))?></td>
+                </tr>
+    <?php endforeach; ?>
+                <tr>
+                    <td colspan="5"><input type="submit" class="add-element" id="add-element" value="Add an Element" /></td>
+                </tr>
+            </tbody>
+        </table>
+    </fieldset>
+    <fieldset>
+        <input type="submit" class="form-submit" value="Save Changes" />
+    </fieldset>
 </form>
 </div>
 
