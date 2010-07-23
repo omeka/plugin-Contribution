@@ -7,6 +7,8 @@
  * @package Contribution
  */
 
+require_once 'ContributionOrderable.php';
+
 class ContributionType extends Omeka_Record
 {
     public $item_type_id;
