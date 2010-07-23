@@ -41,3 +41,10 @@ function contribution_get_elements_for_type($type)
     
     return $type->getTypeElements();
 }
+
+function contribution_select_element_for_type($type, $name, $default = '', $attributes = array())
+{
+    $options = $type->getPossibleTypeElements();
+    $options = array('' => 'Select an Element Below') + $options;
+    return __v()->formSelect($name, $default, $attributes, $options);
+}

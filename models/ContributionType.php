@@ -99,4 +99,36 @@ class ContributionType extends Omeka_Record
             $element->saveForm($elementData);
         }
     }
+
+    /**
+     * Gets the elements that could possibly be contributed for this type.
+     * Analogous to ElementTable::getPairsForFormSelect(), except it excludes
+     * the item type metadata not applicable to this specific type.
+     *
+     * @return array
+     */
+    public function getPossibleTypeElements()
+    {
+        $db = $this->getDb();
+        $sql = <<<SQL
+(SELECT e.id AS element_id, e.name AS element_name, es.name AS element_set_name
+FROM {$db->Element} AS e
+JOIN {$db->ElementSet} AS es ON e.element_set_id = es.id
+JOIN {$db->RecordType} AS rt ON es.record_type_id = rt.id
+WHERE (rt.name = 'Item' OR rt.name = 'All')
+AND es.name != 'Item Type Metadata')
+UNION
+(SELECT e.id AS element_id, e.name AS element_name, 'Item Type Metadata' AS element_set_name
+FROM {$db->Element} AS e
+JOIN {$db->ItemTypesElement} AS ite ON e.id = ite.element_id
+WHERE ite.item_type_id = '{$this->item_type_id}')
+ORDER BY element_set_name ASC, element_name ASC;
+SQL;
+        $elements = $db->fetchAll($sql);
+        $options = array();
+        foreach ($elements as $element) {
+            $options[$element['element_set_name']][$element['element_id']] = $element['element_name'];
+        }
+        return $options;
+    }
 }
