@@ -12,6 +12,11 @@ class ContributionTypeTest extends PHPUnit_Framework_TestCase
         Omeka_Context::getInstance()->setDb($db);
     }
 
+    public function tearDown()
+    {
+        Omeka_Context::resetInstance();
+    }
+
     public function testIsFileAllowed()
     {
         // When uninitialized, files should not be allowed.
@@ -42,5 +47,20 @@ class ContributionTypeTest extends PHPUnit_Framework_TestCase
 
         $type->file_permissions = ContributionType::FILE_PERMISSION_DISALLOWED;
         $this->assertFalse($type->isFileRequired());
+    }
+
+    public function testFilePermissionsCoverage()
+    {
+        $permissions = ContributionType::getPossibleFilePermissions();
+        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_ALLOWED, $permissions);
+        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_REQUIRED, $permissions);
+        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_DISALLOWED, $permissions);
+        $this->assertEquals(0, count($permissions), 'Not all file permission levels are covered by testing.');
+    }
+
+    private function assertAndRemoveArrayKey($key, &$array)
+    {
+        $this->assertArrayHasKey($key, $array);
+        unset($array[$key]);
     }
 }
