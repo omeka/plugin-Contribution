@@ -44,7 +44,19 @@ function contribution_get_elements_for_type($type)
 
 function contribution_select_element_for_type($type, $name, $default = '', $attributes = array())
 {
+    // Allow an id or an object to be passed
+    if (is_int($type)) {
+        $type = get_db()->getTable('ContributionType')->find($type);
+    }
+
     $options = $type->getPossibleTypeElements();
-    $options = array('' => 'Select an Element Below') + $options;
+    $options = array('' => 'Select an Element') + $options;
+    return __v()->formSelect($name, $default, $attributes, $options);
+}
+
+function contribution_select_item_type($name, $default = '', $attributes = array())
+{
+    $options = get_db()->getTable('ContributionType')->getPossibleItemTypes();
+    $options = array('' => 'Select an Item Type') + $options;
     return __v()->formSelect($name, $default, $attributes, $options);
 }

@@ -19,7 +19,9 @@ echo js('jquery');
 jQuery.noConflict();
 jQuery(document).ready(function() {
     jQuery('#add-type').click(function() {
-        jQuery('#types-table-body').append('<tr><td><input type="text"/></td></tr>');
+        var displayNameInput = '<input type="text" class="textinput" />';
+        var itemTypeSelect = <?php echo js_escape(contribution_select_item_type('something')); ?>;
+        jQuery('#types-table-body').append('<tr><td>' + displayNameInput + '</td><td colspan="3">' + itemTypeSelect + '</td></tr>');
         return false;
     });
 });
