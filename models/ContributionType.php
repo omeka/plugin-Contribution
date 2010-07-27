@@ -11,17 +11,18 @@ require_once 'ContributionOrderable.php';
 
 class ContributionType extends Omeka_Record
 {
-    public $item_type_id;
-    public $display_name;
-    public $file_permissions;
-
     const FILE_PERMISSION_DISALLOWED = 'Disallowed';
     const FILE_PERMISSION_ALLOWED = 'Allowed';
     const FILE_PERMISSION_REQUIRED = 'Required';
+
+    public $item_type_id;
+    public $display_name;
+    public $file_permissions = self::FILE_PERMISSION_DISALLOWED;
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
-    
+
+
     protected function _initializeMixins()
     {
         $this->_mixins[] = new ContributionOrderable($this,
