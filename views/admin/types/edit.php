@@ -38,7 +38,7 @@ echo js('jquery-ui');
     function getNewElementRow(index) {
         var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
         var selectElement = <?php echo js_escape(contribution_select_element_for_type($contributionType, 'newElements[REPLACE][element_id]')); ?>;
-        selectElement = selectElement.replace('REPLACE', index);
+        selectElement = selectElement.replace(/REPLACE/g, index);
         return '<tr><td></td><td class="element-prompt">' + promptElement + '</td><td colspan="6">' + selectElement + '</td></tr>';
     }
 
