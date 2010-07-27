@@ -35,36 +35,44 @@ echo js('jquery-ui');
 }
 </style>
 <script type="text/javascript">
-    function getNewElementRow(index) {
-        var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
-        var selectElement = <?php echo js_escape(contribution_select_element_for_type($contributionType, 'newElements[REPLACE][element_id]')); ?>;
-        selectElement = selectElement.replace(/REPLACE/g, index);
-        return '<tr><td></td><td class="element-prompt">' + promptElement + '</td><td colspan="6">' + selectElement + '</td></tr>';
+    jQuery.noConflict();
+
+    function setUpElementForm(dragHandle, elementSelect) {
+        var index = 0;
+        jQuery(document).ready(function() {
+            jQuery('#add-element').click(function() {
+                jQuery('#add-element-row').before(getNewElementRow(index++, elementSelect));
+                return false;
+            });
+
+            var sortableSection = jQuery('#sortable');
+            var sortableRows = sortableSection.children('tr');
+
+            jQuery('#element-table > thead > tr').prepend('<th></th>');
+            sortableRows.prepend('<td class="sorting-handle"><img src="' + dragHandle + '" /></td>');
+            jQuery('.element-order').hide();
+            sortableSection.sortable({
+                update: function(event, ui) {
+                    // We need to re-get the rows to see the new order.
+                    jQuery.each(sortableSection.children('tr'), function(index, element) {
+                        var orderInput = jQuery(element).find('.element-order input');
+                        orderInput.val(index + 1);
+                        });
+                    }
+            });
+        });
     }
 
-    jQuery.noConflict();
-    var index = 0;
-    jQuery(document).ready(function() {
-        jQuery('#add-element').click(function() {
-            jQuery('#add-element-row').before(getNewElementRow(index++));
-            return false;
-        });
+    function getNewElementRow(index, selectElement) {
+        var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
+        selectElementReplaced = selectElement.replace(/REPLACE/g, index);
+        return '<tr><td></td><td class="element-prompt">' + promptElement + '</td><td colspan="6">' + selectElementReplaced + '</td></tr>';
+    }
 
-        var sortableSection = jQuery('#sortable');
-        var sortableRows = sortableSection.children('tr');
-
-        jQuery('#element-table > thead > tr').prepend('<th></th>');
-        sortableRows.prepend('<td class="sorting-handle"><img src="/omeka/admin/themes/default/images/arrow_move.gif" /></td>');
-        jQuery('.element-order').hide();
-        sortableSection.sortable({
-            update: function(event, ui) {
-                // We need to re-get the rows to see the new order.
-                jQuery.each(sortableSection.children('tr'), function(index, element) {
-                    var orderInput = jQuery(element).find('.element-order input');
-                    orderInput.val(index + 1);
-                })
-        }});
-    });
+    setUpElementForm(
+        <?php echo js_escape(img('arrow_move.gif')); ?>,
+        <?php echo js_escape(contribution_select_element_for_type($contributionType, 'newElements[REPLACE][element_id]')); ?>
+        );
 </script>
 <h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <a href="<?php echo uri('contribution/types'); ?>"><?php echo $h2; ?></a> | <?php echo $h3; ?></h1>
 <ul id="section-nav" class="navigation">
