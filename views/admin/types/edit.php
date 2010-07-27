@@ -38,10 +38,17 @@ echo js('jquery-ui');
     jQuery.noConflict();
 
     function setUpElementForm(dragHandle, elementSelect) {
+        function getNewElementRow(index) {
+            var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
+            elementSelectOutput = elementSelect.replace(/REPLACE/g, index);
+            return '<tr><td></td><td class="element-prompt">' + promptElement + '</td><td colspan="6">' + elementSelectOutput + '</td></tr>';
+        }
+
         var index = 0;
+
         jQuery(document).ready(function() {
             jQuery('#add-element').click(function() {
-                jQuery('#add-element-row').before(getNewElementRow(index++, elementSelect));
+                jQuery('#add-element-row').before(getNewElementRow(index++));
                 return false;
             });
 
@@ -61,12 +68,6 @@ echo js('jquery-ui');
                     }
             });
         });
-    }
-
-    function getNewElementRow(index, selectElement) {
-        var promptElement = '<input name="newElements[' + index + '][prompt]" class="textinput" />';
-        selectElementReplaced = selectElement.replace(/REPLACE/g, index);
-        return '<tr><td></td><td class="element-prompt">' + promptElement + '</td><td colspan="6">' + selectElementReplaced + '</td></tr>';
     }
 
     setUpElementForm(

@@ -6,7 +6,7 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
- 
+
 /**
  * Gets all available contribution types, displayed by their alias.
  *
