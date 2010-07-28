@@ -1,14 +1,23 @@
 <?php
 /**
  * @version $Id$
- * @author CHNM
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
  * @copyright Center for History and New Media, 2010
  * @package Contribution
+ * @subpackage Models
  */
 
+/**
+ * Use a modified version of the Orderable mixin.
+ */
 require_once 'ContributionOrderable.php';
 
+/**
+ * Represents a contributable item type.
+ *
+ * @package Contribution
+ * @subpackage Models
+ */
 class ContributionType extends Omeka_Record
 {
     const FILE_PERMISSION_DISALLOWED = 'Disallowed';
@@ -84,6 +93,11 @@ class ContributionType extends Omeka_Record
             );
     }
 
+    /**
+     * Process the type element data from the type form.
+     *
+     * @param ArrayObject $post
+     */
     public function afterSaveForm($post)
     {
         foreach($post['Elements'] as $elementId => $elementData) {
@@ -105,7 +119,7 @@ class ContributionType extends Omeka_Record
     }
 
     /**
-     * Gets the elements that could possibly be contributed for this type.
+     * Get the elements that could possibly be contributed for this type.
      * Analogous to ElementTable::getPairsForFormSelect(), except it excludes
      * the item type metadata not applicable to this specific type.
      *
