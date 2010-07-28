@@ -9,6 +9,11 @@
 
 contribution_admin_header(array('Types'));
 ?>
+<style type="text/css">
+    td {
+        vertical-align: middle;
+    }
+</style>
 <div id="primary">
     <?php echo flash(); ?>
     <form action="<?php echo uri('contribution/types/add'); ?>" method="POST">
