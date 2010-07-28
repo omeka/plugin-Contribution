@@ -7,12 +7,7 @@
  * @package Contribution
  */
 
-$h1 = 'Contribution';
-$h2 = 'Types';
-$head = array('title' => "$h1 | $h2",
-              'bodyclass' => 'contribution primary',
-              'content_class' => 'horizontal-nav');
-head($head);
+$title = contribution_admin_header(array('Types'));
 echo js('jquery');
 ?>
 <script type="text/javascript">
@@ -32,7 +27,7 @@ jQuery(document).ready(function() {
     });
 });
 </script>
-<h1><a href="<?php echo uri('contribution'); ?>"><?php echo $h1; ?></a> | <?php echo $h2; ?></h1>
+<h1><?php echo $title; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
 </ul>

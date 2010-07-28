@@ -60,3 +60,15 @@ function contribution_select_item_type($name, $default = '', $attributes = array
     $options = array('' => 'Select an Item Type') + $options;
     return __v()->formSelect($name, $default, $attributes, $options);
 }
+
+function contribution_admin_header($subsections = array())
+{
+    $mainTitle = 'Contribution';
+    $subsections = array_merge(array($mainTitle), $subsections);
+    $displayTitle = implode(' | ', $subsections);
+    $head = array('title' => $displayTitle,
+              'bodyclass' => 'contribution',
+              'content_class' => 'horizontal-nav');
+    head($head);
+    return $displayTitle;
+}

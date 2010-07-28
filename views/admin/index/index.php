@@ -7,20 +7,9 @@
  * @package Contribution
  */
 
-$h1 = 'Contribution';
-$head = array('title' => $h1,
-              'bodyclass' => 'contribution primary',
-              'content_class' => 'horizontal-nav');
-head($head);
-echo js('jquery'); ?>
-<script type="text/javascript">
-jQuery.noConflict();
-</script>
-<?php
-echo js('tiny_mce/tiny_mce');
-echo js('contribution-settings-tinymce');
+$title = contribution_admin_header();
 ?>
-<h1><?php echo $h1; ?></h1>
+<h1><?php echo $title; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
 </ul>
