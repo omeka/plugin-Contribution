@@ -13,4 +13,5 @@
 class ContributionContributedItem extends Omeka_Record
 {
     public $item_id;
+    public $contributor_id;
 }
