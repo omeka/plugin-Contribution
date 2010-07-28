@@ -69,6 +69,11 @@ function contribution_admin_header($subsections = array())
     $head = array('title' => $displayTitle,
               'bodyclass' => 'contribution',
               'content_class' => 'horizontal-nav');
-    head($head);
+    head($head); ?>
+<h1><?php echo $displayTitle; ?></h1>
+<ul id="section-nav" class="navigation">
+<?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
+</ul>
+<?php
     return $displayTitle;
 }

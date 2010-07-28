@@ -7,30 +7,8 @@
  * @package Contribution
  */
 
-$title = contribution_admin_header(array('Types'));
-echo js('jquery');
+contribution_admin_header(array('Types'));
 ?>
-<script type="text/javascript">
-jQuery.noConflict();
-
-function getNewTypeRow(index) {
-    var displayNameInput = '<input type="text" class="textinput" name="newTypes[' + index + '][display_name]"/>';
-    var itemTypeSelect = <?php echo js_escape(contribution_select_item_type('newTypes[REPLACE][item_type_id]')); ?>;
-    itemTypeSelect = itemTypeSelect.replace(/REPLACE/g, index);
-    return '<tr><td>' + displayNameInput + '</td><td colspan="3">' + itemTypeSelect + '</td></tr>'
-}
-jQuery(document).ready(function() {
-    var index = 0;
-    jQuery('#add-type').click(function(event) {
-        jQuery('#types-table-body').append(getNewTypeRow(index++));
-        return false;
-    });
-});
-</script>
-<h1><?php echo $title; ?></h1>
-<ul id="section-nav" class="navigation">
-<?php echo nav(array('Start' => uri('contribution/index'), 'Settings' => uri('contribution/settings'), 'Types' => uri('contribution/types'))); ?>
-</ul>
 <div id="primary">
     <?php echo flash(); ?>
     <form action="<?php echo uri('contribution/types/add'); ?>" method="POST">
@@ -62,5 +40,22 @@ jQuery(document).ready(function() {
     <?php echo $this->formSubmit('submit-changes', 'Submit Changes', array('class' => 'submit-button')); ?>
     </form>
 </div>
+<?php echo js('jquery'); ?>
+<script type="text/javascript">
+jQuery.noConflict();
 
+function getNewTypeRow(index) {
+    var displayNameInput = '<input type="text" class="textinput" name="newTypes[' + index + '][display_name]"/>';
+    var itemTypeSelect = <?php echo js_escape(contribution_select_item_type('newTypes[REPLACE][item_type_id]')); ?>;
+    itemTypeSelect = itemTypeSelect.replace(/REPLACE/g, index);
+    return '<tr><td>' + displayNameInput + '</td><td colspan="3">' + itemTypeSelect + '</td></tr>'
+}
+jQuery(document).ready(function() {
+    var index = 0;
+    jQuery('#add-type').click(function(event) {
+        jQuery('#types-table-body').append(getNewTypeRow(index++));
+        return false;
+    });
+});
+</script>
 <?php foot();
