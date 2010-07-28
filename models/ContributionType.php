@@ -95,9 +95,12 @@ class ContributionType extends Omeka_Record
             }
         }
         foreach($post['newElements'] as $elementData) {
-            $element = new ContributionTypeElement;
-            $this->addChild($element);
-            $element->saveForm($elementData);
+            // Skip totally empty elements
+            if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
+                $element = new ContributionTypeElement;
+                $this->addChild($element);
+                $element->saveForm($elementData);
+            }
         }
     }
 
@@ -123,11 +126,11 @@ UNION
 (SELECT e.id AS element_id, e.name AS element_name, 'Item Type Metadata' AS element_set_name
     FROM {$db->Element} AS e
         JOIN {$db->ItemTypesElement} AS ite ON e.id = ite.element_id
-    WHERE ite.item_type_id = '{$this->item_type_id}'
+    WHERE ite.item_type_id = ?
 )
 ORDER BY element_set_name ASC, element_name ASC;
 SQL;
-        $elements = $db->fetchAll($sql);
+        $elements = $db->fetchAll($sql, $this->item_type_id);
         $options = array();
         foreach ($elements as $element) {
             $options[$element['element_set_name']][$element['element_id']] = $element['element_name'];
