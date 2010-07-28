@@ -13,12 +13,12 @@ contribution_admin_header(array('Settings'));
     <?php echo flash(); ?>
     <?php echo $form; ?>
 </div>
-<?php echo js('jquery'); ?>
-<script type="text/javascript">
-jQuery.noConflict();
-</script>
 <?php
+echo js('jquery');
 echo js('tiny_mce/tiny_mce');
-echo js('contribution-settings-tinymce');
+echo js('contribution');
 ?>
+<script type="text/javascript">
+    setUpSettingsWysiwyg();
+</script>
 <?php foot();

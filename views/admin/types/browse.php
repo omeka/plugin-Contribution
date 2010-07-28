@@ -40,22 +40,11 @@ contribution_admin_header(array('Types'));
     <?php echo $this->formSubmit('submit-changes', 'Submit Changes', array('class' => 'submit-button')); ?>
     </form>
 </div>
-<?php echo js('jquery'); ?>
+<?php
+echo js('jquery');
+echo js('contribution');
+?>
 <script type="text/javascript">
-jQuery.noConflict();
-
-function getNewTypeRow(index) {
-    var displayNameInput = '<input type="text" class="textinput" name="newTypes[' + index + '][display_name]"/>';
-    var itemTypeSelect = <?php echo js_escape(contribution_select_item_type('newTypes[REPLACE][item_type_id]')); ?>;
-    itemTypeSelect = itemTypeSelect.replace(/REPLACE/g, index);
-    return '<tr><td>' + displayNameInput + '</td><td colspan="3">' + itemTypeSelect + '</td></tr>'
-}
-jQuery(document).ready(function() {
-    var index = 0;
-    jQuery('#add-type').click(function(event) {
-        jQuery('#types-table-body').append(getNewTypeRow(index++));
-        return false;
-    });
-});
+    setUpTypesForm(<?php echo js_escape(contribution_select_item_type('newTypes[REPLACE][item_type_id]')); ?>);
 </script>
 <?php foot();
