@@ -160,6 +160,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
             $item->save();
+
+            $this->_processContributor($item, $post);
             
             return true;
         }
@@ -203,6 +205,36 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             }
         }
         return true;
+    }
+
+    /**
+     * Deals with metadata about the item's contributor.
+     *
+     * @param Item $item Contributed item.
+     * @param array $post POST array.
+     */
+    protected function _processContributor($item, $post)
+    {
+        $table = get_db()->getTable('ContributionContributor');
+        $email = 'root@example.org';
+        $name = 'John Flatness';
+        $ip = $this->getRequest()->getClientIp;
+
+        if (!($contributor = $table->findByEmail($email))) {
+            $contributor = new ContributionContributor;
+            $contributor->email = $email;
+        }
+        $contributor->setDottedIpAddress($ip);
+        $contributor->name = $name;
+        $contributor->save();
+
+        $linkage = new ContributionContributedItem;
+        $linkage->contributor_id = $contributor->id;
+        $linkage->item_id = $item->id;
+        $linkage->save();
+
+        release_object($contributor);
+        release_object($linkage);
     }
     
     /**

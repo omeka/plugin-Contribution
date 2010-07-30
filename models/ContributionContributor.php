@@ -41,8 +41,8 @@ class ContributionContributor extends Omeka_Record
             $this->addError('email', 'The email address you have provided is invalid.  Please provide another one.');
         }
         
-        if(empty($this->first_name) or empty($this->last_name)) {
-            $this->addError('name', 'The first/last name fields must be filled out.  Please provide a complete name.');     
+        if(empty($this->name)) {
+            $this->addError('name', 'Please provide a complete name.');
         }
     }
     
