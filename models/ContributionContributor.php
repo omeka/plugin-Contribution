@@ -21,12 +21,6 @@ class ContributionContributor extends Omeka_Record
     
     protected $_related = array('Items' => 'getContributedItems');
     
-    protected function _initializeMixins()
-    {
-        $this->mixins[] = new ActsAsElementText($this);
-        $this->mixins[] = new Relatable($this);
-    }
-    
     /**
      * Validate form submissions.
      * Gotta have a valid 1) ip address, 2) email address, 3) first & last name

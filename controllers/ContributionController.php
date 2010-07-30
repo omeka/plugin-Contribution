@@ -218,7 +218,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         $table = get_db()->getTable('ContributionContributor');
         $email = 'root@example.org';
         $name = 'John Flatness';
-        $ip = $this->getRequest()->getClientIp;
+        $ip = $this->getRequest()->getClientIp();
 
         if (!($contributor = $table->findByEmail($email))) {
             $contributor = new ContributionContributor;
