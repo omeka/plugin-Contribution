@@ -19,13 +19,13 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
 */
 class Contribution
 {
-    private static $hooks = array('install', 
+    private static $_hooks = array('install',
                                   'uninstall',
                                   'admin_append_to_plugin_uninstall_message',
                                   'define_acl',
                                   'define_routes');
                                   
-    private static $filters = array('admin_navigation_main');
+    private static $_filters = array('admin_navigation_main');
     
     public static $options = array('contribution_page_path',
                                    'contribution_contributor_email',
@@ -50,12 +50,12 @@ class Contribution
      */
     public function addHooksAndFilters()
     {
-        foreach (self::$hooks as $hookName) {
+        foreach (self::$_hooks as $hookName) {
             $functionName = Inflector::variablize($hookName);
             add_plugin_hook($hookName, array($this, $functionName));
         }
         
-        foreach (self::$filters as $filterName) {
+        foreach (self::$_filters as $filterName) {
             $functionName = Inflector::variablize($filterName);
             add_filter($filterName, array($this, $functionName));
         }
