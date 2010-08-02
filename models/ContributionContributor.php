@@ -84,4 +84,16 @@ class ContributionContributor extends Omeka_Record
     {
         $this->ip_address = ip2long($dottedIpAddress);
     }
+
+    public function getMetadata()
+    {
+        $sql = <<<SQL
+SELECT `ccf`.`name` AS `name`, `ccv`.`value` AS `value`
+FROM {$db->ContributionContributorField} AS `ccf`
+INNER JOIN {$db->ContributionContributorValue} AS `ccv`
+ON `ccf`.`id` = `ccv`.`field_id`
+WHERE `ccv`.`contributor_id` = ?;
+SQL;
+        return $this->getDb()->fetchPairs($sql, $this->id);
+    }
 }

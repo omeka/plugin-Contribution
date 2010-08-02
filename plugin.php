@@ -109,7 +109,7 @@ class Contribution
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_fields` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(255) NOT NULL,
-            `description` VARCHAR(255),
+            `prompt` VARCHAR(255),
             `type` ENUM('Text', 'Tiny Text') NOT NULL,
             `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`)
