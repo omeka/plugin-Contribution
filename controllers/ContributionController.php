@@ -29,8 +29,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         $this->_captcha = $this->_setupCaptcha();
         
         if ($this->_processForm($_POST)) {
-            echo 'Submission Succeeded.';
-            die(); 
+            $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
+            $this->redirect->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
             if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
