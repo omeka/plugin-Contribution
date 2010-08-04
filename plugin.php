@@ -192,14 +192,14 @@ class Contribution
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
         if (!defined('ADMIN')) {        
-            $router->addRoute('contributionPublic',
+            $router->addRoute('contributionDefault',
                 new Zend_Controller_Router_Route('contribution/:action/*',
                     array('module'     => 'contribution',
                           'controller' => 'contribution',
                           'action'     => 'contribute')));
         
             // get the base path
-        	$bp = get_option('contribution_page_path');
+            $bp = get_option('contribution_page_path');
 
             if ($bp) {
                 $router->addRoute('contributionCustom', 

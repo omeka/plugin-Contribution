@@ -76,3 +76,28 @@ function contribution_admin_header($subsections = array())
 <?php
     return $displayTitle;
 }
+
+/**
+ * Get a link to the public contribution page.
+ *
+ * @param string $linkText
+ * @param string $action Action to link to, main index if none.
+ * @return string HTML
+ */
+function contribution_link_to_contribute($linkText = 'Contribute', $actionName = null)
+{
+    $path = get_option('contribution_page_path');
+    if (empty($path)) {
+        $route = 'contributionDefault';
+        
+    } else {
+        $route = 'contributionCustom';
+    }
+    $options = array();
+    if (!empty($actionName)) {
+        $options['action'] = $actionName;
+    }
+    $url = __v()->url($options, $route, array(), true);
+
+    return "<a href=\"$url\">$linkText</a>";
+}
