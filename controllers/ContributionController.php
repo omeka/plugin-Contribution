@@ -290,39 +290,6 @@ class Contribution_ContributionController extends Omeka_Controller_Action
     }
     
     /**
-     * Retrieve or create a new Contributor record based on parameters passed 
-     * through the POST. 
-     * 
-     * This takes first name, last name and email address from the POST.  With 
-     * that, it searches the database for an existing contributor with all those
-     * properties.  Returns that, otherwise creates a new Contributor with all 
-     * of those properties.
-     * 
-     * @return Contributor
-     * @todo Update for new Contribution
-     */ 
-    protected function _createOrFindContributor()
-    {
-        //Verify that form submissions involve nothing sneaky by grabbing specific parts of the input
-        $contrib = $_POST['contributor'];
-        
-        $firstName = $contrib['first_name'];
-        $lastName = $contrib['last_name'];
-        $email = $contrib['email'];
-                
-        //Try to locate an existing contributor entry based on a hash of first / last / email address
-        $contributor = get_db()->getTable('Contributor')->findByHash($firstName, $lastName, $email);
-
-        if (!$contributor) { 
-            $contributor = new Contributor;
-            $contributor->createEntity($contrib);
-            $contributor->setArray($contrib);
-        }
-
-        return $contributor;
-    }
-    
-    /**
      * Send an email notification to the user who contributed the Item.
      * 
      * This email will appear to have been sent from the address specified via
@@ -346,7 +313,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         $item->view->email = $toEmail;
                 
         $mail = new Zend_Mail();
-        $mail->setBodyText($this->view->render('index/email.php'));
+        $mail->setBodyText($this->view->render('contribution/email.php'));
         $mail->setFrom($fromEmail, get_option('site_title') . ' Administrator');
         $mail->addTo($toEmail);
         $mail->setSubject("Your " . get_option('site_title') . " Contribution");
