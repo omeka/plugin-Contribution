@@ -41,6 +41,15 @@ function contribution_get_elements_for_type($type)
     return $type->getTypeElements();
 }
 
+/**
+ * Get an HTML <select> of possible type elements for a type.
+ *
+ * @param ContributionType|integer $type
+ * @param string $name Select element name.
+ * @param string $default Default select option.
+ * @param array $attributes Select element HTML attributes.
+ * @return string HTML
+ */
 function contribution_select_element_for_type($type, $name, $default = '', $attributes = array())
 {
     // Allow an id or an object to be passed
@@ -53,6 +62,14 @@ function contribution_select_element_for_type($type, $name, $default = '', $attr
     return __v()->formSelect($name, $default, $attributes, $options);
 }
 
+/**
+ * Get an HTML <select> of possible item types for a new type.
+ *
+ * @param <type> $name Select element name.
+ * @param <type> $default Default select option.
+ * @param <type> $attributes Select element HTML attributes.
+ * @return string HTML
+ */
 function contribution_select_item_type($name, $default = '', $attributes = array())
 {
     $options = get_db()->getTable('ContributionType')->getPossibleItemTypes();
@@ -60,6 +77,14 @@ function contribution_select_item_type($name, $default = '', $attributes = array
     return __v()->formSelect($name, $default, $attributes, $options);
 }
 
+/**
+ * Print the header for the contribution admin pages.
+ *
+ * Creates a consistent navigation across the pages.
+ *
+ * @param array $subsections Array of names that specify the "path" to this page.
+ * @return string
+ */
 function contribution_admin_header($subsections = array())
 {
     $mainTitle = 'Contribution';

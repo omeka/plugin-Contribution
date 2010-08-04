@@ -76,9 +76,10 @@ class ContributionContributor extends Omeka_Record
     
     /**
      * Sets an IP dotted-quad address on the Contributor.
-     * Converts to a long in the process.
+     * Converts to a integer in the process.
      *
-     * @param string $dottedIpAddress A
+     * @param string $dottedIpAddress
+     * @return int
      */
     public function setDottedIpAddress($dottedIpAddress)
     {
