@@ -28,8 +28,29 @@ endif;
 // on a type-by-type basis).
 fire_plugin_hook('contribution_append_to_type_form', $type);
 
+?>
+<fieldset>
+    <legend>Personal Information</legend>
+<div class="field">
+    <label>Name</label>
+    <div class="inputs">
+        <div class="input">
+            <input type="text" class="textinput" name="contributor_name" id="contributor-name" />
+        </div>
+    </div>
+</div>
+<div class="field">
+    <label>Email Address:</label>
+    <div class="inputs">
+        <div class="input">
+            <input type="text" class="textinput" name="contributor_email" id="contributor-email" />
+        </div>
+    </div>
+</div>
+<?php
 foreach (contribution_get_contributor_fields() as $field) {
     echo $field;
 }
-
 endif;
+?>
+</fieldset>
