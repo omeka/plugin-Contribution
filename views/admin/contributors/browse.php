@@ -19,11 +19,11 @@ contribution_admin_header(array('Contributors'));
             </tr>
         </thead>
         <tbody id="types-table-body">
-<?php foreach ($typeInfoArray as $typeInfo): ?>
+<?php foreach ($browseData as $contributorInfo): ?>
     <tr>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td><?php echo html_escape($contributorInfo['name']); ?></td>
+        <td><?php echo html_escape($contributorInfo['email']); ?></td>
+        <td><?php echo html_escape($contributorInfo['item_count']); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

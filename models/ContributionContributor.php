@@ -57,7 +57,7 @@ class ContributionContributor extends Omeka_Record
      */
     public function getContributedItems()
     {
-        
+
     }
     
     /**
@@ -91,7 +91,7 @@ class ContributionContributor extends Omeka_Record
         $sql = <<<SQL
 SELECT `ccf`.`name` AS `name`, `ccv`.`value` AS `value`
 FROM {$db->ContributionContributorField} AS `ccf`
-INNER JOIN {$db->ContributionContributorValue} AS `ccv`
+LEFT OUTER JOIN {$db->ContributionContributorValue} AS `ccv`
 ON `ccf`.`id` = `ccv`.`field_id`
 WHERE `ccv`.`contributor_id` = ?;
 SQL;
