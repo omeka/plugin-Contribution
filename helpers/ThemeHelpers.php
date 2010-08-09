@@ -16,6 +16,11 @@ function contribution_get_types()
     return get_db()->getTable('ContributionType')->findAll();
 }
 
+function contribution_get_contributor_fields()
+{
+    return get_db()->getTable('ContributionContributorField')->findAll();
+}
+
 /**
  * Returns HTML for select box for contribution types.
  *

@@ -27,4 +27,9 @@ endif;
 // Allow other plugins to append to the form (pass the type to allow decisions
 // on a type-by-type basis).
 fire_plugin_hook('contribution_append_to_type_form', $type);
+
+foreach (contribution_get_contributor_fields() as $field) {
+    echo $field;
+}
+
 endif;
