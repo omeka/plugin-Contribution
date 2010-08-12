@@ -34,8 +34,4 @@ class Contribution_ContributorsController extends Omeka_Controller_Action
 
         $this->view->browseData = $browseData;
     }
-    
-    public function showAction()
-    {
-    }
 }

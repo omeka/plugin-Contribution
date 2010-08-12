@@ -79,11 +79,10 @@ class ContributionContributor extends Omeka_Record
      * Converts to a integer in the process.
      *
      * @param string $dottedIpAddress
-     * @return int
      */
     public function setDottedIpAddress($dottedIpAddress)
     {
-        $this->ip_address = ip2long($dottedIpAddress);
+        $this->ip_address = sprintf('%u', ip2long($dottedIpAddress));
     }
 
     public function getMetadata()
