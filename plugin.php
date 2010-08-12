@@ -19,20 +19,26 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
 */
 class Contribution
 {
-    private static $_hooks = array('install',
-                                  'uninstall',
-                                  'admin_append_to_plugin_uninstall_message',
-                                  'define_acl',
-                                  'define_routes');
+    private static $_hooks = array(
+        'install',
+        'uninstall',
+        'define_acl',
+        'define_routes',
+        'admin_append_to_plugin_uninstall_message',
+        'admin_append_to_advanced_search',
+        'item_browse_sql'
+    );
                                   
     private static $_filters = array('admin_navigation_main');
     
-    public static $options = array('contribution_page_path',
-                                   'contribution_contributor_email',
-                                   'contribution_consent_text',
-                                   'contribution_collection_id',
-                                   'contribution_recaptcha_public_key',
-                                   'contribution_recaptcha_private_key');
+    public static $options = array(
+        'contribution_page_path',
+        'contribution_contributor_email',
+        'contribution_consent_text',
+        'contribution_collection_id',
+        'contribution_recaptcha_public_key',
+        'contribution_recaptcha_private_key'
+    );
 
     private $_db;
     
@@ -221,6 +227,50 @@ class Contribution
     {
         $nav['Contribution'] = uri('contribution');
         return $nav;
+    }
+
+    /**
+     * Append Contribution search selectors to the advanced search page.
+     *
+     * @return string HTML
+     */
+    public function adminAppendToAdvancedSearch()
+    {
+        $html = '<div class="field">';
+        $html .= __v()->formLabel('contributed', 'Contribution Status');
+        $html .= '<div class="inputs">';
+        $html .= __v()->formSelect('contributed', null, null, array(
+           ''  => 'Select Below',
+           '1' => 'Only Contributed Items',
+           '0' => 'Only Non-Contributed Items'
+        ));
+        $html .= '</div></div>';
+        echo $html;
+    }
+
+    /**
+     * Deal with Contribution-specific search terms.
+     *
+     * @param Omeka_Db_Select $select
+     * @param array $params
+     */
+    public function itemBrowseSql($select, $params)
+    {
+        if ($request = Zend_Controller_Front::getInstance()->getRequest()) {
+            $db = get_db();
+            $contributed = $request->get('contributed');
+            if (isset($contributed)) {
+                if ($contributed === '1') {
+                    $select->joinInner(
+                            array('cci' => $db->ContributionContributedItem),
+                            'cci.item_id = i.id',
+                            array()
+                     );
+                } else if ($contributed === '0') {
+                    $select->where("i.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
+                }
+            }
+        }
     }
 
     /**
