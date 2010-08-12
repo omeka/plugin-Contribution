@@ -7,7 +7,7 @@
  */
 $contributor = $contributioncontributor;
 $displayData = array_map('html_escape', (array)$contributor);
-contribution_admin_header(array('Contributors', "&ldquo;{$displayData['name']}&rdquo;"));
+contribution_admin_header(array('Contributors', "#{$displayData['id']}"));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
