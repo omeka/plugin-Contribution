@@ -270,6 +270,16 @@ class Contribution
                     $select->where("i.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
                 }
             }
+
+            $contributor_id = $request->get('contributor_id');
+            if (is_numeric($contributor_id)) {
+                $select->joinInner(
+                        array('cci' => $db->ContributionContributedItem),
+                        'cci.item_id = i.id',
+                        array('contributor_id')
+                );
+                $select->where('cci.contributor_id = ?', $contributor_id);
+            }
         }
     }
 
