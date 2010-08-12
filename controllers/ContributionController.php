@@ -133,6 +133,10 @@ class Contribution_ContributionController extends Omeka_Controller_Action
                 $this->flashError('You must select a type for your contribution.');
                 return false;
             }
+
+            if (!($contributor = $this->_processContributor($item, $post))) {
+                return false;
+            }
             
             $itemMetadata = array('public'       => false,
                                   'featured'     => false,
@@ -161,7 +165,10 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
             $item->save();
 
-            $this->_processContributor($item, $post);
+            $linkage = new ContributionContributedItem;
+            $linkage->contributor_id = $contributor->id;
+            $linkage->item_id = $item->id;
+            $linkage->save();
             
             return true;
         }
@@ -216,8 +223,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
     protected function _processContributor($item, $post)
     {
         $table = get_db()->getTable('ContributionContributor');
-        $email = 'root@example.org';
-        $name = 'John Flatness';
+        $email = $post['contributor_email'];
+        $name = $post['contributor_name'];
         $ip = $this->getRequest()->getClientIp();
 
         if (!($contributor = $table->findByEmail($email))) {
@@ -226,15 +233,13 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         }
         $contributor->setDottedIpAddress($ip);
         $contributor->name = $name;
-        $contributor->save();
-
-        $linkage = new ContributionContributedItem;
-        $linkage->contributor_id = $contributor->id;
-        $linkage->item_id = $item->id;
-        $linkage->save();
-
-        release_object($contributor);
-        release_object($linkage);
+        try {
+            $contributor->forceSave();
+            return $contributor;
+        } catch (Omeka_Validator_Exception $e) {
+            $this->flashValidationErrors($e);
+            return false;
+        }
     }
     
     /**

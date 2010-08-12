@@ -29,8 +29,9 @@ endif;
 fire_plugin_hook('contribution_append_to_type_form', $type);
 
 ?>
+<div id="contributor-metadata">
 <fieldset>
-    <legend>Personal Information</legend>
+    <h3>Personal Information</h3>
 <div class="field">
     <label>Name</label>
     <div class="inputs">
@@ -54,3 +55,4 @@ foreach (contribution_get_contributor_fields() as $field) {
 endif;
 ?>
 </fieldset>
+</div>
