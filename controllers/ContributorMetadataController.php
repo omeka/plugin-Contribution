@@ -9,13 +9,18 @@
 /**
  * Controller for editing and viewing Contribution plugin settings.
  */
-class Contribution_IndexController extends Omeka_Controller_Action
+class Contribution_ContributorMetadataController extends Omeka_Controller_Action
 {
+    public function init()
+    {
+        $this->_modelClass = 'ContributionContributorField';
+    }
+    
     /**
-     * Index action.
+     * Index action; simply forwards to browse.
      */
     public function indexAction()
     {
-        $this->redirect->gotoSimple('index', 'contributors');
+        $this->_forward('browse');
     }
 }
