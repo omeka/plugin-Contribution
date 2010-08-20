@@ -136,7 +136,7 @@ class ContributionType extends Omeka_Record
     WHERE (rt.name = 'Item' OR rt.name = 'All')
         AND es.name != 'Item Type Metadata'
 )
-UNION
+UNION ALL
 (SELECT e.id AS element_id, e.name AS element_name, 'Item Type Metadata' AS element_set_name
     FROM {$db->Element} AS e
         JOIN {$db->ItemTypesElement} AS ite ON e.id = ite.element_id
