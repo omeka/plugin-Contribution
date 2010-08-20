@@ -89,7 +89,8 @@ class Contribution
             `prompt` VARCHAR(255) NOT NULL,
             `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `type_id_element_id` (`type_id`, `element_id`)
+            UNIQUE KEY `type_id_element_id` (`type_id`, `element_id`),
+            KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
@@ -118,7 +119,8 @@ class Contribution
             `prompt` VARCHAR(255),
             `type` ENUM('Text', 'Tiny Text') NOT NULL,
             `order` INT UNSIGNED NOT NULL,
-            PRIMARY KEY (`id`)
+            PRIMARY KEY (`id`),
+            KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
         
@@ -128,7 +130,7 @@ class Contribution
             `contributor_id` INT UNSIGNED NOT NULL,
             `value` TEXT NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY `field_id_contributor_id` (`field_id`, `contributor_id`)
+            UNIQUE KEY `contributor_id_field_id` (`contributor_id`, `field_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
