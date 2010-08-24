@@ -172,21 +172,26 @@ class Contribution
      */
     public function defineAcl($acl)
     {
-        $resource = new Omeka_Acl_Resource('Contribution_Settings');
-        $resource->add(array('edit'));
-        $acl->add($resource);
-        
-        $acl->deny(null, 'Contribution_Settings');
-        $acl->allow('super', 'Contribution_Settings');
-        $acl->allow('admin', 'Contribution_Settings');
-        
-        $resource = new Omeka_Acl_Resource('Contribution_Types');
-        $resource->add(array('browse', 'add', 'edit'));
-        $acl->add($resource);
-        
-        $acl->deny(null, 'Contribution_Types');
-        $acl->allow('super', 'Contribution_Types');
-        $acl->allow('admin', 'Contribution_Types');
+        $resourceList = array(
+            'Contribution_Contribution' => array('contribute', 'index', 'terms', 'thankyou', 'type-form'),
+            'Contribution_Contributors' => array('browse', 'show'),
+            'Contribution_ContributorMetadata' => array('browse', 'add', 'edit'),
+            'Contribution_Types' => array('browse', 'add', 'edit'),
+            'Contribution_Settings' => array('edit')
+        );
+        $acl->loadResourceList($resourceList);
+
+
+        // By default, deny everyone access to all resources, then allow access
+        // to only super and admin.
+        foreach ($resourceList as $resource => $privileges) {
+            $acl->deny(null, $resource);
+            $acl->allow('super', $resource);
+            $acl->allow('admin', $resource);
+        }
+
+        // Allow everybody access to the Contribution controller.
+        $acl->allow(null, 'Contribution_Contribution');
     }
     
     /**
@@ -212,9 +217,9 @@ class Contribution
             if ($bp) {
                 $router->addRoute('contributionCustom', 
                     new Zend_Controller_Router_Route("{$bp}/:action/*",
-                        array('module' => 'contribution',
+                        array('module'     => 'contribution',
                               'controller' => 'contribution',
-                              'action' => 'contribute')));
+                              'action'     => 'contribute')));
             }
         }
     }
@@ -227,7 +232,9 @@ class Contribution
      */
     public function adminNavigationMain($nav)
     {
-        $nav['Contribution'] = uri('contribution');
+        if(has_permission('Contribution_Contributors', 'browse')) {
+            $nav['Contribution'] = uri('contribution');
+        }
         return $nav;
     }
 
