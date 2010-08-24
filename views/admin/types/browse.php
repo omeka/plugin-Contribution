@@ -49,6 +49,11 @@ echo js('jquery');
 echo js('contribution');
 ?>
 <script type="text/javascript">
-    setUpTypesForm(<?php echo js_escape(contribution_select_item_type('newTypes[REPLACE][item_type_id]')); ?>);
+    var newRow = <?php
+        $nameInput = $this->formText('newTypes[!!INDEX!!][display_name]', null, array('class' => 'textinput'));
+        $typeSelect = contribution_select_item_type('newTypes[!!INDEX!!][item_type_id]');
+        echo js_escape("<tr><td>$nameInput</td><td colspan=\"3\">$typeSelect</td></tr>");
+        ?>;
+    setUpTableAppend('#add-type', '#types-table-body', newRow);
 </script>
 <?php foot();

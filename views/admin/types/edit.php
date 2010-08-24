@@ -75,6 +75,7 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
                 </tr>
     <?php endforeach; ?>
             </tbody>
+            <tbody id="new-elements" />
         </table>
     </fieldset>
     <fieldset>
@@ -88,9 +89,12 @@ echo js('jquery-ui');
 echo js('contribution');
 ?>
 <script type="text/javascript">
-    setUpElementForm(
-        <?php echo js_escape(img('arrow_move.gif')); ?>,
-        <?php echo js_escape(contribution_select_element_for_type($contributionType, 'newElements[REPLACE][element_id]')); ?>
-        );
+    var newRow = <?php
+        $promptInput = $this->formText('newElements[!!INDEX!!][prompt]', null, array('class' => 'textinput'));
+        $elementSelect = contribution_select_element_for_type($contributionType, 'newElements[!!INDEX!!][element_id]');
+        echo js_escape("<tr><td></td><td class=\"element-prompt\">$promptInput</td><td colspan=\"6\">$elementSelect</td></tr>");
+        ?>;
+    setUpTableSorting('#element-table', '#sortable', '.element-order', <?php echo js_escape(img('arrow_move.gif')); ?>);
+    setUpTableAppend('#add-element', '#new-elements', newRow);
 </script>
 <?php foot();
