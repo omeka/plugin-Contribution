@@ -10,15 +10,19 @@ contribution_admin_header(array('Contributor Metadata'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
+    <form method="POST">
     <table>
-        <thead id="types-table-head">
+        <thead id="contributor-metadata-table-head">
             <tr>
                 <th>Name</th>
                 <th>Prompt</th>
                 <th>Type</th>
             </tr>
         </thead>
-        <tbody id="types-table-body">
+        <tfoot id="contributor-fields-table-foot">
+            <td colspan="3"><?php echo $this->formSubmit('add-prompt', 'Add a Prompt', array('class' => 'add-element')); ?></td>
+        </tfoot>
+        <tbody id="contributor-fields-table-body">
 <?php foreach ($contributioncontributorfields as $id => $field): ?>
     <tr>
         <td><?php echo html_escape($field['name']); ?></td>
@@ -28,5 +32,13 @@ contribution_admin_header(array('Contributor Metadata'));
 <?php endforeach; ?>
         </tbody>
     </table>
+    </form>
 </div>
+<?php
+    echo js('jquery');
+    echo js('contribution');
+?>
+<script type="text/javascript">
+    
+</script>
 <?php foot();
