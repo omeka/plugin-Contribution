@@ -21,4 +21,17 @@ class ContributionContributorFieldTable extends Omeka_Db_Table
         $select->order('order ASC');
         return $select;
     }
+
+    /**
+     * Get all the possible data types for a field.
+     *
+     * @return array All valid data type names.
+     */
+    public function getDataTypes()
+    {
+        return array(
+            'Tiny Text' => 'Tiny Text',
+            'Text' => 'Text'
+        );
+    }
 }

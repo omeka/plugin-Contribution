@@ -82,6 +82,13 @@ function contribution_select_item_type($name, $default = '', $attributes = array
     return __v()->formSelect($name, $default, $attributes, $options);
 }
 
+function contribution_select_field_data_type($name, $default = '', $attributes = array())
+{
+    $options = get_db()->getTable('ContributionContributorField')->getDataTypes();
+    $options = array('' => 'Select a Data Type') + $options;
+    return __v()->formSelect($name, $defaul, $attributes, $options);
+}
+
 /**
  * Print the header for the contribution admin pages.
  *
