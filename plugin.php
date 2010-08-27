@@ -120,6 +120,7 @@ class Contribution
             `type` ENUM('Text', 'Tiny Text') NOT NULL,
             `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
+            UNIQUE KEY (`name`),
             KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
