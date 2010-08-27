@@ -6,11 +6,10 @@
  * @package Contribution
  */
 $contributor = $contributioncontributor;
-$displayData = array_map('html_escape', (array)$contributor);
-
+$id = html_escape($contributor->id);
 $customMetadata = $contributioncontributor->getMetadata();
 
-contribution_admin_header(array('Contributors', "#{$displayData['id']}"));
+contribution_admin_header(array('Contributors', "#$id"));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
@@ -18,11 +17,11 @@ contribution_admin_header(array('Contributors', "#{$displayData['id']}"));
     <table>
         <tr>
             <th>Name</th>
-            <td><?php echo $displayData['name']; ?></td>
+            <td><?php echo html_escape($contributor->name); ?></td>
         </tr>
         <tr>
             <th>Email Address</th>
-            <td><?php echo $displayData['email']; ?></td>
+            <td><?php echo html_escape($contributor->email); ?></td>
         </tr>
         <tr>
             <th>IP Address</th>
