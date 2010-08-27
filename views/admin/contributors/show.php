@@ -7,6 +7,9 @@
  */
 $contributor = $contributioncontributor;
 $displayData = array_map('html_escape', (array)$contributor);
+
+$customMetadata = $contributioncontributor->getMetadata();
+
 contribution_admin_header(array('Contributors', "#{$displayData['id']}"));
 ?>
 <div id="primary">
@@ -27,6 +30,13 @@ contribution_admin_header(array('Contributors', "#{$displayData['id']}"));
         </tr>
     </table>
     <h2>Custom Metadata</h2>
-    
+    <table>
+        <?php foreach ($customMetadata as $metadataName => $metadataValue): ?>
+        <tr>
+            <th><?php echo html_escape($metadataName); ?></th>
+            <td><?php echo html_escape($metadataValue); ?></td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
 </div>
 <?php foot();

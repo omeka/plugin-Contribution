@@ -87,10 +87,11 @@ class ContributionContributor extends Omeka_Record
 
     public function getMetadata()
     {
+        $db = $this->getDb();
         $sql = <<<SQL
 SELECT `ccf`.`name` AS `name`, `ccv`.`value` AS `value`
-FROM {$db->ContributionContributorField} AS `ccf`
-LEFT OUTER JOIN {$db->ContributionContributorValue} AS `ccv`
+FROM `{$db->ContributionContributorField}` AS `ccf`
+LEFT OUTER JOIN `{$db->ContributionContributorValue}` AS `ccv`
 ON `ccf`.`id` = `ccv`.`field_id`
 WHERE `ccv`.`contributor_id` = ?;
 SQL;
