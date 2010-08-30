@@ -22,6 +22,7 @@ class Contribution
     private static $_hooks = array(
         'install',
         'uninstall',
+        'upgrade',
         'define_acl',
         'define_routes',
         'admin_append_to_plugin_uninstall_message',
@@ -157,6 +158,18 @@ class Contribution
             `{$this->_db->prefix}contribution_contributor_fields`,
             `{$this->_db->prefix}contribution_contributor_values`;";
         $this->_db->query($sql);
+    }
+
+    public function upgrade($oldVersion, $newVersion)
+    {
+        // Catch-all for pre-2.0 versions
+        if (version_compare($oldVersion, '2.0-dev', '<=')) {
+            // Clean up old options
+            delete_option('contribution_plugin_version');
+            delete_option('contribution_db_migration');
+            return;
+        }
+        // Switch statement for newer versions would follow here
     }
     
     public function adminAppendToPluginUninstallMessage()
