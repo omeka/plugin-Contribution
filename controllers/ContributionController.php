@@ -166,6 +166,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $item->save();
 
             $this->_linkItemToContributor($item, $contributor);
+
+            $this->_sendEmailNotification($contributor->email, $item);
             
             return true;
         }
@@ -313,7 +315,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
      * Send an email notification to the user who contributed the Item.
      * 
      * This email will appear to have been sent from the address specified via
-     * the 'contribution_notification_email' option.
+     * the 'contribution_email_sender' option.
      * 
      * @param string $email Address to send to.
      * @param Item $item Item that was contributed via the form.
@@ -322,21 +324,34 @@ class Contribution_ContributionController extends Omeka_Controller_Action
      */
     protected function _sendEmailNotification($toEmail, $item)
     {
-        $fromEmail = get_option('contribution_notification_email');
-        
-        //If this field is empty, don't send the email
-        if(empty($fromEmail)) {
-            return;
-        }
-        
+        $fromAddress = get_option('contribution_email_sender');
+        $siteTitle = get_option('site_title');
+
         $this->view->item = $item;
         $item->view->email = $toEmail;
-                
-        $mail = new Zend_Mail();
-        $mail->setBodyText($this->view->render('contribution/email.php'));
-        $mail->setFrom($fromEmail, get_option('site_title') . ' Administrator');
-        $mail->addTo($toEmail);
-        $mail->setSubject("Your " . get_option('site_title') . " Contribution");
-        $mail->send();
+        
+        //If this field is empty, don't send the email
+        if (!empty($fromAddress)) {
+            $contributorMail = new Zend_Mail;
+            $contributorMail->setBodyText($this->view->render('contribution/contributor-email.php'));
+            $contributorMail->setFrom($fromAddress, "$siteTitle Administrator");
+            $contributorMail->addTo($toEmail);
+            $contributorMail->setSubject("Your $siteTitle Contribution");
+            $contributorMail->send();
+        }
+
+        $fromAddress = get_option('administrator_email');
+        $toAddresses = explode("\n", get_option('contribution_email_recipients'));
+
+        if (count($toAddresses)) {
+            $adminMail = new Zend_Mail;
+            $adminMail->setBodyText($this->view->render('contribution/admin-email.php'));
+            $adminMail->setFrom($fromAddress, "$siteTitle");
+            foreach($toAddresses as $toAddress) {
+                $adminMail->addTo($toAddress);
+            }
+            $adminMail->setSubject("New $siteTitle Contribution");
+            $adminMail->send();
+        }
     }
 }

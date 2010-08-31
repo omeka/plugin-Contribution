@@ -21,13 +21,20 @@ class Contribution_Form_Settings extends Omeka_Form
             'description' => 'Relative path from the Omeka root to the '
                            . 'desired location for the contribution form.'
         ));
-        $this->addElement('text', 'contribution_contributor_email', array(
+        $this->addElement('text', 'contribution_email_sender', array(
             'label'       => 'New Contribution Email Sender',
             'description' => 'If specified, an email message will be sent to '
                            . 'each contributor from this address.  Leave blank '
                            . 'if you do not want an email to be sent to '
                            . 'contributors.',
             'validators'  => array('EmailAddress')
+        ));
+        $this->addElement('textarea', 'contribution_email_recipients', array(
+            'label'       => 'New Contribution Email Recipients',
+            'description' => 'If specified, an email message will be sent to '
+                           . 'each address here whenever a new item is '
+                           . 'contributed Leave blank if you do not want '
+                           . 'anyone to be alerted of contributions by email.'
         ));
         $this->addElement('textarea', 'contribution_consent_text', array(
             'label'       => 'Text of Terms',

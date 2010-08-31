@@ -34,7 +34,8 @@ class Contribution
     
     public static $options = array(
         'contribution_page_path',
-        'contribution_contributor_email',
+        'contribution_email_sender',
+        'contribution_email_recipients',
         'contribution_consent_text',
         'contribution_collection_id',
         'contribution_recaptcha_public_key',
@@ -167,6 +168,11 @@ class Contribution
             // Clean up old options
             delete_option('contribution_plugin_version');
             delete_option('contribution_db_migration');
+
+            $emailSender = get_option('contribution_contributor_email');
+            if (!empty($emailSender)) {
+                set_option('contribution_email_sender', $emailSender);
+            }
             return;
         }
         // Switch statement for newer versions would follow here
