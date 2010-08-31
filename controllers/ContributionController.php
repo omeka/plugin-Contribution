@@ -146,8 +146,13 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             if (!empty($collectionId) && is_numeric($collectionId)) {
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
-            
-            $builder = new ItemBuilder($itemMetadata);
+
+            if (version_compare(OMEKA_VERSION, '1.2.99', '<')) {
+                $builder = new ItemBuilder($itemMetadata);
+            } else {
+                $builder = new ItemBuilder(get_db());
+                $builder->setRecordMetadata($itemMetadata);
+            }
             
             if (!$this->_processFileUpload($builder, $contributionType)) {
                 return false;
@@ -195,7 +200,17 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $fileValidation->enableFilter();
             
             try {
-                $builder->addFiles('Upload', 'contributed_file', $options);
+                if (version_compare(OMEKA_VERSION, '1.2.99', '<')) {
+                    $builder->addFiles('Upload', 'contributed_file', $options);
+                } else {
+                    $fileMetadata = array(
+                        'file_transfer_type' => 'Upload',
+                        'files' => 'contributed_file',
+                        'file_ingest_options' => $options
+                    );
+                    $builder->setFileMetadata($fileMetadata);
+                }
+                
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
                 if (strstr($e->getMessage(), 
