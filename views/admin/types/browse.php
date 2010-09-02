@@ -23,6 +23,8 @@ contribution_admin_header(array('Types'));
                 <th>Item Type</th>
                 <th>Contributed Items</th>
                 <th>File Upload</th>
+                <th>Edit</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tfoot>
@@ -33,10 +35,12 @@ contribution_admin_header(array('Types'));
         <tbody id="types-table-body">
 <?php foreach ($typeInfoArray as $typeInfo): ?>
     <tr>
-        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo html_escape($typeInfo['display_name']); ?></a></td>
+        <td width="28%"><strong><?php echo html_escape($typeInfo['display_name']); ?></strong></td>
         <td><?php echo html_escape($typeInfo['item_type_name']); ?></td>
         <td><a href="<?php echo uri('items/browse/contributed/1/type/'.$typeInfo['item_type_id']); ?>">View</a></td>
         <td><?php echo html_escape($typeInfo['file_permissions']); ?></td>
+        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>" class="edit">Edit</a></td>
+        <td><a href="<?php echo uri('contribution/types/delete/id/'.$typeInfo['id']); ?>" class="delete">Delete</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
@@ -52,7 +56,7 @@ echo js('contribution');
     var newRow = <?php
         $nameInput = $this->formText('newTypes[!!INDEX!!][display_name]', null, array('class' => 'textinput'));
         $typeSelect = contribution_select_item_type('newTypes[!!INDEX!!][item_type_id]');
-        echo js_escape("<tr><td>$nameInput</td><td colspan=\"3\">$typeSelect</td></tr>");
+        echo js_escape("<tr><td>$nameInput</td><td colspan=\"5\">$typeSelect</td></tr>");
         ?>;
     setUpTableAppend('#add-type', '#types-table-body', newRow);
 </script>

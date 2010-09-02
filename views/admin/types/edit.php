@@ -54,7 +54,7 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
     </fieldset>
     <fieldset>
         <legend>Contributed Elements</legend>
-        <table id ="element-table">
+        <table id="element-table">
             <thead>
                 <tr>
                     <th>Prompt</th>
@@ -84,7 +84,7 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
             <tbody id="new-elements"></tbody>
         </table>
     </fieldset>
-    <p><a href="<?php echo uri(array('action' => 'delete')); ?>" class="delete">Delete this Type</a></p>
+
     <fieldset>
         <input type="submit" class="form-submit" value="Save Changes" />
     </fieldset>
