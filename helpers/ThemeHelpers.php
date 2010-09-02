@@ -111,7 +111,7 @@ function contribution_admin_header($subsections = array())
 <?php echo nav(array(
     'Contributors' => uri('contribution/contributors'),
     'Contributor Metadata' => uri('contribution/contributor-metadata'),
-    'Item Types' => uri('contribution/types'),
+    'Contribution Types' => uri('contribution/types'),
     'Settings' => uri('contribution/settings')
     ));
 ?>
