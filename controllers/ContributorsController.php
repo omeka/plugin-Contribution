@@ -14,6 +14,7 @@ class Contribution_ContributorsController extends Omeka_Controller_Action
     public function init()
     {
         $this->_modelClass = 'ContributionContributor';
+        $this->_browseRecordsPerPage = get_option('per_page_admin');
     }
     
     /**
@@ -27,11 +28,12 @@ class Contribution_ContributorsController extends Omeka_Controller_Action
     /**
      * Browse action
      */
+    /*
     public function browseAction()
     {
         $table = $this->getTable();
         $browseData = $table->getBrowseData();
 
         $this->view->browseData = $browseData;
-    }
+    }*/
 }

@@ -29,17 +29,4 @@ class ContributionContributorTable extends Omeka_Db_Table
         $select->where('`email` = ?', $email);
         return $this->fetchObject($select);
     }
-
-    public function getBrowseData()
-    {
-        $db = $this->getDb();
-        $sql = <<<SQL
-SELECT `cc`.*, COUNT(`cci`.`id`) AS `item_count`
-FROM `{$this->getTableName()}` AS `cc`
-LEFT OUTER JOIN `{$db->ContributionContributedItem}` AS `cci`
-    ON `cci`.`contributor_id` = `cc`.`id`
-GROUP BY `cc`.`id`;
-SQL;
-        return $db->fetchAssoc($sql);
-    }
 } 
