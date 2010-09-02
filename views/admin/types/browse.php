@@ -15,7 +15,7 @@ contribution_admin_header(array('Types'));
 </style>
 <div id="primary">
     <?php echo flash(); ?>
-    <form action="<?php echo uri('contribution/types/add'); ?>" method="POST">
+    <form action="<?php echo uri(array('action' => 'multiple-add')); ?>" method="POST">
     <table>
         <thead id="types-table-head">
             <tr>

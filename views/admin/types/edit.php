@@ -5,6 +5,12 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
+
+$contributionType = $contributiontype;
+$contributionTypeElements = $contributionType->ContributionTypeElements;
+$itemType = $contributionType->ItemType;
+$elements = $itemType->Elements;
+
 $typeName = html_escape($contributionType->display_name);
 contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 ?>

@@ -118,6 +118,15 @@ class ContributionType extends Omeka_Record
         }
     }
 
+    protected function beforeDelete()
+    {
+        $elements = $this->getTypeElements();
+
+        foreach ($elements as $element) {
+            $element->delete();
+        }
+    }
+
     /**
      * Get the elements that could possibly be contributed for this type.
      * Analogous to ElementTable::getPairsForFormSelect(), except it excludes

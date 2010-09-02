@@ -35,7 +35,7 @@ class Contribution_TypesController extends Omeka_Controller_Action
         $this->view->typeInfoArray = $typeInfoArray;
     }
     
-    public function addAction()
+    public function multipleAddAction()
     {
         if (!empty($_POST)) {
             $newTypes = $_POST['newTypes'];
@@ -56,27 +56,19 @@ class Contribution_TypesController extends Omeka_Controller_Action
         }
         $this->redirect->goto('');
     }
-    
-    public function editAction()
+
+    public function showAction()
     {
-        $contributionType = $this->findById();
+        $this->redirect->goto('');
+    }
 
-        if(!empty($_POST)) {
-            if ($contributionType->saveForm($_POST)) {
-                $this->flashSuccess('Contribution type updated.');
-            } else if($contributionType->hasErrors()) {
-                $contributionType->flashValidationErrors();
-            }
-            $this->redirect->goto('');
-        } else {
-            $contributionTypeElements = $contributionType->ContributionTypeElements;
-            $itemType = $contributionType->ItemType;
-            $elements = $itemType->Elements;
+    protected function _getEditSuccessMessage($record)
+    {
+        return 'Type successfully updated.';
+    }
 
-            $this->view->contributionType = $contributionType;
-            $this->view->itemType = $itemType;
-            $this->view->elements = $elements;
-            $this->view->contributionTypeElements = $contributionTypeElements;
-        }
+    protected function _getDeleteSuccessMessage($record)
+    {
+        return 'Type deleted.';
     }
 }
