@@ -20,7 +20,9 @@ contribution_admin_header(array('Contributor Metadata'));
             </tr>
         </thead>
         <tfoot id="contributor-fields-table-foot">
-            <td colspan="3"><?php echo $this->formSubmit('add-prompt', 'Add a Prompt', array('class' => 'add-element')); ?></td>
+            <tr>
+                <td colspan="3"><?php echo $this->formSubmit('add-prompt', 'Add a Prompt', array('class' => 'add-element')); ?></td>
+            </tr>
         </tfoot>
         <tbody id="contributor-fields-table-body">
 <?php foreach ($contributioncontributorfields as $id => $field): ?>
