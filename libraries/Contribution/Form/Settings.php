@@ -38,21 +38,20 @@ class Contribution_Form_Settings extends Omeka_Form
         ));
         $this->addElement('textarea', 'contribution_consent_text', array(
             'label'       => 'Text of Terms',
-            'description' => 'The text of the legal disclaimer contributors '
-                           . 'will agree to.'
+            'description' => 'The text of the legal disclaimer to which contributors will agree.'
         ));
         $this->addElement('select', 'contribution_collection_id', array(
             'label'        => 'Contribution Collection',
-            'description'  => 'The collection that contributions will be '
-                            . 'added to.',
+            'description'  => 'The collection to which contributions will be added.',
             'multiOptions' => $this->_getCollectionSelectOptions()
         ));
         $this->addElement('text', 'contribution_recaptcha_public_key', array(
             'label'       => 'reCAPTCHA Public Key',
-            'description' => 'To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">reCAPTCHA</a> API key and enter the relevant values.'
+            'description' => 'The public key for reCAPTCHA. To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">reCAPTCHA API key</a> and enter the relevant values.'
         ));
         $this->addElement('text', 'contribution_recaptcha_private_key', array(
-            'label'       => 'reCAPTCHA Private Key'
+            'label'       => 'reCAPTCHA Private Key',
+            'description' => 'The private key for reCAPTCHA. To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">reCAPTCHA API key</a> and enter the relevant values.'
         ));
         $this->addElement('submit', 'contribution_settings_submit', array(
             'label' => 'Save Settings'
@@ -72,5 +71,20 @@ class Contribution_Form_Settings extends Omeka_Form
         $collections = get_db()->getTable('Collection')->findPairsForSelectForm();
         
         return array('' => 'Do not put contributions in any collection') + $collections;
+    }
+    
+    /**
+     * Overrides the default decorators in Omeka Form to remove escaping from element descriptions.
+     **/
+    public function getDefaultElementDecorators()
+    {       
+        return array(
+            'ViewHelper', 
+            'Errors', 
+            array(array('InputsTag' => 'HtmlTag'), array('tag' => 'div', 'class' => 'inputs')), 
+            array('Description', array('tag' => 'p', 'class' => 'hint', 'escape' => false)), 
+            'Label', 
+            array(array('FieldTag' => 'HtmlTag'), array('tag' => 'div', 'class' => 'field'))
+        );
     }
 }
