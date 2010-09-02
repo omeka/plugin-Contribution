@@ -31,6 +31,16 @@ class ContributionType extends Omeka_Record
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
 
+    protected function _validate()
+    {
+        if(empty($this->display_name)) {
+            $this->addError('display_name', 'You must provide a display name.');
+        }
+
+        if(empty($this->item_type_id)) {
+            $this->addError('item_type_id', 'You must select an item type.');
+        }
+    }
 
     protected function _initializeMixins()
     {
@@ -118,7 +128,7 @@ class ContributionType extends Omeka_Record
         }
     }
 
-    protected function beforeDelete()
+    protected function _delete()
     {
         $elements = $this->getTypeElements();
 

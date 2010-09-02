@@ -21,7 +21,7 @@ contribution_admin_header(array('Types'));
             <tr>
                 <th>Name</th>
                 <th>Item Type</th>
-                <th>Contributed Fields</th>
+                <th>Contributed Items</th>
                 <th>File Upload</th>
             </tr>
         </thead>
@@ -35,7 +35,7 @@ contribution_admin_header(array('Types'));
     <tr>
         <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>"><?php echo html_escape($typeInfo['display_name']); ?></a></td>
         <td><?php echo html_escape($typeInfo['item_type_name']); ?></td>
-        <td></td>
+        <td><a href="<?php echo uri('items/browse/contributed/1/type/'.$typeInfo['item_type_id']); ?>">View</a></td>
         <td><?php echo html_escape($typeInfo['file_permissions']); ?></td>
     </tr>
 <?php endforeach; ?>

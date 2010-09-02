@@ -44,8 +44,9 @@ class Contribution_TypesController extends Omeka_Controller_Action
                     $contributionType = new ContributionType;
                     try {
                         $contributionType->saveForm($newType);
+                        $this->flashSuccess('Types successfully added.');
                     } catch (Omeka_Validator_Exception $e) {
-                        $this->flashValidationErrors($e);
+                        $this->flashValidationErrors($e, Omeka_Controller_Flash::DISPLAY_NEXT);
                     } catch (Exception $e) {
                         $this->flashError($e->getMessage());
                     }
