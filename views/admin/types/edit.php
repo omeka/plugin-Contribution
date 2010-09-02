@@ -81,7 +81,7 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
                 </tr>
     <?php endforeach; ?>
             </tbody>
-            <tbody id="new-elements" />
+            <tbody id="new-elements"></tbody>
         </table>
     </fieldset>
     <p><a href="<?php echo uri(array('action' => 'delete')); ?>" class="delete">Delete this Type</a></p>
