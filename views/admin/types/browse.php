@@ -29,7 +29,7 @@ contribution_admin_header(array('Types'));
         </thead>
         <tfoot>
             <tr id="types-table-foot">
-                <td colspan="4"><?php echo $this->formSubmit('add-type', 'Add a Type', array('class' => 'add-element')); ?></td>
+                <td colspan="6"><?php echo $this->formSubmit('add-type', 'Add a Type', array('class' => 'add-element')); ?></td>
             </tr>
         </tfoot>
         <tbody id="types-table-body">
