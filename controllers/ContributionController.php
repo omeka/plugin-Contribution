@@ -251,12 +251,14 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $contributor->forceSave();
 
             $contributorMetadata = $post['ContributorFields'];
-            foreach ($contributorMetadata as $fieldId => $value) {
-                $valueModel = new ContributionContributorValue;
-                $valueModel->field_id = $fieldId;
-                $valueModel->contributor_id = $contributor->id;
-                $valueModel->value = $value;
-                $valueModel->save();
+            if(is_array($contributorMetadata)) {
+                foreach ($contributorMetadata as $fieldId => $value) {
+                    $valueModel = new ContributionContributorValue;
+                    $valueModel->field_id = $fieldId;
+                    $valueModel->contributor_id = $contributor->id;
+                    $valueModel->value = $value;
+                    $valueModel->save();
+                }
             }
 
             return $contributor;
