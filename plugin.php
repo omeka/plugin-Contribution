@@ -101,8 +101,7 @@ class Contribution
             `name` VARCHAR(255) NOT NULL,
             `email` VARCHAR(255) NOT NULL,
             `ip_address` INT UNSIGNED NOT NULL,
-            PRIMARY KEY (`id`),
-            UNIQUE KEY `email` (`email`)
+            PRIMARY KEY (`id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
@@ -110,6 +109,7 @@ class Contribution
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_id` INT UNSIGNED NOT NULL,
             `contributor_id` INT UNSIGNED NOT NULL,
+            `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
@@ -138,6 +138,7 @@ class Contribution
         $this->_db->query($sql);
 
         $this->_createDefaultContributionTypes();
+
     }
 
     /**
