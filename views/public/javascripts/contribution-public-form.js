@@ -21,5 +21,24 @@ function enableContributionAjaxForm(url) {
                 }
             });
         });
+        jQuery('#form-submit').click(function (event) {
+            var name = jQuery('#contributor-name').val();
+            var email = jQuery('#contributor-email').val();
+            var terms = jQuery('#terms-agree').val();
+            var emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;
+
+            if (name == "" || email == "") {
+                alert('Please provide your name and email address.');
+                return false;
+            }
+            if (!emailPattern.test(email)) {
+                alert('The email you provided was invalid. Please provide another.');
+                return false;
+            }
+            if (terms != '1') {
+                alert('You must agree to the Terms and Conditions to contribute.');
+                return false;
+            }
+        });
     });
 }
