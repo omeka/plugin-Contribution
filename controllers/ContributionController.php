@@ -170,7 +170,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
             $item->save();
 
-            $this->_linkItemToContributor($item, $contributor);
+            $this->_linkItemToContributor($item, $contributor, $post);
 
             $this->_sendEmailNotification($contributor->email, $item);
             
@@ -266,11 +266,12 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         }
     }
 
-    protected function _linkItemToContributor($item, $contributor)
+    protected function _linkItemToContributor($item, $contributor, $post)
     {
         $linkage = new ContributionContributedItem;
         $linkage->contributor_id = $contributor->id;
         $linkage->item_id = $item->id;
+        $linkage->public = $post['contribution-public'];
         $linkage->save();
     }
     

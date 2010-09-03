@@ -35,7 +35,7 @@ function enableContributionAjaxForm(url) {
                 alert('The email you provided was invalid. Please provide another.');
                 return false;
             }
-            if (terms != '1') {
+            if (terms != 'on') {
                 alert('You must agree to the Terms and Conditions to contribute.');
                 return false;
             }

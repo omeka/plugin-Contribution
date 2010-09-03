@@ -41,6 +41,10 @@ textarea {
         <div id="captcha-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
             <fieldset>
             <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
+            <div class="inputs">
+                <?php echo $this->formCheckbox('contribution-public'); ?>
+                <label for="contribution-public">Publish my contribution on the web.</label>
+            </div>
             <p>In order to contribute, you must read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
             <div class="inputs">
                 <input type="checkbox" name="terms-agree" id="terms-agree" />
