@@ -355,7 +355,11 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $contributorMail->setFrom($fromAddress, "$siteTitle Administrator");
             $contributorMail->addTo($toEmail);
             $contributorMail->setSubject("Your $siteTitle Contribution");
-            $contributorMail->send();
+            try {
+                $contributorMail->send();
+            } catch (Zend_Mail_Exception $e) {
+                debug($e);
+            }
         }
 
         $fromAddress = get_option('administrator_email');
@@ -369,7 +373,11 @@ class Contribution_ContributionController extends Omeka_Controller_Action
                 $adminMail->addTo($toAddress);
             }
             $adminMail->setSubject("New $siteTitle Contribution");
-            $adminMail->send();
+            try {
+                $adminMail->send();
+            } catch (Zend_Mail_Exception $e) {
+                debug($e);
+            }
         }
     }
 }
