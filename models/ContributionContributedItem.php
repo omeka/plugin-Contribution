@@ -15,4 +15,19 @@ class ContributionContributedItem extends Omeka_Record
     public $item_id;
     public $contributor_id;
     public $public;
+    
+    protected $_related = array(
+        'Item' => 'getItem',
+        'Contributor' => 'getContributor'
+        );
+    
+    public function getItem()
+    {
+        return $this->getDb()->getTable('Item')->find($this->item_id);
+    }
+
+    public function getContributor()
+    {
+        return $this->getDb()->getTable('ContributionContributor')->find($this->contributor_id);
+    }
 }

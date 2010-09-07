@@ -53,11 +53,20 @@ class ContributionContributor extends Omeka_Record
     
     /**
      * Return the items that the contributor has contributed.
-     * @todo actually implement
+     *
+     * @return array
      */
     public function getContributedItems()
     {
-
+        $db = $this->getDb();
+        $sql = <<<SQL
+SELECT *
+FROM `{$db->Item}` AS `i`
+INNER JOIN `{$db->ContributionContributedItem}` AS `cci`
+ON `i`.`id` = `cci`.`item_id`
+WHERE `cci`.`contributor_id` = ?;
+SQL;
+        return $db->fetchObjects($sql, $this->id);
     }
     
     /**

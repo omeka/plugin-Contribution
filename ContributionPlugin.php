@@ -22,6 +22,7 @@ class ContributionPlugin
         'define_routes',
         'admin_append_to_plugin_uninstall_message',
         'admin_append_to_advanced_search',
+        'admin_append_to_items_show_secondary',
         'item_browse_sql'
     );
 
@@ -273,6 +274,26 @@ class ContributionPlugin
         echo $html;
     }
 
+    public function adminAppendToItemsShowSecondary()
+    {
+        $item = get_current_item();
+        if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
+            $contributor = $contributedItem->Contributor;
+            $name = $contributor->name ? html_escape($contributor->name) : 'Anonymous';
+            $id = html_escape($contributor->id);
+        ?>
+<div class="info-panel">
+    <h2>Contribution</h2>
+    <p>This item was contributed by
+       <a href="<?php echo uri('contribution/contributors/show/id/') . $id; ?>"><?php echo $name; ?></a>.</p>
+    <?php if(!($contributedItem->public)): ?>
+    <p><strong>This item should not be made public.</strong></p>
+    <?php endif; ?>
+</div>
+<?php
+        }
+    }
+
     /**
      * Deal with Contribution-specific search terms.
      *
@@ -281,7 +302,7 @@ class ContributionPlugin
      */
     public function itemBrowseSql($select, $params)
     {
-        if ($request = Zend_Controller_Front::getInstance()->getRequest()) {
+        if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
             $contributed = $request->get('contributed');
             if (isset($contributed)) {
