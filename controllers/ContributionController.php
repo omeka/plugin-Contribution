@@ -366,13 +366,14 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         $fromAddress = get_option('administrator_email');
         $toAddresses = explode("\n", get_option('contribution_email_recipients'));
 
-        if (count($toAddresses)) {
+        foreach ($toAddresses as $toAddress) {
+            if (empty($toAddress)) {
+                continue;
+            }
             $adminMail = new Zend_Mail;
             $adminMail->setBodyText($this->view->render('contribution/admin-email.php'));
             $adminMail->setFrom($fromAddress, "$siteTitle");
-            foreach($toAddresses as $toAddress) {
-                $adminMail->addTo($toAddress);
-            }
+            $adminMail->addTo($toAddress);
             $adminMail->setSubject("New $siteTitle Contribution");
             $adminMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
