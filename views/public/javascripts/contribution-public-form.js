@@ -24,7 +24,7 @@ function enableContributionAjaxForm(url) {
         jQuery('#form-submit').click(function (event) {
             var name = jQuery('#contributor-name').val();
             var email = jQuery('#contributor-email').val();
-            var terms = jQuery('#terms-agree').val();
+            var terms = jQuery('#terms-agree').attr('checked');
             var emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;
 
             if (name == "" || email == "") {
@@ -35,10 +35,11 @@ function enableContributionAjaxForm(url) {
                 alert('The email you provided was invalid. Please provide another.');
                 return false;
             }
-            if (terms != 'on') {
+            if (!terms) {
                 alert('You must agree to the Terms and Conditions to contribute.');
                 return false;
             }
+            return true;
         });
     });
 }
