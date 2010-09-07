@@ -274,9 +274,8 @@ class ContributionPlugin
         echo $html;
     }
 
-    public function adminAppendToItemsShowSecondary()
+    public function adminAppendToItemsShowSecondary($item)
     {
-        $item = get_current_item();
         if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
             $contributor = $contributedItem->Contributor;
             $name = $contributor->name ? html_escape($contributor->name) : 'Anonymous';
