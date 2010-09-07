@@ -294,7 +294,7 @@ class ContributionPlugin
         }
     }
 
-    public function adminAppendToItemsBrowseDetailedEach($item)
+    public function adminAppendToItemsBrowseDetailedEach()
     {
         $item = get_current_item();
         if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
