@@ -1,4 +1,4 @@
-<?php 
+    <?php
 /**
  * @version $Id$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
@@ -355,6 +355,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $contributorMail->setFrom($fromAddress, "$siteTitle Administrator");
             $contributorMail->addTo($toEmail);
             $contributorMail->setSubject("Your $siteTitle Contribution");
+            $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
                 $contributorMail->send();
             } catch (Zend_Mail_Exception $e) {
@@ -373,6 +374,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
                 $adminMail->addTo($toAddress);
             }
             $adminMail->setSubject("New $siteTitle Contribution");
+            $adminMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
                 $adminMail->send();
             } catch (Zend_Mail_Exception $e) {
