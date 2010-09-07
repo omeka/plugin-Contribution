@@ -23,6 +23,7 @@ class ContributionPlugin
         'admin_append_to_plugin_uninstall_message',
         'admin_append_to_advanced_search',
         'admin_append_to_items_show_secondary',
+        'admin_append_to_items_browse_detailed_each',
         'item_browse_sql'
     );
 
@@ -289,6 +290,24 @@ class ContributionPlugin
     <p><strong>This item should not be made public.</strong></p>
     <?php endif; ?>
 </div>
+<?php
+        }
+    }
+
+    public function adminAppendToItemsBrowseDetailedEach($item)
+    {
+        $item = get_current_item();
+        if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
+            $contributor = $contributedItem->Contributor;
+            $name = $contributor->name ? html_escape($contributor->name) : 'Anonymous';
+            $id = html_escape($contributor->id);
+        ?>
+    <h3>Contribution</h3>
+    <p>This item was contributed by
+       <a href="<?php echo uri('contribution/contributors/show/id/') . $id; ?>"><?php echo $name; ?></a>.</p>
+    <?php if(!($contributedItem->public)): ?>
+    <p><strong>This item should not be made public.</strong></p>
+    <?php endif; ?>
 <?php
         }
     }

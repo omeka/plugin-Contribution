@@ -64,7 +64,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
     private function _setOptions($newOptions)
     {
         // Handle leading and trailing slashes on page path.
-        if ($path = $newOptions['contribution_page_path']) {
+        if (($path = $newOptions['contribution_page_path'])) {
             $newOptions['contribution_page_path'] = trim($path, '/');
         }
            
