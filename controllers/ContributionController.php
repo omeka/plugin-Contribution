@@ -32,10 +32,11 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
             $this->redirect->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
+            var_dump($_POST);
             if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
-            if (isset($_POST['submit-type'])) {
+            if (isset($_POST['contribution_type'])) {
                 $this->_setupContributeSubmit();
                 $this->view->typeForm = $this->view->render('contribution/type-form.php');
             }
@@ -146,25 +147,27 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             if (!empty($collectionId) && is_numeric($collectionId)) {
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
+            
+            $fileMetadata = $this->_processFileUpload($contributionType);
 
-            if (version_compare(OMEKA_VERSION, '1.2.99', '<')) {
-                $builder = new ItemBuilder($itemMetadata);
-            } else {
-                $builder = new ItemBuilder(get_db());
-                $builder->setRecordMetadata($itemMetadata);
-            }
-            
-            if (!$this->_processFileUpload($builder, $contributionType)) {
-                return false;
-            }
-            
             try {
-                $item = $builder->build();
+                $item = insert_item($itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
                 $this->flashValidatonErrors($e);
                 return false;
+            } catch (Omeka_File_Ingest_InvalidException $e) {
+                // Copying this cruddy hack
+                if (strstr($e->getMessage(), "The file 'contributed_file' was not uploaded")) {
+                   $this->flashError("You must upload a file when making a {$contributionType->display_name} contribution.");
+                } else {
+                    $this->flashError($e->getMessage());
+                }
+                return false;
+            } catch (Exception $e) {
+                $this->flashError($e->getMessage());
+                return false;
             }
-            
+
             $this->_addElementTextsToItem($item, $post['Elements']);
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
@@ -182,11 +185,10 @@ class Contribution_ContributionController extends Omeka_Controller_Action
     /**
      * Deals with files specified on the contribution form.
      *
-     * @param ItemBuilder $builder Builder for item to be contributed.
      * @param ContributionType $contributionType Type of contribution.
-     * @return bool False only if errors occurred.
+     * @return array File upload array.
      */
-    protected function _processFileUpload($builder, $contributionType) {
+    protected function _processFileUpload($contributionType) {
         if ($contributionType->isFileAllowed()) {
             $options = array();
             if ($contributionType->isFileRequired()) {
@@ -194,38 +196,20 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             } else {
                 $options['ignoreNoFile'] = true;
             }
-            
+
+            $fileMetadata = array(
+                'file_transfer_type' => 'Upload',
+                'files' => 'contributed_file',
+                'file_ingest_options' => $options
+            );
+
             // Add the whitelists for uploaded files
             $fileValidation = new ContributionFileValidation;
             $fileValidation->enableFilter();
-            
-            try {
-                if (version_compare(OMEKA_VERSION, '1.2.99', '<')) {
-                    $builder->addFiles('Upload', 'contributed_file', $options);
-                } else {
-                    $fileMetadata = array(
-                        'file_transfer_type' => 'Upload',
-                        'files' => 'contributed_file',
-                        'file_ingest_options' => $options
-                    );
-                    $builder->setFileMetadata($fileMetadata);
-                }
-                
-            } catch (Omeka_File_Ingest_InvalidException $e) {
-                // Copying this cruddy hack
-                if (strstr($e->getMessage(), 
-                           "The file 'contributed_file' was not uploaded")) {
-                   $this->flashError("You must upload a file when contributing a {$contributionType->alias}.");
-                } else {
-                    $this->flashError($e->getMessage());
-                }
-                return false;
-            } catch (Exception $e) {
-                $this->flashError($e->getMessage());
-                return false;
-            }
+
+            return $fileMetadata;
         }
-        return true;
+        return array();
     }
 
     /**
@@ -237,8 +221,8 @@ class Contribution_ContributionController extends Omeka_Controller_Action
     protected function _processContributor($item, $post)
     {
         $table = get_db()->getTable('ContributionContributor');
-        $email = $post['contributor_email'];
-        $name = $post['contributor_name'];
+        $email = $post['contributor-email'];
+        $name = $post['contributor-name'];
         $ip = $this->getRequest()->getClientIp();
 
         if (!($contributor = $table->findByEmail($email))) {

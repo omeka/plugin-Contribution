@@ -32,7 +32,7 @@ textarea {
     <form method="POST" enctype="multipart/form-data">
         <div class="inputs">
             <label for="contribution_type">What type of item do you want to contribute?</label>
-            <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type')); ?>
+            <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
             <input type="submit" name="submit-type" id="submit-type" value="Select" />
         </div>
         <div id="contribution-type-form">
@@ -42,15 +42,15 @@ textarea {
             <fieldset>
             <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
             <div class="inputs">
-                <?php echo $this->formCheckbox('contribution-public'); ?>
-                <label for="contribution-public">Publish my contribution on the web.</label>
+                <?php echo $this->formCheckbox('contribution-public', $_POST['contribution-public'], null, array('1', '0')); ?>
+                <?php echo $this->formLabel('contribution-public', 'Publish my contribution on the web.'); ?>
             </div>
             <p>In order to contribute, you must read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
             <div class="inputs">
-                <input type="checkbox" name="terms-agree" id="terms-agree" />
-                <label for="terms-agree">I agree to the Terms and Conditions.</label>
+                <?php echo $this->formCheckbox('terms-agree', $_POST['terms-agree'], null, array('1', '0')); ?>
+                <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>
             </div>
-            <input type="submit" class="submitinput" name="form-submit" id="form-submit" value="Contribute" />
+            <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
             </fieldset>
         </div>
     </form>

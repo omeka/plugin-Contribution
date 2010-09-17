@@ -28,7 +28,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
         $element = $contributionTypeElement->getElement();
         
         $divWrap = isset($options['divWrap']) ? $options['divWrap'] : true;
-        $extraFieldCount = isset($options['extraFieldCount']) ? $options['extraFieldCount'] : null;
+        $extraFieldCount = 0;
         
         $this->_element = $element;
         

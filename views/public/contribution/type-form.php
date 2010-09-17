@@ -6,9 +6,8 @@ if ($type->isFileRequired()):
     $required = true;
 ?>
 <div class="field">
-	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
-	<label for="file">Upload a file</label>
-	<input type="file" class="textinput" name="contributed_file" id="file-upload" class="fileinput" />	
+        <?php echo $this->formLabel('contributed_file', 'Upload a file'); ?>
+        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
 </div>
 <?php 
 endif;
@@ -18,9 +17,8 @@ foreach ($type->getTypeElements() as $element) {
 if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">
-	<input type="hidden" name="MAX_FILE_SIZE" value="30000000" />
-	<label for="file">Upload a file <br /> (Optional)</label>
-	<input type="file" class="textinput" name="contributed_file" id="file-upload" class="fileinput" />	
+        <?php echo $this->formLabel('contributed_file', 'Upload a file (Optional)'); ?>
+        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
 </div>
 <?php 
 endif;
@@ -36,7 +34,7 @@ fire_plugin_hook('contribution_append_to_type_form', $type);
     <label>Name</label>
     <div class="inputs">
         <div class="input">
-            <input type="text" class="textinput" name="contributor_name" id="contributor-name" />
+            <?php echo $this->formText('contributor-name', $_POST['contributor-name'], array('class' => 'textinput')); ?>
         </div>
     </div>
 </div>
@@ -44,7 +42,7 @@ fire_plugin_hook('contribution_append_to_type_form', $type);
     <label>Email Address:</label>
     <div class="inputs">
         <div class="input">
-            <input type="text" class="textinput" name="contributor_email" id="contributor-email" />
+            <?php echo $this->formText('contributor-email', $_POST['contributor-email'], array('class' => 'textinput')); ?>
         </div>
     </div>
 </div>
