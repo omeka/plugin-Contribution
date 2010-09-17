@@ -94,6 +94,11 @@ SQL;
         $this->ip_address = sprintf('%u', ip2long($dottedIpAddress));
     }
 
+    /**
+     * Get the contributor information for this contributor.
+     *
+     * @return array
+     */
     public function getMetadata()
     {
         $db = $this->getDb();

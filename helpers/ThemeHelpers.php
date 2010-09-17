@@ -144,3 +144,52 @@ function contribution_link_to_contribute($linkText = 'Contribute', $actionName =
 
     return "<a href=\"$url\">$linkText</a>";
 }
+
+/**
+ * Get the Contributor that added a given item to the site.
+ *
+ * @param Item $item
+ * @return ContributionContributor
+ */
+function contribution_get_item_contributor($item = null)
+{
+    if (!$item) {
+        $item = get_current_item();
+    }
+
+    $linkage = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+
+    if ($linkage) {
+        return $linkage->Contributor;
+    } else {
+        return null;
+    }
+}
+
+/**
+ * Get metadata for a given contributor.
+ *
+ * @param string $propertyName
+ * @param ContributionContributor $contributor
+ * @return string
+ */
+function contributor($propertyName, $contributor = null)
+{
+    if (!$contributor) {
+        $contributor = contribution_get_item_contributor($item);
+    }
+    $data = $contributor->getMetadata();
+    switch ($propertyName) {
+        case 'name':
+            $property = $contributor->name;
+        case 'email':
+            $property = $contributor->email;
+        default:
+            if (array_key_exists($propertyName, $data)) {
+                $property = $data[$propertyName];
+            } else {
+                $property = null;
+            }
+    }
+    return html_escape($property);
+}

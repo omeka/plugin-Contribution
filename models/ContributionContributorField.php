@@ -20,6 +20,19 @@ class ContributionContributorField extends Omeka_Record
     public $type;
     public $order;
 
+    /**
+     * Validate form submissions.
+     */
+    protected function _validate()
+    {
+        if (empty($this->name)) {
+            $this->addError('name', 'Please provide a name.');
+        }
+        if ($this->name === 'name' || $this->name === 'email') {
+            $this->addError('name', 'Please select another name.');
+        }
+    }
+
     public function __toString()
     {
         $id = html_escape($this->id);
