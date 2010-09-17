@@ -32,7 +32,6 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
             $this->redirect->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
-            var_dump($_POST);
             if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
