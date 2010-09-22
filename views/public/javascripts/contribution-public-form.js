@@ -1,23 +1,29 @@
 jQuery.noConflict();
 function enableContributionAjaxForm(url) {
     jQuery(document).ready(function() {
+        var form = jQuery('#contribution-type-form');
+        var contributionType = jQuery('#contribution-type');
+        var submit = jQuery('#contribution-confirm-submit');
+        var contributorMetadata = jQuery('#contribution-contributor-metadata');
+
         jQuery('#submit-type').remove();
-        if (!jQuery('#contribution-type').val()) {
-            jQuery('#captcha-submit').hide();
+        if (!contributionType.val()) {
+            submit.hide();
+            contributorMetadata.hide();
         }
-        jQuery('#contribution-type').change(function () {
-            var form = jQuery('#contribution-type-form');
-            var submit = jQuery('#captcha-submit');
+        contributionType.change(function () {
             var value = this.value;
             submit.hide();
+            contributorMetadata.hide();
             form.slideUp(400, function() { 
-                form.empty(); 
+                form.empty();
                 if (value != "") {
                     form.hide();
                     jQuery.post(url, {contribution_type: value}, function(data) {
                        form.append(data); 
                        form.slideDown(400, function() {
                            submit.show();
+                           contributorMetadata.show();
                        });
                     });
                 }

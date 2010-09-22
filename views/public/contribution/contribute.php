@@ -7,39 +7,56 @@
  */
 
 $head = array('title' => 'Contribute',
-              'bodyClass' => 'contribution primary');
-head(array('title' => $head['title'])); ?>
+              'bodyclass' => 'contribution');
+head($head); ?>
 <?php echo js('jquery'); ?>
 <?php echo js('contribution-public-form'); ?>
 <script type="text/javascript">
+// <![CDATA[
 enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); ?>);
+// ]]>
 </script>
-<style type="text/css">
-textarea {
-    height: auto;
-}
-
-#captcha textarea {
-    float: none;
-    width: auto;
-}
-</style>
 
 <div id="primary">
 <?php echo flash(); ?>
     
     <h1><?php echo $head['title']; ?></h1>
     <form method="POST" enctype="multipart/form-data">
-        <div class="inputs">
-            <label for="contribution_type">What type of item do you want to contribute?</label>
-            <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
-            <input type="submit" name="submit-type" id="submit-type" value="Select" />
-        </div>
-        <div id="contribution-type-form">
-        <?php if (isset($typeForm)): echo $typeForm; endif; ?>
-        </div>
-        <div id="captcha-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <fieldset>
+        <fieldset id="contribution-item-metadata">
+            <div class="inputs">
+                <label for="contribution_type">What type of item do you want to contribute?</label>
+                <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
+                <input type="submit" name="submit-type" id="submit-type" value="Select" />
+            </div>
+            <div id="contribution-type-form">
+            <?php if (isset($typeForm)): echo $typeForm; endif; ?>
+            </div>
+        </fieldset>
+        <fieldset id="contribution-contributor-metadata" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
+            <legend>Personal Information</legend>
+            <div class="field">
+                <label>Name</label>
+                <div class="inputs">
+                    <div class="input">
+                        <?php echo $this->formText('contributor-name', $_POST['contributor-name'], array('class' => 'textinput')); ?>
+                    </div>
+                </div>
+            </div>
+            <div class="field">
+                <label>Email Address:</label>
+                <div class="inputs">
+                    <div class="input">
+                        <?php echo $this->formText('contributor-email', $_POST['contributor-email'], array('class' => 'textinput')); ?>
+                    </div>
+                </div>
+            </div>
+        <?php
+        foreach (contribution_get_contributor_fields() as $field) {
+            echo $field;
+        }
+        ?>
+        </fieldset>
+        <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
             <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
             <div class="inputs">
                 <?php echo $this->formCheckbox('contribution-public', $_POST['contribution-public'], null, array('1', '0')); ?>
@@ -51,8 +68,7 @@ textarea {
                 <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>
             </div>
             <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
-            </fieldset>
-        </div>
+        </fieldset>
     </form>
 </div>
 <?php foot();
