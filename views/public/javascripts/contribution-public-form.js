@@ -1,4 +1,3 @@
-jQuery.noConflict();
 function enableContributionAjaxForm(url) {
     jQuery(document).ready(function() {
         var form = jQuery('#contribution-type-form');

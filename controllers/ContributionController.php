@@ -87,19 +87,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
      */
     protected function _setupCaptcha()
     {
-        $publicKey = get_option('contribution_recaptcha_public_key');
-        $privateKey = get_option('contribution_recaptcha_private_key');
-
-        if (empty($publicKey) or empty($privateKey)) {
-           return;
-        }
-        
-        // Originating request:
-        $captcha = new Zend_Captcha_ReCaptcha(array(
-            'pubKey' => $publicKey, 
-            'privKey' => $privateKey));
-
-        return $captcha;
+        return Omeka_Captcha::getCaptcha();
     }
     
     /**

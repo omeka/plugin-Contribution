@@ -34,9 +34,7 @@ class ContributionPlugin
         'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
-        'contribution_collection_id',
-        'contribution_recaptcha_public_key',
-        'contribution_recaptcha_private_key'
+        'contribution_collection_id'
     );
 
     private $_db;

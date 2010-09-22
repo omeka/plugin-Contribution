@@ -45,23 +45,15 @@ class Contribution_Form_Settings extends Omeka_Form
             'description'  => 'The collection to which contributions will be added.',
             'multiOptions' => $this->_getCollectionSelectOptions()
         ));
-        $this->addElement('text', 'contribution_recaptcha_public_key', array(
-            'label'       => 'reCAPTCHA Public Key',
-            'description' => 'The public key for reCAPTCHA. To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">reCAPTCHA API key</a> and enter the relevant values.'
-        ));
-        $this->addElement('text', 'contribution_recaptcha_private_key', array(
-            'label'       => 'reCAPTCHA Private Key',
-            'description' => 'The private key for reCAPTCHA. To enable CAPTCHA for the contribution form, please obtain a <a href="http://recaptcha.net/">reCAPTCHA API key</a> and enter the relevant values.'
-        ));
         $this->addElement('submit', 'contribution_settings_submit', array(
             'label' => 'Save Settings'
         ));
         
         $this->addDisplayGroup(
             array('contribution_page_path', 'contribution_contributor_email',
-                'contribution_consent_text', 'contribution_collection_id',
-                'contribution_recaptcha_public_key',
-                'contribution_recaptcha_private_key'), 'contribution_settings');
+                'contribution_consent_text', 'contribution_collection_id'),
+            'contribution_settings'
+        );
                 
         $this->addDisplayGroup(array('contribution_settings_submit'), 'submit');
     }
