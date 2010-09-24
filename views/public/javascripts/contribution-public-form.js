@@ -6,10 +6,7 @@ function enableContributionAjaxForm(url) {
         var contributorMetadata = jQuery('#contribution-contributor-metadata');
 
         jQuery('#submit-type').remove();
-        if (!contributionType.val()) {
-            submit.hide();
-            contributorMetadata.hide();
-        }
+        
         contributionType.change(function () {
             var value = this.value;
             submit.hide();
@@ -17,10 +14,10 @@ function enableContributionAjaxForm(url) {
             form.slideUp(400, function() { 
                 form.empty();
                 if (value != "") {
-                    form.hide();
                     jQuery.post(url, {contribution_type: value}, function(data) {
                        form.append(data); 
                        form.slideDown(400, function() {
+                           form.trigger('contribution-form-shown');
                            submit.show();
                            contributorMetadata.show();
                        });
