@@ -1,1 +1,1 @@
-<?php echo contribution_embed_consent_form(); ?>
+<?php echo get_option('contribution_consent_text'); ?>
