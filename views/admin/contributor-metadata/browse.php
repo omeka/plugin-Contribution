@@ -10,7 +10,6 @@ contribution_admin_header(array('Contributor Metadata'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
-    <form method="POST" action="<?php echo uri(array('action' => 'multiple-add')); ?>">
     <table>
         <thead id="contributor-metadata-table-head">
             <tr>
@@ -39,13 +38,12 @@ contribution_admin_header(array('Contributor Metadata'));
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>
         <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>
-        <td><?php echo delete_button($field, "delete-field-{$field->id}", 'Delete'); ?></td>
+        <td><?php echo delete_button(uri(array('action' => 'delete', 'id' => $field->id)), "delete-field-{$field->id}", 'Delete'); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
     </table>
         <?php echo $this->formSubmit('submit-changes', 'Submit Changes', array('class' => 'submit-button')); ?>
-    </form>
 </div>
 <?php
     echo js('contribution');

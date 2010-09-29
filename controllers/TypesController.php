@@ -27,13 +27,13 @@ class Contribution_TypesController extends Omeka_Controller_Action
     /**
      * Browse action
      */
-    public function browseAction()
+    /*public function browseAction()
     {
         $table = $this->getTable();
         $typeInfoArray = $table->getBrowseData();
         
         $this->view->typeInfoArray = $typeInfoArray;
-    }
+    }*/
     
     public function multipleAddAction()
     {

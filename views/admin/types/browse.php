@@ -15,7 +15,6 @@ contribution_admin_header(array('Types'));
 </style>
 <div id="primary">
     <?php echo flash(); ?>
-    <form action="<?php echo uri(array('action' => 'multiple-add')); ?>" method="POST">
     <table>
         <thead id="types-table-head">
             <tr>
@@ -33,20 +32,18 @@ contribution_admin_header(array('Types'));
             </tr>
         </tfoot>
         <tbody id="types-table-body">
-<?php foreach ($typeInfoArray as $typeInfo): ?>
+<?php foreach ($contributiontypes as $type): ?>
     <tr>
-        <td width="28%"><strong><?php echo html_escape($typeInfo['display_name']); ?></strong></td>
-        <td><?php echo html_escape($typeInfo['item_type_name']); ?></td>
-        <td><a href="<?php echo uri('items/browse/contributed/1/type/'.$typeInfo['item_type_id']); ?>">View</a></td>
-        <td><?php echo html_escape($typeInfo['file_permissions']); ?></td>
-        <td><a href="<?php echo uri('contribution/types/edit/id/'.$typeInfo['id']); ?>" class="edit">Edit</a></td>
-        <td><a href="<?php echo uri('contribution/types/delete/id/'.$typeInfo['id']); ?>" class="delete">Delete</a></td>
+        <td width="28%"><strong><?php echo html_escape($type->display_name); ?></strong></td>
+        <td><?php echo html_escape($type->ItemType->name); ?></td>
+        <td><a href="<?php echo uri('items/browse/contributed/1/type/' . $type->item_type_id); ?>">View</a></td>
+        <td><?php echo html_escape($type->file_permissions); ?></td>
+        <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $type->id)); ?>" class="edit">Edit</a></td>
+        <td><?php echo delete_button(uri(array('action' => 'delete', 'id' => $type->id)), "delete-type-{$type->id}", 'Delete'); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
     </table>
-    <?php echo $this->formSubmit('submit-changes', 'Submit Changes', array('class' => 'submit-button')); ?>
-    </form>
 </div>
 <?php
 echo js('contribution');

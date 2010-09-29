@@ -237,6 +237,10 @@ class ContributionPlugin
                               'controller' => 'contribution',
                               'action'     => 'contribute')));
             }
+        } else {
+            $router->addRoute('contributionAdmin',
+                new Zend_Controller_Router_Route('contribution/:controller/:action/:id',
+                    array('module' => 'contribution')));
         }
     }
 
