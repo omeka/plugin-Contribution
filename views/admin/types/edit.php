@@ -91,8 +91,6 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 </form>
 </div>
 <?php
-echo js('jquery');
-echo js('jquery-ui');
 echo js('contribution');
 ?>
 <script type="text/javascript">

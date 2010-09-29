@@ -1,5 +1,3 @@
-jQuery.noConflict();
-
 function setUpTableAppend(triggerSelector, targetSelector, newRow) {
     function getNewRow(index) {
         // The replace here allows us to dynamically add elements created by

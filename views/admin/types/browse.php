@@ -49,7 +49,6 @@ contribution_admin_header(array('Types'));
     </form>
 </div>
 <?php
-echo js('jquery');
 echo js('contribution');
 ?>
 <script type="text/javascript">
