@@ -27,13 +27,19 @@ contribution_admin_header(array('Contributor Metadata'));
             </tr>
         </tfoot>
         <tbody id="contributor-fields-table-body">
-<?php foreach ($contributioncontributorfields as $id => $field): ?>
+            <tr>
+                <td colspan="5">Name</td>
+            </tr>
+            <tr>
+                <td colspan="5">Email Address</td>
+            </tr>
+<?php foreach ($contributioncontributorfields as $field): ?>
     <tr>
         <td><?php echo html_escape($field['name']); ?></td>
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>
-        <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $id)); ?>" class="edit">Edit</a></td>
-        <td><a href="<?php echo uri(array('action' => 'delete', 'id' => $id)); ?>" class="delete">Delete</a></td>
+        <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>
+        <td><?php echo delete_button($field, "delete-field-{$field->id}", 'Delete'); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
@@ -42,7 +48,6 @@ contribution_admin_header(array('Contributor Metadata'));
     </form>
 </div>
 <?php
-    echo js('jquery');
     echo js('contribution');
 ?>
 <script type="text/javascript">

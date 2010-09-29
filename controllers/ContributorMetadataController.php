@@ -24,6 +24,11 @@ class Contribution_ContributorMetadataController extends Omeka_Controller_Action
         $this->_forward('browse');
     }
 
+    public function showAction()
+    {
+        $this->redirect->goto('');
+    }
+
     public function multipleAddAction()
     {
         if (!empty($_POST)) {
