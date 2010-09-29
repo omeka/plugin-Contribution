@@ -31,6 +31,9 @@ class ContributionContributorField extends Omeka_Record
         if ($this->name === 'name' || $this->name === 'email') {
             $this->addError('name', 'Please select another name.');
         }
+        if (empty($this->type)) {
+            $this->addError('Data Type', 'Please select a data type.');
+        }
     }
 
     public function __toString()
