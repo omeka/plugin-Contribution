@@ -29,16 +29,4 @@ class Contribution_ContributorsController extends Omeka_Controller_Action
     {
         $this->_forward('browse');
     }
-    
-    /**
-     * Browse action
-     */
-    /*
-    public function browseAction()
-    {
-        $table = $this->getTable();
-        $browseData = $table->getBrowseData();
-
-        $this->view->browseData = $browseData;
-    }*/
 }
