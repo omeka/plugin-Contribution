@@ -7,13 +7,18 @@
  */
  
 /**
- * Controller for editing and viewing Contribution plugin settings.
+ * Controller for editing and viewing Contribution plugin contributors.
  */
 class Contribution_ContributorsController extends Omeka_Controller_Action
 {
     public function init()
     {
-        $this->_modelClass = 'ContributionContributor';
+        $modelName = 'ContributionContributor';
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName($modelName);
+        } else {
+            $this->_modelClass = $modelName;
+        }
         $this->_browseRecordsPerPage = get_option('per_page_admin');
     }
     

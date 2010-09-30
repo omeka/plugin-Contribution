@@ -7,13 +7,18 @@
  */
  
 /**
- * Controller for editing and viewing Contribution plugin settings.
+ * Controller for editing and viewing Contribution plugin contributor fields.
  */
 class Contribution_ContributorMetadataController extends Omeka_Controller_Action
 {
     public function init()
     {
-        $this->_modelClass = 'ContributionContributorField';
+        $modelName = 'ContributionContributorField';
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName($modelName);
+        } else {
+            $this->_modelClass = $modelName;
+        }
     }
     
     /**

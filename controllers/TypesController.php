@@ -7,13 +7,18 @@
  */
  
 /**
- * Controller for editing and viewing Contribution plugin settings.
+ * Controller for editing and viewing Contribution plugin item types.
  */
 class Contribution_TypesController extends Omeka_Controller_Action
 {
     public function init()
     {
-        $this->_modelClass = 'ContributionType';
+        $modelName = 'ContributionType';
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $this->_helper->db->setDefaultModelName($modelName);
+        } else {
+            $this->_modelClass = $modelName;
+        }
     }
     
     /**
