@@ -67,4 +67,10 @@ HTML;
         }
         return $input;
     }
+
+    protected function  beforeSave() {
+        if (empty($this->order)) {
+            $this->order = 0;
+        }
+    }
 }

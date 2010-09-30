@@ -8,10 +8,14 @@
 
 contribution_admin_header(array('Contributor Metadata'));
 ?>
+<p id="add-field" class="add-button">
+    <a class="add" href="<?php echo uri(array('action' => 'add')); ?>">Add a Question</a>
+</p>
+
 <div id="primary">
     <?php echo flash(); ?>
     <table>
-        <thead id="contributor-metadata-table-head">
+        <thead id="contributor-fields-table-head">
             <tr>
                 <th>Name</th>
                 <th>Prompt</th>
@@ -20,11 +24,6 @@ contribution_admin_header(array('Contributor Metadata'));
                 <th>Delete</th>
             </tr>
         </thead>
-        <tfoot id="contributor-fields-table-foot">
-            <tr>
-                <td colspan="5"><?php echo $this->formSubmit('add-prompt', 'Add a Prompt', array('class' => 'add-element')); ?></td>
-            </tr>
-        </tfoot>
         <tbody id="contributor-fields-table-body">
             <tr>
                 <td colspan="5">Name</td>
@@ -43,18 +42,5 @@ contribution_admin_header(array('Contributor Metadata'));
 <?php endforeach; ?>
         </tbody>
     </table>
-        <?php echo $this->formSubmit('submit-changes', 'Submit Changes', array('class' => 'submit-button')); ?>
 </div>
-<?php
-    echo js('contribution');
-?>
-<script type="text/javascript">
-    var newRow = <?php
-        $nameInput = $this->formText('newFields[!!INDEX!!][name]', null, array('class' => 'textinput'));
-        $promptInput = $this->formText('newFields[!!INDEX!!][prompt]', null, array('class' => 'textinput'));
-        $dataTypeSelect = contribution_select_field_data_type('newFields[!!INDEX!!][type]');
-        echo js_escape("<tr><td>$nameInput</td><td>$promptInput</td><td colspan=\"3\">$dataTypeSelect</td></tr>");
-        ?>;
-    setUpTableAppend('#add-prompt', '#contributor-fields-table-body', newRow);
-</script>
 <?php foot();

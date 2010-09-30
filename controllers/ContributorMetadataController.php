@@ -28,27 +28,4 @@ class Contribution_ContributorMetadataController extends Omeka_Controller_Action
     {
         $this->redirect->goto('');
     }
-
-    public function multipleAddAction()
-    {
-        if (!empty($_POST)) {
-            $newFields = $_POST['newFields'];
-            if (is_array($newFields)) {
-                foreach ($newFields as $newField) {
-                    $field = new ContributionContributorField;
-                    $field->order = 0;
-                    try {
-                        $field->saveForm($newField);
-                    } catch (Omeka_Validator_Exception $e) {
-                        $this->flashValidationErrors($e);
-                    } catch (Exception $e) {
-                        $this->flashError($e->getMessage());
-                    }
-                }
-            }
-        } else {
-            $this->flashError('Fields may only be added via POST.');
-        }
-        $this->redirect->goto('');
-    }
 }

@@ -6,11 +6,10 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributor Metadata', 'Edit'));
+contribution_admin_header(array('Contributor Metadata', 'Add'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
     <?php require 'form.php'; ?>
-    <?php echo delete_button(); ?>
 </div>
 <?php foot();
