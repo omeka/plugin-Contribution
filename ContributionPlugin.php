@@ -192,7 +192,7 @@ class ContributionPlugin
             'Contribution_Contribution' => array('contribute', 'index', 'terms', 'thankyou', 'type-form'),
             'Contribution_Contributors' => array('browse', 'show'),
             'Contribution_ContributorMetadata' => array('browse', 'add', 'edit', 'delete'),
-            'Contribution_Types' => array('browse', 'add', 'edit', 'delete', 'multiple-add'),
+            'Contribution_Types' => array('browse', 'add', 'edit', 'delete'),
             'Contribution_Settings' => array('edit')
         );
         $acl->loadResourceList($resourceList);

@@ -28,4 +28,19 @@ class Contribution_ContributorMetadataController extends Omeka_Controller_Action
     {
         $this->redirect->goto('');
     }
+
+    protected function  _getAddSuccessMessage($record)
+    {
+        return 'Question successfully added.';
+    }
+
+    protected function _getEditSuccessMessage($record)
+    {
+        return 'Question successfully updated.';
+    }
+
+    protected function _getDeleteSuccessMessage($record)
+    {
+        return 'Question deleted.';
+    }
 }
