@@ -24,6 +24,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
      */
     public function editAction()
     {
+        require CONTRIBUTION_FORMS_DIR . DIRECTORY_SEPARATOR . 'Settings.php';
         $form = new Contribution_Form_Settings;
         $defaults = $this->_getOptions();
         $form->setDefaults($defaults);
