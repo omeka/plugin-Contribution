@@ -18,6 +18,8 @@ echo js('tiny_mce/tiny_mce');
 echo js('contribution');
 ?>
 <script type="text/javascript">
+// <![CDATA[
     setUpSettingsWysiwyg();
+// ]]>
 </script>
 <?php foot();

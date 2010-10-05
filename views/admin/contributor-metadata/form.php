@@ -7,7 +7,7 @@
  */
 $field = $contributioncontributorfield;
 ?>
-    <form method="post">
+    <form method="post" action="">
         <div class="field">
             <?php echo $this->formLabel('name', 'Name'); ?>
             <div class="input">

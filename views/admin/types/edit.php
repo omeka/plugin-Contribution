@@ -36,7 +36,7 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 </style>
 <div id="primary">
     <?php echo flash(); ?>
-<form method="post">
+<form method="post" action="">
     <fieldset>
         <legend>Type Metadata</legend>
         <div class="field">
