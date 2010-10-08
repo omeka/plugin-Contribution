@@ -20,7 +20,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
 <?php echo flash(); ?>
     
     <h1><?php echo $head['title']; ?></h1>
-    <form method="POST" enctype="multipart/form-data">
+    <form method="post" action="" enctype="multipart/form-data">
         <fieldset id="contribution-item-metadata">
             <div class="inputs">
                 <label for="contribution_type">What type of item do you want to contribute?</label>
