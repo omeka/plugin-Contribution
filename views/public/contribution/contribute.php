@@ -23,7 +23,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
     <form method="post" action="" enctype="multipart/form-data">
         <fieldset id="contribution-item-metadata">
             <div class="inputs">
-                <label for="contribution_type">What type of item do you want to contribute?</label>
+                <label for="contribution-type">What type of item do you want to contribute?</label>
                 <?php echo contribution_select_type(array( 'name' => 'contribution_type', 'id' => 'contribution-type'), $_POST['contribution_type']); ?>
                 <input type="submit" name="submit-type" id="submit-type" value="Select" />
             </div>
@@ -34,7 +34,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
         <fieldset id="contribution-contributor-metadata" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
             <legend>Personal Information</legend>
             <div class="field">
-                <label>Name</label>
+                <label for="contributor-name">Name</label>
                 <div class="inputs">
                     <div class="input">
                         <?php echo $this->formText('contributor-name', $_POST['contributor-name'], array('class' => 'textinput')); ?>
@@ -42,7 +42,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
                 </div>
             </div>
             <div class="field">
-                <label>Email Address:</label>
+                <label for="contributor-email">Email Address</label>
                 <div class="inputs">
                     <div class="input">
                         <?php echo $this->formText('contributor-email', $_POST['contributor-email'], array('class' => 'textinput')); ?>
