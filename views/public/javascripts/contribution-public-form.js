@@ -11,12 +11,12 @@ function enableContributionAjaxForm(url) {
             var value = this.value;
             submit.hide();
             contributorMetadata.hide();
-            form.slideUp(400, function() { 
+            form.hide(400, function() {
                 form.empty();
                 if (value != "") {
                     jQuery.post(url, {contribution_type: value}, function(data) {
                        form.append(data); 
-                       form.slideDown(400, function() {
+                       form.show(400, function() {
                            form.trigger('contribution-form-shown');
                            submit.show();
                            contributorMetadata.show();
