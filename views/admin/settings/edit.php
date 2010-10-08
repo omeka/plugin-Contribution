@@ -13,7 +13,6 @@ contribution_admin_header(array('Settings'));
     <?php echo $form; ?>
 </div>
 <?php
-echo js('jquery');
 echo js('tiny_mce/tiny_mce');
 echo js('contribution');
 ?>

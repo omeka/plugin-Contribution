@@ -38,7 +38,8 @@ class Contribution_Form_Settings extends Omeka_Form
         ));
         $this->addElement('textarea', 'contribution_consent_text', array(
             'label'       => 'Text of Terms',
-            'description' => 'The text of the legal disclaimer to which contributors will agree.'
+            'description' => 'The text of the legal disclaimer to which contributors will agree.',
+            'attribs'     => array('class' => 'html-editor')
         ));
         $this->addElement('select', 'contribution_collection_id', array(
             'label'        => 'Contribution Collection',
