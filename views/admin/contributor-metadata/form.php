@@ -16,7 +16,7 @@ $field = $contributioncontributorfield;
             </div>
         </div>
         <div class="field">
-            <?php echo $this->formLabel('prompt', 'Prompt'); ?>
+            <?php echo $this->formLabel('prompt', 'Question'); ?>
             <div class="input">
                 <?php echo $this->formText('prompt', $field->prompt, array('class' => 'textinput')); ?>
                 <p class="explanation">The name that is printed on the public form.</p>

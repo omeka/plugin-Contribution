@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Settings'));
+contribution_admin_header(array('Submission Settings'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>

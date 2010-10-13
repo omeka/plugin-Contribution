@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributor Metadata'));
+contribution_admin_header(array('Contributor Questions'));
 ?>
 <p id="add-field" class="add-button">
     <a class="add" href="<?php echo uri(array('action' => 'add')); ?>">Add a Question</a>
@@ -18,18 +18,19 @@ contribution_admin_header(array('Contributor Metadata'));
         <thead id="contributor-fields-table-head">
             <tr>
                 <th>Name</th>
-                <th>Prompt</th>
+                <th>Question</th>
                 <th>Type</th>
                 <th>Edit</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody id="contributor-fields-table-body">
-            <tr>
-                <td colspan="5">Name</td>
+            <tr style="background-color: lightgray;">
+                <td>Name</td>
+                <td rowspan="2" colspan="4" style="vertical-align: middle;">These questions are required by the plugin and cannot be edited.</td>
             </tr>
-            <tr>
-                <td colspan="5">Email Address</td>
+            <tr style="background-color: lightgray;">
+                <td>Email Address</td>
             </tr>
 <?php foreach ($contributioncontributorfields as $field): ?>
     <tr>

@@ -110,10 +110,10 @@ function contribution_admin_header($subsections = array())
 <ul id="section-nav" class="navigation">
 <?php echo nav(array(
     'Dashboard' => uri('contribution/index'),
-    'Contributors' => uri('contribution/contributors'),
-    'Contributor Metadata' => uri('contribution/contributor-metadata'),
     'Contribution Types' => uri('contribution/types'),
-    'Settings' => uri('contribution/settings')
+    'Contributor Questions' => uri('contribution/contributor-metadata'),
+    'Submission Settings' => uri('contribution/settings'),
+    'Contributors' => uri('contribution/contributors')
     ));
 ?>
 </ul>
