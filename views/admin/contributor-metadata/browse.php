@@ -24,14 +24,16 @@ contribution_admin_header(array('Contributor Questions'));
                 <th>Delete</th>
             </tr>
         </thead>
-        <tbody id="contributor-fields-table-body">
-            <tr style="background-color: lightgray;">
+        <tbody id="contributor-fields-required">
+            <tr>
                 <td>Name</td>
-                <td rowspan="2" colspan="4" style="vertical-align: middle;">These questions are required by the plugin and cannot be edited.</td>
+                <td rowspan="2" colspan="4" style="background-color: #eee; vertical-align: middle; text-align: center;">These questions are required by the plugin and cannot be edited.</td>
             </tr>
-            <tr style="background-color: lightgray;">
+            <tr>
                 <td>Email Address</td>
             </tr>
+        </tbody>
+        <tbody id="contributor-fields-sortable">
 <?php foreach ($contributioncontributorfields as $field): ?>
     <tr>
         <td><?php echo html_escape($field['name']); ?></td>

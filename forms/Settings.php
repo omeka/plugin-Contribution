@@ -23,7 +23,7 @@ class Contribution_Form_Settings extends Omeka_Form
         ));
         $this->addElement('text', 'contribution_email_sender', array(
             'label'       => 'New Contribution Email Sender',
-            'description' => 'If specified, an email message will be sent to '
+            'description' => 'An email message will be sent to '
                            . 'each contributor from this address.  Leave blank '
                            . 'if you do not want an email to be sent to '
                            . 'contributors.',
@@ -31,9 +31,9 @@ class Contribution_Form_Settings extends Omeka_Form
         ));
         $this->addElement('textarea', 'contribution_email_recipients', array(
             'label'       => 'New Contribution Email Recipients',
-            'description' => 'If specified, an email message will be sent to '
+            'description' => 'An email message will be sent to '
                            . 'each address here whenever a new item is '
-                           . 'contributed Leave blank if you do not want '
+                           . 'contributed. Leave blank if you do not want '
                            . 'anyone to be alerted of contributions by email.',
             'attribs'     => array('rows' => '5')
         ));
@@ -44,7 +44,7 @@ class Contribution_Form_Settings extends Omeka_Form
         ));
         $this->addElement('select', 'contribution_collection_id', array(
             'label'        => 'Contribution Collection',
-            'description'  => 'The collection to which contributions will be added.',
+            'description'  => 'The collection to which contributions will be added. Changes here will only affect new contributions.',
             'multiOptions' => $this->_getCollectionSelectOptions()
         ));
         $this->addElement('submit', 'contribution_settings_submit', array(
