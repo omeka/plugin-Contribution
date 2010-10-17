@@ -14,6 +14,7 @@ contribution_admin_header(array('Contributors'));
     <table>
         <thead id="types-table-head">
             <tr>
+                <th>ID</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Contributed Items</th>
@@ -25,6 +26,7 @@ foreach ($contributioncontributors as $contributor):
     $id = $contributor->id;
 ?>
     <tr>
+        <td><?php echo html_escape($contributor->id); ?></td>
         <td><a href="<?php echo uri(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
         <td><?php echo html_escape($contributor->email); ?></td>
         <td><a href="<?php echo uri("items/browse/contributor_id/$id") ?>">View</a></td>
