@@ -15,7 +15,6 @@
  */
 class ContributionContributorField extends Omeka_Record
 {
-    public $name;
     public $prompt;
     public $type;
     public $order;
@@ -25,11 +24,11 @@ class ContributionContributorField extends Omeka_Record
      */
     protected function _validate()
     {
-        if (empty($this->name)) {
-            $this->addError('name', 'Please provide a name.');
+        if (empty($this->prompt)) {
+            $this->addError('Question', 'Please provide a question.');
         }
-        if ($this->name === 'name' || $this->name === 'email') {
-            $this->addError('name', 'Please select another name.');
+        if ($this->prompt === 'Name' || $this->prompt === 'Email Address') {
+            $this->addError('Question', 'The question "' . $this->prompt . '" is reserved. Please choose another.');
         }
         if (empty($this->type)) {
             $this->addError('Data Type', 'Please select a data type.');

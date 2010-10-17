@@ -17,7 +17,6 @@ contribution_admin_header(array('Contributor Questions'));
     <table>
         <thead id="contributor-fields-table-head">
             <tr>
-                <th>Name</th>
                 <th>Question</th>
                 <th>Type</th>
                 <th>Edit</th>
@@ -27,7 +26,7 @@ contribution_admin_header(array('Contributor Questions'));
         <tbody id="contributor-fields-required">
             <tr>
                 <td>Name</td>
-                <td rowspan="2" colspan="4" style="background-color: #eee; vertical-align: middle; text-align: center;">These questions are required by the plugin and cannot be edited.</td>
+                <td rowspan="2" colspan="3" style="background-color: #eee; vertical-align: middle; text-align: center;">These questions are required by the plugin and cannot be edited.</td>
             </tr>
             <tr>
                 <td>Email Address</td>
@@ -36,7 +35,6 @@ contribution_admin_header(array('Contributor Questions'));
         <tbody id="contributor-fields-sortable">
 <?php foreach ($contributioncontributorfields as $field): ?>
     <tr>
-        <td><?php echo html_escape($field['name']); ?></td>
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>
         <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>

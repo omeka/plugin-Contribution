@@ -103,7 +103,7 @@ SQL;
     {
         $db = $this->getDb();
         $sql = <<<SQL
-SELECT `ccf`.`name` AS `name`, `ccv`.`value` AS `value`
+SELECT `ccf`.`prompt` AS `prompt`, `ccv`.`value` AS `value`
 FROM `{$db->ContributionContributorField}` AS `ccf`
 LEFT OUTER JOIN `{$db->ContributionContributorValue}` AS `ccv`
 ON `ccf`.`id` = `ccv`.`field_id`

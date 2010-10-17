@@ -112,12 +112,10 @@ class ContributionPlugin
 
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_fields` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `name` VARCHAR(255) NOT NULL,
-            `prompt` VARCHAR(255),
+            `prompt` VARCHAR(255) NOT NULL,
             `type` ENUM('Text', 'Tiny Text') NOT NULL,
             `order` INT UNSIGNED NOT NULL,
             PRIMARY KEY (`id`),
-            UNIQUE KEY (`name`),
             KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
@@ -171,7 +169,12 @@ class ContributionPlugin
             }
             return;
         }
-        // Switch statement for newer versions would follow here
+        // Switch statement for newer versions
+        switch ($oldVersion) {
+        case '2.0alpha':
+            $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributor_fields` DROP `name`";
+            $this->_db->query($sql);
+        }
     }
 
     public function adminAppendToPluginUninstallMessage()

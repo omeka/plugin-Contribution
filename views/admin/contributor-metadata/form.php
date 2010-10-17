@@ -9,17 +9,10 @@ $field = $contributioncontributorfield;
 ?>
     <form method="post" action="">
         <div class="field">
-            <?php echo $this->formLabel('name', 'Name'); ?>
-            <div class="input">
-                <?php echo $this->formText('name', $field->name, array('class' => 'textinput')); ?>
-                <p class="explanation">Used to identify this field on the admin interface.</p>
-            </div>
-        </div>
-        <div class="field">
             <?php echo $this->formLabel('prompt', 'Question'); ?>
             <div class="input">
                 <?php echo $this->formText('prompt', $field->prompt, array('class' => 'textinput')); ?>
-                <p class="explanation">The name that is printed on the public form.</p>
+                <p class="explanation">The text of the question to ask contributors.</p>
             </div>
         </div>
         <div class="field">
