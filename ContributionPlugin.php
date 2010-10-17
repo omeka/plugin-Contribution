@@ -27,7 +27,9 @@ class ContributionPlugin
         'item_browse_sql'
     );
 
-    private static $_filters = array('admin_navigation_main');
+    private static $_filters = array(
+        'admin_navigation_main',
+        'public_navigation_main');
 
     public static $options = array(
         'contribution_page_path',
@@ -258,6 +260,18 @@ class ContributionPlugin
         if(has_permission('Contribution_Contributors', 'browse')) {
             $nav['Contribution'] = uri('contribution');
         }
+        return $nav;
+    }
+    
+    /**
+     * Append a Contribution entry to the public navigation.
+     *
+     * @param array $nav
+     * @return array
+     */
+    public function publicNavigationMain($nav)
+    {
+        $nav['Contribute an Item'] = contribution_contribute_url();
         return $nav;
     }
 

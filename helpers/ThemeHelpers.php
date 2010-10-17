@@ -122,6 +122,27 @@ function contribution_admin_header($subsections = array())
 }
 
 /**
+ * Get a URL to the public contribution page.
+ *
+ * @param string $action Action to link to, main index if none.
+ * @return string URL
+ */
+function contribution_contribute_url($actionName = null)
+{
+    $path = get_option('contribution_page_path');
+    if (empty($path)) {
+        $route = 'contributionDefault';
+    } else {
+        $route = 'contributionCustom';
+    }
+    $options = array();
+    if (!empty($actionName)) {
+        $options['action'] = $actionName;
+    }
+    return __v()->url($options, $route, array(), true);
+}
+
+/**
  * Get a link to the public contribution page.
  *
  * @param string $linkText
@@ -130,19 +151,7 @@ function contribution_admin_header($subsections = array())
  */
 function contribution_link_to_contribute($linkText = 'Contribute', $actionName = null)
 {
-    $path = get_option('contribution_page_path');
-    if (empty($path)) {
-        $route = 'contributionDefault';
-        
-    } else {
-        $route = 'contributionCustom';
-    }
-    $options = array();
-    if (!empty($actionName)) {
-        $options['action'] = $actionName;
-    }
-    $url = __v()->url($options, $route, array(), true);
-
+    $url = contribution_contribute_url($actionName);
     return "<a href=\"$url\">$linkText</a>";
 }
 
