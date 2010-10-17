@@ -176,6 +176,21 @@ function contribution_get_item_contributor($item = null)
     }
 }
 
+function contribution_is_item_public($item = null)
+{
+    if(!$item) {
+        $item = get_current_item();
+    }
+    
+    $linkage = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+
+    if ($linkage) {
+        return $linkage->public;
+    } else {
+        return null;
+    }
+}
+
 /**
  * Get metadata for a given contributor.
  *
