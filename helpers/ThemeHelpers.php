@@ -190,9 +190,9 @@ function contributor($propertyName, $contributor = null)
     }
     $data = $contributor->getMetadata();
     switch ($propertyName) {
-        case 'name':
+        case 'Name':
             $property = $contributor->name;
-        case 'email':
+        case 'Email Address':
             $property = $contributor->email;
         default:
             if (array_key_exists($propertyName, $data)) {
