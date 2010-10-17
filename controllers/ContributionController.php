@@ -212,12 +212,12 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         $name = $post['contributor-name'];
         $ip = $this->getRequest()->getClientIp();
 
-        if (!($contributor = $table->findByEmail($email))) {
+        if (!($contributor = $table->findUnique($email, $name))) {
             $contributor = new ContributionContributor;
             $contributor->email = $email;
+            $contributor->name = $name;
         }
         $contributor->setDottedIpAddress($ip);
-        $contributor->name = $name;
         try {
             $contributor->forceSave();
 

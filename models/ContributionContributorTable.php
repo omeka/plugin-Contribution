@@ -16,17 +16,17 @@
 class ContributionContributorTable extends Omeka_Db_Table
 {
     /**
-     * Retrieve a contributor by email address.
-     * Emails are a unique identifier for contributors, so this only returns
-     * one. 
+     * Retrieve a contributor by email address/name combination.
      * 
      * @param string $email
+     * @param string $name
      * @return ContributionContributor 
      */
-    public function findByEmail($email)
+    public function findUnique($email, $name)
     {
         $select = $this->getSelect();
-        $select->where('`email` = ?', $email);
+        $select->where('`email` = ?', $email)
+               ->where('`name` = ?', $name);
         return $this->fetchObject($select);
     }
 } 
