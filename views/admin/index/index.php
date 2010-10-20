@@ -12,8 +12,9 @@ contribution_admin_header(array('Dashboard'));
     <?php echo flash(); ?>
     <div id="getting-started">
     <h2>Getting Started</h2>
+    <p>A basic contribution form is installed and ready to ask users to submit a Story or Image type, and to include their name and email address. If you want to modify the form, follow the steps below.</p>  
     <dl>
-        <dt>1. Build the contribution form:</dt>
+        <dt>1. Modify the contribution form:</dt>
         <dd>
             <ul style="width: 100%;">
                 <li>Choose item types you wish visitors to share in <a href="<?php echo uri('contribution/types'); ?>">Contribution Types</a>.</li>

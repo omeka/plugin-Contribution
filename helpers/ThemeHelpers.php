@@ -85,7 +85,7 @@ function contribution_select_item_type($name, $default = '', $attributes = array
 function contribution_select_field_data_type($name, $default = '', $attributes = array())
 {
     $options = get_db()->getTable('ContributionContributorField')->getDataTypes();
-    $options = array('' => 'Select a Data Type') + $options;
+    $options = array('' => 'Select Field Size') + $options;
     return __v()->formSelect($name, $default, $attributes, $options);
 }
 

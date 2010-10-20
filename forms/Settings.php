@@ -17,20 +17,16 @@ class Contribution_Form_Settings extends Omeka_Form
         
         // Should have a StringTrim('/') here, but it's broken until 1.10
         $this->addElement('text', 'contribution_page_path', array(
-            'label'       => 'Contribution Form Path',
-            'description' => 'Relative path from the Omeka root to the '
-                           . 'desired location for the contribution form.'
+            'label'       => 'Contribution Slug',
+            'description' => 'Relative path from the Omeka root to the desired location for the contribution form. If left blank, the default path will be named &#8220;contribution.&#8221;'
         ));
         $this->addElement('text', 'contribution_email_sender', array(
-            'label'       => 'New Contribution Email Sender',
-            'description' => 'An email message will be sent to '
-                           . 'each contributor from this address.  Leave blank '
-                           . 'if you do not want an email to be sent to '
-                           . 'contributors.',
+            'label'       => 'Contribution Confirmation Email',
+            'description' => 'An email message will be sent to each contributor from this address           confirming that they submitted a contribution to this website. Leave blank if you do not want an email sent.',
             'validators'  => array('EmailAddress')
         ));
         $this->addElement('textarea', 'contribution_email_recipients', array(
-            'label'       => 'New Contribution Email Recipients',
+            'label'       => 'New Contribution Notification Emails',
             'description' => 'An email message will be sent to '
                            . 'each address here whenever a new item is '
                            . 'contributed. Leave blank if you do not want '
@@ -38,7 +34,7 @@ class Contribution_Form_Settings extends Omeka_Form
             'attribs'     => array('rows' => '5')
         ));
         $this->addElement('textarea', 'contribution_consent_text', array(
-            'label'       => 'Text of Terms',
+            'label'       => 'Text of Terms of Service',
             'description' => 'The text of the legal disclaimer to which contributors will agree.',
             'attribs'     => array('class' => 'html-editor', 'rows' => '15')
         ));
