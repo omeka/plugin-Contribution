@@ -307,6 +307,8 @@ class ContributionPlugin
        <a href="<?php echo uri('contribution/contributors/show/id/') . $id; ?>"><?php echo $name; ?></a>.</p>
     <?php if(!($contributedItem->public)): ?>
     <p><strong>This item should not be made public.</strong></p>
+    <?php else: ?>
+    <p><strong>This item can be made public.</strong></p>    
     <?php endif; ?>
 </div>
 <?php
