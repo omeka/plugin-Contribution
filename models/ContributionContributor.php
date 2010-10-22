@@ -80,7 +80,11 @@ SQL;
         if (!($ipAddress = $this->ip_address)) {
             return null;
         }
-        return long2ip($ipAddress);
+        if (($value = inet_ntop($ipAddress))) {
+            return $value;
+        } else {
+            return long2ip($ipAddress);
+        }
     }
     
     /**
@@ -91,7 +95,7 @@ SQL;
      */
     public function setDottedIpAddress($dottedIpAddress)
     {
-        $this->ip_address = sprintf('%u', ip2long($dottedIpAddress));
+        $this->ip_address = inet_pton($dottedIpAddress);
     }
 
     /**

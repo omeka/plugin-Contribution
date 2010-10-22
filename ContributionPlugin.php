@@ -97,7 +97,7 @@ class ContributionPlugin
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(255) NOT NULL,
             `email` VARCHAR(255) NOT NULL,
-            `ip_address` INT UNSIGNED NOT NULL,
+            `ip_address` VARBINARY(128) NOT NULL,
             PRIMARY KEY (`id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
@@ -175,6 +175,9 @@ class ContributionPlugin
         switch ($oldVersion) {
         case '2.0alpha':
             $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributor_fields` DROP `name`";
+            $this->_db->query($sql);
+        case '2.0beta':
+            $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributors` MODIFY `ip_address` VARBINARY(128) NOT NULL";
             $this->_db->query($sql);
         }
     }
