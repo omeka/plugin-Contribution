@@ -22,7 +22,17 @@ class ContributionTypeElement extends Omeka_Record
     
     protected $_related = array('ContributionType' => 'getType',
                                 'Element'          => 'getElement');
-    
+
+    protected function _validate()
+    {
+        if(empty($this->element_id)) {
+            $this->addError('element', 'You must select an element to contribute.');
+        }
+        if(empty($this->prompt)) {
+            $this->addError('prompt', 'You must provide a prompt for your contributors.');
+        }
+    }
+
     /**
      * Get the type associated with this type element.
      *
