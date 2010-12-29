@@ -169,6 +169,11 @@ class ContributionPlugin
             if (!empty($emailSender)) {
                 set_option('contribution_email_sender', $emailSender);
             }
+
+            // Since this is an upgrade from an old version, we need to install
+            // all our tables.
+            $this->install();
+
             return;
         }
         // Switch statement for newer versions
