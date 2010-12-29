@@ -170,6 +170,13 @@ class ContributionPlugin
                 set_option('contribution_email_sender', $emailSender);
             }
 
+            $pagePath = get_option('contribution_page_path');
+            if ($pagePath = 'contribution/') {
+                delete_option('contribution_page_path');
+            } else {
+                set_option('contribution_page_path', trim($pagePath, '/'));
+            }
+
             // Since this is an upgrade from an old version, we need to install
             // all our tables.
             $this->install();
