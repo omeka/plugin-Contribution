@@ -122,6 +122,18 @@ function contribution_admin_header($subsections = array())
 }
 
 /**
+ * Check if the captcha is set up, display a message if not.
+ */
+function contribution_check_captcha()
+{
+    if (!Omeka_Captcha::isConfigured()) {
+?>
+    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo uri('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
+<?php 
+    }
+}
+
+/**
  * Get a URL to the public contribution page.
  *
  * @param string $action Action to link to, main index if none.

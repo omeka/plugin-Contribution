@@ -9,8 +9,13 @@
 contribution_admin_header(array('Contributors'));
 ?>
 <div id="primary">
+<?php
+echo flash();
+if (empty($contributioncontributors)):
+    echo '<p>No one has contributed to the site yet.</p>';
+else:
+?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
-    <?php echo flash(); ?>
     <table>
         <thead id="types-table-head">
             <tr>
@@ -35,5 +40,6 @@ foreach ($contributioncontributors as $contributor):
         </tbody>
     </table>
     <div class="pagination"><?php echo pagination_links(); ?></div>
+<?php endif; ?>
 </div>
 <?php foot();

@@ -10,6 +10,7 @@ contribution_admin_header(array('Dashboard'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
+    <?php contribution_check_captcha(); ?>
     <div id="getting-started">
     <h2>Getting Started</h2>
     <p>A basic contribution form is installed and ready to ask users to submit a Story or Image type, and to include their name and email address. If you want to modify the form, follow the steps below.</p>  
