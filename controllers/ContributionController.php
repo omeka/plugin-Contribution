@@ -260,7 +260,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
         foreach($elements as $elementId => $elementTexts) {
             $element = $elementTable->find($elementId);
             foreach($elementTexts as $elementText) {
-                if (!empty($elementText['text']) {
+                if (!empty($elementText['text'])) {
                     $item->addTextForElement($element, $elementText['text']);
                 }
             }
