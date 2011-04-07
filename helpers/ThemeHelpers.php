@@ -215,13 +215,15 @@ function contributor($propertyName, $contributor = null)
     if (!$contributor) {
         $contributor = contribution_get_item_contributor($item);
     }
-    $data = $contributor->getMetadata();
     switch ($propertyName) {
         case 'Name':
             $property = $contributor->name;
+            break;
         case 'Email Address':
             $property = $contributor->email;
+            break;
         default:
+            $data = $contributor->getMetadata();
             if (array_key_exists($propertyName, $data)) {
                 $property = $data[$propertyName];
             } else {
