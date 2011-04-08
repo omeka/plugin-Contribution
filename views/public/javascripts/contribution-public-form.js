@@ -1,1 +1,56 @@
-function enableContributionAjaxForm(a){jQuery(document).ready(function(){var c=jQuery("#contribution-type-form");var b=jQuery("#contribution-type");var e=jQuery("#contribution-confirm-submit, #contribution-contributor-metadata");var d=400;jQuery("#submit-type").remove();b.change(function(){var f=this.value;e.hide();c.hide(d,function(){c.empty();if(f!=""){jQuery.post(a,{contribution_type:f},function(g){c.append(g);c.show(d,function(){c.trigger("contribution-form-shown");e.show()})})}})});jQuery("#form-submit").click(function(j){var h=jQuery("#contributor-name").val();var g=jQuery("#contributor-email").val();var i=jQuery("#terms-agree").attr("checked");var f=/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;if(h==""||g==""){alert("Please provide your name and email address.");return false}if(!f.test(g)){alert("The email you provided was invalid. Please provide another.");return false}if(!i){alert("You must agree to the Terms and Conditions to contribute.");return false}return true})})};
+function enableContributionAjaxForm(url) {
+    jQuery(document).ready(function() {
+        // Div that will contain the AJAX'ed form.
+        var form = jQuery('#contribution-type-form');
+        // Select element that controls the AJAX form.
+        var contributionType = jQuery('#contribution-type');
+        // Elements that should be hidden when there is no type form on the page.
+        var elementsToHide = jQuery('#contribution-confirm-submit, #contribution-contributor-metadata');
+        // Duration of hide/show animation.
+        var duration = 400;
+
+        // Remove the noscript-fallback type submit button.
+        jQuery('#submit-type').remove();
+
+        // When the select is changed, AJAX in the type form
+        contributionType.change(function () {
+            var value = this.value;
+            elementsToHide.hide();
+            form.hide(duration, function() {
+                form.empty();
+                if (value != "") {
+                    jQuery.post(url, {contribution_type: value}, function(data) {
+                       form.append(data); 
+                       form.show(duration, function() {
+                           form.trigger('contribution-form-shown');
+                           elementsToHide.show();
+                       });
+                    });
+                }
+            });
+        });
+
+        // Do some quick-and-dirty validation of some of the required inputs.
+        // TODO: replace alerts with a better notification method.
+        jQuery('#form-submit').click(function (event) {
+            var name = jQuery('#contributor-name').val();
+            var email = jQuery('#contributor-email').val();
+            var terms = jQuery('#terms-agree').attr('checked');
+            var emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,6}$/i;
+
+            if (name == "" || email == "") {
+                alert('Please provide your name and email address.');
+                return false;
+            }
+            if (!emailPattern.test(email)) {
+                alert('The email you provided was invalid. Please provide another.');
+                return false;
+            }
+            if (!terms) {
+                alert('You must agree to the Terms and Conditions to contribute.');
+                return false;
+            }
+            return true;
+        });
+    });
+}
