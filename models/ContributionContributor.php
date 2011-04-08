@@ -41,17 +41,6 @@ class ContributionContributor extends Omeka_Record
     }
     
     /**
-     * Called before validation
-     * If the contributor is a new entry, then pull in the IP address of the browser before saving
-     */
-    protected function beforeValidate()
-    {
-        if(empty($this->ip_address) and !$this->exists()) {
-            $this->setDottedIpAddress($_SERVER['REMOTE_ADDR']);
-        }
-    }
-    
-    /**
      * Return the items that the contributor has contributed.
      *
      * @return array
