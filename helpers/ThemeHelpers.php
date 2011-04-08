@@ -216,6 +216,9 @@ function contributor($propertyName, $contributor = null)
         $contributor = contribution_get_item_contributor($item);
     }
     switch ($propertyName) {
+        case 'ID':
+            $property = $contributor->id;
+            break;
         case 'Name':
             $property = $contributor->name;
             break;
