@@ -311,20 +311,22 @@ class ContributionPlugin
 
     public function adminAppendToItemsShowSecondary($item)
     {
-        if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
-            $contributor = $contributedItem->Contributor;
-            $name = $contributor->name ? html_escape($contributor->name) : 'Anonymous';
-            $id = html_escape($contributor->id);
+        if ($contributor = contribution_get_item_contributor($item)) {
+            if (!($name = contributor('Name', $contributor))) {
+                $name = 'Anonymous';
+            }
+            $id = contributor('ID', $contributor);
+            $uri = uri('contribution/contributors/show/id/') . $id;
+            $publicMessage = contribution_is_item_public($item)
+                           ? 'This item can be made public.'
+                           : 'This item should not be made public.';
         ?>
 <div class="info-panel">
     <h2>Contribution</h2>
     <p>This item was contributed by
-       <a href="<?php echo uri('contribution/contributors/show/id/') . $id; ?>"><?php echo $name; ?></a>.</p>
-    <?php if(!($contributedItem->public)): ?>
-    <p><strong>This item should not be made public.</strong></p>
-    <?php else: ?>
-    <p><strong>This item can be made public.</strong></p>    
-    <?php endif; ?>
+        <a href="<?php echo $uri; ?>"><?php echo $name; ?></a>.
+    </p>
+    <p><strong><?php echo $publicMessage; ?></strong></p>
 </div>
 <?php
         }
@@ -333,19 +335,21 @@ class ContributionPlugin
     public function adminAppendToItemsBrowseDetailedEach()
     {
         $item = get_current_item();
-        if (($contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item))) {
-            $contributor = $contributedItem->Contributor;
-            $name = $contributor->name ? html_escape($contributor->name) : 'Anonymous';
-            $id = html_escape($contributor->id);
+        if ($contributor = contribution_get_item_contributor($item)) {
+            if (!($name = contributor('Name', $contributor))) {
+                $name = 'Anonymous';
+            }
+            $id = contributor('ID', $contributor);
+            $uri = uri('contribution/contributors/show/id/') . $id;
+            $publicMessage = contribution_is_item_public($item)
+                           ? 'This item can be made public.'
+                           : 'This item should not be made public.';
         ?>
-    <h3>Contribution</h3>
-    <p>This item was contributed by
-       <a href="<?php echo uri('contribution/contributors/show/id/') . $id; ?>"><?php echo $name; ?></a>.</p>
-    <?php if(!($contributedItem->public)): ?>
-    <p><strong>This item should not be made public.</strong></p>
-    <?php else: ?>
-    <p><strong>This item can be made public.</strong></p>    
-    <?php endif; ?>
+<h3>Contribution</h3>
+<p>This item was contributed by
+    <a href="<?php echo $uri; ?>"><?php echo $name; ?></a>.
+</p>
+<p><strong><?php echo $publicMessage; ?></strong></p>
 <?php
         }
     }
