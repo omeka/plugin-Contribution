@@ -12,28 +12,9 @@ $itemType = $contributionType->ItemType;
 $elements = $itemType->Elements;
 
 $typeName = html_escape($contributionType->display_name);
+queue_css('contribution-type-form');
 contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 ?>
-<style type="text/css">
-    table input.textinput
-    {
-        font-size: 1.0em;
-    }
-
-    td.element-prompt
-    {
-        width: 50%;
-    }
-
-    td.element-prompt input
-    {
-        width: 100%;
-    }
-    td
-    {
-        vertical-align: middle;
-    }
-</style>
 <div id="primary">
     <?php echo flash(); ?>
 <form method="post" action="">
@@ -56,35 +37,29 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
     </fieldset>
     <fieldset>
         <legend>Contributed Elements</legend>
-        <table id="element-table">
-            <thead>
-                <tr>
-                    <th>Prompt</th>
-                    <th>Element</th>
-                    <th>Set</th>
-                    <th class="element-order">Order</th>
-                    <th>Delete?</th>
-                </tr>
-            </thead>
-            <tfoot>
-                <tr id="add-element-row">
-                    <td colspan="6"><input type="submit" class="add-element" id="add-element" value="Add an Element" /></td>
-                </tr>
-            </tfoot>
-            <tbody id="sortable">
-    <?php foreach ($contributionTypeElements as $element):
+        <div id="elements-header">
+            <span class="element-prompt">Prompt</span>
+            <span class="element-name">Element</span>
+            <span class="element-set-name">Set</span>
+            <span class="element-order">Order</span>
+            <span class="element-delete">Delete?</span>
+        </div>
+        <ol id="elements">
+        <?php foreach ($contributionTypeElements as $element):
     $id = $element->id; ?>
-                <tr class="element-row">
-                    <td class="element-prompt"><?php echo $this->formText("Elements[$id][prompt]", $element->prompt, array('class' => 'textinput')); ?></td>
-                    <td><?php echo html_escape($element->Element->name); ?></td>
-                    <td><?php echo html_escape($element->Element->getElementSet()->name); ?></td>
-                    <td class="element-order"><?php echo $this->formText("Elements[$id][order]", $element->order, array('class' => 'textinput')); ?></td>
-                    <td><?php echo $this->formCheckbox("Elements[$id][delete]", null, array('checked' => false))?></td>
-                </tr>
-    <?php endforeach; ?>
-            </tbody>
+            <li class="element-row">
+                <?php echo $this->formText("Elements[$id][prompt]", $element->prompt, array('class' => 'textinput element-prompt')); ?>
+                <span class="element-name"><?php echo html_escape($element->Element->name); ?></span>
+                <span class="element-set-name"><?php echo html_escape($element->Element->getElementSet()->name); ?></span>
+                <?php echo $this->formText("Elements[$id][order]", $element->order, array('class' => 'textinput element-order')); ?>
+                <?php echo $this->formCheckbox("Elements[$id][delete]", null, array('checked' => false))?></span>
+            </li>
+        <?php endforeach; ?>
+        </ol>
+        <table id="element-table">
             <tbody id="new-elements"></tbody>
         </table>
+        <input type="submit" class="add-element" id="add-element" value="Add an Element" />
     </fieldset>
 
     <fieldset>
@@ -98,12 +73,12 @@ echo js('contribution');
 <script type="text/javascript">
 // <![CDATA[
     var newRow = <?php
-        $promptInput = $this->formText('newElements[!!INDEX!!][prompt]', null, array('class' => 'textinput'));
+        $promptInput = $this->formText('newElements[!!INDEX!!][prompt]', null, array('class' => 'textinput element-prompt'));
         $elementSelect = contribution_select_element_for_type($contributionType, 'newElements[!!INDEX!!][element_id]');
-        echo js_escape("<tr><td></td><td class=\"element-prompt\">$promptInput</td><td colspan=\"6\">$elementSelect</td></tr>");
+        echo js_escape("<li>$promptInput $elementSelect</li>");
         ?>;
-    setUpTableSorting('#element-table', '#sortable', '.element-order', <?php echo js_escape(img('arrow_move.gif')); ?>);
-    setUpTableAppend('#add-element', '#new-elements', newRow);
+    setUpTableSorting('#elements', '.element-order');
+    setUpTableAppend('#add-element', '#elements', newRow);
 // ]]>
 </script>
 <?php foot();

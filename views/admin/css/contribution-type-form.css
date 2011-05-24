@@ -1,0 +1,40 @@
+#elements input.textinput {
+    font-size: 1em;
+}
+#elements li, #elements-header {
+    padding: 1em 1em 1em 2em;
+}
+#elements-header {
+    border-bottom: 2px solid #d7d5c4;
+}
+#elements li {
+    border-top: 1px solid #d7d5c4;
+}
+#elements li.ui-sortable-helper {
+    border: none;
+}
+#elements li, #elements span {
+    vertical-align: baseline;
+}
+#elements-header span, #elements span {
+    display: inline-block;
+    padding-left: 5px;
+}
+#elements-header {
+    color: #c50;
+    font-size: 1.2em;
+    font-weight: bold;
+}
+.element-prompt {
+    width: 40% !important;
+}
+.element-name, .element-set-name {
+    width: 20% !important;
+}
+.sorting-handle {
+    position: absolute;
+    padding: 0 !important;
+    margin-left: -1.4em;
+    margin-top: .4em;
+    cursor: pointer;
+}
