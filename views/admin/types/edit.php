@@ -56,9 +56,6 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
             </li>
         <?php endforeach; ?>
         </ol>
-        <table id="element-table">
-            <tbody id="new-elements"></tbody>
-        </table>
         <input type="submit" class="add-element" id="add-element" value="Add an Element" />
     </fieldset>
 
