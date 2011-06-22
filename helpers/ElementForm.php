@@ -26,6 +26,11 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
     {
         $this->_contributionTypeElement = $contributionTypeElement;
         $element = $contributionTypeElement->getElement();
+
+        // Skip this form if the element no longer exists.
+        if (!$element) {
+            return;
+        }
         
         $divWrap = isset($options['divWrap']) ? $options['divWrap'] : true;
         $extraFieldCount = 0;

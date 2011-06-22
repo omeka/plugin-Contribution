@@ -49,8 +49,12 @@ contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
     $id = $element->id; ?>
             <li class="element-row">
                 <?php echo $this->formText("Elements[$id][prompt]", $element->prompt, array('class' => 'textinput element-prompt')); ?>
-                <span class="element-name"><?php echo html_escape($element->Element->name); ?></span>
-                <span class="element-set-name"><?php echo html_escape($element->Element->getElementSet()->name); ?></span>
+            <?php if (($realElement = $element->Element)): ?>
+                <span class="element-name"><?php echo html_escape($realElement->name); ?></span>
+                <span class="element-set-name"><?php echo html_escape($realElement->getElementSet()->name); ?></span>
+            <?php else: ?>
+                <span class="element-missing">This element has been deleted or no longer exists.</span>
+            <?php endif; ?>
                 <?php echo $this->formText("Elements[$id][order]", $element->order, array('class' => 'textinput element-order')); ?>
                 <?php echo $this->formCheckbox("Elements[$id][delete]", null, array('checked' => false))?></span>
             </li>
