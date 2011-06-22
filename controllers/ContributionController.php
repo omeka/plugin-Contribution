@@ -290,7 +290,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             $isValid = false;
         }
         
-        if (!isset($post['terms-agree'])) {
+        if (!@$post['terms-agree']) {
             $errors[] = 'You must agree to the Terms and Conditions.';
             $isValid = false;
         }
