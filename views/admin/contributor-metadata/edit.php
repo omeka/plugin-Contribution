@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributor Metadata', 'Edit'));
+contribution_admin_header(array('Contributor Questions', 'Edit'));
 ?>
 <?php echo delete_button(null, 'delete-question', 'Delete this Question', array(), 'delete-record-form'); ?>
 <div id="primary">

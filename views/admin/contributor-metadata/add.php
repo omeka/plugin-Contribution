@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributor Metadata', 'Add'));
+contribution_admin_header(array('Contributor Questions', 'Add'));
 ?>
 <div id="primary">
     <?php echo flash(); ?>
