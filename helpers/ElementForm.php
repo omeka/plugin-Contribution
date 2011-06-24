@@ -67,7 +67,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
     }
     
     /**
-     * Removes "Add input" button from element output
+     * Removes "Remove input" button from element output
      */
     protected function _displayFormControls()
     {}
