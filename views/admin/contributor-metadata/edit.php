@@ -8,9 +8,9 @@
 
 contribution_admin_header(array('Contributor Metadata', 'Edit'));
 ?>
+<?php echo delete_button(null, 'delete-question', 'Delete this Question', array(), 'delete-record-form'); ?>
 <div id="primary">
     <?php echo flash(); ?>
     <?php require 'form.php'; ?>
-    <?php echo delete_button(); ?>
 </div>
 <?php foot();

@@ -21,7 +21,6 @@ contribution_admin_header(array('Types'));
                 <th>Contributed Items</th>
                 <th>File Upload</th>
                 <th>Edit</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="types-table-body">
@@ -32,7 +31,6 @@ contribution_admin_header(array('Types'));
         <td><a href="<?php echo uri('items/browse/contributed/1/type/' . $type->item_type_id); ?>">View</a></td>
         <td><?php echo html_escape($type->file_permissions); ?></td>
         <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $type->id)); ?>" class="edit">Edit</a></td>
-        <td><?php echo delete_button(uri(array('action' => 'delete', 'id' => $type->id)), "delete-type-{$type->id}", 'Delete', array(), ''); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

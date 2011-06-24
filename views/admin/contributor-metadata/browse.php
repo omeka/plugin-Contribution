@@ -20,13 +20,12 @@ contribution_admin_header(array('Contributor Questions'));
                 <th>Question</th>
                 <th>Type</th>
                 <th>Edit</th>
-                <th>Delete</th>
             </tr>
         </thead>
         <tbody id="contributor-fields-required">
             <tr>
                 <td>Name</td>
-                <td rowspan="2" colspan="3" style="background-color: #eee; vertical-align: middle; text-align: center;">These questions are required by the plugin and cannot be edited.</td>
+                <td rowspan="2" colspan="2" style="background-color: #eee; vertical-align: middle; text-align: center;">These questions are required by the plugin and cannot be edited.</td>
             </tr>
             <tr>
                 <td>Email Address</td>
@@ -38,7 +37,6 @@ contribution_admin_header(array('Contributor Questions'));
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>
         <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>
-        <td><?php echo delete_button(uri(array('action' => 'delete', 'id' => $field->id)), "delete-field-{$field->id}", 'Delete'); ?></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

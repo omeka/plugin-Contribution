@@ -15,6 +15,7 @@ $typeName = html_escape($contributionType->display_name);
 queue_css('contribution-type-form');
 contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 ?>
+<?php echo delete_button(null, 'delete-type', 'Delete this Type', array(), 'delete-record-form'); ?>
 <div id="primary">
     <?php echo flash(); ?>
 <form method="post" action="">
