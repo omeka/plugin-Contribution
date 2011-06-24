@@ -36,7 +36,8 @@ class ContributionPlugin
         'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
-        'contribution_collection_id'
+        'contribution_collection_id',
+        'contribution_default_type'
     );
 
     private $_db;

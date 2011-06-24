@@ -35,8 +35,15 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
-            if (isset($_POST['contribution_type'])) {
-                $this->_setupContributeSubmit();
+            
+            $typeId = null;
+            if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
+                $typeId = $postedType;
+            } else if ($defaultType = get_option('contribution_default_type')) {
+                $typeId = $defaultType;
+            }
+            if ($typeId) {
+                $this->_setupContributeSubmit($typeId);
                 $this->view->typeForm = $this->view->render('contribution/type-form.php');
             }
         }
@@ -47,7 +54,7 @@ class Contribution_ContributionController extends Omeka_Controller_Action
      */
     public function typeFormAction()
     {
-        $this->_setupContributeSubmit();
+        $this->_setupContributeSubmit($_POST['contribution_type']);
     }
     
     /**
@@ -67,15 +74,16 @@ class Contribution_ContributionController extends Omeka_Controller_Action
     
     /**
      * Common tasks whenever displaying submit form for contribution.
+     *
+     * @param int $typeId ContributionType id
      */
-    public function _setupContributeSubmit()
+    public function _setupContributeSubmit($typeId)
     {
         // Override default element form display        
         $this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
         $item = new Item;
         $this->view->item = $item;
         
-        $typeId = $_POST['contribution_type'];
         $type = get_db()->getTable('ContributionType')->find($typeId);
         $this->view->type = $type;
     }

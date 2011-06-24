@@ -28,6 +28,10 @@ function contribution_get_contributor_fields()
  */
 function contribution_select_type($props=array(), $value=null, $label=null)
 {
+    if (!$value) {
+        $value = get_option('contribution_default_type');
+    }
+    
     return _select_from_table('ContributionType', $props, $value, $label);
 }
 

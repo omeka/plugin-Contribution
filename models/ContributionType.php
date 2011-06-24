@@ -135,6 +135,10 @@ class ContributionType extends Omeka_Record
         foreach ($elements as $element) {
             $element->delete();
         }
+
+        if (get_option('contribution_default_type') == $this->id) {
+            delete_option('contribution_default_type');
+        }
     }
 
     /**

@@ -43,13 +43,19 @@ class Contribution_Form_Settings extends Omeka_Form
             'description'  => 'The collection to which contributions will be added. Changes here will only affect new contributions.',
             'multiOptions' => $this->_getCollectionSelectOptions()
         ));
+        $this->addElement('select', 'contribution_default_type', array(
+            'label'        => 'Default Contribution Type',
+            'description'  => 'The type that will be chosen for contributors by default.',
+            'multiOptions' => $this->_getTypeSelectOptions()
+        ));
         $this->addElement('submit', 'contribution_settings_submit', array(
             'label' => 'Save Settings'
         ));
         
         $this->addDisplayGroup(
             array('contribution_page_path', 'contribution_contributor_email',
-                'contribution_consent_text', 'contribution_collection_id'),
+                'contribution_consent_text', 'contribution_collection_id',
+                'contribution_default_type'),
             'contribution_settings'
         );
                 
@@ -61,6 +67,13 @@ class Contribution_Form_Settings extends Omeka_Form
         $collections = get_db()->getTable('Collection')->findPairsForSelectForm();
         
         return array('' => 'Do not put contributions in any collection') + $collections;
+    }
+
+    private function _getTypeSelectOptions()
+    {
+        $types = get_db()->getTable('ContributionType')->findPairsForSelectForm();
+
+        return array('' => 'No default type') + $types;
     }
     
     /**
