@@ -34,7 +34,7 @@ class Contribution_SettingsController extends Omeka_Controller_Action
                 $this->_setOptions($form->getValues());
                 $this->flashSuccess('Settings have been saved.');
                 // Do a POST/Redirect/GET pattern
-                $this->redirect->goto();
+                $this->_redirect($this->view->url(), array('prependBase' => false));
             } else {
                 $this->flashError('There were errors found in your form. Please edit and resubmit.');
             }
