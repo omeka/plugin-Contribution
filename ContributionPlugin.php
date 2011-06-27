@@ -48,7 +48,7 @@ class ContributionPlugin
     public function __construct()
     {
         $this->_db = get_db();
-        self::addHooksAndFilters();
+        $this->addHooksAndFilters();
     }
 
     /**
