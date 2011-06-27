@@ -9,7 +9,7 @@
 define('CONTRIBUTION_PLUGIN_DIR', dirname(dirname(__FILE__)));
 
 /**
- * Test suite for Coins.
+ * Test suite for Contribution plugin.
  *
  * @package Omeka
  * @copyright Center for History and New Media, 2007-2010
