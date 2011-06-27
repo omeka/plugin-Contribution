@@ -29,7 +29,8 @@ class ContributionPlugin
 
     private static $_filters = array(
         'admin_navigation_main',
-        'public_navigation_main');
+        'public_navigation_main', 
+        'simple_vocab_routes');
 
     public static $options = array(
         'contribution_page_path',
@@ -289,6 +290,20 @@ class ContributionPlugin
     {
         $nav['Contribute an Item'] = contribution_contribute_url();
         return $nav;
+    }
+    
+    /**
+     * Append routes that render element text form input.
+     * 
+     * @param array $routes
+     * @return array
+     */
+    public function simpleVocabRoutes($routes)
+    {
+        $routes[] = array('module' => 'contribution', 
+                          'controller' => 'contribution', 
+                          'actions' => array('type-form', 'contribute'));
+        return $routes;
     }
 
     /**
