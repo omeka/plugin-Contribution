@@ -14,11 +14,11 @@ class Contribution_Form_Settings extends Omeka_Form
         
         $this->setMethod('post');
         $this->setAttrib('id', 'settings-form');
-        
-        // Should have a StringTrim('/') here, but it's broken until 1.10
+
         $this->addElement('text', 'contribution_page_path', array(
             'label'       => 'Contribution Slug',
-            'description' => 'Relative path from the Omeka root to the desired location for the contribution form. If left blank, the default path will be named &#8220;contribution.&#8221;'
+            'description' => 'Relative path from the Omeka root to the desired location for the contribution form. If left blank, the default path will be named &#8220;contribution.&#8221;',
+            'filters'     => array(array('StringTrim', '/\\\s'))
         ));
         $this->addElement('text', 'contribution_email_sender', array(
             'label'       => 'Contribution Confirmation Email',
