@@ -145,6 +145,12 @@ class Contribution_ContributionController extends Omeka_Controller_Action
             
             $fileMetadata = $this->_processFileUpload($contributionType);
 
+            // This is a hack to allow the file upload job to succeed
+            // even with the synchronous job dispatcher.
+            if ($acl = get_acl()) {
+                $acl->allow(null, 'Items', 'showNotPublic');
+            }
+
             try {
                 $item = insert_item($itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
