@@ -225,21 +225,22 @@ class ContributionPlugin
                 'Contribution_Settings' => array('edit')
             );
             $acl->loadResourceList($resourceList);
+            // By default, deny everyone access to all resources, then allow access
+            // to only super and admin.
+            foreach ($resourceList as $resource => $privileges) {
+                $acl->deny(null, $resource);
+                $acl->allow('super', $resource);
+                $acl->allow('admin', $resource);
+            }
+
+            // Allow everybody access to the Contribution controller.
+            $acl->allow(null, 'Contribution_Contribution');
         }
 
 
 
 
-        // By default, deny everyone access to all resources, then allow access
-        // to only super and admin.
-        foreach ($resourceList as $resource => $privileges) {
-            $acl->deny(null, $resource);
-            $acl->allow('super', $resource);
-            $acl->allow('admin', $resource);
-        }
 
-        // Allow everybody access to the Contribution controller.
-        $acl->allow(null, 'Contribution_Contribution');
     }
 
     /**
