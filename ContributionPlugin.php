@@ -29,7 +29,7 @@ class ContributionPlugin
 
     private static $_filters = array(
         'admin_navigation_main',
-        'public_navigation_main', 
+        'public_navigation_main',
         'simple_vocab_routes');
 
     public static $options = array(
@@ -210,14 +210,24 @@ class ContributionPlugin
      */
     public function defineAcl($acl)
     {
-        $resourceList = array(
-            'Contribution_Contribution' => array('contribute', 'index', 'terms', 'thankyou', 'type-form'),
-            'Contribution_Contributors' => array('browse', 'show'),
-            'Contribution_ContributorMetadata' => array('browse', 'add', 'edit', 'delete'),
-            'Contribution_Types' => array('browse', 'add', 'edit', 'delete'),
-            'Contribution_Settings' => array('edit')
-        );
-        $acl->loadResourceList($resourceList);
+        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
+            $acl->addResource('Contribution_Contribution');
+            $acl->addResource('Contribution_Contributors');
+            $acl->addResource('Contribution_ContributorMetadata');
+            $acl->addResource('Contribution_Types');
+            $acl->addResource('Contribution_Settings');
+        } else {
+            $resourceList = array(
+                'Contribution_Contribution' => array('contribute', 'index', 'terms', 'thankyou', 'type-form'),
+                'Contribution_Contributors' => array('browse', 'show'),
+                'Contribution_ContributorMetadata' => array('browse', 'add', 'edit', 'delete'),
+                'Contribution_Types' => array('browse', 'add', 'edit', 'delete'),
+                'Contribution_Settings' => array('edit')
+            );
+            $acl->loadResourceList($resourceList);
+        }
+
+
 
 
         // By default, deny everyone access to all resources, then allow access
@@ -279,7 +289,7 @@ class ContributionPlugin
         }
         return $nav;
     }
-    
+
     /**
      * Append a Contribution entry to the public navigation.
      *
@@ -291,17 +301,17 @@ class ContributionPlugin
         $nav['Contribute an Item'] = contribution_contribute_url();
         return $nav;
     }
-    
+
     /**
      * Append routes that render element text form input.
-     * 
+     *
      * @param array $routes
      * @return array
      */
     public function simpleVocabRoutes($routes)
     {
-        $routes[] = array('module' => 'contribution', 
-                          'controller' => 'contribution', 
+        $routes[] = array('module' => 'contribution',
+                          'controller' => 'contribution',
                           'actions' => array('type-form', 'contribute'));
         return $routes;
     }
