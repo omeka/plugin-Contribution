@@ -8,11 +8,6 @@
  */
 
 /**
- * Use a modified version of the Orderable mixin.
- */
-require_once 'ContributionOrderable.php';
-
-/**
  * Represents a contributable item type.
  *
  * @package Contribution
@@ -40,12 +35,6 @@ class ContributionType extends Omeka_Record
         if(empty($this->item_type_id)) {
             $this->addError('item_type_id', 'You must select an item type.');
         }
-    }
-
-    protected function _initializeMixins()
-    {
-        $this->_mixins[] = new ContributionOrderable($this,
-                'ContributionTypeElement', 'type_id', 'Elements');
     }
     
     /**
@@ -118,11 +107,12 @@ class ContributionType extends Omeka_Record
                 $element->saveForm($elementData);
             }
         }
-        foreach($post['newElements'] as $elementData) {
+        foreach($post['newElements'] as $index => $elementData) {
             // Skip totally empty elements
             if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
                 $element = new ContributionTypeElement;
-                $this->addChild($element);
+                $element->type_id = $this->id;
+                $element->order = count($post['Elements']) + $index;
                 $element->saveForm($elementData);
             }
         }
