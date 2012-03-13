@@ -6,7 +6,11 @@
  * @package Contribution
  */
 
-require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+if (version_compare(OMEKA_VERSION, '2.0-dev', '<')) {
+    require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+} else {
+    require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+}
 
 /**
  * Overrides Omeka's ElementForm helper to allow for custom display of fields.
