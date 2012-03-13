@@ -26,13 +26,16 @@ function contribution_get_contributor_fields()
  *
  * @return string HTML for select element
  */
-function contribution_select_type($props=array(), $value=null, $label=null)
+function contribution_select_type($name, $default = null, $attributes = null)
 {
-    if (!$value) {
-        $value = get_option('contribution_default_type');
-    }
+    $options = get_db()->getTable('ContributionType')->findPairsForSelectForm();
+    $options = array('' => 'Select a Type') + $options;
     
-    return _select_from_table('ContributionType', $props, $value, $label);
+    if (!$default) {
+        $default = get_option('contribution_default_type');
+    }
+
+    return __v()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
