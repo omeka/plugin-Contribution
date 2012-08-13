@@ -255,10 +255,12 @@ class Contribution_ContributionController extends Omeka_Controller_Action
 
     protected function _linkItemToContributor($item, $contributor, $post)
     {
+        $posting = ($post['contributor_posting'] < 1)? 0: 1;
         $linkage = new ContributionContributedItem;
         $linkage->contributor_id = $contributor->id;
         $linkage->item_id = $item->id;
         $linkage->public = $post['contribution-public'];
+        $linkage->contributor_posting = $posting;
         $linkage->save();
     }
     

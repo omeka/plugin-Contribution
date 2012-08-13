@@ -15,6 +15,7 @@ class ContributionContributedItemTable extends Omeka_Db_Table
     public $item_id;
     public $contributor_id;
     public $public;
+    public $contributor_posting;
 
     public function findByItem($item)
     {
@@ -27,5 +28,16 @@ class ContributionContributedItemTable extends Omeka_Db_Table
         $select = $this->getSelect();
         $select->where('item_id = ?', $itemId, Zend_Db::PARAM_INT);
         return $this->fetchObject($select);
+    }
+    
+    public function saveContributionItemLink($itemId, $post){
+        $posting = ($post['contributor_posting'] < 1)? 0 : 1;
+        $db = get_db();
+        $db->insert('ContributionContributedItem',
+                array(
+                    'item_id'=>$itemId,
+                    'contributor_posting'=>$posting
+                    )
+                );     
     }
 }

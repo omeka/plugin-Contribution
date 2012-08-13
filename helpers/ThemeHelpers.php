@@ -242,3 +242,21 @@ function contributor($propertyName, $contributor = null)
     }
     return html_escape($property);
 }
+
+/**
+ *  Get the contributor posting choice.
+ *  
+ *  @param item object
+ */
+function contributor_option($item = null){
+  if(!$item){
+    $item = get_current_item();
+  }
+  
+  $linkage = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+   
+   return $linkage->contributor_posting;
+   
+ 
+}
+

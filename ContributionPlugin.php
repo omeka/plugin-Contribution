@@ -24,13 +24,17 @@ class ContributionPlugin
         'admin_append_to_advanced_search',
         'admin_append_to_items_show_secondary',
         'admin_append_to_items_browse_detailed_each',
-        'item_browse_sql'
+        'item_browse_sql',
+        'after_save_form_record',
     );
 
     private static $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
-        'simple_vocab_routes');
+        'simple_vocab_routes',
+        'admin_items_form_tabs',
+        'item_citation'
+        );
 
     public static $options = array(
         'contribution_page_path',
@@ -109,6 +113,7 @@ class ContributionPlugin
             `item_id` INT UNSIGNED NOT NULL,
             `contributor_id` INT UNSIGNED NOT NULL,
             `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
@@ -194,6 +199,10 @@ class ContributionPlugin
             $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributors` MODIFY `ip_address` VARBINARY(128) NOT NULL";
             $this->_db->query($sql);
         }
+        
+        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributed_items ADD COLUMN `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+    
+        
     }
 
     public function adminAppendToPluginUninstallMessage()
@@ -454,4 +463,56 @@ class ContributionPlugin
         $descriptionElement->order = 1;
         $descriptionElement->save();
     }
+  public function afterSaveFormRecord($item,$post){
+      
+      $save = get_db()->getTable('ContributionContributedItem');
+      $save->saveContributionItemLink($item->id,$post);
+  }  
+  
+    public function adminItemsFormTabs($tabs,$item){
+        $html = "<div id='contributor'>";
+        $html .= "<h3>".__('Publish anonymously')."</h3><br>";
+        $html .= __v()->formCheckbox('contributor_posting',contributor_option($item),array(),array('1','0'));
+        $html .= "</div>";
+        
+        $tabs['Contributor'] = $html;
+        
+        return $tabs;
+    }
+    
+   public function itemCitation($cite,$item){
+       
+       if(contribution_get_item_contributor($item)){
+         $name = contribution_get_item_contributor($item);        
+
+       if(contributor_option($cite->id) < 1){       
+
+        $creator    = $name->name;
+       } else {
+           $creator = "Anonymous";
+       }
+            $title      = item('Dublin Core', 'Title');
+            $siteTitle  = strip_formatting(settings('site_title'));
+            $itemId     = $item->id;
+            $accessDate = date('F j, Y');
+            $uri        = html_escape(abs_item_uri($item));
+
+            $cite = '';
+            if ($creator) {
+                $cite .= "$creator, ";
+            }
+            if ($title) {
+                $cite .= "&#8220;$title,&#8221; ";
+            }
+            if ($siteTitle) {
+                $cite .= "<em>$siteTitle</em>, ";
+            }
+            $cite .= "accessed $accessDate, ";
+            $cite .= "$uri.";
+          
+  
+       }
+       
+       return $cite;
+   }
 }
