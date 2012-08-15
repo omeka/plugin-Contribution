@@ -200,7 +200,7 @@ class ContributionPlugin
             $this->_db->query($sql);
         }
         
-        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributed_items ADD COLUMN `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributed_items` ADD COLUMN `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
     
         $this->_db->query($sql);
     }
