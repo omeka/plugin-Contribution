@@ -469,10 +469,17 @@ class ContributionPlugin
       $save->saveContributionItemLink($item->id,$post);
   }  
   
-    public function adminItemsFormTabs($tabs,$item){
+  public function adminItemsFormTabs($tabs,$post){
+    $item = get_current_item();
+    if($item->id != ''){
+    $option = contributor_option($item);
+    print_r($item->id);
+    }else{
+      $option = $post['contributor_posting'];
+    }
         $html = "<div id='contributor'>";
         $html .= "<h3>".__('Publish anonymously')."</h3><br>";
-        $html .= __v()->formCheckbox('contributor_posting',contributor_option($item),array(),array('1','0'));
+        $html .= __v()->formCheckbox('contributor_posting',$option,array(),array('1','0'));
         $html .= "</div>";
         
         $tabs['Contributor'] = $html;

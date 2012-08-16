@@ -254,8 +254,11 @@ function contributor_option($item = null){
   }
   
   $linkage = get_db()->getTable('ContributionContributedItem')->findByItem($item);
-   
+  if($linkage){   
    return $linkage->contributor_posting;
+  } else{
+    return null;
+  }
    
  
 }
