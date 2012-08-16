@@ -473,7 +473,7 @@ class ContributionPlugin
     $item = get_current_item();
     if($item->id != ''){
     $option = contributor_option($item);
-    print_r($item->id);
+  
     }else{
       $option = $post['contributor_posting'];
     }
