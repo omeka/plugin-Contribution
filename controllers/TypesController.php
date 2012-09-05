@@ -9,7 +9,7 @@
 /**
  * Controller for editing and viewing Contribution plugin item types.
  */
-class Contribution_TypesController extends Omeka_Controller_Action
+class Contribution_TypesController extends Omeka_Controller_AbstractActionController
 {
     public function init()
     {

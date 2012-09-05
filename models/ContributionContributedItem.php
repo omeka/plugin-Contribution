@@ -10,7 +10,7 @@
 /**
  * Record that keeps track of contributions; links items to contributors.
  */
-class ContributionContributedItem extends Omeka_Record
+class ContributionContributedItem extends Omeka_Record_AbstractRecord
 {
     public $item_id;
     public $contributor_id;

@@ -9,7 +9,7 @@
 /**
  * Controller for editing and viewing Contribution plugin settings.
  */
-class Contribution_SettingsController extends Omeka_Controller_Action
+class Contribution_SettingsController extends Omeka_Controller_AbstractActionController
 {
     /**
      * Index action; simply forwards to contributeAction.
@@ -51,7 +51,8 @@ class Contribution_SettingsController extends Omeka_Controller_Action
     private function _getOptions()
     {
         $options = array();
-        foreach (ContributionPlugin::$options as $option) {
+        
+        foreach (ContributionPlugin::pluginOptions() as $option) {
             $options[$option] = get_option($option);
         }
         return $options;

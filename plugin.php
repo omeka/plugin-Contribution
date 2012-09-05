@@ -20,4 +20,5 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
            . 'ThemeHelpers.php';
 
 
-new ContributionPlugin;
+$cnt = new ContributionPlugin();
+$cnt->setUp();

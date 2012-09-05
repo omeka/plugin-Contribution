@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionType extends Omeka_Record
+class ContributionType extends Omeka_Record_AbstractRecord
 {
     const FILE_PERMISSION_DISALLOWED = 'Disallowed';
     const FILE_PERMISSION_ALLOWED = 'Allowed';

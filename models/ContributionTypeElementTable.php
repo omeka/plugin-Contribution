@@ -15,7 +15,7 @@
  */
 class ContributionTypeElementTable extends Omeka_Db_Table
 {
-    protected $_alias = 'cte';
+    //protected $_alias = 'cte';
     
     /**
      * Retrieves ContributionTypeElements associated with the given type.

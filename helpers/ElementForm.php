@@ -7,9 +7,9 @@
  */
 
 if (version_compare(OMEKA_VERSION, '2.0-dev', '<')) {
-    require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+    require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
 } else {
-    require_once HELPER_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
+    require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
 }
 
 /**
@@ -26,7 +26,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
      * copy 'n paste.
      */
     public function elementForm(ContributionTypeElement $contributionTypeElement, 
-                                Omeka_Record $record, $options = array())
+                                Omeka_Record_AbstractRecord $record, $options = array())
     {
         $this->_contributionTypeElement = $contributionTypeElement;
         $element = $contributionTypeElement->getElement();
@@ -51,7 +51,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
         // Put out the label for the field
         $html .= $this->_displayFieldLabel();
         
-        $html .= $this->_displayValidationErrors();
+        //$html .= $this->_displayValidationErrors();
         
         $html .= '<div class="inputs">';
         $html .= $this->_displayFormFields($extraFieldCount);

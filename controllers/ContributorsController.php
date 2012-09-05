@@ -9,7 +9,7 @@
 /**
  * Controller for editing and viewing Contribution plugin contributors.
  */
-class Contribution_ContributorsController extends Omeka_Controller_Action
+class Contribution_ContributorsController extends Omeka_Controller_AbstractActionController
 {
     public function init()
     {

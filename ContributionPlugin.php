@@ -12,9 +12,9 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-class ContributionPlugin
+class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
 {
-    private static $_hooks = array(
+    protected $_hooks = array(
         'install',
         'uninstall',
         'upgrade',
@@ -28,7 +28,7 @@ class ContributionPlugin
         'after_save_form_record',
     );
 
-    private static $_filters = array(
+    protected $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
         'simple_vocab_routes',
@@ -36,7 +36,7 @@ class ContributionPlugin
         'item_citation'
         );
 
-    public static $options = array(
+    protected $_options = array(
         'contribution_page_path',
         'contribution_email_sender',
         'contribution_email_recipients',
@@ -45,37 +45,12 @@ class ContributionPlugin
         'contribution_default_type'
     );
 
-    private $_db;
 
-    /**
-     * Initializes instance properties and hooks the plugin into Omeka.
-     */
-    public function __construct()
-    {
-        $this->_db = get_db();
-        $this->addHooksAndFilters();
-    }
-
-    /**
-     * Centralized location where plugin hooks and filters are added
-     */
-    public function addHooksAndFilters()
-    {
-        foreach (self::$_hooks as $hookName) {
-            $functionName = Inflector::variablize($hookName);
-            add_plugin_hook($hookName, array($this, $functionName));
-        }
-
-        foreach (self::$_filters as $filterName) {
-            $functionName = Inflector::variablize($filterName);
-            add_filter($filterName, array($this, $functionName));
-        }
-    }
 
     /**
      * Contribution install hook
      */
-    public function install()
+    public function hookInstall()
     {
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_types` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -146,10 +121,10 @@ class ContributionPlugin
     /**
      * Contribution uninstall hook
      */
-    public function uninstall()
+    public function hookUninstall()
     {
         // Delete all the Contribution options
-        foreach (self::$options as $option) {
+        foreach ($this->_options as $option) {
             delete_option($option);
         }
 
@@ -164,8 +139,11 @@ class ContributionPlugin
         $this->_db->query($sql);
     }
 
-    public function upgrade($oldVersion, $newVersion)
+    public function hookUpgrade($args)
     {
+        $oldVersion = $args['old_version'];
+        $newVersion = $args['new_version'];
+        
         // Catch-all for pre-2.0 versions
         if (version_compare($oldVersion, '2.0-dev', '<=')) {
             // Clean up old options
@@ -205,7 +183,7 @@ class ContributionPlugin
         $this->_db->query($sql);
     }
 
-    public function adminAppendToPluginUninstallMessage()
+    public function hookAdminAppendToPluginUninstallMessage()
     {
         echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin
             will remove all information about contributors, as well as the
@@ -217,8 +195,8 @@ class ContributionPlugin
      * Contribution define_acl hook
      * Restricts access to admin-only controllers and actions.
      */
-    public function defineAcl($acl)
-    {
+    public function hookDefineAcl($args)
+    {   $acl = $args['acl'];
         if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
             $acl->addResource('Contribution_Contribution');
             $acl->addResource('Contribution_Contributors');
@@ -257,8 +235,9 @@ class ContributionPlugin
      * Defines public-only routes that set the contribution controller as the
      * only accessible one.
      */
-    public function defineRoutes($router)
+    public function hookDefineRoutes($args)
     {
+        $router = $args['router'];
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
@@ -292,7 +271,7 @@ class ContributionPlugin
      * @param array $nav
      * @return array
      */
-    public function adminNavigationMain($nav)
+    public function filterAdminNavigationMain($nav)
     {
         if(has_permission('Contribution_Contributors', 'browse')) {
             $nav['Contribution'] = uri('contribution');
@@ -306,7 +285,7 @@ class ContributionPlugin
      * @param array $nav
      * @return array
      */
-    public function publicNavigationMain($nav)
+    public function filterPublicNavigationMain($nav)
     {
         $nav['Contribute an Item'] = contribution_contribute_url();
         return $nav;
@@ -318,8 +297,9 @@ class ContributionPlugin
      * @param array $routes
      * @return array
      */
-    public function simpleVocabRoutes($routes)
+    public function filterSimpleVocabRoutes($routes)
     {
+       
         $routes[] = array('module' => 'contribution',
                           'controller' => 'contribution',
                           'actions' => array('type-form', 'contribute'));
@@ -331,7 +311,7 @@ class ContributionPlugin
      *
      * @return string HTML
      */
-    public function adminAppendToAdvancedSearch()
+    public function hookAdminAppendToAdvancedSearch()
     {
         $html = '<div class="field">';
         $html .= __v()->formLabel('contributed', 'Contribution Status');
@@ -345,8 +325,8 @@ class ContributionPlugin
         echo $html;
     }
 
-    public function adminAppendToItemsShowSecondary($item)
-    {
+    public function hookAdminAppendToItemsShowSecondary($args)
+    {   $item = $args['item'];
         if ($contributor = contribution_get_item_contributor($item)) {
             if (!($name = contributor('Name', $contributor))) {
                 $name = 'Anonymous';
@@ -368,7 +348,7 @@ class ContributionPlugin
         }
     }
 
-    public function adminAppendToItemsBrowseDetailedEach()
+    public function hookAdminAppendToItemsBrowseDetailedEach()
     {
         $item = get_current_item();
         if ($contributor = contribution_get_item_contributor($item)) {
@@ -396,8 +376,11 @@ class ContributionPlugin
      * @param Omeka_Db_Select $select
      * @param array $params
      */
-    public function itemBrowseSql($select, $params)
+    public function hookItemBrowseSql($args)
     {
+    
+        $select = $args['select'];
+        $params = $args['params'];
         if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
             $contributed = $request->get('contributed');
@@ -463,19 +446,20 @@ class ContributionPlugin
         $descriptionElement->order = 1;
         $descriptionElement->save();
     }
-  public function afterSaveFormRecord($item,$post){
+  public function hookAfterSaveFormRecord($args){
+      $item = $args['record'];
       
       $save = get_db()->getTable('ContributionContributedItem');
-      $save->saveContributionItemLink($item->id,$post);
+      $save->saveContributionItemLink($item->id,$_POST);
   }  
   
-  public function adminItemsFormTabs($tabs,$post){
-    $item = get_current_item();
+  public function filterAdminItemsFormTabs($tabs,$args){
+    $item = $args['item'];
     if($item->id != ''){
     $option = contributor_option($item);
   
     }else{
-      $option = $post['contributor_posting'];
+      $option = $_POST['contributor_posting'];
     }
         $html = "<div id='contributor'>";
         $html .= "<h3>".__('Publish anonymously')."</h3><br>";
@@ -487,18 +471,19 @@ class ContributionPlugin
         return $tabs;
     }
     
-   public function itemCitation($cite,$item){
+   public function filterItemCitation($cite,$args){
+       $item = $args['item'];
        
        if(contribution_get_item_contributor($item)){
          $name = contribution_get_item_contributor($item);        
 
-       if(contributor_option($cite->id) < 1){       
+       if(contributor_option($item->id) < 1){       
 
         $creator    = $name->name;
        } else {
            $creator = "Anonymous";
        }
-            $title      = item('Dublin Core', 'Title');
+            $title      = metadata('item',array('Dublin Core', 'Title'));
             $siteTitle  = strip_formatting(settings('site_title'));
             $itemId     = $item->id;
             $accessDate = date('F j, Y');
@@ -521,5 +506,9 @@ class ContributionPlugin
        }
        
        return $cite;
+   }
+   public function pluginOptions()
+   {
+        return $this->_options;
    }
 }

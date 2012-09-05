@@ -15,7 +15,7 @@
  */
 class ContributionTypeTable extends Omeka_Db_Table
 {
-    protected $_alias = 'ct';
+    //protected $_alias = 'ct';
 
     /**
      * Used to create options for HTML select form elements.
@@ -24,7 +24,7 @@ class ContributionTypeTable extends Omeka_Db_Table
      */
     protected function _getColumnPairs()
     {
-        return array($this->_alias . '.id', $this->_alias . '.display_name');
+        return array('.id', 'display_name');
     }
 
     /**
