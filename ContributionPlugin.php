@@ -241,7 +241,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
-        if (!defined('ADMIN')) {
+     
             $router->addRoute('contributionDefault',
                 new Zend_Controller_Router_Route('contribution/:action/*',
                     array('module'     => 'contribution',
@@ -258,11 +258,11 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
                               'controller' => 'contribution',
                               'action'     => 'contribute')));
             }
-        } else {
+   
             $router->addRoute('contributionAdmin',
                 new Zend_Controller_Router_Route('contribution/:controller/:action/:id',
                     array('module' => 'contribution')));
-        }
+     
     }
 
     /**
@@ -274,7 +274,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     public function filterAdminNavigationMain($nav)
     {
         if(has_permission('Contribution_Contributors', 'browse')) {
-            $nav['Contribution'] = uri('contribution');
+            $nav[__('Contribution')] = uri('contribution');
         }
         return $nav;
     }
@@ -287,7 +287,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-        $nav['Contribute an Item'] = contribution_contribute_url();
+       $nav[__('Contribute an Item')] = contribution_contribute_url();
         return $nav;
     }
 

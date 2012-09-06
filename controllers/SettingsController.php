@@ -51,8 +51,8 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
     private function _getOptions()
     {
         $options = array();
-        
-        foreach (ContributionPlugin::pluginOptions() as $option) {
+        $cnt = new ContributionPlugin();
+        foreach ($cnt->pluginOptions() as $option) {
             $options[$option] = get_option($option);
         }
         return $options;
@@ -65,8 +65,9 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
      */
     private function _setOptions($newOptions)
     {
+        $cnt = new ContributionPlugin();
         foreach ($newOptions as $optionName => $optionValue) {
-            if (in_array($optionName, ContributionPlugin::$options)) {
+            if (in_array($optionName, $cnt->getOptions())) {
                 set_option($optionName, $optionValue);
             }
         }
