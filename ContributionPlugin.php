@@ -379,20 +379,23 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     public function hookItemBrowseSql($args)
     {
     
-        $select = $args['select'];
-        $params = $args['params'];
+    $select = $args['select'];
+    $params = $args['params'];
+  
         if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
+           
             $contributed = $request->get('contributed');
+        
             if (isset($contributed)) {
                 if ($contributed === '1') {
                     $select->joinInner(
                             array('cci' => $db->ContributionContributedItem),
-                            'cci.item_id = i.id',
+                            'cci.item_id = items.id',                            
                             array()
                      );
                 } else if ($contributed === '0') {
-                    $select->where("i.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
+                    $select->where("items.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
                 }
             }
 
@@ -400,7 +403,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
             if (is_numeric($contributor_id)) {
                 $select->joinInner(
                         array('cci' => $db->ContributionContributedItem),
-                        'cci.item_id = i.id',
+                       'cci.item_id = items.id',                     
                         array('contributor_id')
                 );
                 $select->where('cci.contributor_id = ?', $contributor_id);
