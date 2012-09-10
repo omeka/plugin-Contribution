@@ -24,7 +24,7 @@ contribution_admin_header(array('Types'));
             </tr>
         </thead>
         <tbody id="types-table-body">
-<?php foreach ($contributiontypes as $type): ?>
+<?php foreach (loop('contribution_types') as $type): ?>
     <tr>
         <td><strong><?php echo html_escape($type->display_name); ?></strong></td>
         <td><?php echo html_escape($type->ItemType->name); ?></td>

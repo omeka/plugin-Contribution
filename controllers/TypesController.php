@@ -31,7 +31,7 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
     
     public function showAction()
     {
-        $this->redirect->goto('');
+        $this->_helpers->_redirector->goto('');
     }
 
     protected function  _getAddSuccessMessage($record)

@@ -37,7 +37,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
         );
 
     protected $_options = array(
-        'contribution_page_path',
+        'contribution_page_path'=>'contribution',
         'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
@@ -235,12 +235,15 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      * Defines public-only routes that set the contribution controller as the
      * only accessible one.
      */
-    public function hookDefineRoutes($args)
+   public function hookDefineRoutes($args)
     {
         $router = $args['router'];
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
+        // get the base path
+        
+  
      
             $router->addRoute('contributionDefault',
                 new Zend_Controller_Router_Route('contribution/:action/*',
@@ -258,12 +261,17 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
                               'controller' => 'contribution',
                               'action'     => 'contribute')));
             }
-   
-            $router->addRoute('contributionAdmin',
-                new Zend_Controller_Router_Route('contribution/:controller/:action/:id',
-                    array('module' => 'contribution')));
-     
+      
+              if(is_admin_theme()){
+         $router->addRoute('contributionAdmin',
+                new Zend_Controller_Router_Route('contribution/:controller/:action/*',
+                    array('module' => 'contribution',
+                          'controller' => 'index',
+                          'action' => 'index')));
+       }
     }
+
+
 
     /**
      * Append a Contribution entry to the admin navigation.
