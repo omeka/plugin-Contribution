@@ -32,7 +32,7 @@ contribution_admin_header(array('Contributor Questions'));
             </tr>
         </tbody>
         <tbody id="contributor-fields-sortable">
-<?php foreach ($contributioncontributorfields as $field): ?>
+<?php foreach (loop('contribution_contributor_fields') as $field): ?>
     <tr>
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>

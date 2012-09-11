@@ -358,7 +358,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
 
     public function hookAdminAppendToItemsBrowseDetailedEach()
     {
-        $item = get_current_item();
+        $item = get_current_record('item');
         if ($contributor = contribution_get_item_contributor($item)) {
             if (!($name = contributor('Name', $contributor))) {
                 $name = 'Anonymous';

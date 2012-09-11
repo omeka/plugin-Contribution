@@ -220,7 +220,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @param array $post POST array.
      */
     protected function _processContributor($item = null, $post)
-    {   //$item = $args['item'];
+    {   
         $table = get_db()->getTable('ContributionContributor');
         $email = $post['contributor-email'];
         $name = $post['contributor-name'];
@@ -233,7 +233,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         $contributor->setDottedIpAddress($ip);
         try {
-           // $contributor->forceSave();
+           
             $contributor->save();
             $contributorMetadata = $post['ContributorFields'];
             if(is_array($contributorMetadata)) {
