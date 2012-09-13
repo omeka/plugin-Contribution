@@ -12,7 +12,7 @@ head($head); ?>
 <?php echo js('contribution-public-form'); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_page_path').'/type-form')); ?>);
 // ]]>
 </script>
 
@@ -65,7 +65,7 @@ enableContributionAjaxForm(<?php echo js_escape(uri('contribution/type-form')); 
                 <?php echo $this->formCheckbox('contributor_posting', $_POST['contributor_posting'], null, array('1', '0')); ?>
                 <?php echo $this->formLabel('contributor_posting', 'Publish anonymously on the site'); ?>
             </div>
-            <p>In order to contribute, you must read and agree to the <a href="<?php echo uri('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
+            <p>In order to contribute, you must read and agree to the <a href="<?php echo url('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
             <div class="inputs">
                 <?php echo $this->formCheckbox('terms-agree', @$_POST['terms-agree'], null, array('1', '0')); ?>
                 <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>

@@ -116,11 +116,11 @@ function contribution_admin_header($subsections = array())
 <h1><?php echo $displayTitle; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array(
-    'Dashboard' => uri('contribution/index'),
-    'Contribution Types' => uri('contribution/types'),
-    'Contributor Questions' => uri('contribution/contributor-metadata'),
-    'Submission Settings' => uri('contribution/settings'),
-    'Contributors' => uri('contribution/contributors')
+    'Dashboard' => url('contribution/index'),
+    'Contribution Types' => url('contribution/types'),
+    'Contributor Questions' => url('contribution/contributor-metadata'),
+    'Submission Settings' => url('contribution/settings'),
+    'Contributors' => url('contribution/contributors')
     ));
 ?>
 </ul>
@@ -135,7 +135,7 @@ function contribution_check_captcha()
 {
     if (!Omeka_Captcha::isConfigured()) {
 ?>
-    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo uri('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
+    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo url('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
 <?php 
     }
 }

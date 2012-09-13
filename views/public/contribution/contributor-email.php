@@ -2,4 +2,4 @@ Thank you for your contribution to <?php echo get_option('site_title'); ?>.  You
 	
 Contribution URL (pending review by project staff):
 
-    <?php echo abs_item_uri($item) ?>
+    <?php echo abs_item_url($item) ?>

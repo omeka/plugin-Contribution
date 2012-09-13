@@ -9,7 +9,7 @@
 contribution_admin_header(array('Types'));
 ?>
 <p id="add-type" class="add-button">
-    <a class="add" href="<?php echo uri(array('action' => 'add')); ?>">Add a Type</a>
+    <a class="add" href="<?php echo url(array('action' => 'add')); ?>">Add a Type</a>
 </p>
 <div id="primary">
     <?php echo flash(); ?>
@@ -28,9 +28,9 @@ contribution_admin_header(array('Types'));
     <tr>
         <td><strong><?php echo html_escape($type->display_name); ?></strong></td>
         <td><?php echo html_escape($type->ItemType->name); ?></td>
-        <td><a href="<?php echo uri('items/browse/contributed/1/type/' . $type->item_type_id); ?>">View</a></td>
+        <td><a href="<?php echo url('items/browse/contributed/1/type/' . $type->item_type_id); ?>">View</a></td>
         <td><?php echo html_escape($type->file_permissions); ?></td>
-        <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $type->id)); ?>" class="edit">Edit</a></td>
+        <td><a href="<?php echo url(array('action' => 'edit', 'id' => $type->id)); ?>" class="edit">Edit</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

@@ -37,7 +37,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
         );
 
     protected $_options = array(
-        'contribution_page_path'=>'contribution',
+        'contribution_page_path',
         'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
@@ -245,11 +245,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
         
   
      
-            $router->addRoute('contributionDefault',
-                new Zend_Controller_Router_Route('contribution/:action/*',
-                    array('module'     => 'contribution',
-                          'controller' => 'contribution',
-                          'action'     => 'contribute')));
+
 
             // get the base path
             $bp = get_option('contribution_page_path');
@@ -260,15 +256,23 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
                         array('module'     => 'contribution',
                               'controller' => 'contribution',
                               'action'     => 'contribute')));
+            }else{
+            
+        $router->addRoute('contributionDefault',
+              new Zend_Controller_Router_Route('contribution/:action/*',
+                    array('module'     => 'contribution',
+                          'controller' => 'contribution',
+                          'action'     => 'contribute')));
+            
             }
       
-              if(is_admin_theme()){
-         $router->addRoute('contributionAdmin',
+         if(is_admin_theme()){
+            $router->addRoute('contributionAdmin',
                 new Zend_Controller_Router_Route('contribution/:controller/:action/*',
                     array('module' => 'contribution',
                           'controller' => 'index',
                           'action' => 'index')));
-       }
+        }
     }
 
 
@@ -282,7 +286,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     public function filterAdminNavigationMain($nav)
     {
         if(has_permission('Contribution_Contributors', 'browse')) {
-            $nav[__('Contribution')] = uri('contribution');
+            $nav[__('Contribution')] = url('contribution');
         }
         return $nav;
     }
@@ -295,7 +299,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-       $nav[__('Contribute an Item')] = contribution_contribute_url();
+       $nav['Contribute an Item'] = contribution_contribute_url();
         return $nav;
     }
 
@@ -340,7 +344,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
                 $name = 'Anonymous';
             }
             $id = contributor('ID', $contributor);
-            $uri = uri('contribution/contributors/show/id/') . $id;
+            $uri = url('contribution/contributors/show/id/') . $id;
             $publicMessage = contribution_is_item_public($item)
                            ? 'This item can be made public.'
                            : 'This item should not be made public.';
@@ -364,7 +368,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
                 $name = 'Anonymous';
             }
             $id = contributor('ID', $contributor);
-            $uri = uri('contribution/contributors/show/id/') . $id;
+            $uri = url('contribution/contributors/show/id/') . $id;
             $publicMessage = contribution_is_item_public($item)
                            ? 'This item can be made public.'
                            : 'This item should not be made public.';
@@ -498,7 +502,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
             $siteTitle  = strip_formatting(settings('site_title'));
             $itemId     = $item->id;
             $accessDate = date('F j, Y');
-            $uri        = html_escape(abs_item_uri($item));
+            $uri        = html_escape(abs_item_url($item));
 
             $cite = '';
             if ($creator) {

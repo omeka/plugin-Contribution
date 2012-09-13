@@ -32,9 +32,9 @@ foreach (loop('contribution_contributors') as $contributor):
 ?>
     <tr>
         <td><?php echo html_escape($contributor->id); ?></td>
-        <td><a href="<?php echo uri(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
+        <td><a href="<?php echo url(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
         <td><?php echo html_escape($contributor->email); ?></td>
-        <td><a href="<?php echo uri("items/browse/contributor_id/$id") ?>">View</a></td>
+        <td><a href="<?php echo url("items/browse/contributor_id/$id") ?>">View</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
