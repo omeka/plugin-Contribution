@@ -26,7 +26,7 @@ contribution_admin_header(array('Dashboard'));
         <dt>2. Configure settings for submitting contributions:</dt>
         <dd>
             <ul style="width: 100%;">
-                <li>Set the terms of service for contributing to the site in <a href="<?php echo uri('contribution/settings'); ?>">Submission Settings</a>.</li>
+                <li>Set the terms of service for contributing to the site in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
                 <li>Set up an auto-generated email to send to all contributors after they submit their contribution in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
                 <li>Specify a collection for new contributed items in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
             </ul>
