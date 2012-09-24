@@ -38,4 +38,4 @@ contribution_admin_header(array('Contributors', "#$id"));
         <?php endforeach; ?>
     </table>
 </div>
-<?php foot();
+<?php echo foot();

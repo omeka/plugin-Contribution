@@ -42,4 +42,4 @@ contribution_admin_header(array('Contributor Questions'));
         </tbody>
     </table>
 </div>
-<?php foot();
+<?php echo foot();

@@ -42,4 +42,4 @@ contribution_admin_header(array('Types', 'Add a New Type'));
     </fieldset>
 </form>
 </div>
-<?php foot();
+<?php echo foot();

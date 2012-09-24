@@ -42,4 +42,4 @@ foreach (loop('contribution_contributors') as $contributor):
     <div class="pagination"><?php echo pagination_links(); ?></div>
 <?php endif; ?>
 </div>
-<?php foot();
+<?php echo foot();

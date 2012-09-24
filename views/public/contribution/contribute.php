@@ -8,8 +8,8 @@
 
 $head = array('title' => 'Contribute',
               'bodyclass' => 'contribution');
-head($head); ?>
-<?php echo js('contribution-public-form'); ?>
+echo head($head); ?>
+<?php queue_js_file('contribution-public-form'); ?>
 <script type="text/javascript">
 // <![CDATA[
 enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_page_path').'/type-form')); ?>);
@@ -74,4 +74,4 @@ enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_pag
         </fieldset>
     </form>
 </div>
-<?php foot();
+<?php echo foot();

@@ -35,7 +35,7 @@ function contribution_select_type($name, $default = null, $attributes = null)
         $default = get_option('contribution_default_type');
     }
 
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
@@ -71,7 +71,7 @@ function contribution_select_element_for_type($type, $name, $default = '', $attr
 
     $options = $type->getPossibleTypeElements();
     $options = array('' => 'Select an Element') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
@@ -86,14 +86,14 @@ function contribution_select_item_type($name, $default = '', $attributes = array
 {
     $options = get_db()->getTable('ContributionType')->getPossibleItemTypes();
     $options = array('' => 'Select an Item Type') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 function contribution_select_field_data_type($name, $default = '', $attributes = array())
 {
     $options = get_db()->getTable('ContributionContributorField')->getDataTypes();
     $options = array('' => 'Select Field Size') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
@@ -112,7 +112,7 @@ function contribution_admin_header($subsections = array())
     $head = array('title' => $displayTitle,
               'bodyclass' => 'contribution',
               'content_class' => 'horizontal-nav');
-    head($head); ?>
+    echo head($head); ?>
 <h1><?php echo $displayTitle; ?></h1>
 <ul id="section-nav" class="navigation">
 <?php echo nav(array(
@@ -158,7 +158,7 @@ function contribution_contribute_url($actionName = null)
     if (!empty($actionName)) {
         $options['action'] = $actionName;
     }
-    return __v()->url($options, $route, array(), true);
+    return get_view()->url($options, $route, array(), true);
 }
 
 /**

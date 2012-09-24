@@ -83,4 +83,4 @@ echo js('contribution');
     setUpTableAppend('#add-element', '#elements', newRow);
 // ]]>
 </script>
-<?php foot();
+<?php echo foot();

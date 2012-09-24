@@ -36,4 +36,4 @@ contribution_admin_header(array('Types'));
         </tbody>
     </table>
 </div>
-<?php foot();
+<?php echo foot();

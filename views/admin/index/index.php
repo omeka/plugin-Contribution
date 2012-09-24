@@ -35,4 +35,4 @@ contribution_admin_header(array('Dashboard'));
     </dl>
     </div>
 </div>
-<?php foot();
+<?php echo foot();

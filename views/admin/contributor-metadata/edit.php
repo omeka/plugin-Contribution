@@ -13,4 +13,4 @@ contribution_admin_header(array('Contributor Questions', 'Edit'));
     <?php echo flash(); ?>
     <?php require 'form.php'; ?>
 </div>
-<?php foot();
+<?php echo foot();

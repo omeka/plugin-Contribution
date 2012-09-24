@@ -12,4 +12,4 @@ contribution_admin_header(array('Contributor Questions', 'Add'));
     <?php echo flash(); ?>
     <?php require 'form.php'; ?>
 </div>
-<?php foot();
+<?php echo foot();

@@ -13,12 +13,14 @@ contribution_admin_header(array('Submission Settings'));
     <?php echo $form; ?>
 </div>
 <?php
-echo js('tiny_mce/tiny_mce');
-echo js('contribution');
+
+queue_js_file('tiny_mce/tiny_mce');
+queue_js_file('contribution');
+
 ?>
 <script type="text/javascript">
 // <![CDATA[
     setUpSettingsWysiwyg();
 // ]]>
 </script>
-<?php foot();
+<?php echo foot();
