@@ -285,7 +285,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      */
     public function filterAdminNavigationMain($nav)
     {
-        if(has_permission('Contribution_Contributors', 'browse')) {
+        if(is_allowed('Contribution_Contributors', 'browse')) {
             $nav[__('Contribution')] = url('contribution');
         }
         return $nav;
