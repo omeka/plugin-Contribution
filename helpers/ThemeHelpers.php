@@ -115,14 +115,11 @@ function contribution_admin_header($subsections = array())
     echo head($head); ?>
 <h1><?php echo $displayTitle; ?></h1>
 <ul id="section-nav" class="navigation">
-<?php echo nav(array(
-    'Dashboard' => url('contribution/index'),
-    'Contribution Types' => url('contribution/types'),
-    'Contributor Questions' => url('contribution/contributor-metadata'),
-    'Submission Settings' => url('contribution/settings'),
-    'Contributors' => url('contribution/contributors')
-    ));
-?>
+   <a href="<?php echo html_escape(url('contribution')); ?>">Dashboard</a>
+   <a href="<?php echo html_escape(url('contribution/types')); ?>">Contribution Types</a>
+   <a href="<?php echo html_escape(url('contribution/contributor-metadata')); ?>">Contributor Questions</a>
+   <a href="<?php echo html_escape(url('contribution/settings')); ?>">Submission Settings</a>
+    <a href="<?php echo html_escape(url('contribution/Contributors')); ?>">Contributors</a>
 </ul>
 <?php
     return $displayTitle;

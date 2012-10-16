@@ -284,10 +284,13 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      * @return array
      */
     public function filterAdminNavigationMain($nav)
-    {
-        if(is_allowed('Contribution_Contributors', 'browse')) {
-            $nav[__('Contribution')] = url('contribution');
-        }
+    {          
+           $nav[] = array(
+                'label' => __('Contribution'),
+                'uri' => url('contribution'),
+                'resource' => 'Contribution_Contributors',
+                'privilege' => 'browse'
+           );
         return $nav;
     }
 
@@ -300,6 +303,7 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     public function filterPublicNavigationMain($nav)
     {
        $nav['Contribute an Item'] = contribution_contribute_url();
+       
         return $nav;
     }
 
@@ -326,9 +330,9 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     public function hookAdminAppendToAdvancedSearch()
     {
         $html = '<div class="field">';
-        $html .= __v()->formLabel('contributed', 'Contribution Status');
+        $html .= get_view()->formLabel('contributed', 'Contribution Status');
         $html .= '<div class="inputs">';
-        $html .= __v()->formSelect('contributed', null, null, array(
+        $html .= get_view()->formSelect('contributed', null, null, array(
            ''  => 'Select Below',
            '1' => 'Only Contributed Items',
            '0' => 'Only Non-Contributed Items'
@@ -476,9 +480,9 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
     }else{
       $option = $_POST['contributor_posting'];
     }
-        $html = "<div id='contributor'>";
-        $html .= "<h3>".__('Publish anonymously')."</h3><br>";
-        $html .= __v()->formCheckbox('contributor_posting',$option,array(),array('1','0'));
+        $html  = "<div id='contributor'>";
+        $html .= "<h3>".__('Publish anonymously')."</h3>";
+        $html .= get_view()->formCheckbox('contributor_posting',true,array('checked'=>(boolean)$option));
         $html .= "</div>";
         
         $tabs['Contributor'] = $html;
@@ -499,10 +503,10 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
            $creator = "Anonymous";
        }
             $title      = metadata('item',array('Dublin Core', 'Title'));
-            $siteTitle  = strip_formatting(settings('site_title'));
+            $siteTitle  = strip_formatting(option('site_title'));
             $itemId     = $item->id;
             $accessDate = date('F j, Y');
-            $uri        = html_escape(abs_item_url($item));
+            $uri        = html_escape(record_url($item));
 
             $cite = '';
             if ($creator) {
