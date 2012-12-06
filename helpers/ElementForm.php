@@ -49,12 +49,12 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
         $html = $divWrap ? '<div class="field" id="element-' . html_escape($element->id) . '">' : '';
         
         // Put out the label for the field
-        $html .= $this->_displayFieldLabel();
-        
+        //$html .= $this->_displayFieldLabel();
+        $html .= $this->_getValueForField($element->id);
         //$html .= $this->_displayValidationErrors();
         
         $html .= '<div class="inputs">';
-        $html .= $this->_displayFormFields($extraFieldCount);
+       // $html .= $this->_displayFormFields($extraFieldCount);
         $html .= '</div>'; // Close 'inputs' div
         
         $html .= $divWrap ? '</div>' : ''; // Close 'field' div

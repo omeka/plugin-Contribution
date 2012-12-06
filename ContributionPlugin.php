@@ -302,8 +302,12 @@ class ContributionPlugin  extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-       $nav['Contribute an Item'] = contribution_contribute_url();
-       
+       //$nav['Contribute an Item'] = contribution_contribute_url();
+       $nav[] = array(
+        'label' => __('Contribute an Item'),
+        'uri'   => contribution_contribute_url(),
+        'visible' => true
+       );
         return $nav;
     }
 

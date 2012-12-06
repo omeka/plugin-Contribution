@@ -132,7 +132,7 @@ function contribution_check_captcha()
 {
     if (!Omeka_Captcha::isConfigured()) {
 ?>
-    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo url('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
+    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo url('settings/edit-security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
 <?php 
     }
 }

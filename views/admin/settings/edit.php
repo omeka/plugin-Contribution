@@ -14,7 +14,7 @@ contribution_admin_header(array('Submission Settings'));
 </div>
 <?php
 
-queue_js_file('tiny_mce/tiny_mce');
+//queue_js_file('tiny_mce/tiny_mce');
 queue_js_file('contribution');
 
 ?>
