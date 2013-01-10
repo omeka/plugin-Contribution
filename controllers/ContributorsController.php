@@ -9,16 +9,11 @@
 /**
  * Controller for editing and viewing Contribution plugin contributors.
  */
-class Contribution_ContributorsController extends Omeka_Controller_Action
+class Contribution_ContributorsController extends Omeka_Controller_AbstractActionController
 {
     public function init()
     {
-        $modelName = 'ContributionContributor';
-        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
-            $this->_helper->db->setDefaultModelName($modelName);
-        } else {
-            $this->_modelClass = $modelName;
-        }
+        $this->_helper->db->setDefaultModelName('ContributionContributor');
         $this->_browseRecordsPerPage = get_option('per_page_admin');
     }
     

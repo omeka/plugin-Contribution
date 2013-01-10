@@ -9,7 +9,7 @@
 /**
  * Controller for editing and viewing Contribution plugin contributor fields.
  */
-class Contribution_ContributorMetadataController extends Omeka_Controller_Action
+class Contribution_ContributorMetadataController extends Omeka_Controller_AbstractActionController
 {
     public function init()
     {

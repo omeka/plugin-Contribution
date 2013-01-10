@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributorValue extends Omeka_Record
+class ContributionContributorValue extends Omeka_Record_AbstractRecord
 {
     public $field_id;
     public $contributor_id;

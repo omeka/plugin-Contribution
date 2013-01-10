@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionTypeElement extends Omeka_Record
+class ContributionTypeElement extends Omeka_Record_AbstractRecord
 {
     public $type_id;
     public $element_id;

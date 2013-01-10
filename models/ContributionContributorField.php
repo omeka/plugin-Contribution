@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributorField extends Omeka_Record
+class ContributionContributorField extends Omeka_Record_AbstractRecord
 {
     public $prompt;
     public $type;

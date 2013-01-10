@@ -21,19 +21,7 @@ function contribution_get_contributor_fields()
     return get_db()->getTable('ContributionContributorField')->findAll();
 }
 
-/**
- * Returns HTML for select box for contribution types.
- *
- * @return string HTML for select element
- */
-function contribution_select_type($props=array(), $value=null, $label=null)
-{
-    if (!$value) {
-        $value = get_option('contribution_default_type');
-    }
-    
-    return _select_from_table('ContributionType', $props, $value, $label);
-}
+
 
 /**
  * Gets all ContributionTypeElements for the given ContributionType.
@@ -68,7 +56,7 @@ function contribution_select_element_for_type($type, $name, $default = '', $attr
 
     $options = $type->getPossibleTypeElements();
     $options = array('' => 'Select an Element') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
@@ -83,14 +71,14 @@ function contribution_select_item_type($name, $default = '', $attributes = array
 {
     $options = get_db()->getTable('ContributionType')->getPossibleItemTypes();
     $options = array('' => 'Select an Item Type') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 function contribution_select_field_data_type($name, $default = '', $attributes = array())
 {
     $options = get_db()->getTable('ContributionContributorField')->getDataTypes();
     $options = array('' => 'Select Field Size') + $options;
-    return __v()->formSelect($name, $default, $attributes, $options);
+    return get_view()->formSelect($name, $default, $attributes, $options);
 }
 
 /**
@@ -101,6 +89,8 @@ function contribution_select_field_data_type($name, $default = '', $attributes =
  * @param array $subsections Array of names that specify the "path" to this page.
  * @return string
  */
+
+
 function contribution_admin_header($subsections = array())
 {
     $mainTitle = 'Contribution';
@@ -109,21 +99,9 @@ function contribution_admin_header($subsections = array())
     $head = array('title' => $displayTitle,
               'bodyclass' => 'contribution',
               'content_class' => 'horizontal-nav');
-    head($head); ?>
-<h1><?php echo $displayTitle; ?></h1>
-<ul id="section-nav" class="navigation">
-<?php echo nav(array(
-    'Dashboard' => uri('contribution/index'),
-    'Contribution Types' => uri('contribution/types'),
-    'Contributor Questions' => uri('contribution/contributor-metadata'),
-    'Submission Settings' => uri('contribution/settings'),
-    'Contributors' => uri('contribution/contributors')
-    ));
-?>
-</ul>
-<?php
-    return $displayTitle;
-}
+    echo head($head);
+} 
+
 
 /**
  * Check if the captcha is set up, display a message if not.
@@ -132,7 +110,7 @@ function contribution_check_captcha()
 {
     if (!Omeka_Captcha::isConfigured()) {
 ?>
-    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo uri('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
+    <p class="alert">You have not entered your <a href="http://recaptcha.net/">reCAPTCHA</a> API keys under <a href="<?php echo url('security#recaptcha_public_key'); ?>">security settings</a>. We recommend adding these keys, or the contribution form will be vulnerable to spam.</p>
 <?php 
     }
 }
@@ -155,7 +133,7 @@ function contribution_contribute_url($actionName = null)
     if (!empty($actionName)) {
         $options['action'] = $actionName;
     }
-    return __v()->url($options, $route, array(), true);
+    return get_view()->url($options, $route, array(), true);
 }
 
 /**

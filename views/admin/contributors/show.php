@@ -11,6 +11,12 @@ $customMetadata = $contributioncontributor->getMetadata();
 
 contribution_admin_header(array('Contributors', "#$id"));
 ?>
+
+
+<?php 
+echo $this->partial('contribution-navigation.php');
+?>
+
 <div id="primary">
     <?php echo flash(); ?>
     <h2>Basic Metadata</h2>
@@ -38,4 +44,4 @@ contribution_admin_header(array('Contributors', "#$id"));
         <?php endforeach; ?>
     </table>
 </div>
-<?php foot();
+<?php echo foot(); ?>

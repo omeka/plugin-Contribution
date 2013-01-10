@@ -9,7 +9,7 @@
 /**
  * Controller for contributions themselves.
  */
-class Contribution_ContributionController extends Omeka_Controller_Action
+class Contribution_ContributionController extends Omeka_Controller_AbstractActionController
 {   
     protected $_captcha;
     

@@ -8,6 +8,12 @@
 
 contribution_admin_header(array('Contributors'));
 ?>
+
+
+<?php 
+echo $this->partial('contribution-navigation.php');
+?>
+
 <div id="primary">
 <?php
 echo flash();
@@ -32,9 +38,9 @@ foreach ($contributioncontributors as $contributor):
 ?>
     <tr>
         <td><?php echo html_escape($contributor->id); ?></td>
-        <td><a href="<?php echo uri(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
+        <td><a href="<?php echo url(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
         <td><?php echo html_escape($contributor->email); ?></td>
-        <td><a href="<?php echo uri("items/browse/contributor_id/$id") ?>">View</a></td>
+        <td><a href="<?php echo url("items/browse/contributor_id/$id") ?>">View</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
@@ -42,4 +48,4 @@ foreach ($contributioncontributors as $contributor):
     <div class="pagination"><?php echo pagination_links(); ?></div>
 <?php endif; ?>
 </div>
-<?php foot();
+<?php echo foot(); ?>

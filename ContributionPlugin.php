@@ -6,15 +6,29 @@
  * @package Contribution
  */
 
+define('CONTRIBUTION_PLUGIN_DIR', dirname(__FILE__));
+define('CONTRIBUTION_HELPERS_DIR', CONTRIBUTION_PLUGIN_DIR
+. DIRECTORY_SEPARATOR
+. 'helpers');
+define('CONTRIBUTION_FORMS_DIR', CONTRIBUTION_PLUGIN_DIR
+. DIRECTORY_SEPARATOR
+. 'forms');
+
+require_once CONTRIBUTION_PLUGIN_DIR . DIRECTORY_SEPARATOR
+. 'ContributionPlugin.php';
+require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR
+. 'ThemeHelpers.php';
+
+
 /**
  * Contribution plugin class
  *
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-class ContributionPlugin
+class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 {
-    private static $_hooks = array(
+    protected $_hooks = array(
         'install',
         'uninstall',
         'upgrade',
@@ -27,12 +41,12 @@ class ContributionPlugin
         'item_browse_sql'
     );
 
-    private static $_filters = array(
+    protected $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
         'simple_vocab_routes');
 
-    public static $options = array(
+    protected $_options = array(
         'contribution_page_path',
         'contribution_email_sender',
         'contribution_email_recipients',
@@ -41,37 +55,15 @@ class ContributionPlugin
         'contribution_default_type'
     );
 
-    private $_db;
-
-    /**
-     * Initializes instance properties and hooks the plugin into Omeka.
-     */
-    public function __construct()
+    public static function getOptions()
     {
-        $this->_db = get_db();
-        $this->addHooksAndFilters();
+        return self::_options;
     }
-
-    /**
-     * Centralized location where plugin hooks and filters are added
-     */
-    public function addHooksAndFilters()
-    {
-        foreach (self::$_hooks as $hookName) {
-            $functionName = Inflector::variablize($hookName);
-            add_plugin_hook($hookName, array($this, $functionName));
-        }
-
-        foreach (self::$_filters as $filterName) {
-            $functionName = Inflector::variablize($filterName);
-            add_filter($filterName, array($this, $functionName));
-        }
-    }
-
+    
     /**
      * Contribution install hook
      */
-    public function install()
+    public function hookInstall()
     {
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_types` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
@@ -133,7 +125,6 @@ class ContributionPlugin
             UNIQUE KEY `contributor_id_field_id` (`contributor_id`, `field_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-
         $this->_createDefaultContributionTypes();
 
     }
@@ -141,10 +132,10 @@ class ContributionPlugin
     /**
      * Contribution uninstall hook
      */
-    public function uninstall()
+    public function hookUninstall()
     {
         // Delete all the Contribution options
-        foreach (self::$options as $option) {
+        foreach ($this->_options as $option) {
             delete_option($option);
         }
 
@@ -159,7 +150,7 @@ class ContributionPlugin
         $this->_db->query($sql);
     }
 
-    public function upgrade($oldVersion, $newVersion)
+    public function hookUpgrade($oldVersion, $newVersion)
     {
         // Catch-all for pre-2.0 versions
         if (version_compare($oldVersion, '2.0-dev', '<=')) {
@@ -196,7 +187,7 @@ class ContributionPlugin
         }
     }
 
-    public function adminAppendToPluginUninstallMessage()
+    public function hookAdminAppendToPluginUninstallMessage()
     {
         echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin
             will remove all information about contributors, as well as the
@@ -208,39 +199,14 @@ class ContributionPlugin
      * Contribution define_acl hook
      * Restricts access to admin-only controllers and actions.
      */
-    public function defineAcl($acl)
+    public function hookDefineAcl($args)
     {
-        if (version_compare(OMEKA_VERSION, '2.0-dev', '>=')) {
-            $acl->addResource('Contribution_Contribution');
-            $acl->addResource('Contribution_Contributors');
-            $acl->addResource('Contribution_ContributorMetadata');
-            $acl->addResource('Contribution_Types');
-            $acl->addResource('Contribution_Settings');
-        } else {
-            $resourceList = array(
-                'Contribution_Contribution' => array('contribute', 'index', 'terms', 'thankyou', 'type-form'),
-                'Contribution_Contributors' => array('browse', 'show'),
-                'Contribution_ContributorMetadata' => array('browse', 'add', 'edit', 'delete'),
-                'Contribution_Types' => array('browse', 'add', 'edit', 'delete'),
-                'Contribution_Settings' => array('edit')
-            );
-            $acl->loadResourceList($resourceList);
-            // By default, deny everyone access to all resources, then allow access
-            // to only super and admin.
-            foreach ($resourceList as $resource => $privileges) {
-                $acl->deny(null, $resource);
-                $acl->allow('super', $resource);
-                $acl->allow('admin', $resource);
-            }
-
-            // Allow everybody access to the Contribution controller.
-            $acl->allow(null, 'Contribution_Contribution');
-        }
-
-
-
-
-
+        $acl = $args['acl'];
+        $acl->addResource('Contribution_Contribution');
+        $acl->addResource('Contribution_Contributors');
+        $acl->addResource('Contribution_ContributorMetadata');
+        $acl->addResource('Contribution_Types');
+        $acl->addResource('Contribution_Settings');
     }
 
     /**
@@ -248,8 +214,9 @@ class ContributionPlugin
      * Defines public-only routes that set the contribution controller as the
      * only accessible one.
      */
-    public function defineRoutes($router)
+    public function hookDefineRoutes($args)
     {
+        $router = $args['router'];
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
@@ -283,10 +250,11 @@ class ContributionPlugin
      * @param array $nav
      * @return array
      */
-    public function adminNavigationMain($nav)
+    public function filterAdminNavigationMain($nav)
     {
-        if(has_permission('Contribution_Contributors', 'browse')) {
-            $nav['Contribution'] = uri('contribution');
+        if(is_allowed('Contribution_Contributors', 'browse')) {
+            
+            $nav['Contribution'] = array('label'=>'Contribution', 'uri' => url('contribution'));
         }
         return $nav;
     }
@@ -297,9 +265,9 @@ class ContributionPlugin
      * @param array $nav
      * @return array
      */
-    public function publicNavigationMain($nav)
+    public function filterPublicNavigationMain($nav)
     {
-        $nav['Contribute an Item'] = contribution_contribute_url();
+        $nav['ContributeItem'] = array('label' => 'Contribute and Item', 'uri' => contribution_contribute_url() );
         return $nav;
     }
 
@@ -309,7 +277,7 @@ class ContributionPlugin
      * @param array $routes
      * @return array
      */
-    public function simpleVocabRoutes($routes)
+    public function filterSimpleVocabRoutes($routes)
     {
         $routes[] = array('module' => 'contribution',
                           'controller' => 'contribution',
@@ -322,7 +290,7 @@ class ContributionPlugin
      *
      * @return string HTML
      */
-    public function adminAppendToAdvancedSearch()
+    public function hookAdminAppendToAdvancedSearch($args)
     {
         $html = '<div class="field">';
         $html .= __v()->formLabel('contributed', 'Contribution Status');
@@ -336,8 +304,9 @@ class ContributionPlugin
         echo $html;
     }
 
-    public function adminAppendToItemsShowSecondary($item)
+    public function hookAdminAppendToItemsShowSecondary($args)    
     {
+        $item = $args['item'];
         if ($contributor = contribution_get_item_contributor($item)) {
             if (!($name = contributor('Name', $contributor))) {
                 $name = 'Anonymous';
@@ -359,9 +328,9 @@ class ContributionPlugin
         }
     }
 
-    public function adminAppendToItemsBrowseDetailedEach()
+    public function hookAdminAppendToItemsBrowseDetailedEach($args)
     {
-        $item = get_current_item();
+        $item = $args['item'];
         if ($contributor = contribution_get_item_contributor($item)) {
             if (!($name = contributor('Name', $contributor))) {
                 $name = 'Anonymous';
@@ -387,8 +356,10 @@ class ContributionPlugin
      * @param Omeka_Db_Select $select
      * @param array $params
      */
-    public function itemBrowseSql($select, $params)
+    public function hookItemBrowseSql($args)
     {
+        $select = $args['select'];
+        $params = $args['params'];
         if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
             $contributed = $request->get('contributed');
@@ -421,19 +392,19 @@ class ContributionPlugin
      */
     private function _createDefaultContributionTypes()
     {
+        
         $storyType = new ContributionType;
         $storyType->item_type_id = 1;
         $storyType->display_name = 'Story';
+        
         $storyType->file_permissions = 'Allowed';
         $storyType->save();
-
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
         $textElement->element_id = 50;
         $textElement->prompt = 'Title';
         $textElement->order = 1;
         $textElement->save();
-
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
         $textElement->element_id = 1;

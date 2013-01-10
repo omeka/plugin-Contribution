@@ -7,10 +7,8 @@
  * @subpackage Models
  */
 
-/**
- * Use a modified version of the Orderable mixin.
- */
-require_once 'ContributionOrderable.php';
+
+require_once 'Mixin/ContributionOrder.php';
 
 /**
  * Represents a contributable item type.
@@ -18,7 +16,7 @@ require_once 'ContributionOrderable.php';
  * @package Contribution
  * @subpackage Models
  */
-class ContributionType extends Omeka_Record
+class ContributionType extends Omeka_Record_AbstractRecord
 {
     const FILE_PERMISSION_DISALLOWED = 'Disallowed';
     const FILE_PERMISSION_ALLOWED = 'Allowed';
@@ -44,7 +42,7 @@ class ContributionType extends Omeka_Record
 
     protected function _initializeMixins()
     {
-        $this->_mixins[] = new ContributionOrderable($this,
+        $this->_mixins[] = new Mixin_ContributionOrder($this,
                 'ContributionTypeElement', 'type_id', 'Elements');
     }
     
@@ -155,9 +153,7 @@ class ContributionType extends Omeka_Record
 (SELECT e.id AS element_id, e.name AS element_name, es.name AS element_set_name
     FROM {$db->Element} AS e
         JOIN {$db->ElementSet} AS es ON e.element_set_id = es.id
-        JOIN {$db->RecordType} AS rt ON es.record_type_id = rt.id
-    WHERE (rt.name = 'Item' OR rt.name = 'All')
-        AND es.name != 'Item Type Metadata'
+    WHERE es.name != 'Item Type Metadata'
 )
 UNION ALL
 (SELECT e.id AS element_id, e.name AS element_name, 'Item Type Metadata' AS element_set_name
