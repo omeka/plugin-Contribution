@@ -12,6 +12,12 @@ queue_js_string('enableContributionAjaxForm("contribution/type-form");');
 $head = array('title' => 'Contribute',
               'bodyclass' => 'contribution');
 echo head($head); ?>
+<?php queue_js_file('contribution-public-form'); ?>
+<script type="text/javascript">
+// <![CDATA[
+enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_page_path').'/type-form')); ?>);
+// ]]>
+</script>
 
 <div id="primary">
 <?php echo flash(); ?>
@@ -59,7 +65,7 @@ echo head($head); ?>
         ?>
         </fieldset>
         <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-            <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
+            <?php if(isset($captchaScript)): ?><div id="captcha" class="inputs"><?php echo $captchaScript; ?></div><?php endif; ?>
             <div class="inputs">
                 <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                 <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>

@@ -9,7 +9,7 @@
 contribution_admin_header(array('Contributor Questions'));
 ?>
 <p id="add-field" class="add-button">
-    <a class="add" href="<?php echo uri(array('action' => 'add')); ?>">Add a Question</a>
+    <a class="add" href="<?php echo url(array('action' => 'add')); ?>">Add a Question</a>
 </p>
 
 <div id="primary">
@@ -32,14 +32,14 @@ contribution_admin_header(array('Contributor Questions'));
             </tr>
         </tbody>
         <tbody id="contributor-fields-sortable">
-<?php foreach ($contributioncontributorfields as $field): ?>
+<?php foreach (loop('contribution_contributor_fields') as $field): ?>
     <tr>
         <td><?php echo html_escape($field['prompt']); ?></td>
         <td><?php echo html_escape($field['type']); ?></td>
-        <td><a href="<?php echo uri(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>
+        <td><a href="<?php echo url(array('action' => 'edit', 'id' => $field['id'])); ?>" class="edit">Edit</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>
     </table>
 </div>
-<?php foot();
+<?php echo foot();

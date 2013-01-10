@@ -33,9 +33,10 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
         if (isset($_POST['contribution_settings_submit'])) {
             if ($form->isValid($_POST)) {
                 $this->_setOptions($form->getValues());
-                $this->flashSuccess('Settings have been saved.');
+                $this->_helper->flashMessenger(__('Settings have been saved.'));
                 // Do a POST/Redirect/GET pattern
-                $this->_redirect($this->view->url(), array('prependBase' => false));
+                //$this->_redirect($this->view->url(), array('prependBase' => false));
+              
             } else {
                 $this->flashError('There were errors found in your form. Please edit and resubmit.');
             }
@@ -51,15 +52,9 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
      */
     private function _getOptions()
     {
-        $options = array(
-                'contribution_page_path',
-                'contribution_email_sender',
-                'contribution_email_recipients',
-                'contribution_consent_text',
-                'contribution_collection_id',
-                'contribution_default_type');
-        
-        foreach ($options as $option) {
+        $options = array();
+        $cnt = new ContributionPlugin();
+        foreach ($cnt->pluginOptions() as $option) {
             $options[$option] = get_option($option);
         }
         return $options;
@@ -72,8 +67,9 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
      */
     private function _setOptions($newOptions)
     {
+        $cnt = new ContributionPlugin();
         foreach ($newOptions as $optionName => $optionValue) {
-            if (in_array($optionName, ContributionPlugin::$options)) {
+            if (in_array($optionName, $cnt->pluginOptions())) {
                 set_option($optionName, $optionValue);
             }
         }

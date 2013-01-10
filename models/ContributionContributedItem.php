@@ -15,6 +15,7 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     public $item_id;
     public $contributor_id;
     public $public;
+    public $contributor_posting;
     
     protected $_related = array(
         'Item' => 'getItem',

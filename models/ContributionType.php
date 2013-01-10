@@ -116,11 +116,12 @@ class ContributionType extends Omeka_Record_AbstractRecord
                 $element->saveForm($elementData);
             }
         }
-        foreach($post['newElements'] as $elementData) {
+        foreach($post['newElements'] as $index => $elementData) {
             // Skip totally empty elements
             if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
                 $element = new ContributionTypeElement;
-                $this->addChild($element);
+                $element->type_id = $this->id;
+                $element->order = count($post['Elements']) + $index;
                 $element->saveForm($elementData);
             }
         }

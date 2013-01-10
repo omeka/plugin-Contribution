@@ -30,7 +30,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         if ($this->_processForm($_POST)) {
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
-            $this->redirect->gotoRoute(array('action' => 'thankyou'), $route);
+            $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
             if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
@@ -110,7 +110,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @return bool
      */
     protected function _processForm($post)
-    {       
+    {    
         if (!empty($post)) {
             // The final form submit was not pressed.
             if (!isset($post['form-submit'])) {
@@ -130,7 +130,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             }
 
-            if (!($contributor = $this->_processContributor($item, $post))) {
+            if (!($contributor = $this->_processContributor(null, $post))) {
                 return false;
             }
             
@@ -171,7 +171,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
             $this->_addElementTextsToItem($item, $post['Elements']);
             // Allow plugins to deal with the inputs they may have added to the form.
-            fire_plugin_hook('contribution_save_form', $contributionType, $item, $post);
+            fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
 
             $this->_linkItemToContributor($item, $contributor, $post);
@@ -219,8 +219,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @param Item $item Contributed item.
      * @param array $post POST array.
      */
-    protected function _processContributor($item, $post)
-    {
+    protected function _processContributor($item = null, $post)
+    {   
         $table = get_db()->getTable('ContributionContributor');
         $email = $post['contributor-email'];
         $name = $post['contributor-name'];
@@ -233,8 +233,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         $contributor->setDottedIpAddress($ip);
         try {
-            $contributor->forceSave();
-
+           
+            $contributor->save();
             $contributorMetadata = $post['ContributorFields'];
             if(is_array($contributorMetadata)) {
                 foreach ($contributorMetadata as $fieldId => $value) {
@@ -255,10 +255,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     protected function _linkItemToContributor($item, $contributor, $post)
     {
+        $posting = ($post['contributor_posting'] < 1)? 0: 1;
         $linkage = new ContributionContributedItem;
         $linkage->contributor_id = $contributor->id;
         $linkage->item_id = $item->id;
         $linkage->public = $post['contribution-public'];
+        $linkage->contributor_posting = $posting;
         $linkage->save();
     }
     

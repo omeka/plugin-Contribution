@@ -22,6 +22,22 @@ function contribution_get_contributor_fields()
 }
 
 
+/**
+ * Returns HTML for select box for contribution types.
+ *
+ * @return string HTML for select element
+ */
+function contribution_select_type($name, $default = null, $attributes = null)
+{
+    $options = get_db()->getTable('ContributionType')->findPairsForSelectForm();
+    $options = array('' => 'Select a Type') + $options;
+    
+    if (!$default) {
+        $default = get_option('contribution_default_type');
+    }
+
+    return get_view()->formSelect($name, $default, $attributes, $options);
+}
 
 /**
  * Gets all ContributionTypeElements for the given ContributionType.
@@ -217,3 +233,24 @@ function contributor($propertyName, $contributor = null)
     }
     return html_escape($property);
 }
+
+/**
+ *  Get the contributor posting choice.
+ *  
+ *  @param item object
+ */
+function contributor_option($item = null){
+  if(!$item){
+    $item = get_current_item();
+  }
+  
+  $linkage = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+  if($linkage){   
+   return $linkage->contributor_posting;
+  } else{
+    return null;
+  }
+   
+ 
+}
+

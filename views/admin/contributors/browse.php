@@ -17,7 +17,7 @@ echo $this->partial('contribution-navigation.php');
 <div id="primary">
 <?php
 echo flash();
-if (empty($contributioncontributors)):
+if (!has_loop_records('contribution_contributors')):
     echo '<p>No one has contributed to the site yet.</p>';
 else:
 ?>
@@ -33,7 +33,7 @@ else:
         </thead>
         <tbody id="types-table-body">
 <?php 
-foreach ($contributioncontributors as $contributor):
+foreach (loop('contribution_contributors') as $contributor):
     $id = $contributor->id;
 ?>
     <tr>

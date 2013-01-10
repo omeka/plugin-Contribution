@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributor extends Omeka_Record
+class ContributionContributor extends Omeka_Record_AbstractRecord
 {
     public $name;
     public $email;

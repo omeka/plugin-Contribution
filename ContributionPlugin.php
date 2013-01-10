@@ -38,13 +38,17 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_append_to_advanced_search',
         'admin_append_to_items_show_secondary',
         'admin_append_to_items_browse_detailed_each',
-        'item_browse_sql'
+        'item_browse_sql',
+        'after_save_form_record',
     );
 
     protected $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
-        'simple_vocab_routes');
+        'simple_vocab_routes',
+        'admin_items_form_tabs',
+        'item_citation'
+        );
 
     protected $_options = array(
         'contribution_page_path',
@@ -55,11 +59,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_default_type'
     );
 
-    public static function getOptions()
-    {
-        return self::_options;
-    }
-    
     /**
      * Contribution install hook
      */
@@ -101,6 +100,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_id` INT UNSIGNED NOT NULL,
             `contributor_id` INT UNSIGNED NOT NULL,
             `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
@@ -150,8 +150,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_db->query($sql);
     }
 
-    public function hookUpgrade($oldVersion, $newVersion)
+    public function hookUpgrade($args)
     {
+        $oldVersion = $args['old_version'];
+        $newVersion = $args['new_version'];
+        
         // Catch-all for pre-2.0 versions
         if (version_compare($oldVersion, '2.0-dev', '<=')) {
             // Clean up old options
@@ -185,6 +188,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributors` MODIFY `ip_address` VARBINARY(128) NOT NULL";
             $this->_db->query($sql);
         }
+        
+        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributed_items` ADD COLUMN `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+    
+        $this->_db->query($sql);
     }
 
     public function hookAdminAppendToPluginUninstallMessage()
@@ -220,12 +227,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
-        if (!defined('ADMIN')) {
-            $router->addRoute('contributionDefault',
-                new Zend_Controller_Router_Route('contribution/:action/*',
-                    array('module'     => 'contribution',
-                          'controller' => 'contribution',
-                          'action'     => 'contribute')));
+        // get the base path
 
             // get the base path
             $bp = get_option('contribution_page_path');
@@ -236,13 +238,26 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                         array('module'     => 'contribution',
                               'controller' => 'contribution',
                               'action'     => 'contribute')));
+            }else{
+            
+        $router->addRoute('contributionDefault',
+              new Zend_Controller_Router_Route('contribution/:action/*',
+                    array('module'     => 'contribution',
+                          'controller' => 'contribution',
+                          'action'     => 'contribute')));
+            
             }
-        } else {
+      
+         if(is_admin_theme()){
             $router->addRoute('contributionAdmin',
-                new Zend_Controller_Router_Route('contribution/:controller/:action/:id',
-                    array('module' => 'contribution')));
+                new Zend_Controller_Router_Route('contribution/:controller/:action/*',
+                    array('module' => 'contribution',
+                          'controller' => 'index',
+                          'action' => 'index')));
         }
     }
+
+
 
     /**
      * Append a Contribution entry to the admin navigation.
@@ -251,11 +266,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      * @return array
      */
     public function filterAdminNavigationMain($nav)
-    {
-        if(is_allowed('Contribution_Contributors', 'browse')) {
-            
-            $nav['Contribution'] = array('label'=>'Contribution', 'uri' => url('contribution'));
-        }
+    {          
+           $nav[] = array(
+                'label' => __('Contribution'),
+                'uri' => url('contribution'),
+                'resource' => 'Contribution_Contributors',
+                'privilege' => 'browse'
+           );
         return $nav;
     }
 
@@ -267,7 +284,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-        $nav['ContributeItem'] = array('label' => 'Contribute and Item', 'uri' => contribution_contribute_url() );
+       //$nav['Contribute an Item'] = contribution_contribute_url();
+       $nav[] = array(
+        'label' => __('Contribute an Item'),
+        'uri'   => contribution_contribute_url(),
+        'visible' => true
+       );
         return $nav;
     }
 
@@ -279,6 +301,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterSimpleVocabRoutes($routes)
     {
+       
         $routes[] = array('module' => 'contribution',
                           'controller' => 'contribution',
                           'actions' => array('type-form', 'contribute'));
@@ -290,12 +313,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      *
      * @return string HTML
      */
-    public function hookAdminAppendToAdvancedSearch($args)
+    public function hookAdminAppendToAdvancedSearch()
     {
         $html = '<div class="field">';
-        $html .= __v()->formLabel('contributed', 'Contribution Status');
+        $html .= get_view()->formLabel('contributed', 'Contribution Status');
         $html .= '<div class="inputs">';
-        $html .= __v()->formSelect('contributed', null, null, array(
+        $html .= get_view()->formSelect('contributed', null, null, array(
            ''  => 'Select Below',
            '1' => 'Only Contributed Items',
            '0' => 'Only Non-Contributed Items'
@@ -304,15 +327,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         echo $html;
     }
 
-    public function hookAdminAppendToItemsShowSecondary($args)    
-    {
-        $item = $args['item'];
+    public function hookAdminAppendToItemsShowSecondary($args)
+    {   $item = $args['item'];
         if ($contributor = contribution_get_item_contributor($item)) {
             if (!($name = contributor('Name', $contributor))) {
                 $name = 'Anonymous';
             }
             $id = contributor('ID', $contributor);
-            $uri = uri('contribution/contributors/show/id/') . $id;
+            $uri = url('contribution/contributors/show/id/') . $id;
             $publicMessage = contribution_is_item_public($item)
                            ? 'This item can be made public.'
                            : 'This item should not be made public.';
@@ -336,7 +358,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 $name = 'Anonymous';
             }
             $id = contributor('ID', $contributor);
-            $uri = uri('contribution/contributors/show/id/') . $id;
+            $uri = url('contribution/contributors/show/id/') . $id;
             $publicMessage = contribution_is_item_public($item)
                            ? 'This item can be made public.'
                            : 'This item should not be made public.';
@@ -358,20 +380,24 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookItemBrowseSql($args)
     {
-        $select = $args['select'];
-        $params = $args['params'];
+    
+    $select = $args['select'];
+    $params = $args['params'];
+  
         if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
+           
             $contributed = $request->get('contributed');
+        
             if (isset($contributed)) {
                 if ($contributed === '1') {
                     $select->joinInner(
                             array('cci' => $db->ContributionContributedItem),
-                            'cci.item_id = i.id',
+                            'cci.item_id = items.id',                            
                             array()
                      );
                 } else if ($contributed === '0') {
-                    $select->where("i.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
+                    $select->where("items.id NOT IN (SELECT `item_id` FROM {$db->ContributionContributedItem})");
                 }
             }
 
@@ -379,7 +405,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             if (is_numeric($contributor_id)) {
                 $select->joinInner(
                         array('cci' => $db->ContributionContributedItem),
-                        'cci.item_id = i.id',
+                       'cci.item_id = items.id',                     
                         array('contributor_id')
                 );
                 $select->where('cci.contributor_id = ?', $contributor_id);
@@ -425,4 +451,69 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $descriptionElement->order = 1;
         $descriptionElement->save();
     }
+  public function hookAfterSaveFormRecord($args){
+      $item = $args['record'];
+      
+      $save = get_db()->getTable('ContributionContributedItem');
+      $save->saveContributionItemLink($item->id,$_POST);
+  }  
+  
+  public function filterAdminItemsFormTabs($tabs,$args){
+    $item = $args['item'];
+    if($item->id != ''){
+    $option = contributor_option($item);
+  
+    }else{
+      $option = $_POST['contributor_posting'];
+    }
+        $html  = "<div id='contributor'>";
+        $html .= "<h3>".__('Publish anonymously')."</h3>";
+        $html .= get_view()->formCheckbox('contributor_posting',true,array('checked'=>(boolean)$option));
+        $html .= "</div>";
+        
+        $tabs['Contributor'] = $html;
+        
+        return $tabs;
+    }
+    
+   public function filterItemCitation($cite,$args){
+       $item = $args['item'];
+       
+       if(contribution_get_item_contributor($item)){
+         $name = contribution_get_item_contributor($item);        
+
+       if(contributor_option($item->id) < 1){       
+
+        $creator    = $name->name;
+       } else {
+           $creator = "Anonymous";
+       }
+            $title      = metadata('item',array('Dublin Core', 'Title'));
+            $siteTitle  = strip_formatting(option('site_title'));
+            $itemId     = $item->id;
+            $accessDate = date('F j, Y');
+            $uri        = html_escape(record_url($item));
+
+            $cite = '';
+            if ($creator) {
+                $cite .= "$creator, ";
+            }
+            if ($title) {
+                $cite .= "&#8220;$title,&#8221; ";
+            }
+            if ($siteTitle) {
+                $cite .= "<em>$siteTitle</em>, ";
+            }
+            $cite .= "accessed $accessDate, ";
+            $cite .= "$uri.";
+          
+  
+       }
+       
+       return $cite;
+   }
+   public function pluginOptions()
+   {
+        return $this->_options;
+   }
 }
