@@ -22,15 +22,5 @@ echo $this->partial('contribution-navigation.php');
     <?php echo flash(); ?>
     <?php echo $form; ?>
 </div>
-<?php
 
-//queue_js_file('tiny_mce/tiny_mce');
-queue_js_file('contribution');
-
-?>
-<script type="text/javascript">
-// <![CDATA[
-    setUpSettingsWysiwyg();
-// ]]>
-</script>
 <?php echo foot(); ?>

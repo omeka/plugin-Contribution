@@ -135,7 +135,6 @@ Omeka.ContributionTypes = {};
         $('#add-element').click( function (event) {
             event.preventDefault();
             var elementCount = $('#contribution-type-elements li').length;
-            var typeValue = $('input[name=add-element-type]:checked').val();
             var requestUrl;
             //dig up the selected item-type id, or prevent action if one isn't selected
             var itemTypeId = $('#item_type_id').val();
@@ -143,18 +142,14 @@ Omeka.ContributionTypes = {};
                 alert('Please choose an item type above before adding elements.');
                 return;
             }
-            if (typeValue === 'new') {
-                requestUrl = addNewRequestUrl;
-            } else {
                 requestUrl = addExistingRequestUrl;
-            }
             $.ajax({
                 url: requestUrl,
                 dataType: 'text',
                 data: {elementCount: elementCount, itemTypeId: itemTypeId},
                 success: function (responseText) {
                     var response = responseText || 'no response text';
-                    $('.add-new').parent().before(response);
+                    $('#add-element').parent().before(response);
                 },
                 error: function () {
                     alert('Unable to get a new element.');

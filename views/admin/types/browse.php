@@ -5,19 +5,19 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-
+queue_css_file('contribution-type-form');
 contribution_admin_header(array('Types'));
 ?>
-<p id="add-type" class="add-button">
-    <a class="add" href="<?php echo url(array('action' => 'add')); ?>">Add a Type</a>
-</p>
-
+<a id="add-type" class="small green button" href="<?php echo url(array('action' => 'add')); ?>">Add a Type</a>
+    
 <?php 
 echo $this->partial('contribution-navigation.php');
 ?>
 
+
 <div id="primary">
     <?php echo flash(); ?>
+
     <table>
         <thead id="types-table-head">
             <tr>

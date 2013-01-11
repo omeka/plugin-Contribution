@@ -19,12 +19,6 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <form method='post'>
-    <?php echo $this->form; ?>
-    <div style='clear:both'></div>
-    <?php include 'elements-form.php'; ?>
-    </section>
-    </form>
-    
+    <?php include 'form.php'; ?>
 </div>
 <?php echo foot(); ?>
