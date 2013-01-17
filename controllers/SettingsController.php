@@ -24,19 +24,16 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
      */
     public function editAction()
     {
-        require CONTRIBUTION_FORMS_DIR . DIRECTORY_SEPARATOR . 'Settings.php';
-        //$form = new Contribution_Form_Settings;
         $form = $this->_getForm();
         $defaults = $this->_getOptions();
         $form->setDefaults($defaults);
         
-        if (isset($_POST['contribution_settings_submit'])) {
+        if (isset($_POST['submit'])) {
             if ($form->isValid($_POST)) {
                 $this->_setOptions($form->getValues());
                 $this->_helper->flashMessenger(__('Settings have been saved.'));
                 // Do a POST/Redirect/GET pattern
                 //$this->_redirect($this->view->url(), array('prependBase' => false));
-              
             } else {
                 $this->flashError('There were errors found in your form. Please edit and resubmit.');
             }
@@ -72,6 +69,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             if (in_array($optionName, $cnt->pluginOptions())) {
                 set_option($optionName, $optionValue);
             }
+            
         }
     }
     

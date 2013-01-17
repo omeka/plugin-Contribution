@@ -32,7 +32,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_append_to_items_show_secondary',
         'admin_append_to_items_browse_detailed_each',
         'item_browse_sql',
-        'after_save_form_record',
+        'after_save_form_record'
     );
 
     protected $_filters = array(
