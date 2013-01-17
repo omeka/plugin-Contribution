@@ -9,12 +9,14 @@ class ContributionTypeTest extends PHPUnit_Framework_TestCase
         // Omeka_Records.
         $dbAdapter = new Zend_Test_DbAdapter();
         $db = new Omeka_Db($dbAdapter, 'omeka_');
-        Omeka_Context::getInstance()->setDb($db);
+        $bootstrap = new Omeka_Test_Bootstrap;
+        $bootstrap->getContainer()->db = $db;
+        Zend_Registry::set('bootstrap', $bootstrap);
     }
 
     public function tearDown()
     {
-        Omeka_Context::resetInstance();
+        Zend_Registry::_unsetInstance();
     }
 
     public function testIsFileAllowed()
