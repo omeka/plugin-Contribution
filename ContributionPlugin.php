@@ -32,7 +32,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
         'item_browse_sql',
-        'after_save_form_record'
+        'before_save_item'
     );
 
     protected $_filters = array(
@@ -418,11 +418,18 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $descriptionElement->order = 1;
         $descriptionElement->save();
     }
-  public function hookAfterSaveFormRecord($args){
+    
+  public function hookBeforeSaveItem($args){
       $item = $args['record'];
       
-      $save = get_db()->getTable('ContributionContributedItem');
-      $save->saveContributionItemLink($item->id,$_POST);
+      //prevent admins from overriding the contributer's assertion of public vs private
+      $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+      if($contributionItem) {
+          if(!$contributionItem->public && $item->public) {
+              $item->public = false;
+              Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
+          }
+      }
   }  
   
   public function filterAdminItemsFormTabs($tabs,$args){
