@@ -19,7 +19,7 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
 
     public function findByItem($item)
     {
-        if ($item instanceof Omeka_Record_AbstractRecord) {
+        if ($item instanceof Item) {
             $itemId = $item->id;
         } else {
             $itemId = $item;

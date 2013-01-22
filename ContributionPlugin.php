@@ -29,8 +29,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'define_routes',
         'admin_append_to_plugin_uninstall_message',
         'admin_append_to_advanced_search',
-        'admin_append_to_items_show_secondary',
-        'admin_append_to_items_browse_detailed_each',
+        'admin_items_show_sidebar',
+        'admin_items_browse_detailed_each',
         'item_browse_sql',
         'after_save_form_record'
     );
@@ -324,49 +324,19 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         echo $html;
     }
 
-    public function hookAdminAppendToItemsShowSecondary($args)
-    {   $item = $args['item'];
-        if ($contributor = contribution_get_item_contributor($item)) {
-            if (!($name = contributor('Name', $contributor))) {
-                $name = 'Anonymous';
-            }
-            $id = contributor('ID', $contributor);
-            $uri = url('contribution/contributors/show/id/') . $id;
-            $publicMessage = contribution_is_item_public($item)
-                           ? 'This item can be made public.'
-                           : 'This item should not be made public.';
-        ?>
-<div class="info-panel">
-    <h2>Contribution</h2>
-    <p>This item was contributed by
-        <a href="<?php echo $uri; ?>"><?php echo $name; ?></a>.
-    </p>
-    <p><strong><?php echo $publicMessage; ?></strong></p>
-</div>
-<?php
-        }
+    public function hookAdminItemsShowSidebar($args)
+    {
+        
+        $htmlBase = $this->_adminBaseInfo($args);
+        echo "<div class='panel'>";
+        echo "<h4>" . __("Contribution") . "</h4>";
+        echo $htmlBase;
+        echo "</div>";
     }
 
-    public function hookAdminAppendToItemsBrowseDetailedEach($args)
+    public function hookAdminItemsBrowseDetailedEach($args)
     {
-        $item = $args['item'];
-        if ($contributor = contribution_get_item_contributor($item)) {
-            if (!($name = contributor('Name', $contributor))) {
-                $name = 'Anonymous';
-            }
-            $id = contributor('ID', $contributor);
-            $uri = url('contribution/contributors/show/id/') . $id;
-            $publicMessage = contribution_is_item_public($item)
-                           ? 'This item can be made public.'
-                           : 'This item should not be made public.';
-        ?>
-<h3>Contribution</h3>
-<p>This item was contributed by
-    <a href="<?php echo $uri; ?>"><?php echo $name; ?></a>.
-</p>
-<p><strong><?php echo $publicMessage; ?></strong></p>
-<?php
-        }
+        echo $this->_adminBaseInfo($args);       
     }
 
     /**
@@ -509,6 +479,31 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
        
        return $cite;
    }
+   
+    private function _adminBaseInfo($args) 
+    {
+        $item = $args['item'];
+        $contributedItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+        if($contributedItem) {
+            $html = '';
+            if($contributedItem->anonymous) {
+                $name = __('Anonymous');
+            } else {
+                $name = $item->getOwner()->name;
+            }
+        
+            if($contributedItem->public) {
+                $publicMessage = __("This item can be made public.");
+            } else {
+                $publicMessage = __("This item cannot be made public.");
+            }
+            $html .= "<p><strong>" . __("Contributed by:") . "</strong><span class='contribution-contributor'> $name</span></p>";
+            $html .= "<p><strong>$publicMessage</strong></p>";
+            return $html;
+        }
+    }
+    
+   
    public function pluginOptions()
    {
         return $this->_options;

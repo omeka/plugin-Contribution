@@ -56,7 +56,7 @@ enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_pag
                 <div class="inputs">
                     <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
-                    <?php echo $this->formLabel('contribution-anonymous', "Don't publish my name."); ?>
+                    <?php echo $this->formLabel('contribution-anonymous', "Contribute anonymously."); ?>
                 </div>
                 <p>In order to contribute, you must read and agree to the <a href="<?php echo url('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
                 <div class="inputs">
