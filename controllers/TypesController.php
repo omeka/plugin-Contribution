@@ -122,20 +122,20 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
                 $record->setPostData($_POST);
                 if ($record->save()) {
                     foreach($_POST['elements-to-add'] as $tempId=>$elementInfo) {
-                        debug('saving');
-                        debug(print_r($elementInfo, true));
                         $contributionEl = new ContributionTypeElement();
                         $contributionEl->element_id = $elementInfo['id'];
                         $contributionEl->prompt = $elementInfo['prompt'];
                         $contributionEl->order = $elementInfo['order'];
+                        $contributionEl->long_text = $elementInfo['long_text'];
                         $contributionEl->type_id = $record->id;
                         $contributionEl->save();
                     }
                     
-                    foreach($_POST['elements'] as $id=>$info) {
-                        $contributionEl = $contributionElTable->find($id);
+                    foreach($_POST['elements'] as $id=>$info) {                    	
+                    	$contributionEl = $contributionElTable->find($id);
                         $contributionEl->prompt = $info['prompt'];
-                        $contributionEl->order = $info['order'];
+                        $contributionEl->order = $info['order'];                        
+                        $contributionEl->long_text = $info['long_text'];
                         $contributionEl->save();
                     }
                     

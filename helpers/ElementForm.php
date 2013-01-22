@@ -6,11 +6,7 @@
  * @package Contribution
  */
 
-if (version_compare(OMEKA_VERSION, '2.0-dev', '<')) {
-    require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
-} else {
-    require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
-}
+require_once VIEW_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ElementForm.php';
 
 /**
  * Overrides Omeka's ElementForm helper to allow for custom display of fields.
@@ -25,11 +21,9 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
      * hardcoded into the superclass' version, so we need to do this ugly
      * copy 'n paste.
      */
-    public function elementForm(ContributionTypeElement $contributionTypeElement, 
-                                Omeka_Record_AbstractRecord $record, $options = array())
+    public function elementForm(Element $element, Omeka_Record_AbstractRecord $record, $options = array())
     {
-        $this->_contributionTypeElement = $contributionTypeElement;
-        $element = $contributionTypeElement->getElement();
+        $this->_contributionTypeElement = $options['contributionTypeElement'];
 
         // Skip this form if the element no longer exists.
         if (!$element) {
@@ -138,49 +132,19 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
             return $html;
         }
 
-        //Create a form input based on the element type name
-        switch ($fieldDataType) {
-
-            //Tiny Text => input type="text"
-            case 'Tiny Text':
-                return $this->view->formTextarea(
-                    $inputNameStem . '[text]',
-                    $value,
-                    array('class'=>'textinput', 'rows'=>2, 'cols'=>50));
-                break;
-            //Text => textarea
-            case 'Text':
-                return $this->view->formTextarea(
-                    $inputNameStem . '[text]',
-                    $value,
-                    array('class'=>'textinput', 'rows'=>15, 'cols'=>50));
-                break;
-            case 'Date':
-                return $this->_dateField(
-                    $inputNameStem,
-                    $value,
-                    array());
-                break;
-            case 'Date Range':
-                return $this->_dateRangeField(
-                    $inputNameStem,
-                    $value,
-                    array());
-            case 'Integer':
-                return $this->view->formText(
-                    $inputNameStem . '[text]',
-                    $value,
-                    array('class' => 'textinput', 'size' => 40));
-            case 'Date Time':
-                return $this->_dateTimeField(
-                    $inputNameStem,
-                    $value,
-                    array());
-            default:
-                throw new Exception(__('Cannot display a form input for "%s" if element type name is not given!', $element['name']));
-                break;
+        if($this->_contributionTypeElement->long_text) {
+        	return $this->view->formTextarea(
+        			$inputNameStem . '[text]',
+        			$value,
+        			array('class'=>'textinput', 'rows'=>15, 'cols'=>50));
+        	 
         }
-
+        return $this->view->formText(
+        		$inputNameStem . '[text]',
+        		$value,
+        		array('class'=>'textinput'));
+        
+        
     }
     
     protected function _getElementDataType()

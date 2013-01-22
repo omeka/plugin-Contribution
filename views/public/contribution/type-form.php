@@ -1,19 +1,30 @@
+
 <?php if (!$type): ?>
 <p>You must choose a contribution type to continue.</p>
+<?php else: ?>
+<h2>Contribute a <?php echo $type->display_name; ?></h2>
+
 <?php 
-else:
 if ($type->isFileRequired()):
     $required = true;
 ?>
+
+
+
 <div class="field">
         <?php echo $this->formLabel('contributed_file', 'Upload a file'); ?>
         <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
 </div>
+
+<?php endif; ?>
+
 <?php 
-endif;
-foreach ($type->getTypeElements() as $element) {
-    echo $this->elementForm($element, $item);
+foreach ($type->getTypeElements() as $contributionTypeElement) {
+    echo $this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement'=>$contributionTypeElement));
 }
+?>
+
+<?php 
 if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">

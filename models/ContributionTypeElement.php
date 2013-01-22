@@ -19,6 +19,7 @@ class ContributionTypeElement extends Omeka_Record_AbstractRecord
     public $element_id;
     public $prompt;
     public $order;
+    public $long_text;
     
     protected $_related = array('ContributionType' => 'getType',
                                 'Element'          => 'getElement');

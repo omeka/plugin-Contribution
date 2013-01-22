@@ -12,10 +12,10 @@
  */
 class ContributionContributedItem extends Omeka_Record_AbstractRecord
 {
+    public $id;
     public $item_id;
-    public $contributor_id;
     public $public;
-    public $contributor_posting;
+    public $anonymous;
     
     protected $_related = array(
         'Item' => 'getItem',
@@ -29,6 +29,6 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
 
     public function getContributor()
     {
-        return $this->getDb()->getTable('ContributionContributor')->find($this->contributor_id);
+        return $this->Item->Owner;
     }
 }

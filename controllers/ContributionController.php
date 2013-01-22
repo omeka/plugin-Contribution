@@ -126,14 +126,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
                 $itemTypeId = $contributionType->getItemType()->id;
             } else {
+            	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
                 $this->flashError('You must select a type for your contribution.');
                 return false;
             }
-
+/*
             if (!($contributor = $this->_processContributor(null, $post))) {
                 return false;
             }
-            
+  */          
             $itemMetadata = array('public'       => false,
                                   'featured'     => false,
                                   'item_type_id' => $itemTypeId);
@@ -174,9 +175,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
 
-            $this->_linkItemToContributor($item, $contributor, $post);
-
-            $this->_sendEmailNotification($contributor->email, $item);
+            //$this->_linkItemToContributor($item, $contributor, $post);
+            $user = current_user();
+            $this->_sendEmailNotification($user->email, $item);
             
             return true;
         }
@@ -215,12 +216,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     /**
      * Deals with metadata about the item's contributor.
+     * 
      *
      * @param Item $item Contributed item.
      * @param array $post POST array.
      */
     protected function _processContributor($item = null, $post)
-    {   
+    {  
+
+    	//TODO: switch to using GuestUser, if available
+    	
         $table = get_db()->getTable('ContributionContributor');
         $email = $post['contributor-email'];
         $name = $post['contributor-name'];
@@ -235,6 +240,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         try {
            
             $contributor->save();
+            
+            //@TODO: move contributorMetadata to (optional) UserProfiles
             $contributorMetadata = $post['ContributorFields'];
             if(is_array($contributorMetadata)) {
                 foreach ($contributorMetadata as $fieldId => $value) {
@@ -335,12 +342,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $siteTitle = get_option('site_title');
 
         $this->view->item = $item;
-        $item->view->email = $toEmail;
         
         //If this field is empty, don't send the email
         if (!empty($fromAddress)) {
             $contributorMail = new Zend_Mail;
-            $contributorMail->setBodyText($this->view->render('contribution/contributor-email.php'));
+            $body = "Thank you for your contribution to " . get_option('site_title') . ".\n";
+            $body .= "Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.";
+	        $body .= "Contribution URL (pending review by project staff): " . record_url($item, 'show', true);
+            
+            
+            $contributorMail->setBodyText($body);
             $contributorMail->setFrom($fromAddress, "$siteTitle Administrator");
             $contributorMail->addTo($toEmail);
             $contributorMail->setSubject("Your $siteTitle Contribution");
@@ -360,7 +371,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 continue;
             }
             $adminMail = new Zend_Mail;
-            $adminMail->setBodyText($this->view->render('contribution/admin-email.php'));
+            $body = "A new contribution to " . get_option('site_title') . " has been made.";
+            set_theme_base_url('admin');
+            $body .= "Contribution URL for review: " . record_url($item, 'show', true);
+            revert_theme_base_url();
+            $adminMail->setBodyText($body);
             $adminMail->setFrom($fromAddress, "$siteTitle");
             $adminMail->addTo($toAddress);
             $adminMail->setSubject("New $siteTitle Contribution");
