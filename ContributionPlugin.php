@@ -39,7 +39,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_navigation_main',
         'public_navigation_main',
         'simple_vocab_routes',
-        'admin_items_form_tabs',
         'item_citation'
         );
 
@@ -206,7 +205,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookDefineAcl($args)
     {
         $acl = $args['acl'];
-       // $acl->addResource('Contribution_Contribution');
+        $acl->addResource('Contribution_Contribution');
+        $acl->allow(array('super', 'admin'), 'Contribution_Contribution');
+        $acl->allow(array('researcher', 'contributor', 'guest'), 'Contribution_Contribution', array('show', 'browse', 'contribute', 'thankyou', 'type-form', 'index'));
+        
+        
         $acl->addResource('Contribution_Contributors');
         $acl->addResource('Contribution_ContributorMetadata');
         $acl->addResource('Contribution_Types');
@@ -421,34 +424,18 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     
   public function hookBeforeSaveItem($args){
       $item = $args['record'];
-      
-      //prevent admins from overriding the contributer's assertion of public vs private
-      $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-      if($contributionItem) {
-          if(!$contributionItem->public && $item->public) {
-              $item->public = false;
-              Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
-          }
+      if($item->exists()) {
+          //prevent admins from overriding the contributer's assertion of public vs private
+          $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+          if($contributionItem) {
+              if(!$contributionItem->public && $item->public) {
+                  $item->public = false;
+                  Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
+              }
+          }          
       }
   }  
-  
-  public function filterAdminItemsFormTabs($tabs,$args){
-    $item = $args['item'];
-    if($item->id != ''){
-    $option = contributor_option($item);
-  
-    }else{
-      $option = $_POST['contributor_posting'];
-    }
-        $html  = "<div id='contributor'>";
-        $html .= "<h3>".__('Publish anonymously')."</h3>";
-        $html .= get_view()->formCheckbox('contributor_posting',true,array('checked'=>(boolean)$option));
-        $html .= "</div>";
-        
-        $tabs['Contributor'] = $html;
-        
-        return $tabs;
-    }
+
     
    public function filterItemCitation($cite,$args){
        $item = $args['item'];
@@ -489,25 +476,31 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
    
     private function _adminBaseInfo($args) 
     {
+        
         $item = $args['item'];
         $contributedItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
         if($contributedItem) {
             $html = '';
-            if($contributedItem->anonymous) {
+            if($contributedItem->anonymous && !is_allowed('Contribution_Contribution', 'view-anonymous')) {
                 $name = __('Anonymous');
             } else {
                 $name = $item->getOwner()->name;
             }
-        
-            if($contributedItem->public) {
-                $publicMessage = __("This item can be made public.");
-            } else {
-                $publicMessage = __("This item cannot be made public.");
-            }
             $html .= "<p><strong>" . __("Contributed by:") . "</strong><span class='contribution-contributor'> $name</span></p>";
-            $html .= "<p><strong>$publicMessage</strong></p>";
+
+            $publicMessage = '';
+            if(is_allowed($item, 'edit')) {
+                if($contributedItem->public) {
+                    $publicMessage = __("This item can be made public.");
+                } else {
+                    $publicMessage = __("This item cannot be made public.");
+                }
+                $html .= "<p><strong>$publicMessage</strong></p>";
+            }
+            
             return $html;
         }
+        
     }
     
    

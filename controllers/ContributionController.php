@@ -127,7 +127,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $itemTypeId = $contributionType->getItemType()->id;
             } else {
             	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
-                $this->flashError('You must select a type for your contribution.');
                 return false;
             }
 /*
@@ -151,7 +150,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if ($acl = get_acl()) {
                 $acl->allow(null, 'Items', 'showNotPublic');
             }
-
             try {
                 $item = insert_item($itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
@@ -160,25 +158,23 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
                 if (strstr($e->getMessage(), "The file 'contributed_file' was not uploaded")) {
-                   $this->flashError("You must upload a file when making a {$contributionType->display_name} contribution.");
+                   $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
                 } else {
-                    $this->flashError($e->getMessage());
+                    $this->_helper->flashMessenger($e->getMessage());
                 }
                 return false;
             } catch (Exception $e) {
-                $this->flashError($e->getMessage());
+                $this->_helper->flashMessenger($e->getMessage());
                 return false;
             }
-
             $this->_addElementTextsToItem($item, $post['Elements']);
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
 
-            //$this->_linkItemToContributor($item, $contributor, $post);
+            $this->_linkItemToContributor($item, $contributor, $post);
             $user = current_user();
             $this->_sendEmailNotification($user->email, $item);
-            
             return true;
         }
         return false;
@@ -262,12 +258,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     protected function _linkItemToContributor($item, $contributor, $post)
     {
-        $posting = ($post['contributor_posting'] < 1)? 0: 1;
         $linkage = new ContributionContributedItem;
         $linkage->contributor_id = $contributor->id;
         $linkage->item_id = $item->id;
         $linkage->public = $post['contribution-public'];
-        $linkage->contributor_posting = $posting;
+        $linkage->anonymous = $post['contribution-anonymous'];
         $linkage->save();
     }
     
@@ -319,7 +314,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         
         if ($errors) {
-            $this->flashError(join("\n", $errors));
+            $this->_helper->flashMessenger(join("\n", $errors), 'error');
         }
         
         return $isValid;

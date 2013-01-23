@@ -113,7 +113,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
     
     protected function _getFieldNameStem($index)
     {
-        return "Elements[".$this->_contributionTypeElement['id']."][$index]";
+        return "Elements[".$this->_contributionTypeElement->element_id."][$index]";
     }
    protected function _displayFormInput($inputNameStem, $value, $options=array())
     {
