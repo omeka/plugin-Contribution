@@ -9,7 +9,12 @@
 $contributionType = $contribution_type;
 $contributionTypeElements = $contribution_type->ContributionTypeElements;
 $itemType = $contribution_type->ItemType;
-$elements = $itemType->Elements;
+if($itemType) {
+    $elements = $itemType->Elements;    
+} else {
+    $elements = array();
+}
+
 contribution_admin_header(array('Types', 'Add a New Type'));
 ?>
 

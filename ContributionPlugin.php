@@ -481,11 +481,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $contributedItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
         if($contributedItem) {
             $html = '';
-            if($contributedItem->anonymous && !is_allowed('Contribution_Contribution', 'view-anonymous')) {
-                $name = __('Anonymous');
-            } else {
-                $name = $item->getOwner()->name;
-            }
+            $name = $contributedItem->getContributor()->name;
             $html .= "<p><strong>" . __("Contributed by:") . "</strong><span class='contribution-contributor'> $name</span></p>";
 
             $publicMessage = '';

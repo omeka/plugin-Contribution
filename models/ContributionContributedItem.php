@@ -29,6 +29,13 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
 
     public function getContributor()
     {
-        return $this->Item->Owner;
+        //mimic an actual user, but anonymous
+        if($this->anonymous && !is_allowed('Contribution_Contribution', 'view-anonymous')) {
+            $owner = new User();
+            $owner->name = __('Anonymous');
+        } else {
+            $owner = $this->Item->getOwner();
+        }
+        return $owner;
     }
 }
