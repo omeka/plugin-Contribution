@@ -23,14 +23,6 @@ if (!has_loop_records('contribution_contributed_items')):
 else:
 ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
-
-    
-    <?php 
-    $db = get_db();
-    $contributors = $db->getTable('ContributionContributedItem')->findAllContributors();
-    asort($contributors);
-    
-    ?>
     <ul class="quick-filter-wrapper">
         <li><a href="#" tabindex="0"><?php echo __('Filter by contributor'); ?></a>
         
@@ -76,13 +68,13 @@ else:
         <?php $contributor = $contribItem->Contributor; ?>
         <?php 
             if($contributor->id) {
-                $contributorUrl = url('contribution/contributors/id/' . $contributor->id);
+                $contributorUrl = url('contribution/contributors/show/id/' . $contributor->id);
             }
         
         ?>
         <tr>
 
-            <td><?php echo metadata($contributor, 'name');?> <a href=''>View info and contributions</a></td>
+            <td><?php echo metadata($contributor, 'name');?> <a href='<?php echo $contributorUrl; ?>'>Contribution info</a></td>
             <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
             <?php 
                 if ($item->public) {

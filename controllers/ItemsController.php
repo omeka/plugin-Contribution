@@ -9,4 +9,14 @@ class Contribution_ItemsController extends Omeka_Controller_AbstractActionContro
         $this->_browseRecordsPerPage = get_option('per_page_admin');        
     }
     
+    
+    public function browseAction()
+    {
+        
+        $db = get_db();
+        $contributors = $db->getTable('ContributionContributedItem')->findAllContributors();
+        asort($contributors);
+        $this->view->contributors = $contributors;
+        parent::browseAction();        
+    }
 }

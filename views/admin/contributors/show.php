@@ -5,9 +5,7 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-$contributor = $contributioncontributor;
 $id = html_escape($contributor->id);
-$customMetadata = $contributioncontributor->getMetadata();
 
 contribution_admin_header(array('Contributors', "#$id"));
 ?>
@@ -19,10 +17,10 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <h2>Basic Metadata</h2>
+    <h2><?php echo $contributor->name; ?>'s contributions</h2>
 
     <div id='contribution-basic-user-info'>
-    <p>Basic user info</p>
+    <p>Email: <?php echo metadata($contributor, 'email'); ?></p>
     </div>
     
     <div id='contribution-profile-info'>
@@ -32,7 +30,16 @@ echo $this->partial('contribution-navigation.php');
     </div>
     
     <div id='contribution-user-contributions'>
-    <p>List of user's contributions here</p>
+        <?php foreach($items as $item): ?>
+        <?php set_current_record('item', $item->Item); ?>
+        <div>
+        <?php echo link_to_item(); ?>
+        <?php echo metadata('item', 'added'); ?>
+        <?php echo files_for_item();?>
+        </div>        
+        
+        <?php endforeach; ?>
+
     </div>
 </div>
 <?php echo foot(); ?>
