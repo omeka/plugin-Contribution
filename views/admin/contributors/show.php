@@ -20,28 +20,19 @@ echo $this->partial('contribution-navigation.php');
 <div id="primary">
     <?php echo flash(); ?>
     <h2>Basic Metadata</h2>
-    <table>
-        <tr>
-            <th>Name</th>
-            <td><?php echo html_escape($contributor->name); ?></td>
-        </tr>
-        <tr>
-            <th>Email Address</th>
-            <td><?php echo html_escape($contributor->email); ?></td>
-        </tr>
-        <tr>
-            <th>IP Address</th>
-            <td><?php echo $contributor->getDottedIpAddress(); ?></td>
-        </tr>
-    </table>
-    <h2>Custom Metadata</h2>
-    <table>
-        <?php foreach ($customMetadata as $metadataName => $metadataValue): ?>
-        <tr>
-            <th><?php echo html_escape($metadataName); ?></th>
-            <td><?php echo html_escape($metadataValue); ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+
+    <div id='contribution-basic-user-info'>
+    <p>Basic user info</p>
+    </div>
+    
+    <div id='contribution-profile-info'>
+    
+    <p>If User Profiles installed and setup for Contribution, that user profile info here</p>
+    
+    </div>
+    
+    <div id='contribution-user-contributions'>
+    <p>List of user's contributions here</p>
+    </div>
 </div>
 <?php echo foot(); ?>

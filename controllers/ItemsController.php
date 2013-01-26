@@ -9,5 +9,4 @@ class Contribution_ItemsController extends Omeka_Controller_AbstractActionContro
         $this->_browseRecordsPerPage = get_option('per_page_admin');        
     }
     
-    
 }
