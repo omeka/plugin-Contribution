@@ -32,11 +32,16 @@ echo $this->partial('contribution-navigation.php');
     <div id='contribution-user-contributions'>
         <?php foreach($items as $item): ?>
         <?php set_current_record('item', $item->Item); ?>
-        <div>
-        <?php echo link_to_item(); ?>
-        <?php echo metadata('item', 'added'); ?>
-        <?php echo files_for_item();?>
-        </div>        
+        <section class="four columns omega">
+            <h2><?php echo link_to_item(); ?></h2>
+            <?php
+            echo item_image_gallery(
+                array('linkWrapper' => array('class' => 'admin-thumb panel')),
+                'square_thumbnail', true);
+            ?>
+            <?php echo all_element_texts('item'); ?>
+            <div style="clear:both"></div>
+        </section>   
         
         <?php endforeach; ?>
 

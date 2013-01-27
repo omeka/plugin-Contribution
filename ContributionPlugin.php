@@ -206,14 +206,15 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $acl = $args['acl'];
         $acl->addResource('Contribution_Contribution');
-        $acl->allow(array('super', 'admin'), 'Contribution_Contribution');
-        $acl->allow(array('researcher', 'contributor', 'guest'), 'Contribution_Contribution', array('show', 'browse', 'contribute', 'thankyou', 'type-form', 'index'));
-        
-        
-        $acl->addResource('Contribution_Contributors');
-        $acl->addResource('Contribution_ContributorMetadata');
+        $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
+        $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou'));
+        $acl->addResource('Contribution_Items');
+        $acl->allow(null, 'Contribution_Items');
+        $acl->deny('guest', 'Contribution_Items');
         $acl->addResource('Contribution_Types');
+        $acl->allow(array('super', 'admin'), 'Contribution_Types');
         $acl->addResource('Contribution_Settings');
+        $acl->allow(array('super', 'admin'), 'Contribution_Settings');
     }
 
     /**
@@ -270,7 +271,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
            $nav[] = array(
                 'label' => __('Contribution'),
                 'uri' => url('contribution'),
-                'resource' => 'Contribution_Contributors',
+                'resource' => 'Contribution_Contribution',
                 'privilege' => 'browse'
            );
         return $nav;

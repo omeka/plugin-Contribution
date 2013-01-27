@@ -16,5 +16,8 @@ class Contribution_IndexController extends Omeka_Controller_AbstractActionContro
      */
     public function indexAction()
     {
+        if(!is_allowed('Contribution_Settings', 'edit')) {
+            $this->redirect('contribution/items');
+        }
     }
 }
