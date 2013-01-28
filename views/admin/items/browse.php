@@ -18,9 +18,6 @@ echo $this->partial('contribution-navigation.php');
 
 <?php
 echo flash();
-if (!has_loop_records('contribution_contributed_items')):
-    echo '<p>No one has contributed to the site yet.</p>';
-else:
 ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
     <ul class="quick-filter-wrapper">
@@ -77,7 +74,7 @@ else:
             <td><?php echo metadata($contributor, 'name');?>
                  
                  <?php if(!is_null($contributor->id)): ?>
-                 <?php if(is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id): ?>
+                 <?php if($contribItem->anonymous && (is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id)): ?>
                  <span>(<?php echo __('Anonymous'); ?>)</span>
                  <?php endif; ?>
                  <a href='<?php echo $contributorUrl; ?>'>Info and contributions</a>
@@ -102,7 +99,6 @@ else:
         <?php endforeach; ?>
         </tbody>
     </table>
-<?php endif; ?>
 </div>
 
 <?php echo foot(); ?>
