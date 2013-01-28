@@ -26,14 +26,19 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user = current_user();
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
                 
+        $contribItems = array();
         if(!empty($_POST)) {            
             foreach($_POST['contribution_public'] as $id=>$value) {
                 $contribItem = $contribItemTable->find($id);
                 $contribItem->public = $value;
+                $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
                 $contribItem->save();
+                $contribItems[] = $contribItem;
             }
+        } else {
+            $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
         }
-        $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
+        
         $this->view->contrib_items = $contribItems;
         
     }

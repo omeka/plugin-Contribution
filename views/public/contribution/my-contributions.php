@@ -5,7 +5,8 @@
     <table>
         <thead>
             <tr>
-                <th>Make public?</th>
+                <th>Public?</th>
+                <th>Anonymous</th>
                 <th>Item</th>
                 <th>Added</th>
             </tr>
@@ -16,6 +17,8 @@
             <tr>
                 <td><?php echo $this->formCheckbox("contribution_public[{$contribItem->id}]", null, array('checked'=>$contribItem->public) ); ?>
                 </td>
+                <td><?php echo $this->formCheckbox("contribution_anonymous[{$contribItem->id}]", null, array('checked'=>$contribItem->anonymous) ); ?>
+                </td>                
                 <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
                 <td><?php echo metadata($item, 'added'); ?></td>
             

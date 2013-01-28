@@ -211,6 +211,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl->addResource('Contribution_Items');
         $acl->allow(null, 'Contribution_Items');
         $acl->deny('guest', 'Contribution_Items');
+        $acl->deny(array('researcher', 'contributor'), 'Contribution_Items', 'view-anonymous');
         $acl->addResource('Contribution_Types');
         $acl->allow(array('super', 'admin'), 'Contribution_Types');
         $acl->addResource('Contribution_Settings');
@@ -439,38 +440,22 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     
    public function filterItemCitation($cite,$args){
-       $item = $args['item'];
-       
-       if(contribution_get_item_contributor($item)){
-         $name = contribution_get_item_contributor($item);        
-
-       if(contributor_option($item->id) < 1){       
-
-        $creator    = $name->name;
-       } else {
-           $creator = "Anonymous";
-       }
-            $title      = metadata('item',array('Dublin Core', 'Title'));
-            $siteTitle  = strip_formatting(option('site_title'));
-            $itemId     = $item->id;
-            $accessDate = date('F j, Y');
-            $uri        = html_escape(record_url($item));
-
-            $cite = '';
-            if ($creator) {
-                $cite .= "$creator, ";
-            }
-            if ($title) {
-                $cite .= "&#8220;$title,&#8221; ";
-            }
-            if ($siteTitle) {
-                $cite .= "<em>$siteTitle</em>, ";
-            }
-            $cite .= "accessed $accessDate, ";
-            $cite .= "$uri.";
-          
-  
-       }
+        $item = $args['item'];
+        $contribItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+        $title      = metadata('item',array('Dublin Core', 'Title'));
+        $siteTitle  = strip_formatting(option('site_title'));
+        $itemId     = $item->id;
+        $accessDate = date('F j, Y');
+        $uri        = html_escape(record_url($item));
+        
+        $cite = $contribItem->Contributor->name . ", ";
+            $cite .= "&#8220;$title,&#8221; ";
+        if ($siteTitle) {
+            $cite .= "<em>$siteTitle</em>, ";
+        }
+        $cite .= "accessed $accessDate, ";
+        $cite .= "$uri.";
+        
        
        return $cite;
    }
