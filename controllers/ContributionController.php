@@ -21,6 +21,23 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $this->_forward('contribute');
     }
     
+    public function myContributionsAction()
+    {
+        $user = current_user();
+        $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
+                
+        if(!empty($_POST)) {            
+            foreach($_POST['contribution_public'] as $id=>$value) {
+                $contribItem = $contribItemTable->find($id);
+                $contribItem->public = $value;
+                $contribItem->save();
+            }
+        }
+        $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
+        $this->view->contrib_items = $contribItems;
+        
+    }
+    
     /**
      * Action for main contribution form.
      */

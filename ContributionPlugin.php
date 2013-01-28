@@ -207,7 +207,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl = $args['acl'];
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
-        $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou'));
+        $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions'));
         $acl->addResource('Contribution_Items');
         $acl->allow(null, 'Contribution_Items');
         $acl->deny('guest', 'Contribution_Items');
