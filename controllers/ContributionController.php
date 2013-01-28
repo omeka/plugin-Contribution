@@ -30,8 +30,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         if(!empty($_POST)) {            
             foreach($_POST['contribution_public'] as $id=>$value) {
                 $contribItem = $contribItemTable->find($id);
+                if($value) {
+                    $contribItem->public = true;
+                } else {
+                    $contribItem->makeNotPublic();
+                }
                 $contribItem->public = $value;
                 $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
+                
                 $contribItem->save();
                 $contribItems[] = $contribItem;
             }

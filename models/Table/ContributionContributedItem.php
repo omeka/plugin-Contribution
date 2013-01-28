@@ -129,6 +129,10 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
         $select->join(array($itemAlias=>$db->Item), "$userAlias.id = $itemAlias.owner_id", array());
         $select->join(array($contribItemAlias=>$db->ContributionContributedItem), "$contribItemAlias.item_id = $itemAlias.id", array());
         $select->where("$userAlias.id = $itemAlias.owner_id");
+        if(!is_allowed('Contribution_Items', 'view-anonymous')) {
+            $select->where("$contribItemAlias.anonymous != 1");
+        }
+        
         $select->reset(Zend_Db_Select::COLUMNS);
         $select->from(array(), $userTable->_getColumnPairs());
         $pairs = $this->getDb()->fetchPairs($select);

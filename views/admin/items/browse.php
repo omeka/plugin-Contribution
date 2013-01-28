@@ -74,7 +74,16 @@ else:
         ?>
         <tr>
 
-            <td><?php echo metadata($contributor, 'name');?> <a href='<?php echo $contributorUrl; ?>'>Contribution info</a></td>
+            <td><?php echo metadata($contributor, 'name');?>
+                 
+                 <?php if(!is_null($contributor->id)): ?>
+                 <?php if(is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id): ?>
+                 <span>(<?php echo __('Anonymous'); ?>)</span>
+                 <?php endif; ?>
+                 <a href='<?php echo $contributorUrl; ?>'>Info and contributions</a>
+                 <?php endif; ?>             
+            </td>
+            
             <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
             <?php 
                 if ($item->public) {

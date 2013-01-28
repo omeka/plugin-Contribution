@@ -13,13 +13,14 @@ class Contribution_ContributorsController extends Omeka_Controller_AbstractActio
 {
     public function init()
     {
-        $this->_helper->db->setDefaultModelName('User');
+      //  $this->_helper->db->setDefaultModelName('User');
     }
 
     
     public function showAction()
     {
-        $user = $this->_helper->db->findById();
+        $id = $this->getParam('id');
+        $user = $this->_helper->db->getTable('User')->find($id);
         $this->view->contributor = $user;
         $items = $this->_helper->db->getTable('ContributionContributedItem')->findBy(array('contributor'=>$user->id));
         $this->view->items = $items;
