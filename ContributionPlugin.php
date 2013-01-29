@@ -445,15 +445,21 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     
    public function filterItemCitation($cite,$args){
         $item = $args['item'];
+        if(!$item) {
+            return $cite;
+        } 
         $contribItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+        if(!$contribItem) {
+            return $cite;
+        }
         $title      = metadata('item',array('Dublin Core', 'Title'));
         $siteTitle  = strip_formatting(option('site_title'));
         $itemId     = $item->id;
         $accessDate = date('F j, Y');
-        $uri        = html_escape(record_url($item));
+        $uri        = html_escape(record_url($item, 'show', true));
         
         $cite = $contribItem->Contributor->name . ", ";
-            $cite .= "&#8220;$title,&#8221; ";
+        $cite .= "&#8220;$title,&#8221; ";
         if ($siteTitle) {
             $cite .= "<em>$siteTitle</em>, ";
         }

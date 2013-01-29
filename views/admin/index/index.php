@@ -18,25 +18,40 @@ echo $this->partial('contribution-navigation.php');
     <?php contribution_check_captcha(); ?>
     <div id="getting-started">
     <h2>Getting Started</h2>
-    <p>A basic contribution form is installed and ready to ask users to submit a Story or Image type, and to include their name and email address. If you want to modify the form, follow the steps below.</p>  
+    <p>A basic contribution form is installed and ready to ask users to submit a Story or Image type, and to include their name and email address. If you want to modify the form, follow the steps below.</p>
+    <p>While an account exists for all contributors, they make make any contribution anonymously. Only the admin and super roles can see the full information.</p>
+    <p>Contributors can make any contribution public or not. Non-public contributions cannot be made publicly available on the site, but they are visible to the super, admin, contributor, and researcher roles, as well as to the contributors themselves.</p>  
     <dl>
-        <dt>1. Modify the contribution form:</dt>
+        <dt>1. Set up Guest User information:</dt>
         <dd>
-            <ul style="width: 100%;">
-                <li>Choose item types you wish visitors to share in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
-                <li>Pick the fields you want users to complete by editing each item type in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
-                <li>Create questions about contributors in <a href="<?php echo url('contribution/contributor-metadata'); ?>">Contributor Questions</a>.</li>
+            <p>To make repeat contributions easier, a reusable "Guest User" account is created for contributors. Configure Guest Users, with the following suggestions.</p>
+            <ul>            
+            <li>Let visitors know a bit about how their contributions will be used and why they are so valuable in the "Registration Features" information.</li>
+            <li>It is easiest to contribute if administrator approval is not required.</li>
+            <li>Additional contribution-specific information for guest users can be created here.</li>
             </ul>
         </dd>
-        <dt>2. Configure settings for submitting contributions:</dt>
+    
+        <dt>2. Modify the contribution form:</dt>
         <dd>
-            <ul style="width: 100%;">
-                <li>Set the terms of service for contributing to the site in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
-                <li>Set up an auto-generated email to send to all contributors after they submit their contribution in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
-                <li>Specify a collection for new contributed items in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
+            <ul>
+                <li>Choose item types you wish visitors to share, and customize the fields they should use, in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
+                <?php if(plugin_is_active('UserProfiles')):?>
+                <li>Set up profile information you would like from your contributors by setting up a user profiles type for contributors.</li>
+                <?php else:?>
+                <li>The optional User Profiles plugin lets you set up additional information you would like to ask from your contributors. To use those features, please install that, then return here for additional guidance.</li>
+                <?php endif; ?>
             </ul>
         </dd>
-        <dt>3. Browse contributors' names, emails, and items in <a href="<?php echo url('contribution/contributors'); ?>">Contributors</a>.</dt>
+        <dt>3. Configure the <a href="<?php echo url('contribution/settings'); ?>">submission settings</a> for contributions:</dt>
+        <dd>
+            <ul>
+                <li>Set the terms of service for contributing to the site.</li>
+                <li>Set up an auto-generated email to send to all contributors after they submit their contribution.</li>
+                <li>Specify a collection for new contributed items.</li>
+            </ul>
+        </dd>
+        <dt>4. Browse contributions and their status, with links to more contributor information, in <a href="<?php echo url('contribution/items'); ?>">Contributions</a>.</dt>
     </dl>
     </div>
 </div>
