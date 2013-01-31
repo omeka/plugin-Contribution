@@ -25,6 +25,9 @@ enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_pag
     <h1><?php echo $head['title']; ?></h1>
 
     <?php if(!$user = current_user()) :?>
+        <?php $session = new Zend_Session_Namespace;
+              $session->redirect = absolute_url();
+        ?>
         <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>        
     <?php else: ?>
         <form method="post" action="" enctype="multipart/form-data">

@@ -39,7 +39,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_navigation_main',
         'public_navigation_main',
         'simple_vocab_routes',
-        'item_citation'
+        'item_citation',
+        'guest_user_links'
         );
 
     protected $_options = array(
@@ -56,7 +57,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookInstall()
     {
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_types` (
+        $db = $this->_db;
+        $sql = "CREATE TABLE IF NOT EXISTS `$db->ContributionType` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
@@ -66,7 +68,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_type_elements` (
+        $sql = "CREATE TABLE IF NOT EXISTS `$db->ContributionTypeElement` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `type_id` INT UNSIGNED NOT NULL,
             `element_id` INT UNSIGNED NOT NULL,
@@ -77,7 +79,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-
+/*
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributors` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `name` VARCHAR(255) NOT NULL,
@@ -86,8 +88,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             PRIMARY KEY (`id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributed_items` (
+*/
+        $sql = "CREATE TABLE IF NOT EXISTS `$db->ContributionContributedItem` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_id` INT UNSIGNED NOT NULL,
             `contributor_id` INT UNSIGNED NOT NULL,
@@ -97,7 +99,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-
+/*
         $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_fields` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `prompt` VARCHAR(255) NOT NULL,
@@ -118,7 +120,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
         $this->_createDefaultContributionTypes();
-
+*/
     }
 
     /**
@@ -130,13 +132,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         foreach ($this->_options as $option) {
             delete_option($option);
         }
-
+        $db = $this->_db;
         // Drop all the Contribution tables
         $sql = "DROP TABLE IF EXISTS
-            `{$this->_db->prefix}contribution_types`,
-            `{$this->_db->prefix}contribution_type_elements`,
+            `$db->ContributionType`,
+            `$db->ContributionTypeElement`,
             `{$this->_db->prefix}contribution_contributors`,
-            `{$this->_db->prefix}contribution_contributed_items`,
+            `$db->ContributionContributedItem`,
             `{$this->_db->prefix}contribution_contributor_fields`,
             `{$this->_db->prefix}contribution_contributor_values`;";
         $this->_db->query($sql);
@@ -152,42 +154,59 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             // Clean up old options
             delete_option('contribution_plugin_version');
             delete_option('contribution_db_migration');
-
+        
             $emailSender = get_option('contribution_contributor_email');
             if (!empty($emailSender)) {
                 set_option('contribution_email_sender', $emailSender);
             }
-
+        
             $pagePath = get_option('contribution_page_path');
             if ($pagePath = 'contribution/') {
                 delete_option('contribution_page_path');
             } else {
                 set_option('contribution_page_path', trim($pagePath, '/'));
             }
-
+        
             // Since this is an upgrade from an old version, we need to install
             // all our tables.
             $this->install();
+        
+        }
+        
+        if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
 
-            return;
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            
+            $this->_db->query($sql);            
+            $sql = "ALTER TABLE `$db->ContributionTypeElement` ADD `long_text` BOOLEAN DEFAULT TRUE";            
+            $this->_db->query($sql);            
+            
+            //first, convert all the contributors into real Guest Users
+            //keep a map between the contributor id and the new User id
+            $sql = "SELECT DISTINCT * FROM `$db->ContributionContributor`";
+            $contributorsData = $db->query($sql)->fetchAll();
+            $map = $this->_contributorsToGuestUsers($contributorsData);
+            
+            //second, use the map to loop through the contributed items, dig up the item, and set
+            //the new owner on the item
+            $sql = "SELECT DISTINCT * FROM `$db->ContributionContributedItem`";
+            $contributedItemsData = $db->query($sql)->fetchAll();
+            $this->_mapOwners($contributedItemsData, $map); 
+            
+            //third, update types_elements by looking up whether the element datatype is 'Text'
+            //if so, long_text = true. else false
+            //or, rather, since that data is no longer in the database since they've upgraded to 2.0, 
+            //bet on everything being long_text!
+            
+            $sql = "SELECT DISTINCT * FROM `$db->ContributionTypeElement`";
+            $contributionTypeElements = $db->query($sql)->fetchAll();            
+            foreach($contributionTypeElements as $typeElement) {
+                $typeElement->long_text = true;
+                $typeElement->save();
+            }
+            
+            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
-        // Switch statement for newer versions
-        switch ($oldVersion) {
-        case '2.0alpha':
-            $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributor_fields` DROP `name`";
-            $this->_db->query($sql);
-        case '2.0beta':
-            $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributors` MODIFY `ip_address` VARBINARY(128) NOT NULL";
-            $this->_db->query($sql);
-        }
-        
-        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_contributed_items` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
-    
-        $this->_db->query($sql);
-        
-        $sql = "ALTER TABLE `{$this->_db->prefix}contribution_type_elements` ADD `long_text` BOOLEAN NULL";
-        
-        $this->_db->query($sql);
     }
 
     public function hookAdminAppendToPluginUninstallMessage()
@@ -208,6 +227,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
         $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions'));
+        $acl->allow(null, 'Contribution_Contribution', 'contribute');
         
         $acl->addResource('Contribution_Contributors');
         $acl->allow(null, 'Contribution_Contributors');
@@ -470,6 +490,15 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
        return $cite;
    }
    
+    public function filterGuestUserLinks($nav)
+    {
+        $nav['Contribution'] = array('label'=>'My Contributions',
+                                     'uri'=> url('contribution/contribution/my-contributions')                
+                                    );
+        
+        return $nav;
+    } 
+   
     private function _adminBaseInfo($args) 
     {
         
@@ -495,9 +524,47 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         
     }
     
+    private function _contributorsToGuestUsers($contributorsData)
+    {
+        $map = array(); //contributor->id => $user->id
+        foreach($contributorsData as $index=>$contributor) {
+            $user = new User();
+            $user->email = $contributor['email'];
+            $user->name = $contributor['name'];
+            //make sure username is 6 chars long and unique
+            //base it on the email to lessen character restriction problems
+            $explodedEmail = explode('@', $user->email);
+            $username = $explodedEmail[0];
+            str_replace('.', '', $username);
+            if(strlen($username) < 6) {
+                $user->username = $username . "$index$index$index$index$index";
+            }
+            $user->active = true;
+            $user->role = 'guest';
+            $user->setPassword($user->email);
+            $user->save();
+            $map[$contributor->id] = $user->id;
+            $activation = UsersActivations::factory($user);
+            $activation->save();
+            release_object($user);
+            release_object($activation);
+        }        
+        return $map;
+    }    
    
-   public function pluginOptions()
-   {
+    public function _mapOwners($contribItemData, $map)
+    {
+        $itemTable = $this->_db->getTable('Item');
+        foreach($contribItemData as $contribItem) {
+            $item = $itemTable->find($contribItem['item_id']);
+            $item->owner_id = $map[$contribItem['contributor_id']];
+            $item->save();
+            release_object($item);
+        }
+    }
+    
+    public function pluginOptions()
+    {
         return $this->_options;
-   }
+    }
 }

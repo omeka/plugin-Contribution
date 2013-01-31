@@ -15,11 +15,10 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <?php contribution_check_captcha(); ?>
     <div id="getting-started">
     <h2>Getting Started</h2>
     <p>A basic contribution form is installed and ready to ask users to submit a Story or Image type, and to include their name and email address. If you want to modify the form, follow the steps below.</p>
-    <p>While an account exists for all contributors, they make make any contribution anonymously. Only the admin and super roles can see the full information.</p>
+    <p>While an account exists for all contributors, they can make any contribution anonymously. Only the admin and super roles can see the full information.</p>
     <p>Contributors can make any contribution public or not. Non-public contributions cannot be made publicly available on the site, but they are visible to the super, admin, contributor, and researcher roles, as well as to the contributors themselves.</p>  
     <dl>
         <dt>1. Set up Guest User information:</dt>
