@@ -172,8 +172,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->install();
         
         }
-        
-        if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
+        if(true) {
+        //if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
 
             $db = $this->_db;
             $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            
@@ -198,8 +198,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             //or, rather, since that data is no longer in the database since they've upgraded to 2.0, 
             //bet on everything being long_text!
             
-            $sql = "SELECT DISTINCT * FROM `$db->ContributionTypeElement`";
-            $contributionTypeElements = $db->query($sql)->fetchAll();            
+            $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
                 $typeElement->save();
@@ -528,6 +527,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $map = array(); //contributor->id => $user->id
         foreach($contributorsData as $index=>$contributor) {
+            debug(print_r($contributor, true));
             $user = new User();
             $user->email = $contributor['email'];
             $user->name = $contributor['name'];
@@ -535,15 +535,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             //base it on the email to lessen character restriction problems
             $explodedEmail = explode('@', $user->email);
             $username = $explodedEmail[0];
-            str_replace('.', '', $username);
-            if(strlen($username) < 6) {
-                $user->username = $username . "$index$index$index$index$index";
-            }
+            $username = str_replace('.', '', $username);
+            $user->username = $username;
             $user->active = true;
             $user->role = 'guest';
             $user->setPassword($user->email);
             $user->save();
-            $map[$contributor->id] = $user->id;
+            $map[$contributor['id']] = $user->id;
             $activation = UsersActivations::factory($user);
             $activation->save();
             release_object($user);
