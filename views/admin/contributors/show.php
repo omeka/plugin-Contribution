@@ -24,9 +24,12 @@ echo $this->partial('contribution-navigation.php');
     </div>
     
     <div id='contribution-profile-info'>
-    
-    <p>If User Profiles installed and setup for Contribution, that user profile info here</p>
-    
+        <?php if(plugin_is_active('UserProfiles')): ?>
+        <?php 
+            $this->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
+            echo $this->linkToOwnerProfile(array('owner'=>$contributor, 'text'=>"Profile: "));    
+        ?>
+        <?php endif; ?>
     </div>
     
     <div id='contribution-user-contributions'>
