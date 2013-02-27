@@ -74,21 +74,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `element_id` INT UNSIGNED NOT NULL,
             `prompt` VARCHAR(255) NOT NULL,
             `order` INT UNSIGNED NOT NULL,
+            `long_text` BOOLEAN DEFAULT TRUE,
             PRIMARY KEY (`id`),
             UNIQUE KEY `type_id_element_id` (`type_id`, `element_id`),
             KEY `order` (`order`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-/*
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributors` (
-            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `name` VARCHAR(255) NOT NULL,
-            `email` VARCHAR(255) NOT NULL,
-            `ip_address` VARBINARY(128) NOT NULL,
-            PRIMARY KEY (`id`)
-            ) ENGINE=MyISAM;";
-        $this->_db->query($sql);
-*/
+
         $sql = "CREATE TABLE IF NOT EXISTS `$db->ContributionContributedItem` (
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_id` INT UNSIGNED NOT NULL,
@@ -99,28 +91,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
-/*
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_fields` (
-            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `prompt` VARCHAR(255) NOT NULL,
-            `type` ENUM('Text', 'Tiny Text') NOT NULL,
-            `order` INT UNSIGNED NOT NULL,
-            PRIMARY KEY (`id`),
-            KEY `order` (`order`)
-            ) ENGINE=MyISAM;";
-        $this->_db->query($sql);
 
-        $sql = "CREATE TABLE IF NOT EXISTS `{$this->_db->prefix}contribution_contributor_values` (
-            `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
-            `field_id` INT UNSIGNED NOT NULL,
-            `contributor_id` INT UNSIGNED NOT NULL,
-            `value` TEXT NOT NULL,
-            PRIMARY KEY (`id`),
-            UNIQUE KEY `contributor_id_field_id` (`contributor_id`, `field_id`)
-            ) ENGINE=MyISAM;";
-        $this->_db->query($sql);
         $this->_createDefaultContributionTypes();
-*/
+        
     }
 
     /**
@@ -172,8 +145,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->install();
         
         }
-        if(true) {
-        //if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
+        if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
 
             $db = $this->_db;
             $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            
@@ -203,7 +175,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 $typeElement->long_text = true;
                 $typeElement->save();
             }
-            
+            //change contributors to real guest users
+            Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
     }
@@ -425,12 +398,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $textElement->element_id = 50;
         $textElement->prompt = 'Title';
         $textElement->order = 1;
+        $textElement->long_text = false;
         $textElement->save();
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
         $textElement->element_id = 1;
         $textElement->prompt = 'Story Text';
         $textElement->order = 2;
+        $textElement->long_text = true;
         $textElement->save();
 
         $imageType = new ContributionType;
@@ -444,6 +419,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $descriptionElement->element_id = 41;
         $descriptionElement->prompt = 'Image Description';
         $descriptionElement->order = 1;
+        $descriptionElement->long_text = true;
         $descriptionElement->save();
     }
     
