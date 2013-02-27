@@ -1,5 +1,5 @@
 <?php
-class UserProfilesImportContribution extends Omeka_Job_AbstractJob
+class ContributionImportUsers extends Omeka_Job_AbstractJob
 {
     public function perform()
     {

@@ -152,24 +152,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_db->query($sql);            
             $sql = "ALTER TABLE `$db->ContributionTypeElement` ADD `long_text` BOOLEAN DEFAULT TRUE";            
             $this->_db->query($sql);            
-            
-            //first, convert all the contributors into real Guest Users
-            //keep a map between the contributor id and the new User id
-            $sql = "SELECT DISTINCT * FROM `$db->ContributionContributor`";
-            $contributorsData = $db->query($sql)->fetchAll();
-            $map = $this->_contributorsToGuestUsers($contributorsData);
-            
-            //second, use the map to loop through the contributed items, dig up the item, and set
-            //the new owner on the item
-            $sql = "SELECT DISTINCT * FROM `$db->ContributionContributedItem`";
-            $contributedItemsData = $db->query($sql)->fetchAll();
-            $this->_mapOwners($contributedItemsData, $map); 
-            
-            //third, update types_elements by looking up whether the element datatype is 'Text'
-            //if so, long_text = true. else false
-            //or, rather, since that data is no longer in the database since they've upgraded to 2.0, 
-            //bet on everything being long_text!
-            
+                       
             $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
