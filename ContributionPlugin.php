@@ -159,7 +159,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 $typeElement->save();
             }
             //change contributors to real guest users
-            Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
+            
+            //uncomment the job if upgrade timesout
+            //Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
+            $import = new ContributionImportUsers(array()); //comment this out if upgrade timesout
+            $import->perform(); //comment this out if upgrade timesout
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
     }

@@ -64,6 +64,7 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
     
     private function _mapUsersToItems($userContributorMap)
     {
+        $db=get_db();        
         foreach($userContributorMap as $userId=>$contributorIds) {
             $contribIds = implode(',' , $contributorIds);
             //dig up the items contributed and set the owner
