@@ -86,7 +86,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_id` INT UNSIGNED NOT NULL,
             `contributor_id` INT UNSIGNED NOT NULL,
             `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
-            `contributor_posting` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
