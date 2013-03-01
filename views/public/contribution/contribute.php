@@ -35,7 +35,7 @@ enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_pag
                 <div class="inputs">
                     <label for="contribution-type">What type of item do you want to contribute?</label>
                     <?php $options = get_table_options('ContributionType' ); ?>
-                    <?php $typeId = $type ? $type->id : '' ; ?>
+                    <?php $typeId = isset($type) ? $type->id : '' ; ?>
                     <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
@@ -43,14 +43,8 @@ enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_pag
                 <?php if (isset($typeForm)): echo $typeForm; endif; ?>
                 </div>
             </fieldset>
-            <?php if($user): ?>
-                <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
-                <?php if(plugin_is_active('UserProfiles')) :?>
-                <!-- Display UserProfile info -->
-                <?php endif; ?>
-            <?php endif; ?>
+            <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
             <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
-                <?php if(isset($captchaScript)): ?><div id="captcha" class="inputs"><?php echo $captchaScript; ?></div><?php endif; ?>
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>

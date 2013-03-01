@@ -54,16 +54,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     public function contributeAction()
     {
-        $this->_captcha = $this->_setupCaptcha();
         
         if ($this->_processForm($_POST)) {
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
             $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
-            if ($this->_captcha) {
-                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
-            }
-            
             $typeId = null;
             if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                 $typeId = $postedType;
@@ -114,16 +109,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         $type = get_db()->getTable('ContributionType')->find($typeId);
         $this->view->type = $type;
-    }
-    
-    /**
-     * Creates the reCAPTCHA object and returns it.
-     * 
-     * @return Zend_Captcha_Recaptcha|null
-     */
-    protected function _setupCaptcha()
-    {
-        return Omeka_Captcha::getCaptcha();
     }
     
     /**

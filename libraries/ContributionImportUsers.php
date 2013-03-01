@@ -59,7 +59,8 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
         $this->_mapUsersToItems($userContributorMap);
         //we need to keep track of which contributors got mapped to which users
         //so that the UserProfiles import of contributor info can match people up
-        set_option('contribution_user_contributor_map', serialize($userContributorMap));     
+        $serialized = serialize($userContributorMap);
+        $putResult = file_put_contents(CONTRIBUTION_PLUGIN_DIR . '/upgrade_files/user_contributor_map.txt', $serialized);
     }
     
     private function _mapUsersToItems($userContributorMap)
