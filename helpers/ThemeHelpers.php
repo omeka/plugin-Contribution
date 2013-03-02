@@ -18,7 +18,7 @@
 
 function contribution_admin_header($subsections = array())
 {
-    $mainTitle = 'Contribution';
+    $mainTitle = __('Contribution');
     $subsections = array_merge(array($mainTitle), $subsections);
     $displayTitle = implode(' | ', $subsections);
     $head = array('title' => $displayTitle,

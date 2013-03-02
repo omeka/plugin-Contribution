@@ -5,9 +5,9 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-$id = html_escape($contributor->id);
+$name = html_escape($contributor->name);
 queue_css_file('contributors');
-contribution_admin_header(array('Contributors', "#$id"));
+contribution_admin_header(array('Contributors', "$name"));
 ?>
 
 
@@ -18,10 +18,6 @@ echo $this->partial('contribution-navigation.php');
 <div id="primary">
     <?php echo flash(); ?>
     <h2><?php echo $contributor->name; ?>'s contributions</h2>
-
-    <div id='contribution-basic-user-info'>
-    <p>Email: <?php echo metadata($contributor, 'email'); ?></p>
-    </div>
     
     <div id='contribution-profile-info'>
         <?php if(plugin_is_active('UserProfiles')): ?>
