@@ -88,12 +88,12 @@ echo flash();
             <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
             <?php 
                 if ($item->public) {
-                    $status = 'Public';
+                    $status = __('Public');
                 } else {
                     if($contribItem->public) {
-                        $status = 'Needs review';
+                        $status = __('Needs review');
                     } else {
-                        $status = 'Private contribution';
+                        $status = __('Private contribution');
                     }
                 }
             ?>

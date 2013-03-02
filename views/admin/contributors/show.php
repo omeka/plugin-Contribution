@@ -38,18 +38,18 @@ echo $this->partial('contribution-navigation.php');
         <section class="five columns omega contribution">
             <?php 
                 if ($item->Item->public) {
-                    $status = 'Public';
+                    $status = __('Public');
                 } else {
                     if($item->public) {
-                        $status = 'Needs review';
+                        $status = __('Needs review');
                     } else {
-                        $status = 'Private contribution';
+                        $status = __('Private contribution');
                     }
                 }
             ?>
         
             <h2><?php echo link_to_item(); ?></h2>
-            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? "Anonymous" : "";  ?></p>
+            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
             <?php
             echo item_image_gallery(
                 array('linkWrapper' => array('class' => 'admin-thumb panel')),
