@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Dashboard'));
+contribution_admin_header(array('Getting Started'));
 ?>
 
 <?php 
@@ -36,7 +36,7 @@ echo $this->partial('contribution-navigation.php');
             <ul>
                 <li>Choose item types you wish visitors to share, and customize the fields they should use, in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
                 <?php if(plugin_is_active('UserProfiles')):?>
-                <li>Set up profile information you would like from your contributors by setting up a user profiles type for contributors.</li>
+                <li>Set up profile information you would like from your contributors by setting up a <a href="<?php echo url('user-profiles');?>">user profiles type</a></li>
                 <?php else:?>
                 <li>The optional User Profiles plugin lets you set up additional information you would like to ask from your contributors. To use those features, please install that, then return here for additional guidance.</li>
                 <?php endif; ?>
