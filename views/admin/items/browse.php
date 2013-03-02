@@ -24,10 +24,14 @@ echo flash();
         <li><a href="#" tabindex="0"><?php echo __('Filter by contributor'); ?></a>
         
         <ul class="dropdown">
+            <?php if($contributors): ?>
             <li><a href="<?php echo url('contribution/items'); ?>"><?php echo __('View All') ?></a></li>
             <?php foreach($contributors as $id=>$name): ?>
             <li><a href="<?php echo url('contribution/items', array('contributor' => $id)); ?>"><?php echo $name; ?></a></li>
             <?php endforeach; ?>
+            <?php else: ?>
+            <li>(Too many contributors to list)</li>
+            <?php endif; ?>
         </ul>
         
     </ul>

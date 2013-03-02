@@ -12,10 +12,11 @@ class Contribution_ItemsController extends Omeka_Controller_AbstractActionContro
     
     public function browseAction()
     {
-        
         $db = get_db();
         $contributors = $db->getTable('ContributionContributedItem')->findAllContributors();
-        asort($contributors);
+        if($contributors) {
+            asort($contributors);
+        }
         $this->view->contributors = $contributors;
         parent::browseAction();        
     }

@@ -133,8 +133,16 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
             $select->where("$contribItemAlias.anonymous != 1");
         }
         
+        
+        $select->from(array(), "COUNT(DISTINCT($contribItemAlias.id))");
+        $count = $userTable->count($select);
+        if($count > 30) {
+            return false;
+        }
+        
         $select->reset(Zend_Db_Select::COLUMNS);
         $select->from(array(), $userTable->_getColumnPairs());
+        
         $pairs = $this->getDb()->fetchPairs($select);
         return $pairs;           
     }

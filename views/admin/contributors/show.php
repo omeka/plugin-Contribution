@@ -6,7 +6,7 @@
  * @package Contribution
  */
 $id = html_escape($contributor->id);
-
+queue_css_file('contributors');
 contribution_admin_header(array('Contributors', "#$id"));
 ?>
 
@@ -35,15 +35,27 @@ echo $this->partial('contribution-navigation.php');
     <div id='contribution-user-contributions'>
         <?php foreach($items as $item): ?>
         <?php set_current_record('item', $item->Item); ?>
-        <section class="four columns omega">
+        <section class="five columns omega contribution">
+            <?php 
+                if ($item->Item->public) {
+                    $status = 'Public';
+                } else {
+                    if($item->public) {
+                        $status = 'Needs review';
+                    } else {
+                        $status = 'Private contribution';
+                    }
+                }
+            ?>
+        
             <h2><?php echo link_to_item(); ?></h2>
+            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? "Anonymous" : "";  ?></p>
             <?php
             echo item_image_gallery(
                 array('linkWrapper' => array('class' => 'admin-thumb panel')),
                 'square_thumbnail', true);
             ?>
             <?php echo all_element_texts('item'); ?>
-            <div style="clear:both"></div>
         </section>   
         
         <?php endforeach; ?>
