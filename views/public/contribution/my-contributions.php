@@ -5,10 +5,10 @@
     <table>
         <thead>
             <tr>
-                <th>Public?</th>
-                <th>Anonymous</th>
-                <th>Item</th>
-                <th>Added</th>
+                <th><?php echo __('Public'); ?></th>
+                <th><?php echo __('Anonymous'); ?></th>
+                <th><?php echo __('Item'); ?></th>
+                <th><?php echo __('Added'); ?></th>
             </tr>
         </thead>
         <tbody>
