@@ -248,12 +248,21 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterAdminNavigationMain($nav)
     {          
-           $nav[] = array(
-                'label' => __('Contribution'),
-                'uri' => url('contribution'),
-                'resource' => 'Contribution_Contribution',
-                'privilege' => 'browse'
-           );
+        $contributionCount = get_db()->getTable('ContributionContributedItems')->count();
+        if($contributionCount > 0) {
+            $uri = url('contribution/items');
+            $label = __('Contributors');
+        } else {
+            $uri = url('contribution/index');
+            $label = __('Contribution');
+        }        
+        
+        $nav[] = array(
+            'label' => $label,
+            'uri' => $uri,
+            'resource' => 'Contribution_Contribution',
+            'privilege' => 'browse'
+        );
         return $nav;
     }
 
@@ -265,7 +274,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-       //$nav['Contribute an Item'] = contribution_contribute_url();
        $nav[] = array(
         'label' => __('Contribute an Item'),
         'uri'   => contribution_contribute_url(),
