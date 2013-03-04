@@ -171,4 +171,10 @@ SQL;
         }
         return $options;
     }
+    
+    public function getRecordUrl($action)
+    {
+        return url("contribution/types/$action/id/{$this->id}");
+        return array('controller' => 'contribution/types', 'action' => $action, 'id' => $this->id);
+    }
 }
