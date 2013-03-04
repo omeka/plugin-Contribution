@@ -134,10 +134,10 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
         }
         
         
-        $select->from(array(), "COUNT(DISTINCT($contribItemAlias.id))");
-        $count = $userTable->count($select);
+        $select->from(array(), "COUNT(DISTINCT('users.id'))");
+        $count = $db->fetchOne($select);
         if($count > 30) {
-            return false;
+            return $count;
         }
         
         $select->reset(Zend_Db_Select::COLUMNS);

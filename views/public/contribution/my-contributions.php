@@ -1,6 +1,6 @@
 <?php echo head(); ?>
 <div id="primary">
-
+<?php echo flash(); ?>
 <form method='post'>
     <table>
         <thead>

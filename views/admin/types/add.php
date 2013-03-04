@@ -14,7 +14,7 @@ if($itemType) {
 } else {
     $elements = array();
 }
-
+queue_css_file('contribution-type-form');
 contribution_admin_header(array('Types', 'Add a New Type'));
 ?>
 

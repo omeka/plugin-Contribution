@@ -44,7 +44,7 @@ echo $this->partial('contribution-navigation.php');
                 }
             ?>
         
-            <h2><?php echo link_to_item(); ?></h2>
+            <h2><?php echo link_to_item(null, array(), 'edit'); ?></h2>
             <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
             <?php
             echo item_image_gallery(

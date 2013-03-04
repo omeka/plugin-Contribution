@@ -38,7 +38,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $contribItem->public = $value;
                 $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
                 
-                $contribItem->save();
+                if($contribItem->save()) {
+                    $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
+                } else {
+                    $this->_helper->flashMessenger($contribItem->getErrors());
+                }
+                
                 $contribItems[] = $contribItem;
             }
         } else {

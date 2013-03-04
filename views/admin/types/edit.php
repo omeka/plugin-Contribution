@@ -13,8 +13,6 @@ $contributionTypeElements = $contribution_type->ContributionTypeElements;
 $typeName = html_escape($contribution_type->display_name);
 queue_css_file('contribution-type-form');
 
-//$promptInput = $this->formText('newElements[!!INDEX!!][prompt]', null, array('class' => 'textinput element-prompt'));
-//$elementSelect = contribution_select_element_for_type($contribution_type, 'newElements[!!INDEX!!][element_id]');
 $addNewRequestUrl = admin_url('contribution/types/add-new-element');
 $addExistingRequestUrl = admin_url('contribution/types/add-existing-element');
 $changeExistingElementUrl = admin_url('contribution/types/change-existing-element'); 
@@ -30,6 +28,7 @@ $js = "
     });                
     ";
 queue_js_string($js);
+queue_css_file('contribution-type-form');
 contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 ?>
 <?php //echo delete_button(null, 'delete-type', 'Delete this Type', array(), 'delete-record-form'); ?>

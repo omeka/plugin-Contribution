@@ -23,10 +23,10 @@ echo $this->partial('contribution-navigation.php');
     <dl>
         <dt>1. Set up Guest User information:</dt>
         <dd>
-            <p>To make repeat contributions easier, a reusable "Guest User" account is created for contributors. Configure Guest Users, with the following suggestions.</p>
+            <p>To make repeat contributions easier, a reusable "Guest User" account is created for contributors. <a href="<?php echo url('plugins/config?name=GuestUser'); ?>">Configure Guest Users</a>, with the following suggestions.</p>
             <ul>            
             <li>Let visitors know a bit about how their contributions will be used and why they are so valuable in the "Registration Features" information.</li>
-            <li>It is easiest to contribute if administrator approval is not required.</li>
+            <li>It is easiest to contribute if administrator approval is not required and you allow 20 minute instant access. To prevent spam, using ReCaptcha is recommended. </li>
             <li>Additional contribution-specific information for guest users can be created here.</li>
             </ul>
         </dd>

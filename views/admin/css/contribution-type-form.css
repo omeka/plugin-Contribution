@@ -1,3 +1,8 @@
 #add-type {
     float: right;
 }
+
+span.prompt {
+	padding-left: 10px;
+	
+}

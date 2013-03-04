@@ -40,6 +40,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'public_navigation_main',
         'simple_vocab_routes',
         'item_citation',
+        'item_search_filters',
         'guest_user_links'
         );
 
@@ -251,7 +252,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $contributionCount = get_db()->getTable('ContributionContributedItems')->count();
         if($contributionCount > 0) {
             $uri = url('contribution/items');
-            $label = __('Contributors');
+            $label = __('Contributed Items');
         } else {
             $uri = url('contribution/index');
             $label = __('Contribution');
@@ -297,6 +298,18 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         return $routes;
     }
 
+    public function filterItemSearchFilters($displayArray, $args)
+    {
+        $request_array = $args['request_array'];
+        if(isset($request_array['status'])) {
+            $displayArray['Status'] = $request_array['status'];
+        }
+        if(isset($request_array['contributor'])) {
+            $displayArray['Contributor'] = $this->_db->getTable('User')->find($request_array['contributor'])->name;
+        }
+        return $displayArray;
+    }
+    
     /**
      * Append Contribution search selectors to the advanced search page.
      *
@@ -444,7 +457,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $accessDate = date('F j, Y');
         $uri        = html_escape(record_url($item, 'show', true));
         
-        $cite = $contribItem->Contributor->name . ", ";
+        if($contribItem->anonymous) {
+            $cite = "Anonymous, ";
+        } else {
+            $cite = $contribItem->Contributor->name . ", ";
+        }
+        
         $cite .= "&#8220;$title,&#8221; ";
         if ($siteTitle) {
             $cite .= "<em>$siteTitle</em>, ";
