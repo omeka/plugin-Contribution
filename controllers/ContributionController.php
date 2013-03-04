@@ -372,7 +372,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             try {
                 $contributorMail->send();
             } catch (Zend_Mail_Exception $e) {
-                debug($e);
+                _log($e);
             }
         }
 
@@ -396,7 +396,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             try {
                 $adminMail->send();
             } catch (Zend_Mail_Exception $e) {
-                debug($e);
+                _log($e);
             }
         }
     }

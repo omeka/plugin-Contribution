@@ -28,7 +28,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'define_acl',
         'define_routes',
         'admin_append_to_plugin_uninstall_message',
-        'admin_append_to_advanced_search',
+        'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
         'item_browse_sql',
@@ -315,7 +315,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      *
      * @return string HTML
      */
-    public function hookAdminAppendToAdvancedSearch()
+    public function hookAdminItemsSearch()
     {
         $html = '<div class="field">';
         $html .= get_view()->formLabel('contributed', 'Contribution Status');
@@ -502,17 +502,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 }
                 $html .= "<p><strong>$publicMessage</strong></p>";
             }
-            
             return $html;
         }
-        
     }
     
     private function _contributorsToGuestUsers($contributorsData)
     {
         $map = array(); //contributor->id => $user->id
         foreach($contributorsData as $index=>$contributor) {
-            debug(print_r($contributor, true));
             $user = new User();
             $user->email = $contributor['email'];
             $user->name = $contributor['name'];

@@ -7,15 +7,17 @@
  */
 
 queue_js_file('contribution-public-form');
-queue_js_string('enableContributionAjaxForm("contribution/type-form");');
+$contributionPath = get_option('contribution_page_path');
+if(!$contributionPath) {
+    $contributionPath = 'contribution';
+}
 
 $head = array('title' => 'Contribute',
               'bodyclass' => 'contribution');
 echo head($head); ?>
-<?php queue_js_file('contribution-public-form'); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(url(get_option('contribution_page_path').'/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
 // ]]>
 </script>
 
