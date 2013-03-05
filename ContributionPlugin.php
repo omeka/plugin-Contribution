@@ -318,14 +318,17 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookAdminItemsSearch()
     {
         $html = '<div class="field">';
+        $html .= '<div class="two columns alpha">';
         $html .= get_view()->formLabel('contributed', 'Contribution Status');
-        $html .= '<div class="inputs">';
+        $html .= '</div>';
+        $html .= '<div class="inputs five columns omega">';
+        $html .= '<div class="input-block">';
         $html .= get_view()->formSelect('contributed', null, null, array(
            ''  => 'Select Below',
            '1' => 'Only Contributed Items',
            '0' => 'Only Non-Contributed Items'
         ));
-        $html .= '</div></div>';
+        $html .= '</div></div></div>';
         echo $html;
     }
 
