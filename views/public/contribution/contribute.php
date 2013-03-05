@@ -11,7 +11,7 @@ $contributionPath = get_option('contribution_page_path');
 if(!$contributionPath) {
     $contributionPath = 'contribution';
 }
-
+queue_css_file('form');
 $head = array('title' => 'Contribute',
               'bodyclass' => 'contribution');
 echo head($head); ?>
