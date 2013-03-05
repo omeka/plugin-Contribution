@@ -7,7 +7,7 @@ function enableContributionAjaxForm(url) {
         // Elements that should be hidden when there is no type form on the page.
         var elementsToHide = jQuery('#contribution-confirm-submit, #contribution-contributor-metadata');
         // Duration of hide/show animation.
-        var duration = 400;
+        var duration = 0;
 
         // Remove the noscript-fallback type submit button.
         jQuery('#submit-type').remove();
