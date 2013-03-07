@@ -7,8 +7,6 @@
  */
 
 $contributionTypeElements = $contribution_type->ContributionTypeElements;
-//$itemType = $contribution_type->ItemType;
-//$elements = $itemType->Elements;
 
 $typeName = html_escape($contribution_type->display_name);
 queue_css_file('contribution-type-form');
