@@ -29,12 +29,17 @@ class ContributionType extends Omeka_Record_AbstractRecord
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
 
+    protected function filterPostData($post)
+    {
+        if(empty($post['display_name'])) {
+            $itemType = $this->getDb()->getTable('ItemType')->find($post['item_type_id']);
+            $post['display_name'] = $itemType = $itemType->name;
+        }
+        return $post;
+    }
+    
     protected function _validate()
     {
-        if(empty($this->display_name)) {
-            $this->addError('display_name', 'You must provide a display name.');
-        }
-
         if(empty($this->item_type_id)) {
             $this->addError('item_type_id', 'You must select an item type.');
         }

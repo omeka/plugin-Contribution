@@ -29,8 +29,6 @@ queue_js_string($js);
 queue_css_file('contribution-type-form');
 contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
 ?>
-<?php //echo delete_button(null, 'delete-type', 'Delete this Type', array(), 'delete-record-form'); ?>
-
 
 <?php 
 echo $this->partial('contribution-navigation.php');

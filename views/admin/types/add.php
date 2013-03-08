@@ -15,14 +15,14 @@ if($itemType) {
     $elements = array();
 }
 
-$addNewRequestUrl = admin_url('contribution/types/add-new-element');
+$addNewRequestUrl = admin_url('contribution/types/add-existing-element');
 $addExistingRequestUrl = admin_url('contribution/types/add-existing-element');
 $changeExistingElementUrl = admin_url('contribution/types/change-existing-element');
 
 queue_js_file('contribution-types');
 $js = "
 jQuery(document).ready(function () {
-var addNewRequestUrl = '" . admin_url('contribution/types/add-new-element') . "'
+var addNewRequestUrl = '" . admin_url('contribution/types/add-existing-element') . "'
 var addExistingRequestUrl = '" . admin_url('contribution/types/add-existing-element') . "'
 var changeExistingElementUrl = '" . admin_url('contribution/types/change-existing-element') . "'
 Omeka.ContributionTypes.manageContributionTypes(addNewRequestUrl, addExistingRequestUrl, changeExistingElementUrl);

@@ -14,8 +14,10 @@
             )
         );
         echo "<span>Prompt: </span>";
-        echo $this->formText($element_prompt_name, $element_prompt_value);
+        echo $this->formText($element_prompt_name, $element_prompt_value, array('class'=>'prompt'));
         ?>
+        <span class='long-text'><?php echo __('Multiple rows'); ?></span>
+        <?php echo $this->formCheckbox($element_long_name, null);    ?>        
         <?php
         echo $this->formHidden(
             $element_order_name, $element_order_value,

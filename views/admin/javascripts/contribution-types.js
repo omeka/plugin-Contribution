@@ -102,7 +102,7 @@ Omeka.ContributionTypes = {};
         }
         
         function toggleElements(button) {
-            var elementsToRemove = $('#ContributionTypes_remove');
+            var elementsToRemove = $('#elements_to_remove');
             var removeElementLinkPrefix = 'remove-element-link-';
             var removeElementLinkId = button.getAttribute('id');
             if ($(button).hasClass('delete-element')) {
@@ -125,6 +125,15 @@ Omeka.ContributionTypes = {};
                     var elementId = removeElementLinkId.substring(removeElementLinkPrefix.length);
                     $(button).prevAll('.element-order').attr('name', 'elements[' + elementId + '][order]');
                 }
+                var removeIds = elementsToRemove.attr('value').split(',');
+                var elementId = removeElementLinkId.substring(removeElementLinkPrefix.length);
+                var atts = '';
+                for(var i=0; i<removeIds.length; i++) {
+                    if((removeIds[i] != elementId) && removeIds[i] != "") {
+                        atts += removeIds[i] + ','; 
+                    }
+                }
+                elementsToRemove.attr('value', atts);
                 $(button).parent().removeClass('deleted');
                 $(button).parent().next().removeClass('deleted');
                 $(button).next().toggle();

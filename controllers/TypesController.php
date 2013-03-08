@@ -68,6 +68,7 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
         $elementIdName = $stem .'[id]';
         $elementOrderName = $stem .'[order]';
         $elementPromptName = $stem . '[prompt]';
+        $elementLongName = $stem . '[long_text]';
         
         $item_type_id = $this->_getParam('itemTypeId');
         $this->view->assign(array('element_id_name' => $elementIdName,
@@ -77,6 +78,7 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
                 'element_order_value' => $elementOrder,
                 'element_prompt_name' => $elementPromptName,
                 'element_prompt_value' => $elementPromptValue,
+                'element_long_name' => $elementLongName,
                 'item_type_id' => $item_type_id 
         ));
     }
@@ -116,29 +118,47 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
     
     private function _processForm($record)
     {
+        $elementTable = $this->_helper->db->getTable('Element');
         $contributionElTable = $this->_helper->db->getTable('ContributionTypeElement');
         if ($this->getRequest()->isPost()) {
             try {
                 $record->setPostData($_POST);
                 if ($record->save()) {
-                    foreach($_POST['elements-to-add'] as $tempId=>$elementInfo) {
-                        $contributionEl = new ContributionTypeElement();
-                        $contributionEl->element_id = $elementInfo['id'];
-                        $contributionEl->prompt = $elementInfo['prompt'];
-                        $contributionEl->order = $elementInfo['order'];
-                        $contributionEl->long_text = $elementInfo['long_text'];
-                        $contributionEl->type_id = $record->id;
-                        $contributionEl->save();
+                    if(isset($_POST['elements-to-add'])) {
+                        foreach($_POST['elements-to-add'] as $tempId=>$elementInfo) {
+                            if(empty($elementInfo['prompt'])) {
+                                $elementInfo['prompt'] = $elementTable->find($elementInfo['id'])->name;
+                            }
+                            $contributionEl = new ContributionTypeElement();
+                            $contributionEl->element_id = $elementInfo['id'];
+                            $contributionEl->prompt = $elementInfo['prompt'];
+                            $contributionEl->order = $elementInfo['order'];
+                            $contributionEl->long_text = $elementInfo['long_text'];
+                            $contributionEl->type_id = $record->id;
+                            $contributionEl->save();
+                        }                        
                     }
+
+                    $toRemove = isset($_POST['elements_to_remove']) ? explode(',', $_POST['elements_to_remove']) : array();
                     
-                    foreach($_POST['elements'] as $id=>$info) {                    	
-                    	$contributionEl = $contributionElTable->find($id);
-                        $contributionEl->prompt = $info['prompt'];
-                        $contributionEl->order = $info['order'];                        
-                        $contributionEl->long_text = $info['long_text'];
-                        $contributionEl->save();
+                    foreach($_POST['elements'] as $id=>$elementInfo) {
+                        if(!in_array($id, $toRemove)) {
+                            $contributionEl = $contributionElTable->find($id);
+                            if(empty($elementInfo['prompt'])) {
+                                $elementInfo['prompt'] = $elementTable->find($contributionEl->element_id)->name;
+                            }  
+                            $contributionEl->prompt = $elementInfo['prompt'];
+                            $contributionEl->order = $elementInfo['order'];                        
+                            $contributionEl->long_text = $elementInfo['long_text'];
+                            $contributionEl->save();
+                        }
                     }
-                    
+                    foreach($toRemove as $contribElId) {
+                        $contribEl =$contributionElTable->find($contribElId);
+                        if($contribEl) {
+                            $contribEl->delete();    
+                        } 
+                    }
                     $this->_helper->redirector('browse');
                     return;
                 }

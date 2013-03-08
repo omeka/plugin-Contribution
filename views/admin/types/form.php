@@ -107,7 +107,7 @@
                 </div>
             </li>
         </ul>
-        <?php // echo $this->form->getElement(Omeka_Form_ItemTypes::REMOVE_HIDDEN_ELEMENT_ID); ?>
+        <?php echo $this->formHidden('elements_to_remove'); ?>
     </div>
 </section>
 
