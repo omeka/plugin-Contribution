@@ -41,7 +41,7 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     {
         $owner = $this->Item->getOwner();
         $user = current_user();
-        if($user->id == $owner->id) {
+        if($user && $user->id == $owner->id) {
             return $owner;
         }
         //mimic an actual user, but anonymous if user doesn't have access
