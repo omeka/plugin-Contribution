@@ -190,7 +190,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
 
-            $this->_linkItemToContributor($item, $contributor, $post);
+            $this->_linkItemToContributedItem($item, $contributor, $post);
             $user = current_user();
             $this->_sendEmailNotification($user->email, $item);
             return true;
@@ -274,7 +274,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
     }
 
-    protected function _linkItemToContributor($item, $contributor, $post)
+    protected function _linkItemToContributedItem($item, $contributor, $post)
     {
         $linkage = new ContributionContributedItem;
         $linkage->contributor_id = $contributor->id;

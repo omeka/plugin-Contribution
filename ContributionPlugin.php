@@ -444,9 +444,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
       }
     }  
 
-    public function hookAfterSaveItem($args)
+    public function hookAfterDeleteItem($args)
     {
-        $item = $args['item'];
+        $item = $args['record'];
         $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
         if($contributionItem) {
             $contributionItem->delete();
