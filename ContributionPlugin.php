@@ -393,6 +393,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     private function _createDefaultContributionTypes()
     {
+        $elementTable = $this->_db->getTable('Element');
         
         $storyType = new ContributionType;
         $storyType->item_type_id = 1;
@@ -402,14 +403,16 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $storyType->save();
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
-        $textElement->element_id = 50;
+        $dcTitleElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Title');
+        $textElement->element_id = $dcTitleElement->id;
         $textElement->prompt = 'Title';
         $textElement->order = 1;
         $textElement->long_text = false;
         $textElement->save();
         $textElement = new ContributionTypeElement;
         $textElement->type_id = $storyType->id;
-        $textElement->element_id = 1;
+        $itemTypeMetadataTextElement = $elementTable->findByElementSetNameAndElementName('Item Type Metadata', 'Text');
+        $textElement->element_id = $itemTypeMetadataTextElement->id;
         $textElement->prompt = 'Story Text';
         $textElement->order = 2;
         $textElement->long_text = true;
@@ -423,7 +426,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         $descriptionElement = new ContributionTypeElement;
         $descriptionElement->type_id = $imageType->id;
-        $descriptionElement->element_id = 41;
+        $dcDescriptionElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Description');
+        $descriptionElement->element_id = $dcDescriptionElement->id;
         $descriptionElement->prompt = 'Image Description';
         $descriptionElement->order = 1;
         $descriptionElement->long_text = true;
