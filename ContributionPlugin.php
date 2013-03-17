@@ -32,7 +32,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
         'item_browse_sql',
-        'before_save_item'
+        'before_save_item',
+        'after_delete_item'
     );
 
     protected $_filters = array(
@@ -429,7 +430,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $descriptionElement->save();
     }
     
-  public function hookBeforeSaveItem($args){
+    public function hookBeforeSaveItem($args){
       $item = $args['record'];
       if($item->exists()) {
           //prevent admins from overriding the contributer's assertion of public vs private
@@ -441,10 +442,18 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
               }
           }          
       }
-  }  
+    }  
 
+    public function hookAfterSaveItem($args)
+    {
+        $item = $args['item'];
+        $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+        if($contributionItem) {
+            $contributionItem->delete();
+        }
+    }
     
-   public function filterItemCitation($cite,$args){
+    public function filterItemCitation($cite,$args){
         $item = $args['item'];
         if(!$item) {
             return $cite;
@@ -474,7 +483,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         
        
        return $cite;
-   }
+    }
    
     public function filterGuestUserLinks($nav)
     {
