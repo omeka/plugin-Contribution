@@ -24,6 +24,8 @@ function enableContributionAjaxForm(url) {
                        form.show(duration, function() {
                            form.trigger('contribution-form-shown');
                            elementsToHide.show();
+                           //in case profile info is also being added, do the js for that form
+                           jQuery(form).trigger('omeka:elementformload');
                        });
                     });
                 }
