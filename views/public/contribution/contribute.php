@@ -54,7 +54,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <?php if (isset($typeForm)): echo $typeForm; endif; ?>
                 </div>
             </fieldset>
-            <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
+            
             <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>

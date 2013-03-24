@@ -56,7 +56,8 @@ jQuery(document).bind('omeka:elementformload', function (event) {
 });
 //]]>
 </script>
-
+    <?php $user = current_user(); ?>
+    <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
     <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
     <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
     <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
