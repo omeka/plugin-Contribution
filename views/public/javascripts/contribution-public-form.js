@@ -1,3 +1,8 @@
+
+function toggleProfileEdit() {
+    jQuery('div.contribution-userprofile').toggle();
+}
+
 function enableContributionAjaxForm(url) {
     jQuery(document).ready(function() {
         // Div that will contain the AJAX'ed form.
@@ -26,6 +31,7 @@ function enableContributionAjaxForm(url) {
                            elementsToHide.show();
                            //in case profile info is also being added, do the js for that form
                            jQuery(form).trigger('omeka:elementformload');
+                           jQuery('h2.contribution-userprofile').click(toggleProfileEdit);
                        });
                     });
                 }
@@ -33,3 +39,4 @@ function enableContributionAjaxForm(url) {
         });
     });
 }
+

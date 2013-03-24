@@ -7,3 +7,13 @@ div#contribution-type-form div.inputs {
 div#location_form {
 	margin-top: 12px;
 }
+
+/* User Profiles integration */
+
+h2.contribution-userprofile  {
+	cursor: pointer;
+}
+
+div.contribution-userprofile.exists {
+	display: none;
+}

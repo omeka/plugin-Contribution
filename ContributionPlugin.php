@@ -51,7 +51,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_email_recipients',
         'contribution_consent_text',
         'contribution_collection_id',
-        'contribution_default_type'
+        'contribution_default_type',
+        'contribution_user_profile_type'
     );
 
     /**

@@ -69,7 +69,6 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             if (in_array($optionName, $cnt->pluginOptions())) {
                 set_option($optionName, $optionValue);
             }
-            
         }
     }
     
@@ -121,6 +120,16 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             'description'  => 'The type that will be chosen for contributors by default.',
             'multiOptions' => $types
         ));
+        
+        if(plugin_is_active('UserProfiles')) {
+            $profileTypes = $this->_helper->db->getTable('UserProfilesType')->findPairsForSelectForm();
+            $form->addElementToEditGroup('select', 'contribution_user_profile_type', array(
+                'label' => 'Choose a profile type for contributors',
+                'description' => 'Configure the profile type under User Profiles',
+                'multiOptions' => $profileTypes        
+            ));
+        }
+        
        return $form;
     }
 }

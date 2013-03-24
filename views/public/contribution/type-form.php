@@ -36,7 +36,6 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php 
 //pull in the user profile form it is is set
 $profileTypeId = get_option('contribution_user_profile_type');
-$profileTypeId = 1;
 if($profileTypeId): ?>
 
 <?php 
@@ -58,13 +57,15 @@ jQuery(document).bind('omeka:elementformload', function (event) {
 //]]>
 </script>
 
-    <h2><?php echo  __('Edit your %s profile', $profileType->label); ?></h2>
+    <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
+    <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
     <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
     <?php 
     foreach($profileType->Elements as $element) {
         echo $this->profileElementForm($element, $profile);
     }
     ?>
+    </div>
 <?php endif; ?>
 
 <?php 

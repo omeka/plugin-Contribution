@@ -13,9 +13,8 @@ if(!$contributionPath) {
 }
 queue_css_file('form');
 
-//load of user profiles js if needed
-//if(get_option('contribution_user_profile_type')) {
-if(1 && plugin_is_active('UserProfiles')) {
+//load user profiles js and css if needed
+if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles') ) {
     queue_js_file('admin-globals');
     queue_js_file('tiny_mce', 'javascripts/vendor/tiny_mce');
     queue_js_file('elements');
