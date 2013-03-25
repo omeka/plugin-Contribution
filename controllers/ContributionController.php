@@ -147,11 +147,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
                 return false;
             }
-/*
-            if (!($contributor = $this->_processContributor(null, $post))) {
-                return false;
-            }
-  */          
+
             $itemMetadata = array('public'       => false,
                                   'featured'     => false,
                                   'item_type_id' => $itemTypeId);
@@ -189,13 +185,28 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
-
+            
+            $this->_processUserProfile($post);
+            
             $this->_linkItemToContributedItem($item, $contributor, $post);
             $user = current_user();
             $this->_sendEmailNotification($user->email, $item);
             return true;
         }
         return false;
+    }
+    
+    protected function _processUserProfile($post)
+    {
+        $profileTypeId = get_option('contribution_user_profile_type');
+        if($profileTypeId) {
+            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
+            if(!$profile) {
+                $profile = new UserProfilesProfile();
+            }    
+        }
+        $profile->setPostData($post);
+        $profile->save();
     }
     
     /**
@@ -226,52 +237,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             return $fileMetadata;
         }
         return array();
-    }
-
-    /**
-     * Deals with metadata about the item's contributor.
-     * 
-     *
-     * @param Item $item Contributed item.
-     * @param array $post POST array.
-     */
-    protected function _processContributor($item = null, $post)
-    {  
-
-    	//TODO: switch to using GuestUser, if available
-    	
-        $table = get_db()->getTable('ContributionContributor');
-        $email = $post['contributor-email'];
-        $name = $post['contributor-name'];
-        $ip = $this->getRequest()->getClientIp();
-
-        if (!($contributor = $table->findUnique($email, $name))) {
-            $contributor = new ContributionContributor;
-            $contributor->email = $email;
-            $contributor->name = $name;
-        }
-        $contributor->setDottedIpAddress($ip);
-        try {
-           
-            $contributor->save();
-            
-            //@TODO: move contributorMetadata to (optional) UserProfiles
-            $contributorMetadata = $post['ContributorFields'];
-            if(is_array($contributorMetadata)) {
-                foreach ($contributorMetadata as $fieldId => $value) {
-                    $valueModel = new ContributionContributorValue;
-                    $valueModel->field_id = $fieldId;
-                    $valueModel->contributor_id = $contributor->id;
-                    $valueModel->value = $value;
-                    $valueModel->save();
-                }
-            }
-
-            return $contributor;
-        } catch (Omeka_Validator_Exception $e) {
-            $this->flashValidationErrors($e);
-            return false;
-        }
     }
 
     protected function _linkItemToContributedItem($item, $contributor, $post)

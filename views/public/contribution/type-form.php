@@ -61,11 +61,13 @@ jQuery(document).bind('omeka:elementformload', function (event) {
     <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
     <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
     <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
+    <fieldset name="user-profiles">
     <?php 
     foreach($profileType->Elements as $element) {
         echo $this->profileElementForm($element, $profile);
     }
     ?>
+    </fieldset>
     </div>
 <?php endif; ?>
 
