@@ -24,10 +24,5 @@ class Contribution_ContributorsController extends Omeka_Controller_AbstractActio
         $this->view->contributor = $user;
         $items = $this->_helper->db->getTable('ContributionContributedItem')->findBy(array('contributor'=>$user->id));
         $this->view->items = $items;
-        
-        if(plugin_is_active('UserProfiles')) {
-            
-            
-        }
     }
 }

@@ -59,11 +59,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     public function contributeAction()
     {
-        
         if ($this->_processForm($_POST)) {
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
             $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
         } else {
+
             $typeId = null;
             if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                 $typeId = $postedType;
@@ -74,6 +74,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->_setupContributeSubmit($typeId);
                 $this->view->typeForm = $this->view->render('contribution/type-form.php');
             }
+            
+            
+            if(isset($this->_profile) && !$this->_profile->exists()) {
+                $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
+                return;
+            }            
         }
     }
     
@@ -114,6 +120,21 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         $type = get_db()->getTable('ContributionType')->find($typeId);
         $this->view->type = $type;
+        
+        //setup profile stuff, if needed
+        $profileTypeId = get_option('contribution_user_profile_type');
+        if($profileTypeId) {
+            $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
+            $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
+            $this->view->profileType = $profileType;
+            
+            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
+            if(!$profile) {
+                $profile = new UserProfilesProfile();
+                $profile->type_id = $profileTypeId;
+            }
+            $this->view->profile = $profile;            
+        }
     }
     
     /**
@@ -186,7 +207,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
             
-            $this->_processUserProfile($post);
+            if(! $this->_processUserProfile($post) ) {
+                return false;
+            }
             
             $this->_linkItemToContributedItem($item, $contributor, $post);
             $user = current_user();
@@ -200,13 +223,22 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         $profileTypeId = get_option('contribution_user_profile_type');
         if($profileTypeId) {
-            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
+            $user = current_user();
+            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
             if(!$profile) {
                 $profile = new UserProfilesProfile();
+                $profile->setOwner($user);
+                $profile->type_id = $profileTypeId;
+                $profile->public = 0;
+                $profile->setRelationData(array('subject_id'=>$user->id));
             }    
         }
         $profile->setPostData($post);
-        $profile->save();
+        $this->_profile = $profile;
+        if(!$profile->save(false)) {
+            return false;
+        }
+        return true;
     }
     
     /**
@@ -274,33 +306,17 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * Will flash validation errors that occur.
      * 
      * Verify the validity of the following form elements:
-     *      Captcha (if set up)
      *      Terms agreement
      *      
      * @return bool
      */
     protected function _validateContribution($post)
     {
-        $isValid = true;
-        
-        $errors = array();
-
-        // ReCaptcha ignores the first argument.
-        if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
-            $errors[] = 'Your CAPTCHA submission was invalid, please try again.';
-            $isValid = false;
-        }
-        
         if (!@$post['terms-agree']) {
-            $errors[] = 'You must agree to the Terms and Conditions.';
-            $isValid = false;
+            $this->_helper->flashMessenger(__('You must agree to the Terms and Conditions.'), 'error');
+            return false;
         }
-        
-        if ($errors) {
-            $this->_helper->flashMessenger(join("\n", $errors), 'error');
-        }
-        
-        return $isValid;
+        return true;
     }
     
     /**

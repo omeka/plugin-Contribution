@@ -33,20 +33,12 @@ if (!isset($required) && $type->isFileAllowed()):
 </div>
 <?php endif; ?>
 
-<?php 
-//pull in the user profile form it is is set
-$profileTypeId = get_option('contribution_user_profile_type');
-if($profileTypeId): ?>
+<?php $user = current_user(); ?>
+<p>You are logged in as: <?php echo metadata($user, 'name'); ?>
 
 <?php 
-$this->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
-$db = get_db();
-$profile = $db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
-if(!$profile) {
-    $profile = new UserProfilesProfile();
-}
-$profileType = $db->getTable('UserProfilesType')->find($profileTypeId);
-?>
+//pull in the user profile form it is is set
+if( isset($profileType) ): ?>
 
 <script type="text/javascript" charset="utf-8">
 //<![CDATA[
@@ -56,8 +48,7 @@ jQuery(document).bind('omeka:elementformload', function (event) {
 });
 //]]>
 </script>
-    <?php $user = current_user(); ?>
-    <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
+
     <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
     <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
     <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
