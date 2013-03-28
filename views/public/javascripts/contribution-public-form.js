@@ -1,6 +1,7 @@
 
 function toggleProfileEdit() {
     jQuery('div.contribution-userprofile').toggle();
+    jQuery('span.contribution-userprofile-visibility').toggle();
 }
 
 function enableContributionAjaxForm(url) {
@@ -31,7 +32,7 @@ function enableContributionAjaxForm(url) {
                            elementsToHide.show();
                            //in case profile info is also being added, do the js for that form
                            jQuery(form).trigger('omeka:elementformload');
-                           jQuery('h2.contribution-userprofile').click(toggleProfileEdit);
+                           jQuery('.contribution-userprofile-visibility').click(toggleProfileEdit);
                        });
                     });
                 }

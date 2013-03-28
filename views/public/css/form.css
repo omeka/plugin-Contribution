@@ -11,7 +11,15 @@ div#location_form {
 /* User Profiles integration */
 
 h2.contribution-userprofile  {
+	margin-bottom: 3px;
+}
+
+.contribution-userprofile-visibility {
 	cursor: pointer;
+}
+
+p#contribution-userprofile-visibility {
+	margin: 2px;
 }
 
 div.contribution-userprofile.exists {

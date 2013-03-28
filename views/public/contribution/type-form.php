@@ -50,6 +50,13 @@ jQuery(document).bind('omeka:elementformload', function (event) {
 </script>
 
     <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
+    <p id='contribution-userprofile-visibility'>
+    <?php if ($profile->exists()) :?>
+        <span class='contribution-userprofile-visibility'>Show</span><span class='contribution-userprofile-visibility' style='display:none'>Hide</span>
+    <?php else: ?>
+        <span class='contribution-userprofile-visibility' style='display:none'>Show</span><span class='contribution-userprofile-visibility'>Hide</span>
+    <?php endif; ?>
+    </p>
     <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
     <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
     <fieldset name="user-profiles">

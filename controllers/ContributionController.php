@@ -123,7 +123,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         //setup profile stuff, if needed
         $profileTypeId = get_option('contribution_user_profile_type');
-        if($profileTypeId) {
+        if(plugin_is_active('UserProfiles') && $profileTypeId) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
