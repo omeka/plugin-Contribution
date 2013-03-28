@@ -33,7 +33,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_items_browse_detailed_each',
         'item_browse_sql',
         'before_save_item',
-        'after_delete_item'
+        'after_delete_item',
+        'user_profiles_user_page'
     );
 
     protected $_filters = array(
@@ -458,6 +459,15 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
     
+    public function hookUserProfilesUserPage($args)
+    {
+        $user = $args['user'];
+        $contributionCount = $this->_db->getTable('ContributionContributedItem')->count(array('contributor'=>$user->id));
+        if($contributionCount !=0) {
+            echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>Contributed Items ($contributionCount)";
+        }
+    }
+    
     public function filterItemCitation($cite,$args){
         $item = $args['item'];
         if(!$item) {
@@ -485,9 +495,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
         $cite .= "accessed $accessDate, ";
         $cite .= "$uri.";
-        
-       
-       return $cite;
+        return $cite;
     }
    
     public function filterGuestUserLinks($nav)
@@ -495,13 +503,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $nav['Contribution'] = array('label'=>'My Contributions',
                                      'uri'=> contribution_contribute_url('my-contributions')                
                                     );
-        
         return $nav;
     } 
    
     private function _adminBaseInfo($args) 
     {
-        
         $item = $args['item'];
         $contributedItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
         if($contributedItem) {

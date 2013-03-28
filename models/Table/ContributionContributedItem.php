@@ -101,7 +101,6 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
             $select->join(array($itemAlias=>$db->Item), "item_id = $itemAlias.id", array());
         }
                 
-        //$select->join(array($itemAlias=>$db->Item), "item_id = $itemAlias.id", array());        
         $select->where("$itemAlias.owner_id = ?", $contributorId);    
     }
     
