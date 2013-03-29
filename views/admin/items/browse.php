@@ -21,22 +21,6 @@ echo flash();
 echo item_search_filters();
 ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
-    <ul class="quick-filter-wrapper">
-        <li><a href="#" tabindex="0"><?php echo __('Filter by contributor'); ?></a>
-        
-        <ul class="dropdown">
-            <?php if(is_array($contributors)): ?>
-            <li><a href="<?php echo url('contribution/items'); ?>"><?php echo __('View All') ?></a></li>
-            <?php foreach($contributors as $id=>$name): ?>
-            <li><a href="<?php echo url('contribution/items', array('contributor' => $id)); ?>"><?php echo $name; ?></a></li>
-            <?php endforeach; ?>
-            <?php else: ?>
-            <li>(Too many contributors to list)</li>
-            <?php endif; ?>
-        </ul>
-        
-    </ul>
-    
     
     <ul class="quick-filter-wrapper">
         <li><a href="#" tabindex="0"><?php echo __('Filter by status'); ?></a>
