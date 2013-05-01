@@ -27,7 +27,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'upgrade',
         'define_acl',
         'define_routes',
-        'admin_append_to_plugin_uninstall_message',
+        'admin_plugin_uninstall_message',
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
@@ -96,6 +96,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_db->query($sql);
 
         $this->_createDefaultContributionTypes();
+        set_option('contribution_simple', true);
         
     }
 
@@ -171,7 +172,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
-    public function hookAdminAppendToPluginUninstallMessage()
+    public function hookAdminPluginUninstallMessage()
     {
         echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin
             will remove all information about contributors, as well as the
@@ -188,7 +189,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl = $args['acl'];
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
-        $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
+        if(get_option('contribution_simple')) {
+            $acl->allow(null, 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));            
+        } else {
+            $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
+        }
+        
         $acl->allow(null, 'Contribution_Contribution', 'contribute');
         
         $acl->addResource('Contribution_Contributors');

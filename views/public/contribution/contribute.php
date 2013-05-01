@@ -35,7 +35,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
     
     <h1><?php echo $head['title']; ?></h1>
 
-    <?php if(!$user = current_user()) :?>
+    <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>

@@ -62,6 +62,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         if ($this->_processForm($_POST)) {
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
             $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
+                        
         } else {
 
             $typeId = null;
@@ -75,11 +76,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->view->typeForm = $this->view->render('contribution/type-form.php');
             }
             
-            
             if(isset($this->_profile) && !$this->_profile->exists()) {
                 $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
                 return;
-            }            
+            }
+
         }
     }
     
@@ -123,7 +124,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         //setup profile stuff, if needed
         $profileTypeId = get_option('contribution_user_profile_type');
-        if(plugin_is_active('UserProfiles') && $profileTypeId) {
+        if(plugin_is_active('UserProfiles') && $profileTypeId && current_user()) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
@@ -151,6 +152,21 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processForm($post)
     {    
         if (!empty($post)) {
+
+            //for the "Simple" configuration, look for the user if exists by email. Log them in.
+            //If not, create the user and log them in.
+            $user = current_user();
+            $simple = get_option('contribution_simple');
+            
+            if(!$user && $simple) {
+                $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
+            }
+            
+            // if still not a user, need to create one based on the email address
+            if(!$user) {
+                $user = $this->_createNewGuestUser($post);
+            }            
+            
             // The final form submit was not pressed.
             if (!isset($post['form-submit'])) {
                 return false;
@@ -186,7 +202,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $acl->allow(null, 'Items', 'showNotPublic');
             }
             try {
-                $item = insert_item($itemMetadata, array(), $fileMetadata);
+                //in case we're doing Simple, create and save the Item so the owner is set, then update with the data
+                $item = new Item();
+                $item->setOwner($user);
+                $item->save();
+                $item = update_item($item, $itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
                 $this->flashValidatonErrors($e);
                 return false;
@@ -207,13 +227,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
             
-            if(! $this->_processUserProfile($post) ) {
+            if( !$simple && !$this->_processUserProfile($post) ) {
                 return false;
             }
             
             $this->_linkItemToContributedItem($item, $contributor, $post);
-            $user = current_user();
-            $this->_sendEmailNotification($user->email, $item);
+            if(get_option('contribution_simple')) {
+                $this->_sendEmailNotification($user->email, $item);
+            }
             return true;
         }
         return false;
@@ -340,15 +361,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         //If this field is empty, don't send the email
         if (!empty($fromAddress)) {
             $contributorMail = new Zend_Mail;
-            $body = "Thank you for your contribution to " . get_option('site_title') . ".\n";
-            $body .= "Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.";
-	        $body .= "Contribution URL (pending review by project staff): " . record_url($item, 'show', true);
+            $body = "<p>" .  __("Thank you for your contribution to %s", get_option('site_title')) . "</p>";
+            $body .= "<p>" . __("Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.") . "</p>";
+	        $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";	        
+            $body .= get_option('contribution_simple_email');
             
-            
-            $contributorMail->setBodyText($body);
-            $contributorMail->setFrom($fromAddress, "$siteTitle Administrator");
+            $contributorMail->setBodyHtml($body);
+            $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
             $contributorMail->addTo($toEmail);
-            $contributorMail->setSubject("Your $siteTitle Contribution");
+            $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
             $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
                 $contributorMail->send();
@@ -365,14 +386,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 continue;
             }
             $adminMail = new Zend_Mail;
-            $body = "A new contribution to " . get_option('site_title') . " has been made.";
+            $body = __("A new contribution to %s has been made.", get_option('site_title'));
             set_theme_base_url('admin');
-            $body .= "Contribution URL for review: " . record_url($item, 'show', true);
+            $body .= __("Contribution URL for review: %s", record_url($item, 'show', true));
             revert_theme_base_url();
             $adminMail->setBodyText($body);
             $adminMail->setFrom($fromAddress, "$siteTitle");
             $adminMail->addTo($toAddress);
-            $adminMail->setSubject("New $siteTitle Contribution");
+            $adminMail->setSubject(__("New %s Contribution", $siteTitle ));
             $adminMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
                 $adminMail->send();
@@ -381,4 +402,21 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
         }
     }
+    
+    protected function _createNewGuestUser($post)
+    {
+        $user = new User();
+        $email = $post['contribution_simple_email'];
+        $split = explode('@', $email);
+        $name = $split[0];
+        $username = str_replace('@', 'AT', $name);
+        $username = str_replace('.', 'DOT', $username);
+        $user->email = $email;
+        $user->name = $name;
+        $user->username = $username;
+        $user->role = 'guest';
+        $user->save();
+        return $users;
+    }
+    
 }
