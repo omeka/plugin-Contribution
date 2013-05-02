@@ -47,6 +47,7 @@ echo $this->partial('contribution-navigation.php');
             <ul>
                 <li>Set the terms of service for contributing to the site.</li>
                 <li>Set up an auto-generated email to send to all contributors after they submit their contribution.</li>
+                <li>Decide whether to use the 'Simple' options. This requires only that contributors provide an email address.</li>
                 <li>Specify a collection for new contributed items.</li>
             </ul>
         </dd>

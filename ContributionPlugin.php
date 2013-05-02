@@ -34,8 +34,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'item_browse_sql',
         'before_save_item',
         'after_delete_item',
-        'config',
-        'config_form'
     );
 
     protected $_filters = array(
@@ -54,7 +52,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_consent_text',
         'contribution_collection_id',
         'contribution_default_type',
-        'contribution_user_profile_type'
+        'contribution_user_profile_type',
+        'contribution_simple',
+        'contribution_simple_email'
     );
 
     public function setUp() 
@@ -63,19 +63,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if(plugin_is_active('UserProfiles')) {
             $this->_hooks[] = 'user_profiles_user_page';
         }
-    }
-    
-    public function hookConfig($args)
-    {
-        $post = $args['post'];
-        set_option('contribution_email_recipients', $post['contribution_email_recipients']);
-        set_option('contribution_simple', $post['contribution_simple']);
-        set_option('contribution_simple_email', $post['contribution_simple_email']);        
-    }
-    
-    public function hookConfigForm($args)
-    {
-        include(CONTRIBUTION_PLUGIN_DIR . "/config_form.php");
     }
     
     /**
@@ -135,10 +122,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $sql = "DROP TABLE IF EXISTS
             `$db->ContributionType`,
             `$db->ContributionTypeElement`,
-            `{$this->_db->prefix}contribution_contributors`,
+            `$db->ContributionContributor`,
             `$db->ContributionContributedItem`,
-            `{$this->_db->prefix}contribution_contributor_fields`,
-            `{$this->_db->prefix}contribution_contributor_values`;";
+            `$db->ContributionContributorField`,
+            `$db->ContributionContributorValue`;";
         $this->_db->query($sql);
     }
 

@@ -32,8 +32,6 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             if ($form->isValid($_POST)) {
                 $this->_setOptions($form->getValues());
                 $this->_helper->flashMessenger(__('Settings have been saved.'));
-                // Do a POST/Redirect/GET pattern
-                //$this->_redirect($this->view->url(), array('prependBase' => false));
             } else {
                 $this->flashError('There were errors found in your form. Please edit and resubmit.');
             }
@@ -100,6 +98,19 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
         $form->addElementToEditGroup('textarea', 'contribution_consent_text', array(
             'label'       => 'Text of Terms of Service',
             'description' => 'The text of the legal disclaimer to which contributors will agree.',
+            'attribs'     => array('class' => 'html-editor', 'rows' => '15')
+        ));
+        
+        $form->addElementToEditGroup('checkbox', 'contribution_simple', array(
+            'label' => __("Use 'Simple' Options"),
+            'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, you cannot use the simple option. See documentation for details. "),
+            ),
+            array('checked'=> (bool) get_option('contribution_simple') ? 'checked' : '')         
+        );
+        
+        $form->addElementToEditGroup('textarea', 'contribution_simple_email', array(
+            'label' => __("Email text to send to contributors with 'simple'"),
+            'description' => __("We recommend that you notify contributors that a guest user account has been created for them, and what they gain by confirming their account."),
             'attribs'     => array('class' => 'html-editor', 'rows' => '15')
         ));
         
