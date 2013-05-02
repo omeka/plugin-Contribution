@@ -34,7 +34,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'item_browse_sql',
         'before_save_item',
         'after_delete_item',
-        'user_profiles_user_page'
+        'config',
+        'config_form'
     );
 
     protected $_filters = array(
@@ -56,6 +57,27 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_user_profile_type'
     );
 
+    public function setUp() 
+    {
+        parent::setUp();
+        if(plugin_is_active('UserProfiles')) {
+            $this->_hooks[] = 'user_profiles_user_page';
+        }
+    }
+    
+    public function hookConfig($args)
+    {
+        $post = $args['post'];
+        set_option('contribution_email_recipients', $post['contribution_email_recipients']);
+        set_option('contribution_simple', $post['contribution_simple']);
+        set_option('contribution_simple_email', $post['contribution_simple_email']);        
+    }
+    
+    public function hookConfigForm($args)
+    {
+        include(CONTRIBUTION_PLUGIN_DIR . "/config_form.php");
+    }
+    
     /**
      * Contribution install hook
      */
@@ -96,8 +118,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_db->query($sql);
 
         $this->_createDefaultContributionTypes();
-        set_option('contribution_simple', true);
-        
+        set_option('contribution_email_recipients', get_option('administrator_email'));        
     }
 
     /**

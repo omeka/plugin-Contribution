@@ -232,9 +232,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
             
             $this->_linkItemToContributedItem($item, $contributor, $post);
-            if(get_option('contribution_simple')) {
-                $this->_sendEmailNotification($user->email, $item);
-            }
+            $this->_sendEmailNotifications($user->email, $item);
             return true;
         }
         return false;
@@ -351,35 +349,37 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @return void
      * @todo Update for new Contribution
      */
-    protected function _sendEmailNotification($toEmail, $item)
+    protected function _sendEmailNotifications($toEmail, $item)
     {
-        $fromAddress = get_option('contribution_email_sender');
+        $fromAddress = get_option('administrator_email');
         $siteTitle = get_option('site_title');
 
         $this->view->item = $item;
         
-        //If this field is empty, don't send the email
-        if (!empty($fromAddress)) {
-            $contributorMail = new Zend_Mail;
-            $body = "<p>" .  __("Thank you for your contribution to %s", get_option('site_title')) . "</p>";
-            $body .= "<p>" . __("Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.") . "</p>";
-	        $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";	        
-            $body .= get_option('contribution_simple_email');
-            
-            $contributorMail->setBodyHtml($body);
-            $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
-            $contributorMail->addTo($toEmail);
-            $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
-            $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
-            try {
-                $contributorMail->send();
-            } catch (Zend_Mail_Exception $e) {
-                _log($e);
+        if(get_option('contribution_simple')) {
+            //If this field is empty, don't send the email
+            if (!empty($fromAddress)) {
+                $contributorMail = new Zend_Mail;
+                $body = "<p>" .  __("Thank you for your contribution to %s", get_option('site_title')) . "</p>";
+                $body .= "<p>" . __("Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.") . "</p>";
+    	        $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";	        
+                $body .= get_option('contribution_simple_email');
+                
+                $contributorMail->setBodyHtml($body);
+                $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
+                $contributorMail->addTo($toEmail);
+                $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
+                $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
+                try {
+                    $contributorMail->send();
+                } catch (Zend_Mail_Exception $e) {
+                    _log($e);
+                }
             }
         }
-
-        $fromAddress = get_option('administrator_email');
-        $toAddresses = explode("\n", get_option('contribution_email_recipients'));
+  
+        //notify admins who want notification
+        $toAddresses = explode(",", get_option('contribution_email_recipients'));
 
         foreach ($toAddresses as $toAddress) {
             if (empty($toAddress)) {
@@ -416,7 +416,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user->username = $username;
         $user->role = 'guest';
         $user->save();
-        return $users;
+        return $user;
     }
     
 }
