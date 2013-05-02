@@ -2,7 +2,7 @@
 /**
  * @version $Id$
  * @license http://www.gnu.org/licenses/gpl-3.0.txt
- * @copyright Center for History and New Media, 2010
+ * @copyright Center for History and New Media, 2013
  * @package Contribution
  */
 
@@ -18,7 +18,6 @@ echo $this->partial('contribution-navigation.php');
 
 <?php
 echo flash();
-echo item_search_filters();
 ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
     
@@ -89,5 +88,5 @@ echo item_search_filters();
         </tbody>
     </table>
 </div>
-
+<div class="pagination"><?php echo pagination_links(); ?></div>
 <?php echo foot(); ?>

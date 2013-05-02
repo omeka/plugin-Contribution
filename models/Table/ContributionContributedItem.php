@@ -45,6 +45,7 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
     
     public function applySearchFilters($select, $params)
     {
+        
         foreach ($params as $paramName => $paramValue) {
             if ($paramValue === null || (is_string($paramValue) && trim($paramValue) == '')) {
                 continue;
@@ -60,6 +61,8 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
                     break;
             }        
         }
+        
+        parent::applySearchFilters($select, $params);
     }
 
     public function filterByStatus($select, $status)
