@@ -50,7 +50,6 @@
         <ul id="contribution-type-elements" class="sortable">
         <?php
         foreach ($contributionTypeElements as $contributionElement):
-    
             if ($contributionElement):
         ?>
         
