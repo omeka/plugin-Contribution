@@ -71,9 +71,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             } else if ($defaultType = get_option('contribution_default_type')) {
                 $typeId = $defaultType;
             }
+
             if ($typeId) {
-                $this->_setupContributeSubmit($typeId);
-                $this->view->typeForm = $this->view->render('contribution/type-form.php');
+                if(!get_option('contribution_simple') && $user = current_user()) {
+                    $this->_setupContributeSubmit($typeId);
+                    $this->view->typeForm = $this->view->render('contribution/type-form.php');
+                }
             }
             
             if(isset($this->_profile) && !$this->_profile->exists()) {
