@@ -203,7 +203,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
         }
         
-        $acl->allow(null, 'Contribution_Contribution', 'contribute');
+        $acl->allow(null, 'Contribution_Contribution', array('contribute', 'terms'));
         
         $acl->addResource('Contribution_Contributors');
         $acl->allow(null, 'Contribution_Contributors');
