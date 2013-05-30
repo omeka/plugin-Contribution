@@ -40,6 +40,12 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     public function getContributor()
     {
         $owner = $this->Item->getOwner();
+        //if the user has been deleted, make a fake user called "Deleted User"
+        if(!$owner) {
+            $owner = new User();
+            $owner->name = __('Deleted User');
+            return $owner;
+        }
         $user = current_user();
         if($user && $user->id == $owner->id) {
             return $owner;
