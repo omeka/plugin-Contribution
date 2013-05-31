@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributed Items'));
+contribution_admin_header(array(__('Contributed Items')));
 ?>
 
 
@@ -65,7 +65,7 @@ echo flash();
                  <?php if($contribItem->anonymous && (is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id)): ?>
                  <span>(<?php echo __('Anonymous'); ?>)</span>
                  <?php endif; ?>
-                 <a href='<?php echo $contributorUrl; ?>'>Info and contributions</a>
+                 <a href='<?php echo $contributorUrl; ?>'><?php echo __("Info and contributions"); ?></a>
                  <?php endif; ?>             
             </td>
             
@@ -82,7 +82,7 @@ echo flash();
                 }
             ?>
             <td><?php echo $status; ?></td>
-            <td><?php echo metadata($item, 'added'); ?>
+            <td><?php echo format_date(metadata($item, 'added')); ?>
         </tr>
         <?php endforeach; ?>
         </tbody>

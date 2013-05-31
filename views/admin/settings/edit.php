@@ -10,7 +10,7 @@
 queue_js_file('contribution');
 queue_js_file('tiny_mce', 'javascripts/vendor/tiny_mce');
 queue_js_string('setUpSettingsWysiwyg();');
-contribution_admin_header(array('Submission Settings'));
+contribution_admin_header(array(__('Submission Settings')));
 
 ?>
 

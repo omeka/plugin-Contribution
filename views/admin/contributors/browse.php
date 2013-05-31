@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array('Contributors'));
+contribution_admin_header(array(__('Contributors')));
 ?>
 
 
@@ -25,10 +25,10 @@ else:
     <table>
         <thead id="types-table-head">
             <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Email</th>
-                <th>Contributed Items</th>
+                <th><?php echo __('ID'); ?></th>
+                <th><?php echo __('Name'); ?></th>
+                <th><?php echo __('Email'); ?></th>
+                <th><?php echo __('Contributed Items'); ?></th>
             </tr>
         </thead>
         <tbody id="types-table-body">

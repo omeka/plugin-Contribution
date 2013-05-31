@@ -44,7 +44,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
         <form method="post" action="" enctype="multipart/form-data">
             <fieldset id="contribution-item-metadata">
                 <div class="inputs">
-                    <label for="contribution-type">What type of item do you want to contribute?</label>
+                    <label for="contribution-type"><?php echo __("What type of item do you want to contribute?"); ?></label>
                     <?php $options = get_table_options('ContributionType' ); ?>
                     <?php $typeId = isset($type) ? $type->id : '' ; ?>
                     <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
@@ -59,20 +59,20 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
-                    <?php echo $this->formLabel('contribution-public', 'Publish my contribution on the web.'); ?>
+                    <?php echo $this->formLabel('contribution-public', __('Publish my contribution on the web.')); ?>
                 </div>
                 <div class="inputs">
                     <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
-                    <?php echo $this->formLabel('contribution-anonymous', "Contribute anonymously."); ?>
+                    <?php echo $this->formLabel('contribution-anonymous', __("Contribute anonymously.")); ?>
                 </div>
-                <p>In order to contribute, you must read and agree to the <a href="<?php echo contribution_contribute_url('terms') ?>" target="_blank">Terms and Conditions.</a></p>
+                <p><?php echo __("In order to contribute, you must read and agree to the %s",  "<a href='" . contribution_contribute_url('terms') . "' target='_blank'>" . __('Terms and Conditions') . ".</a>"); ?></p>
                 <div class="inputs">
                     <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
                     <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
-                    <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>
+                    <?php echo $this->formLabel('terms-agree', __('I agree to the Terms and Conditions.')); ?>
                 </div>
-                <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
+                <?php echo $this->formSubmit('form-submit', __('Contribute'), array('class' => 'submitinput')); ?>
             </fieldset>
         </form>
     <?php endif; ?>

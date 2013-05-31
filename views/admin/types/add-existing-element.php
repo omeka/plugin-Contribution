@@ -24,7 +24,7 @@
         echo $this->formSelect(
             $element_id_name, $element_id_value,
             array('class' => 'existing-element-drop-down'), $elementsArray );
-        echo "<span>Prompt: </span>";
+        echo "<span>" . __("Prompt:") . "</span>";
         echo $this->formText($element_prompt_name, $element_prompt_value, array('class'=>'prompt'));
         ?>
         <span class='long-text'><?php echo __('Large text'); ?></span>

@@ -18,13 +18,10 @@ require_once 'Mixin/ContributionOrder.php';
  */
 class ContributionType extends Omeka_Record_AbstractRecord
 {
-    const FILE_PERMISSION_DISALLOWED = 'Disallowed';
-    const FILE_PERMISSION_ALLOWED = 'Allowed';
-    const FILE_PERMISSION_REQUIRED = 'Required';
 
     public $item_type_id;
     public $display_name;
-    public $file_permissions = self::FILE_PERMISSION_DISALLOWED;
+    public $file_permissions = 'Disallowed';
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
@@ -78,8 +75,8 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function isFileAllowed()
     {
-        return $this->file_permissions == self::FILE_PERMISSION_ALLOWED
-            || $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
+        return $this->file_permissions == 'Allowed'
+            || $this->file_permissions == 'Required';
     }
 
     /**
@@ -89,7 +86,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function isFileRequired()
     {
-        return $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
+        return $this->file_permissions == 'Required';
     }
 
     /**
@@ -100,9 +97,9 @@ class ContributionType extends Omeka_Record_AbstractRecord
     public static function getPossibleFilePermissions()
     {
         return array(
-            self::FILE_PERMISSION_DISALLOWED => self::FILE_PERMISSION_DISALLOWED,
-            self::FILE_PERMISSION_ALLOWED => self::FILE_PERMISSION_ALLOWED,
-            self::FILE_PERMISSION_REQUIRED => self::FILE_PERMISSION_REQUIRED
+            'Disallowed' => __('Disallowed'),
+            'Allowed' => __('Allowed'),
+            'Required' => __('Required')
             );
     }
 

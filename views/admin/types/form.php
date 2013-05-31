@@ -7,10 +7,10 @@
 <?php if($action == 'add'): ?>
     <div class="field">
         <div class="two columns alpha">
-            <label>Item Type</label>
+            <label><?php echo __("Item Type"); ?></label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">The Item Type, from your site's list of types, you would like to use.</p>
+            <p class="explanation"><?php echo __("The Item Type, from your site's list of types, you would like to use."); ?></p>
             <div class="input-block">
                <?php echo $this->formSelect('item_type_id', $contribution_type->item_type_id, array(), $itemTypeOptions); ?>
             </div>
@@ -22,10 +22,10 @@
 
     <div class="field">
         <div class="two columns alpha">
-            <label>Display Name</label>
+            <label><?php echo __("Display Name"); ?></label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">The label you would like to use for this contribution type. If blank, the Item Type name will be used.</p>
+            <p class="explanation"><?php echo __("The label you would like to use for this contribution type. If blank, the Item Type name will be used."); ?></p>
             <div class="input-block">
              <?php echo $this->formText('display_name', $contribution_type->display_name, array()); ?>
             </div>
@@ -34,12 +34,12 @@
 
      <div class="field">
         <div class="two columns alpha">
-            <label>Allow File Upload Via Form</label>
+            <label><?php echo __("Allow File Upload Via Form"); ?></label>
         </div>
         <div class="inputs five columns omega">
-            <p class="explanation">Enable or disable file uploads through the public contribution form. If set to &#8220;Required,&#8220; users must add a file to their contribution when selecting this item type.</p>
+            <p class="explanation"><?php echo __("Enable or disable file uploads through the public contribution form. If set to &#8220;Required,&#8220; users must add a file to their contribution when selecting this item type."); ?></p>
             <div class="input-block">
-               <?php echo $this->formSelect('file_permissions', $contribution_type->file_permissions, array(), ContributionType::getPossibleFilePermissions()); ?>
+               <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array(), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
      </div>  
@@ -113,9 +113,9 @@
 <section class='three columns omega'>
     <div id='save' class='panel'>
             
-            <input type="submit" class="big green button" value="Save" id="submit" name="submit">
+            <input type="submit" class="big green button" value="<?php echo __('Save Changes');?>" id="submit" name="submit">
             <?php if($contribution_type->exists()): ?>
-            <?php echo link_to($contribution_type, 'delete-confirm', 'Delete', array('class' => 'big red button delete-confirm')); ?>
+            <?php echo link_to($contribution_type, 'delete-confirm', __('Delete'), array('class' => 'big red button delete-confirm')); ?>
             <?php endif; ?>
     </div>
 </section>

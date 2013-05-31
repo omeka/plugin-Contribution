@@ -34,6 +34,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'item_browse_sql',
         'before_save_item',
         'after_delete_item',
+        'initialize'
     );
 
     protected $_filters = array(
@@ -64,6 +65,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_hooks[] = 'user_profiles_user_page';
         }
     }
+    
+    /**
+     * Add the translations.
+     */
+    public function hookInitialize()
+    {
+        add_translation_source(dirname(__FILE__) . '/languages');
+    }    
     
     /**
      * Contribution install hook

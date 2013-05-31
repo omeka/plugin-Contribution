@@ -28,7 +28,7 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">
-        <?php echo $this->formLabel('contributed_file', 'Upload a file (Optional)'); ?>
+        <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
         <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
 </div>
 <?php endif; ?>
@@ -36,12 +36,12 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php $user = current_user(); ?>
 <?php if(get_option('contribution_simple') && !current_user()) : ?>
 <div class="field">
-    <?php echo $this->formLabel('contribution_simple_email', 'Email (Required)'); ?>
+    <?php echo $this->formLabel('contribution_simple_email', __('Email (Required)')); ?>
     <?php echo $this->formText('contribution_simple_email'); ?>
 </div>
 
 <?php else: ?>
-    <p>You are logged in as: <?php echo metadata($user, 'name'); ?>
+    <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
     
     <?php 
     //pull in the user profile form it is is set

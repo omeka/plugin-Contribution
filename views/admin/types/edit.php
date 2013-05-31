@@ -27,7 +27,7 @@ $js = "
     ";
 queue_js_string($js);
 queue_css_file('contribution-type-form');
-contribution_admin_header(array('Types', "Edit &ldquo;$typeName&rdquo;"));
+contribution_admin_header(array(__('Types'), __("Edit") . " &ldquo;$typeName&rdquo;"));
 ?>
 
 <?php 

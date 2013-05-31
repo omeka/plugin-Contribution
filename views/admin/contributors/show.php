@@ -7,7 +7,7 @@
  */
 $name = html_escape($contributor->name);
 queue_css_file('contributors');
-contribution_admin_header(array('Contributors', "$name"));
+contribution_admin_header(array(__('Contributors'), "$name"));
 ?>
 
 
@@ -17,7 +17,7 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <h2><?php echo $contributor->name; ?>'s contributions</h2>
+    <h2><?php echo $contributor->name; ?><?php echo __("'s contributions"); ?></h2>
     
     <div id='contribution-profile-info'>
         <?php if(plugin_is_active('UserProfiles')): ?>
