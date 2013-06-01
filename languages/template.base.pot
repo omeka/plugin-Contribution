@@ -1,4 +1,4 @@
-# Translation for the Simple Pages plugin for Omeka.
+# Translation for the Contribution plugin for Omeka.
 # Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
 # This file is distributed under the same license as the Omeka package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
