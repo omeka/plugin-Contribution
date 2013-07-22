@@ -31,7 +31,7 @@ echo $this->partial('contribution-navigation.php');
     <div id='contribution-user-contributions'>
         <?php foreach($items as $item): ?>
         <?php set_current_record('item', $item->Item); ?>
-        <section class="five columns omega contribution">
+        <section class="seven columns omega contribution">
             <?php 
                 if ($item->Item->public) {
                     $status = __('Public');
