@@ -37,8 +37,8 @@ echo flash();
         <thead id="types-table-head">
             <tr>
                 <?php
-                $browseHeadings[__('Contributor')] = 'contributor';
                 $browseHeadings[__('Item')] = null;
+                $browseHeadings[__('Contributor')] = 'contributor';
                 $browseHeadings[__('Publication Status')] = null;
                 $browseHeadings[__('Date Added')] = 'added';
                 echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => '')); 
@@ -58,18 +58,21 @@ echo flash();
         
         ?>
         <tr>
-
+            <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
             <td><?php echo metadata($contributor, 'name');?>
                  
                  <?php if(!is_null($contributor->id)): ?>
                  <?php if($contribItem->anonymous && (is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id)): ?>
                  <span>(<?php echo __('Anonymous'); ?>)</span>
                  <?php endif; ?>
-                 <a href='<?php echo $contributorUrl; ?>'><?php echo __("Info and contributions"); ?></a>
+                 <ul class="action-links group">
+                 <li><a href='<?php echo $contributorUrl; ?>'><?php echo __("Info and contributions"); ?></a></li>
+                 </ul>
+                 
                  <?php endif; ?>             
             </td>
             
-            <td><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></td>
+            
             <?php 
                 if ($item->public) {
                     $status = __('Public');
