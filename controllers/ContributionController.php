@@ -230,6 +230,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
             
+            //if not simple and the profile doesn't process, send back false for the error
             if( !$simple && !$this->_processUserProfile($post) ) {
                 return false;
             }
@@ -253,14 +254,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $profile->type_id = $profileTypeId;
                 $profile->public = 0;
                 $profile->setRelationData(array('subject_id'=>$user->id));
-            }    
+            }
+            $profile->setPostData($post);
+            $this->_profile = $profile;
+            if(!$profile->save(false)) {
+                return false;
+            }
+            return true;                
         }
-        $profile->setPostData($post);
-        $this->_profile = $profile;
-        if(!$profile->save(false)) {
-            return false;
-        }
-        return true;
     }
     
     /**

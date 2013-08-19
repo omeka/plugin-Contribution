@@ -163,7 +163,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         
             // Since this is an upgrade from an old version, we need to install
             // all our tables.
-            $this->install();
+            $this->hookInstall();
         
         }
         if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
@@ -182,9 +182,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             //change contributors to real guest users
             
             //uncomment the job if upgrade timesout
-            //Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-            $import = new ContributionImportUsers(array()); //comment this out if upgrade timesout
-            $import->perform(); //comment this out if upgrade timesout
+            Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
+            //$import = new ContributionImportUsers(array()); //comment this out if upgrade timesout
+            //$import->perform(); //comment this out if upgrade timesout
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
     }

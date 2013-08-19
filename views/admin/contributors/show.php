@@ -19,14 +19,14 @@ echo $this->partial('contribution-navigation.php');
     <?php echo flash(); ?>
     <h2><?php echo $contributor->name; ?><?php echo __("'s contributions"); ?></h2>
     
+    <?php if(plugin_is_active('UserProfiles')): ?>
     <div id='contribution-profile-info'>
-        <?php if(plugin_is_active('UserProfiles')): ?>
         <?php 
             $this->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             echo $this->linkToOwnerProfile(array('owner'=>$contributor, 'text'=>"Profile: "));    
         ?>
-        <?php endif; ?>
     </div>
+    <?php endif; ?>
     
     <div id='contribution-user-contributions'>
         <?php foreach($items as $item): ?>
