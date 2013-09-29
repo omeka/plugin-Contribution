@@ -276,7 +276,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {          
         $contributionCount = get_db()->getTable('ContributionContributedItems')->count();
         if($contributionCount > 0) {
-            $uri = url('contribution/items');
+            $uri = url('contribution/items?sort_field=added&sort_dir=d');
             $label = __('Contributed Items');
         } else {
             $uri = url('contribution/index');
