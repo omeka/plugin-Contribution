@@ -31,7 +31,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
-        'item_browse_sql',
+        'items_browse_sql',
         'before_save_item',
         'after_delete_item',
         'initialize'
@@ -378,7 +378,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      * @param Omeka_Db_Select $select
      * @param array $params
      */
-    public function hookItemBrowseSql($args)
+    public function hookItemsBrowseSql($args)
     {
     
     $select = $args['select'];
@@ -388,7 +388,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $db = get_db();
            
             $contributed = $request->get('contributed');
-        
             if (isset($contributed)) {
                 if ($contributed === '1') {
                     $select->joinInner(
