@@ -170,21 +170,25 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             $db = $this->_db;
             $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            
-            $this->_db->query($sql);            
+            $db->query($sql);            
             $sql = "ALTER TABLE `$db->ContributionTypeElement` ADD `long_text` BOOLEAN DEFAULT TRUE";            
-            $this->_db->query($sql);            
+            $db->query($sql);            
                        
             $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
                 $typeElement->save();
             }
-            //change contributors to real guest users
             
-            //uncomment the job if upgrade timesout
+            //clean up contributed item records if the corresponding item has been deleted
+            //earlier verison of the plugin did not use the delete hook
+            $sql = "DELETE  FROM `$db->ContributionContributedItem`
+            WHERE NOT EXISTS (SELECT 1 FROM `$db->Item` WHERE `$db->ContributionContributedItem`.item_id = `$db->Item`.id)
+            ";
+            $db->query($sql);
+            
+            //change contributors to real guest users
             Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-            //$import = new ContributionImportUsers(array()); //comment this out if upgrade timesout
-            //$import->perform(); //comment this out if upgrade timesout
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
     }
