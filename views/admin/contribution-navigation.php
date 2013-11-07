@@ -13,7 +13,7 @@
     }    
     
     $navArray['Contributors'] = array('label'=> __('Contributions'), 
-                                        'uri'=>url('contribution/items') );
+                                        'uri'=>url('contribution/items?sort_field=added&sort_dir=d') );
  
     echo nav($navArray, 'contribution_navigation');
 ?>

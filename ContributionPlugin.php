@@ -166,7 +166,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->hookInstall();
         
         }
-        if (version_compare($oldVersion, '3.0', '<=') && $newVersion == '3.0') {
+        if (version_compare($oldVersion, '3.0', '<')) {
 
             $db = $this->_db;
             $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";            

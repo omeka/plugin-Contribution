@@ -9,8 +9,6 @@ if ($type->isFileRequired()):
     $required = true;
 ?>
 
-
-
 <div class="field">
         <?php echo $this->formLabel('contributed_file', 'Upload a file'); ?>
         <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
@@ -34,7 +32,7 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
-<?php if(get_option('contribution_simple') && !current_user()) : ?>
+<?php if(get_option('contribution_simple') && !$user) : ?>
 <div class="field">
     <?php echo $this->formLabel('contribution_simple_email', __('Email (Required)')); ?>
     <?php echo $this->formText('contribution_simple_email'); ?>
@@ -44,7 +42,7 @@ if (!isset($required) && $type->isFileAllowed()):
     <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
     
     <?php 
-    //pull in the user profile form it is is set
+    //pull in the user profile form if it is set
     if( isset($profileType) ): ?>
     
     <script type="text/javascript" charset="utf-8">
@@ -60,7 +58,7 @@ if (!isset($required) && $type->isFileAllowed()):
         <p id='contribution-userprofile-visibility'>
         <?php if ($profile->exists()) :?>
             <span class='contribution-userprofile-visibility'>Show</span><span class='contribution-userprofile-visibility' style='display:none'>Hide</span>
-        <?php else: ?>
+            <?php else: ?>
             <span class='contribution-userprofile-visibility' style='display:none'>Show</span><span class='contribution-userprofile-visibility'>Hide</span>
         <?php endif; ?>
         </p>
@@ -74,7 +72,7 @@ if (!isset($required) && $type->isFileAllowed()):
         ?>
         </fieldset>
         </div>
-    <?php endif; ?>
+        <?php endif; ?>
 <?php endif; ?>
 <?php 
 // Allow other plugins to append to the form (pass the type to allow decisions

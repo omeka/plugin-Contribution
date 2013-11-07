@@ -51,11 +51,11 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
                 <div id="contribution-type-form">
-                <?php if (isset($typeForm)): echo $typeForm; endif; ?>
+                <?php if(isset($type)) { include('type-form.php'); }?>
                 </div>
             </fieldset>
             
-            <fieldset id="contribution-confirm-submit" <?php if (!isset($typeForm)) { echo 'style="display: none;"'; }?>>
+            <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
