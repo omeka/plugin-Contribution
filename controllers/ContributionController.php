@@ -64,7 +64,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
                 $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
             } else {
-                debug('failed');
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
@@ -162,7 +161,17 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             // if still not a user, need to create one based on the email address
             if(!$user) {
                 $user = $this->_createNewGuestUser($post);
-            }            
+                if($user->hasErrors()) {
+                    $errors = $user->getErrors()->get();
+                    //since we're creating the user behind the scenes, skip username and name errors
+                    unset($errors['name']);
+                    unset($errors['username']);
+                    foreach($errors as $error) {
+                        $this->_helper->flashMessenger($error, 'error');
+                    }
+                    return false;
+                }
+            }
             
             // The final form submit was not pressed.
             if (!isset($post['form-submit'])) {
@@ -207,7 +216,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
-                if (strstr($e->getMessage(), "The file 'contributed_file' was not uploaded")) {
+                if (strstr($e->getMessage(), "'contributed_file'")) {
                    $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
                 } else {
                     $this->_helper->flashMessenger($e->getMessage());
@@ -408,8 +417,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user->name = $name;
         $user->username = $username;
         $user->role = 'guest';
-        $user->save();
+        try {
+            $user->save();
+        } catch(Exception $e) {
+            
+        }
         return $user;
     }
-    
 }

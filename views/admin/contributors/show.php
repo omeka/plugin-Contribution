@@ -23,7 +23,7 @@ echo $this->partial('contribution-navigation.php');
     <div id='contribution-profile-info'>
         <?php 
             $this->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
-            echo $this->linkToOwnerProfile(array('owner'=>$contributor, 'text'=>"Profile: "));    
+            echo $this->linkToOwnerProfile(array('owner'=>$contributor, 'text'=>__("Profile: ")));   
         ?>
     </div>
     <?php endif; ?>
