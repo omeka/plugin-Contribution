@@ -134,7 +134,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             $form->addElementToEditGroup('select', 'contribution_user_profile_type', array(
                 'label' => __('Choose a profile type for contributors'),
                 'description' => __('Configure the profile type under User Profiles'),
-                'multiOptions' => $profileTypes        
+                'multiOptions' => array('' => __("None")) + $profileTypes        
             ));
         }
         
