@@ -5,14 +5,14 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
- 
+
 /**
  * Controller for contributions themselves.
  */
 class Contribution_ContributionController extends Omeka_Controller_AbstractActionController
-{   
+{
     protected $_captcha;
-    
+
     /**
      * Index action; simply forwards to contributeAction.
      */
@@ -20,14 +20,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         $this->_forward('contribute');
     }
-    
+
     public function myContributionsAction()
     {
         $user = current_user();
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
-                
+
         $contribItems = array();
-        if(!empty($_POST)) {            
+        if(!empty($_POST)) {
             foreach($_POST['contribution_public'] as $id=>$value) {
                 $contribItem = $contribItemTable->find($id);
                 if($value) {
@@ -37,23 +37,21 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 }
                 $contribItem->public = $value;
                 $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
-                
+
                 if($contribItem->save()) {
                     $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
                 } else {
                     $this->_helper->flashMessenger($contribItem->getErrors());
                 }
-                
+
                 $contribItems[] = $contribItem;
             }
         } else {
             $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
         }
-        
         $this->view->contrib_items = $contribItems;
-        
     }
-    
+
     /**
      * Action for main contribution form.
      */
@@ -71,7 +69,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     $typeId = $defaultType;
                 }
                 $this->_setupContributeSubmit($typeId);
-                
+
                 if(isset($this->_profile) && !$this->_profile->exists()) {
                     $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
                     return;
@@ -79,7 +77,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
         }
     }
-    
+
     /**
      * Action for AJAX request from contribute form.
      */
@@ -87,22 +85,22 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         $this->_setupContributeSubmit($_POST['contribution_type']);
     }
-    
+
     /**
      * Displays terms of service for contribution.
      */
     public function termsAction()
     {
     }
-    
+
     /**
-     * Displays a "Thank You" message to users who have contributed an item 
+     * Displays a "Thank You" message to users who have contributed an item
      * through the public form.
      */
     public function thankyouAction()
     {
     }
-    
+
     /**
      * Common tasks whenever displaying submit form for contribution.
      *
@@ -110,54 +108,54 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     public function _setupContributeSubmit($typeId)
     {
-        // Override default element form display        
+        // Override default element form display
         $this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
         $item = new Item;
         $this->view->item = $item;
-        
+
         $type = get_db()->getTable('ContributionType')->find($typeId);
         $this->view->type = $type;
-        
+
         //setup profile stuff, if needed
         $profileTypeId = get_option('contribution_user_profile_type');
         if(plugin_is_active('UserProfiles') && $profileTypeId && current_user()) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
-            
+
             $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
             if(!$profile) {
                 $profile = new UserProfilesProfile();
                 $profile->type_id = $profileTypeId;
             }
-            $this->view->profile = $profile;            
+            $this->view->profile = $profile;
         }
     }
-    
+
     /**
      * Handle the POST for adding an item via the public form.
-     * 
+     *
      * Validate and save the contribution to the database.  Save the ID of the
-     * new item to the session.  Redirect to the consent form. 
-     * 
+     * new item to the session.  Redirect to the consent form.
+     *
      * If validation fails, render the Contribution form again with errors.
      *
      * @param array $post POST array
      * @return bool
      */
     protected function _processForm($post)
-    {    
+    {
         if (!empty($post)) {
 
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
             $simple = get_option('contribution_simple');
-            
+
             if(!$user && $simple) {
                 $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
             }
-            
+
             // if still not a user, need to create one based on the email address
             if(!$user) {
                 $user = $this->_createNewGuestUser($post);
@@ -172,7 +170,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     return false;
                 }
             }
-            
+
             // The final form submit was not pressed.
             if (!isset($post['form-submit'])) {
                 return false;
@@ -180,7 +178,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if (!$this->_validateContribution($post)) {
                 return false;
             }
-            
+
             $contributionTypeId = trim($post['contribution_type']);
             if ($contributionTypeId !== "" && is_numeric($contributionTypeId)) {
                 $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
@@ -192,12 +190,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $itemMetadata = array('public'       => false,
                                   'featured'     => false,
                                   'item_type_id' => $itemTypeId);
-            
+
             $collectionId = get_option('contribution_collection_id');
             if (!empty($collectionId) && is_numeric($collectionId)) {
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
-            
+
             $fileMetadata = $this->_processFileUpload($contributionType);
 
             // This is a hack to allow the file upload job to succeed
@@ -240,7 +238,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         return false;
     }
-    
+
     protected function _processUserProfile($post)
     {
         $profileTypeId = get_option('contribution_user_profile_type');
@@ -262,7 +260,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         return true;
     }
-    
+
     /**
      * Deals with files specified on the contribution form.
      *
@@ -302,7 +300,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $linkage->anonymous = $post['contribution-anonymous'];
         $linkage->save();
     }
-    
+
     /**
      * Adds ElementTexts to item.
      *
@@ -321,15 +319,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
         }
     }
-    
+
     /**
      * Validate the contribution form submission.
-     * 
+     *
      * Will flash validation errors that occur.
-     * 
+     *
      * Verify the validity of the following form elements:
      *      Terms agreement
-     *      
+     *
      * @return bool
      */
     protected function _validateContribution($post)
@@ -340,13 +338,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
         return true;
     }
-    
+
     /**
      * Send an email notification to the user who contributed the Item.
-     * 
+     *
      * This email will appear to have been sent from the address specified via
      * the 'contribution_email_sender' option.
-     * 
+     *
      * @param string $email Address to send to.
      * @param Item $item Item that was contributed via the form.
      * @return void
@@ -358,15 +356,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $siteTitle = get_option('site_title');
 
         $this->view->item = $item;
-    
+
         //If this field is empty, don't send the email
         if (!empty($fromAddress)) {
             $contributorMail = new Zend_Mail;
-            $body = "<p>" .  __("Thank you for your contribution to %s", get_option('site_title')) . "</p>";
-            $body .= "<p>" . __("Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.") . "</p>";
-	        $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";	        
-            $body .= get_option('contribution_simple_email');
-            
+            $body .= get_option('contribution_email');
+            $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";
+
             $contributorMail->setBodyHtml($body);
             $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
             $contributorMail->addTo($toEmail);
@@ -378,11 +374,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 _log($e);
             }
         }
-  
+
         //notify admins who want notification
         $toAddresses = explode(",", get_option('contribution_email_recipients'));
         $fromAddress = get_option('administrator_email');
-        
+
         foreach ($toAddresses as $toAddress) {
             if (empty($toAddress)) {
                 continue;
@@ -404,7 +400,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
         }
     }
-    
+
     protected function _createNewGuestUser($post)
     {
         $user = new User();
@@ -420,7 +416,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         try {
             $user->save();
         } catch(Exception $e) {
-            
+
         }
         return $user;
     }

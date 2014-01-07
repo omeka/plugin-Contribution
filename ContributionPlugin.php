@@ -55,7 +55,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_default_type',
         'contribution_user_profile_type',
         'contribution_simple',
-        'contribution_simple_email'
+        'contribution_email'
     );
 
     public function setUp()
