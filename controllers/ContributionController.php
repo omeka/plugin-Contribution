@@ -75,6 +75,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     return;
                 }
             }
+        } else {
+            $defaultType = get_option('contribution_default_type');
+            $this->_setupContributeSubmit($defaultType);
         }
     }
 
@@ -348,7 +351,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @param string $email Address to send to.
      * @param Item $item Item that was contributed via the form.
      * @return void
-     * @todo Update for new Contribution
      */
     protected function _sendEmailNotifications($toEmail, $item)
     {
