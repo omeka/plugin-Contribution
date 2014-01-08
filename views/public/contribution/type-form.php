@@ -4,7 +4,7 @@
 <?php else: ?>
 <h2>Contribute a <?php echo $type->display_name; ?></h2>
 
-<?php 
+<?php
 if ($type->isFileRequired()):
     $required = true;
 ?>
@@ -16,13 +16,13 @@ if ($type->isFileRequired()):
 
 <?php endif; ?>
 
-<?php 
+<?php
 foreach ($type->getTypeElements() as $contributionTypeElement) {
     echo $this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement'=>$contributionTypeElement));
 }
 ?>
 
-<?php 
+<?php
 if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">
@@ -35,16 +35,23 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php if(get_option('contribution_simple') && !$user) : ?>
 <div class="field">
     <?php echo $this->formLabel('contribution_simple_email', __('Email (Required)')); ?>
-    <?php echo $this->formText('contribution_simple_email'); ?>
+    <?php
+        if(isset($_POST['contribution_simple_email'])) {
+            $email = $_POST['contribution_simple_email'];
+        } else {
+            $email = '';
+        }
+    ?>
+    <?php echo $this->formText('contribution_simple_email', $email ); ?>
 </div>
 
 <?php else: ?>
     <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
-    
-    <?php 
+
+    <?php
     //pull in the user profile form if it is set
     if( isset($profileType) ): ?>
-    
+
     <script type="text/javascript" charset="utf-8">
     //<![CDATA[
     jQuery(document).bind('omeka:elementformload', function (event) {
@@ -53,7 +60,7 @@ if (!isset($required) && $type->isFileAllowed()):
     });
     //]]>
     </script>
-    
+
         <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
         <p id='contribution-userprofile-visibility'>
         <?php if ($profile->exists()) :?>
@@ -65,7 +72,7 @@ if (!isset($required) && $type->isFileAllowed()):
         <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
         <p class="user-profiles-profile-description"><?php echo $profileType->description; ?></p>
         <fieldset name="user-profiles">
-        <?php 
+        <?php
         foreach($profileType->Elements as $element) {
             echo $this->profileElementForm($element, $profile);
         }
@@ -74,7 +81,7 @@ if (!isset($required) && $type->isFileAllowed()):
         </div>
         <?php endif; ?>
 <?php endif; ?>
-<?php 
+<?php
 // Allow other plugins to append to the form (pass the type to allow decisions
 // on a type-by-type basis).
 fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
