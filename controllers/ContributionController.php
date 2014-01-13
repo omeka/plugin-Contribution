@@ -121,13 +121,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
         //setup profile stuff, if needed
         $profileTypeId = get_option('contribution_user_profile_type');
-        if(plugin_is_active('UserProfiles') && $profileTypeId && current_user()) {
+        if(plugin_is_active('UserProfiles') && $profileTypeId) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
 
-            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId(current_user()->id, $profileTypeId);
-            if(!$profile) {
+            if($user = current_user()) {
+                $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
+            }
+            if(empty($profile)) {
                 $profile = new UserProfilesProfile();
                 $profile->type_id = $profileTypeId;
             }
@@ -232,9 +234,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
-            if( !$simple && !$this->_processUserProfile($post) ) {
-                return false;
-            }
+            $this->_processUserProfile($post, $user);
             $this->_linkItemToContributedItem($item, $contributor, $post);
             $this->_sendEmailNotifications($user->email, $item);
             return true;
@@ -242,18 +242,17 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         return false;
     }
 
-    protected function _processUserProfile($post)
+    protected function _processUserProfile($post, $user)
     {
         $profileTypeId = get_option('contribution_user_profile_type');
         if($profileTypeId && plugin_is_active('UserProfiles')) {
-            $user = current_user();
             $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
             if(!$profile) {
                 $profile = new UserProfilesProfile();
                 $profile->setOwner($user);
                 $profile->type_id = $profileTypeId;
                 $profile->public = 0;
-                $profile->setRelationData(array('subject_id'=>$user->id));
+                $profile->setRelationData(array('subject_id'=>$user->id, 'user_id'=>$user->id));
             }
             $profile->setPostData($post);
             $this->_profile = $profile;
@@ -418,7 +417,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         try {
             $user->save();
         } catch(Exception $e) {
-
+            _log($e);
         }
         return $user;
     }

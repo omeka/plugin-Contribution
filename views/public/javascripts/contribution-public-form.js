@@ -41,3 +41,8 @@ function enableContributionAjaxForm(url) {
     });
 }
 
+jQuery(document).ready(function() {
+    jQuery('.contribution-userprofile-visibility').click(toggleProfileEdit);
+    var form = jQuery('#contribution-type-form');
+    jQuery(form).trigger('omeka:elementformload');
+});

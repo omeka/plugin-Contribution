@@ -47,7 +47,7 @@ if (!isset($required) && $type->isFileAllowed()):
 
 <?php else: ?>
     <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
-
+<?php endif; ?>
     <?php
     //pull in the user profile form if it is set
     if( isset($profileType) ): ?>
@@ -80,7 +80,7 @@ if (!isset($required) && $type->isFileAllowed()):
         </fieldset>
         </div>
         <?php endif; ?>
-<?php endif; ?>
+
 <?php
 // Allow other plugins to append to the form (pass the type to allow decisions
 // on a type-by-type basis).
