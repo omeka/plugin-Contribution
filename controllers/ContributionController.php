@@ -414,8 +414,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user->name = $name;
         $user->username = $username;
         $user->role = 'guest';
+        $user->active = 1;
         try {
             $user->save();
+            //activate user so they can retrieve password without admin needing to activate first
+            $activation = UsersActivations::factory($user);
+            $activation->save();
         } catch(Exception $e) {
             _log($e);
         }
