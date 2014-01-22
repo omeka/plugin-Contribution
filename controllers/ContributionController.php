@@ -207,6 +207,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             // even with the synchronous job dispatcher.
             if ($acl = get_acl()) {
                 $acl->allow(null, 'Items', 'showNotPublic');
+                $acl->allow(null, 'Collections', 'showNotPublic');
             }
             try {
                 //in case we're doing Simple, create and save the Item so the owner is set, then update with the data
