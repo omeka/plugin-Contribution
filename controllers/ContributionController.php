@@ -232,7 +232,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
             $this->_addElementTextsToItem($item, $post['Elements']);
             // Allow plugins to deal with the inputs they may have added to the form.
-            fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'item'=>$item, 'post'=>$post));
+            fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
