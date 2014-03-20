@@ -423,44 +423,50 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     private function _createDefaultContributionTypes()
     {
         $elementTable = $this->_db->getTable('Element');
-
-        $storyType = new ContributionType;
-        $storyType->item_type_id = 1;
-        $storyType->display_name = 'Story';
-
-        $storyType->file_permissions = 'Allowed';
-        $storyType->save();
-        $textElement = new ContributionTypeElement;
-        $textElement->type_id = $storyType->id;
-        $dcTitleElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Title');
-        $textElement->element_id = $dcTitleElement->id;
-        $textElement->prompt = 'Title';
-        $textElement->order = 1;
-        $textElement->long_text = false;
-        $textElement->save();
-        $textElement = new ContributionTypeElement;
-        $textElement->type_id = $storyType->id;
-        $itemTypeMetadataTextElement = $elementTable->findByElementSetNameAndElementName('Item Type Metadata', 'Text');
-        $textElement->element_id = $itemTypeMetadataTextElement->id;
-        $textElement->prompt = 'Story Text';
-        $textElement->order = 2;
-        $textElement->long_text = true;
-        $textElement->save();
-
-        $imageType = new ContributionType;
-        $imageType->item_type_id = 6;
-        $imageType->display_name = 'Image';
-        $imageType->file_permissions = 'Required';
-        $imageType->save();
-
-        $descriptionElement = new ContributionTypeElement;
-        $descriptionElement->type_id = $imageType->id;
-        $dcDescriptionElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Description');
-        $descriptionElement->element_id = $dcDescriptionElement->id;
-        $descriptionElement->prompt = 'Image Description';
-        $descriptionElement->order = 1;
-        $descriptionElement->long_text = true;
-        $descriptionElement->save();
+        $itemTypeTable = $this->_db->getTable('ItemType');
+        
+        $textItemType = $itemTypeTable->findByName('Text');
+        if($textItemType) {
+            $storyType = new ContributionType;
+            $storyType->item_type_id = $textItemType->id;
+            $storyType->display_name = 'Story';
+    
+            $storyType->file_permissions = 'Allowed';
+            $storyType->save();
+            $textElement = new ContributionTypeElement;
+            $textElement->type_id = $storyType->id;
+            $dcTitleElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Title');
+            $textElement->element_id = $dcTitleElement->id;
+            $textElement->prompt = 'Title';
+            $textElement->order = 1;
+            $textElement->long_text = false;
+            $textElement->save();
+            $textElement = new ContributionTypeElement;
+            $textElement->type_id = $storyType->id;
+            $itemTypeMetadataTextElement = $elementTable->findByElementSetNameAndElementName('Item Type Metadata', 'Text');
+            $textElement->element_id = $itemTypeMetadataTextElement->id;
+            $textElement->prompt = 'Story Text';
+            $textElement->order = 2;
+            $textElement->long_text = true;
+            $textElement->save();
+        }
+        $imageItemType = $itemTypeTable->findByName('Still Image');
+        if($imageItemType) {
+            $imageType = new ContributionType;
+            $imageType->item_type_id = 6;
+            $imageType->display_name = 'Image';
+            $imageType->file_permissions = 'Required';
+            $imageType->save();
+    
+            $descriptionElement = new ContributionTypeElement;
+            $descriptionElement->type_id = $imageType->id;
+            $dcDescriptionElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Description');
+            $descriptionElement->element_id = $dcDescriptionElement->id;
+            $descriptionElement->prompt = 'Image Description';
+            $descriptionElement->order = 1;
+            $descriptionElement->long_text = true;
+            $descriptionElement->save();
+        }
     }
 
     public function hookBeforeSaveItem($args){
