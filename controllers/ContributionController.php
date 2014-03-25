@@ -363,8 +363,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         if (!empty($fromAddress)) {
             $contributorMail = new Zend_Mail;
             $body .= get_option('contribution_email');
-            $body .= "<p>" . __("Contribution URL (pending review by project staff): %s", record_url($item, 'show', true)) . "</p>";
-
+            $url = record_url($item, 'show', true);
+            $link = "<a href='$url'>$url</a>";
+            $body .= "<p>" . __("Contribution URL (pending review by project staff): ") . $link .  "</p>";
             $contributorMail->setBodyHtml($body);
             $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
             $contributorMail->addTo($toEmail);
@@ -386,11 +387,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 continue;
             }
             $adminMail = new Zend_Mail;
-            $body = __("A new contribution to %s has been made.", get_option('site_title'));
+            $body = "<p>";
+            $body .= __("A new contribution to %s has been made.", get_option('site_title'));
+            $body .= "</p>";
             set_theme_base_url('admin');
-            $body .= __("Contribution URL for review: %s", record_url($item, 'show', true));
+            $url = record_url($item, 'show', true);
+            $link = "<a href='$url'>$url</a>";
+            $body .= "<p>" . __("Contribution URL for review: ") . $link .  "</p>";            
+            
             revert_theme_base_url();
-            $adminMail->setBodyText($body);
+            $adminMail->setBodyHtml($body);
             $adminMail->setFrom($fromAddress, "$siteTitle");
             $adminMail->addTo($toAddress);
             $adminMail->setSubject(__("New %s Contribution", $siteTitle ));
