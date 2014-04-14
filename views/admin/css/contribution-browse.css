@@ -1,0 +1,54 @@
+.contributions-list {
+  padding: 0;
+  margin: 0;
+}
+.contributions-list li {
+    list-style: none outside none;
+    padding-left: 10px;
+    display: inline-block;
+    font-family: "Arvo",serif;
+    margin: 0;
+    padding: 4px 4px 4px 4px;
+}
+
+.contribution a.item-thumbnail {
+    float: left;
+    margin: 0 10px 0 0;
+    width: 20%;
+}
+.contribution .item-thumbnail img {
+    -moz-box-sizing: border-box;
+    border: 1px solid #E4E5DE;
+    display: block;
+    float: left;
+    margin: 0;
+    width: 100%;
+}
+
+a.contribution.status {
+    position:relative;
+    padding-left: 20px;
+    margin-left: 3px;
+    margin-right: 3px;
+    cursor: pointer;
+}
+
+a.contribution.toggle-status.proposed {
+    background: url('../../../../../application/views/scripts/images/silk-icons/error.png') no-repeat scroll 0 0 transparent;
+}
+a.contribution.toggle-status.approved {
+    background: url('../../../../../application/views/scripts/images/silk-icons/tick.png') no-repeat scroll 0 0 transparent;
+}
+a.contribution.toggle-status.rejected {
+    background: url('../../../../../application/views/scripts/images/silk-icons/cancel.png') no-repeat scroll 0 0 transparent;
+}
+a.contribution.toggle-status.private {
+    background: url('../../../../../application/views/scripts/images/silk-icons/asterisk_orange.png') no-repeat scroll 0 0 transparent;
+}
+a.contribution.transmit {
+    background: url('../../shared/images/waiting-mini.gif') no-repeat scroll 0 0 transparent !important;
+}
+.action {
+    color: #338899;
+    cursor: pointer;
+}
