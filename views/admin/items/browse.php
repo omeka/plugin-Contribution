@@ -53,7 +53,11 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 <?php endif;
                 $browseHeadings[__('Item')] = null;
                 $browseHeadings[__('Contributor')] = 'contributor';
-                $browseHeadings[__('Publication Status')] = null;
+                if($allowToManage) {
+                    $browseHeadings[__('Publication Status (click to change)')] = null;
+                } else {
+                    $browseHeadings[__('Publication Status')] = null;
+                }
                 $browseHeadings[__('Date Added')] = 'added';
                 echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => ''));
                 ?>
@@ -140,7 +144,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 'approved':<?php echo json_encode(__('Public')); ?>,
                 'private':<?php echo json_encode(__('Private')); ?>,
                 'rejected':<?php echo json_encode(__('Rejected')); ?>,
-                'confirmation':<?php echo json_encode(__('Are your sure to remove these contributions?')); ?>
+                'confirmation':<?php echo json_encode(__('Are you sure youo want to remove these contributions?')); ?>
             }}
         );
         Omeka.addReadyCallback(Omeka.ContributionBrowse.setupBatchEdit);
