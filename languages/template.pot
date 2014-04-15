@@ -1,14 +1,14 @@
-# Translation for the Simple Pages plugin for Omeka.
-# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
-# This file is distributed under the same license as the Omeka package.
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: Contribution\n"
-"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
-"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2014-04-14 12:25+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,57 +17,64 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: models/ContributionType.php:101
+#: models/ContributionType.php:101 models/ContributionType.php:101
 msgid "Allowed"
 msgstr ""
 
-#: models/ContributionType.php:102
+#: models/ContributionType.php:102 models/ContributionType.php:102
 msgid "Required"
 msgstr ""
 
-#: models/ContributionType.php:100
+#: models/ContributionType.php:100 models/ContributionType.php:100
 msgid "Disallowed"
 msgstr ""
 
+#: models/ContributionContributedItem.php:46
 #: models/ContributionContributedItem.php:46
 msgid "Deleted User"
 msgstr ""
 
 #: ContributionPlugin.php:280 views/admin/contributors/browse.php:31
 #: views/admin/items/browse.php:9 views/admin/types/browse.php:26
+#: views/admin/contributors/browse.php:31 views/admin/types/browse.php:26
+#: ContributionPlugin.php:285
 msgid "Contributed Items"
 msgstr ""
 
 #: ContributionPlugin.php:283 ContributionPlugin.php:365
-#: helpers/ThemeHelpers.php:21
+#: helpers/ThemeHelpers.php:21 helpers/ThemeHelpers.php:21
+#: ContributionPlugin.php:288 ContributionPlugin.php:370
 msgid "Contribution"
 msgstr ""
 
-#: ContributionPlugin.php:304
+#: ContributionPlugin.php:304 ContributionPlugin.php:309
 msgid "Contribute an Item"
 msgstr ""
 
-#: ContributionPlugin.php:539
+#: ContributionPlugin.php:539 ContributionPlugin.php:549
 msgid "Contributed by:"
 msgstr ""
 
-#: ContributionPlugin.php:544
+#: ContributionPlugin.php:544 ContributionPlugin.php:554
 msgid "This item can be made public."
 msgstr ""
 
-#: ContributionPlugin.php:546
+#: ContributionPlugin.php:546 ContributionPlugin.php:556
 msgid "This item cannot be made public."
 msgstr ""
 
+#: controllers/ContributionController.php:42
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
 msgstr ""
 
 #: controllers/ContributionController.php:187
+#: controllers/ContributionController.php:192
 msgid "You must select a type for your contribution."
 msgstr ""
 
 #: controllers/ContributionController.php:338
+#: controllers/ContributionController.php:339
 msgid "You must agree to the Terms and Conditions."
 msgstr ""
 
@@ -90,10 +97,12 @@ msgid "Contribution URL (pending review by project staff): %s"
 msgstr ""
 
 #: controllers/ContributionController.php:373
+#: controllers/ContributionController.php:372
 #, php-format
 msgid "Your %s Contribution"
 msgstr ""
 
+#: controllers/ContributionController.php:391
 #: controllers/ContributionController.php:391
 #, php-format
 msgid "A new contribution to %s has been made."
@@ -105,59 +114,62 @@ msgid "Contribution URL for review: %s"
 msgstr ""
 
 #: controllers/ContributionController.php:398
+#: controllers/ContributionController.php:402
 #, php-format
 msgid "New %s Contribution"
 msgstr ""
 
-#: controllers/SettingsController.php:34
+#: controllers/SettingsController.php:34 controllers/SettingsController.php:34
 msgid "Settings have been saved."
 msgstr ""
 
-#: controllers/SettingsController.php:78
+#: controllers/SettingsController.php:78 controllers/SettingsController.php:78
 msgid "Contribution Slug"
 msgstr ""
 
-#: controllers/SettingsController.php:79
+#: controllers/SettingsController.php:79 controllers/SettingsController.php:79
 msgid ""
 "Relative path from the Omeka root to the desired location for the "
 "contribution form. If left blank, the default path will be named &#8220;"
 "contribution.&#8221;"
 msgstr ""
 
-#: controllers/SettingsController.php:84
+#: controllers/SettingsController.php:84 controllers/SettingsController.php:84
 msgid "Contribution Confirmation Email"
 msgstr ""
 
-#: controllers/SettingsController.php:85
+#: controllers/SettingsController.php:85 controllers/SettingsController.php:85
 msgid ""
 "An email message will be sent to each contributor from this address "
 "confirming that they submitted a contribution to this website. Leave blank "
 "if you do not want an email sent."
 msgstr ""
 
-#: controllers/SettingsController.php:90
+#: controllers/SettingsController.php:90 controllers/SettingsController.php:90
 msgid "New Contribution Notification Emails"
 msgstr ""
 
-#: controllers/SettingsController.php:91
+#: controllers/SettingsController.php:91 controllers/SettingsController.php:91
 msgid ""
 "An email message will be sent to each address here whenever a new item is "
 "contributed. Leave blank if you do not want anyone to be alerted of "
 "contributions by email."
 msgstr ""
 
-#: controllers/SettingsController.php:96
+#: controllers/SettingsController.php:96 controllers/SettingsController.php:96
 msgid "Text of Terms of Service"
 msgstr ""
 
-#: controllers/SettingsController.php:97
+#: controllers/SettingsController.php:97 controllers/SettingsController.php:97
 msgid "The text of the legal disclaimer to which contributors will agree."
 msgstr ""
 
 #: controllers/SettingsController.php:102
+#: controllers/SettingsController.php:102
 msgid "Use 'Simple' Options"
 msgstr ""
 
+#: controllers/SettingsController.php:103
 #: controllers/SettingsController.php:103
 msgid ""
 "This will require an email address from contributors, and create a guest "
@@ -178,13 +190,16 @@ msgid ""
 msgstr ""
 
 #: controllers/SettingsController.php:115
+#: controllers/SettingsController.php:115
 msgid "Do not put contributions in any collection"
 msgstr ""
 
 #: controllers/SettingsController.php:118
+#: controllers/SettingsController.php:118
 msgid "Contribution Collection"
 msgstr ""
 
+#: controllers/SettingsController.php:119
 #: controllers/SettingsController.php:119
 msgid ""
 "The collection to which contributions will be added. Changes here will only "
@@ -192,21 +207,26 @@ msgid ""
 msgstr ""
 
 #: controllers/SettingsController.php:124
+#: controllers/SettingsController.php:124
 msgid "No default type"
 msgstr ""
 
+#: controllers/SettingsController.php:127
 #: controllers/SettingsController.php:127
 msgid "Default Contribution Type"
 msgstr ""
 
 #: controllers/SettingsController.php:128
+#: controllers/SettingsController.php:128
 msgid "The type that will be chosen for contributors by default."
 msgstr ""
 
 #: controllers/SettingsController.php:135
+#: controllers/SettingsController.php:135
 msgid "Choose a profile type for contributors"
 msgstr ""
 
+#: controllers/SettingsController.php:136
 #: controllers/SettingsController.php:136
 msgid "Configure the profile type under User Profiles"
 msgstr ""
@@ -214,66 +234,80 @@ msgstr ""
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:66
 #: views/public/contribution/my-contributions.php:9
+#: views/public/contribution/my-contributions.php:9
+#: views/admin/items/browse.php:99 views/admin/contributors/show.php:48
+#: models/ContributionContributedItem.php:56
 msgid "Anonymous"
 msgstr ""
 
 #: models/Mixin/ContributionOrder.php:101
+#: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
 msgstr ""
 
+#: models/Mixin/ContributionOrder.php:105
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
 msgstr ""
 
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
-#: views/admin/index/index.php:19
+#: views/admin/index/index.php:19 views/admin/index/index.php:9
+#: views/admin/index/index.php:19 views/admin/contribution-navigation.php:6
 msgid "Getting Started"
 msgstr ""
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
+#: views/admin/index/index.php:37 views/admin/contribution-navigation.php:7
 msgid "Contribution Types"
 msgstr ""
 
 #: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
+#: views/admin/settings/edit.php:13 views/admin/contribution-navigation.php:8
 msgid "Submission Settings"
 msgstr ""
 
 #: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
+#: views/admin/index/index.php:54 views/admin/contribution-navigation.php:15
 msgid "Contributions"
 msgstr ""
 
 #: views/admin/contributors/browse.php:28
+#: views/admin/contributors/browse.php:28
 msgid "ID"
 msgstr ""
 
-#: views/admin/contributors/show.php:20
+#: views/admin/contributors/show.php:20 views/admin/contributors/show.php:20
 msgid "'s contributions"
 msgstr ""
 
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:31
 #: views/admin/items/browse.php:78
+#: views/admin/common/contribution-quick-filters.php:8
+#: views/admin/items/browse.php:77 views/admin/items/browse.php:139
+#: views/admin/contributors/show.php:40
 msgid "Needs review"
 msgstr ""
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:80
+#: views/admin/items/browse.php:81 views/admin/contributors/show.php:42
 msgid "Private contribution"
 msgstr ""
 
-#: views/admin/index/index.php:20
+#: views/admin/index/index.php:20 views/admin/index/index.php:20
 msgid ""
 "A basic contribution form is installed and ready to ask users to submit a "
 "Story or Image type, and to include their name and email address. If you "
 "want to modify the form, follow the steps below."
 msgstr ""
 
-#: views/admin/index/index.php:21
+#: views/admin/index/index.php:21 views/admin/index/index.php:21
 msgid ""
 "While an account exists for all contributors, they can make any contribution "
 "anonymously. Only the admin and super roles can see the full information."
 msgstr ""
 
-#: views/admin/index/index.php:22
+#: views/admin/index/index.php:22 views/admin/index/index.php:22
 msgid ""
 "Contributors can make any contribution public or not. Non-public "
 "contributions cannot be made publicly available on the site, but they are "
@@ -281,102 +315,102 @@ msgid ""
 "to the contributors themselves."
 msgstr ""
 
-#: views/admin/index/index.php:24
+#: views/admin/index/index.php:24 views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
 msgstr ""
 
-#: views/admin/index/index.php:26
+#: views/admin/index/index.php:26 views/admin/index/index.php:26
 msgid ""
 "To make repeat contributions easier, a reusable 'Guest User' account is "
 "created for contributors."
 msgstr ""
 
-#: views/admin/index/index.php:26
+#: views/admin/index/index.php:26 views/admin/index/index.php:26
 msgid "Configure Guest Users"
 msgstr ""
 
-#: views/admin/index/index.php:26
+#: views/admin/index/index.php:26 views/admin/index/index.php:26
 msgid "with the following suggestions."
 msgstr ""
 
-#: views/admin/index/index.php:28
+#: views/admin/index/index.php:28 views/admin/index/index.php:28
 msgid ""
 "Let visitors know a bit about how their contributions will be used and why "
 "they are so valuable in the 'Registration Features' information."
 msgstr ""
 
-#: views/admin/index/index.php:29
+#: views/admin/index/index.php:29 views/admin/index/index.php:29
 msgid ""
 "It is easiest to contribute if administrator approval is not required and "
 "you allow 20 minute instant access. To prevent spam, using ReCaptcha is "
 "recommended."
 msgstr ""
 
-#: views/admin/index/index.php:30
+#: views/admin/index/index.php:30 views/admin/index/index.php:30
 msgid ""
 "Additional contribution-specific information for guest users can be created "
 "here."
 msgstr ""
 
-#: views/admin/index/index.php:34
+#: views/admin/index/index.php:34 views/admin/index/index.php:34
 msgid "2. Modify the contribution form:"
 msgstr ""
 
-#: views/admin/index/index.php:37
+#: views/admin/index/index.php:37 views/admin/index/index.php:37
 #, php-format
 msgid ""
 "Choose item types you wish visitors to share, and customize the fields they "
 "should use, in %s"
 msgstr ""
 
-#: views/admin/index/index.php:39
+#: views/admin/index/index.php:39 views/admin/index/index.php:39
 msgid "user profiles type"
 msgstr ""
 
-#: views/admin/index/index.php:39
+#: views/admin/index/index.php:39 views/admin/index/index.php:39
 #, php-format
 msgid ""
 "Set up profile information you would like from your contributors by setting "
 "up a %s "
 msgstr ""
 
-#: views/admin/index/index.php:41
+#: views/admin/index/index.php:41 views/admin/index/index.php:41
 msgid ""
 "The optional User Profiles plugin lets you set up additional information you "
 "would like to ask from your contributors. To use those features, please "
 "install that, then return here for additional guidance."
 msgstr ""
 
-#: views/admin/index/index.php:45
+#: views/admin/index/index.php:45 views/admin/index/index.php:45
 msgid "submission settings"
 msgstr ""
 
-#: views/admin/index/index.php:45
+#: views/admin/index/index.php:45 views/admin/index/index.php:45
 #, php-format
 msgid "3. Configure the %s for contributions:"
 msgstr ""
 
-#: views/admin/index/index.php:48
+#: views/admin/index/index.php:48 views/admin/index/index.php:48
 msgid "Set the terms of service for contributing to the site."
 msgstr ""
 
-#: views/admin/index/index.php:49
+#: views/admin/index/index.php:49 views/admin/index/index.php:49
 msgid ""
 "Set up an auto-generated email to send to all contributors after they submit "
 "their contribution."
 msgstr ""
 
-#: views/admin/index/index.php:50
+#: views/admin/index/index.php:50 views/admin/index/index.php:50
 msgid ""
 "Decide whether to use the 'Simple' options. This requires only that "
 "contributors provide an email address."
 msgstr ""
 
-#: views/admin/index/index.php:51
+#: views/admin/index/index.php:51 views/admin/index/index.php:51
 msgid "Specify a collection for new contributed items."
 msgstr ""
 
-#: views/admin/index/index.php:54
+#: views/admin/index/index.php:54 views/admin/index/index.php:54
 #, php-format
 msgid ""
 "4. Browse contributions and their status, with links to more contributor "
@@ -384,121 +418,138 @@ msgid ""
 msgstr ""
 
 #: views/admin/items/browse.php:25 views/admin/items/browse.php:27
+#: views/admin/common/contribution-quick-filters.php:2
+#: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
 msgstr ""
 
-#: views/admin/items/browse.php:42
+#: views/admin/items/browse.php:42 views/admin/items/browse.php:56
 msgid "Publication Status"
 msgstr ""
 
-#: views/admin/items/browse.php:68
+#: views/admin/items/browse.php:68 views/admin/items/browse.php:102
 msgid "Info and contributions"
 msgstr ""
 
+#: views/admin/types/add-existing-element.php:27
 #: views/admin/types/add-existing-element.php:27
 msgid "Prompt:"
 msgstr ""
 
 #: views/admin/types/add-existing-element.php:30
+#: views/admin/types/add-existing-element.php:30
 msgid "Large text"
 msgstr ""
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
-#: views/admin/types/edit.php:30
+#: views/admin/types/edit.php:30 views/admin/types/add.php:35
+#: views/admin/types/browse.php:9 views/admin/types/edit.php:30
 msgid "Types"
 msgstr ""
 
-#: views/admin/types/add.php:35
+#: views/admin/types/add.php:35 views/admin/types/add.php:35
 msgid "Add a new type"
 msgstr ""
 
-#: views/admin/types/browse.php:27
+#: views/admin/types/browse.php:27 views/admin/types/browse.php:27
 msgid "File Upload"
 msgstr ""
 
-#: views/admin/types/form.php:13
+#: views/admin/types/form.php:13 views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
 msgstr ""
 
-#: views/admin/types/form.php:28
+#: views/admin/types/form.php:28 views/admin/types/form.php:28
 msgid ""
 "The label you would like to use for this contribution type. If blank, the "
 "Item Type name will be used."
 msgstr ""
 
-#: views/admin/types/form.php:37
+#: views/admin/types/form.php:37 views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
 msgstr ""
 
-#: views/admin/types/form.php:40
+#: views/admin/types/form.php:40 views/admin/types/form.php:40
 msgid ""
 "Enable or disable file uploads through the public contribution form. If set "
 "to &#8220;Required,&#8220; users must add a file to their contribution when "
 "selecting this item type."
 msgstr ""
 
-#: views/admin/types/form.php:42
+#: views/admin/types/form.php:42 views/admin/types/form.php:42
 #, php-format
 msgid "%s"
 msgstr ""
 
-#: views/admin/types/form.php:58
+#: views/admin/types/form.php:58 views/admin/types/form.php:58
 msgid "Prompt"
 msgstr ""
 
-#: views/admin/types/form.php:60
+#: views/admin/types/form.php:60 views/admin/types/form.php:60
 msgid "Multiple rows"
 msgstr ""
 
+#: views/public/contribution/contribute.php:47
 #: views/public/contribution/contribute.php:47
 msgid "What type of item do you want to contribute?"
 msgstr ""
 
 #: views/public/contribution/contribute.php:62
+#: views/public/contribution/contribute.php:62
 msgid "Publish my contribution on the web."
 msgstr ""
 
+#: views/public/contribution/contribute.php:67
 #: views/public/contribution/contribute.php:67
 msgid "Contribute anonymously."
 msgstr ""
 
 #: views/public/contribution/contribute.php:69
+#: views/public/contribution/contribute.php:69
 msgid "Terms and Conditions"
 msgstr ""
 
+#: views/public/contribution/contribute.php:69
 #: views/public/contribution/contribute.php:69
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
 msgstr ""
 
 #: views/public/contribution/contribute.php:73
+#: views/public/contribution/contribute.php:73
 msgid "I agree to the Terms and Conditions."
 msgstr ""
 
+#: views/public/contribution/contribute.php:75
 #: views/public/contribution/contribute.php:75
 msgid "Contribute"
 msgstr ""
 
 #: views/public/contribution/my-contributions.php:11
+#: views/public/contribution/my-contributions.php:11
 msgid "Added"
 msgstr ""
 
-#: views/public/contribution/terms.php:2
+#: views/public/contribution/terms.php:2 views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
 msgstr ""
 
+#: views/public/contribution/thankyou.php:3
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
 msgstr ""
 
 #: views/public/contribution/thankyou.php:4
+#: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
 msgstr ""
 
 #: views/public/contribution/thankyou.php:4
+#: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
 msgstr ""
 
+#: views/public/contribution/thankyou.php:4
 #: views/public/contribution/thankyou.php:4
 #, php-format
 msgid ""
@@ -507,9 +558,11 @@ msgid ""
 msgstr ""
 
 #: views/public/contribution/thankyou.php:7
+#: views/public/contribution/thankyou.php:7
 msgid "this page"
 msgstr ""
 
+#: views/public/contribution/thankyou.php:7
 #: views/public/contribution/thankyou.php:7
 #, php-format
 msgid ""
@@ -519,19 +572,184 @@ msgid ""
 msgstr ""
 
 #: views/public/contribution/type-form.php:31
+#: views/public/contribution/type-form.php:29
 msgid "Upload a file (Optional)"
 msgstr ""
 
 #: views/public/contribution/type-form.php:39
+#: views/public/contribution/type-form.php:37
 msgid "Email (Required)"
 msgstr ""
 
 #: views/public/contribution/type-form.php:44
+#: views/public/contribution/type-form.php:49
 #, php-format
 msgid "You are logged in as: %s"
 msgstr ""
 
 #: views/public/contribution/type-form.php:59
+#: views/public/contribution/type-form.php:64
 #, php-format
 msgid "Your %s profile"
+msgstr ""
+
+#: views/public/contribution/my-contributions.php:8
+#: views/admin/common/contribution-quick-filters.php:6
+#: views/admin/items/browse.php:73 views/admin/items/browse.php:140
+#: views/admin/contributors/show.php:37
+msgid "Public"
+msgstr ""
+
+#: views/public/contribution/my-contributions.php:10
+#: views/admin/items/browse.php:54
+msgid "Item"
+msgstr ""
+
+#: views/admin/common/contribution-quick-filters.php:5
+msgid "View All"
+msgstr ""
+
+#: views/admin/common/contribution-quick-filters.php:7
+#: views/admin/items/browse.php:141
+msgid "Private"
+msgstr ""
+
+#: views/admin/items/browse.php:13
+#, php-format
+msgid "Contributed Items (%d)"
+msgstr ""
+
+#: views/admin/items/browse.php:27
+msgid "security settings"
+msgstr ""
+
+#: views/admin/items/browse.php:27
+#, php-format
+msgid ""
+"You have not entered your %s API keys under %s. We recommend adding these "
+"keys, or the contribution form will be vulnerable to spam."
+msgstr ""
+
+#: views/admin/items/browse.php:36 views/admin/items/browse.php:121
+msgid "Set public"
+msgstr ""
+
+#: views/admin/items/browse.php:39 views/admin/items/browse.php:124
+msgid "Set Needs review"
+msgstr ""
+
+#: views/admin/items/browse.php:42 views/admin/items/browse.php:127
+#: views/admin/types/form.php:118
+msgid "Delete"
+msgstr ""
+
+#: views/admin/items/browse.php:52
+msgid "Select"
+msgstr ""
+
+#: views/admin/items/browse.php:55
+msgid "Contributor"
+msgstr ""
+
+#: views/admin/items/browse.php:57
+msgid "Date Added"
+msgstr ""
+
+#: views/admin/items/browse.php:142
+msgid "Rejected"
+msgstr ""
+
+#: views/admin/items/browse.php:143
+msgid "Are your sure to remove these contributions?"
+msgstr ""
+
+#: views/admin/items/browse.php:151
+msgid "There is no contribution yet."
+msgstr ""
+
+#: views/admin/items/browse.php:153
+#, php-format
+msgid "The query searched %d contributions and returned no results."
+msgstr ""
+
+#: views/admin/items/browse.php:154
+msgid "See all contributions."
+msgstr ""
+
+#: views/admin/contributors/show.php:10 views/admin/contributors/browse.php:9
+msgid "Contributors"
+msgstr ""
+
+#: views/admin/contributors/show.php:26
+msgid "Profile: "
+msgstr ""
+
+#: views/admin/contributors/browse.php:29 views/admin/types/browse.php:24
+msgid "Name"
+msgstr ""
+
+#: views/admin/contributors/browse.php:30
+msgid "Email"
+msgstr ""
+
+#: views/admin/types/add-existing-element.php:38 views/admin/types/form.php:65
+msgid "Remove"
+msgstr ""
+
+#: views/admin/types/form.php:10 views/admin/types/browse.php:25
+msgid "Item Type"
+msgstr ""
+
+#: views/admin/types/form.php:25
+msgid "Display Name"
+msgstr ""
+
+#: views/admin/types/form.php:64
+msgid "Undo"
+msgstr ""
+
+#: views/admin/types/form.php:102 views/admin/types/form.php:105
+msgid "Add Element"
+msgstr ""
+
+#: views/admin/types/form.php:116
+msgid "Save Changes"
+msgstr ""
+
+#: views/admin/types/browse.php:28 views/admin/types/browse.php:38
+#: views/admin/types/edit.php:30
+msgid "Edit"
+msgstr ""
+
+#: views/admin/types/browse.php:36
+msgid "View"
+msgstr ""
+
+#: controllers/ContributionController.php:368
+msgid "Contribution URL (pending review by project staff): "
+msgstr ""
+
+#: controllers/ContributionController.php:370
+#, php-format
+msgid "%s Administrator"
+msgstr ""
+
+#: controllers/ContributionController.php:396
+msgid "Contribution URL for review: "
+msgstr ""
+
+#: controllers/SettingsController.php:109
+msgid "Email text to send to contributors"
+msgstr ""
+
+#: controllers/SettingsController.php:110
+msgid ""
+"Email text to send to contributors when they submit an item. A link to their "
+"contribution will be appended. If using the 'Simple' option, we recommend "
+"that you notify contributors that a guest user account has been created for "
+"them, and what they gain by confirming their account."
+msgstr ""
+
+#: controllers/SettingsController.php:137
+msgid "None"
 msgstr ""
