@@ -151,7 +151,8 @@ if (!Omeka_Captcha::isConfigured()): ?>
     <h2><?php echo __('There is no contribution yet.'); ?></h2>
     <?php else: ?>
     <p><?php echo __('The query searched %d contributions and returned no results.', total_records('ContributionContributedItem')); ?></p>
-    <p><a href="<?php echo url('contribution/items'); ?>"><?php echo __('See all contributions.'); ?></p>
+    <p><a href="<?php echo url('contribution/items'); ?>"><?php echo __('See all contributions.'); ?></a></p>
     <?php endif; ?>
 <?php endif; ?>
+</div>
 <?php echo foot(); ?>
