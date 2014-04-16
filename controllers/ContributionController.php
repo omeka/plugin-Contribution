@@ -372,7 +372,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $body .= "<p>" . __("To log in and change your username, request a password here:") . $passwordRecoveryLink . "<p>";
             $contributorMail->setBodyHtml($body);
             $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
-            $contributorMail->addTo($toEmail);
+            $contributorMail->addTo($recipient->email);
             $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
             $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
