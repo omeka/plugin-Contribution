@@ -369,7 +369,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $body .= "<p>" . __("Your username is %s", $recipient->username) . "</p>";
             $passwordRecoveryUrl = WEB_ROOT . "/users/forgot-password";
             $passwordRecoveryLink = "<a href='$passwordRecoveryUrl'>$passwordRecoveryUrl</a>";
-            $body .= "<p>" . __("To log in and change your username, request a password here:") . $passwordRecoveryLink . "<p>";
+            $body .= "<p>" . __("To log in and change your username, request a password here: ") . $passwordRecoveryLink . "<p>";
             $contributorMail->setBodyHtml($body);
             $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
             $contributorMail->addTo($recipient->email);
@@ -420,7 +420,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $split = explode('@', $email);
         $name = $split[0];
         $username = str_replace('@', 'AT', $name);
-        $username = str_replace('.', 'DOT', $username);
+        $username .= str_replace('.', 'DOT', $username);
         $user->email = $email;
         $user->name = $name;
         $user->username = $username;
