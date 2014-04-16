@@ -237,7 +237,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
             $this->_linkItemToContributedItem($item, $contributor, $post);
-            $this->_sendEmailNotifications($user->email, $item);
+            $this->_sendEmailNotifications($user, $item);
             return true;
         }
         return false;
@@ -352,7 +352,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @param Item $item Item that was contributed via the form.
      * @return void
      */
-    protected function _sendEmailNotifications($toEmail, $item)
+    protected function _sendEmailNotifications($recipient, $item)
     {
         $fromAddress = get_option('contribution_email_sender');
         $siteTitle = get_option('site_title');
@@ -366,6 +366,10 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $url = record_url($item, 'show', true);
             $link = "<a href='$url'>$url</a>";
             $body .= "<p>" . __("Contribution URL (pending review by project staff): ") . $link .  "</p>";
+            $body .= "<p>" . __("Your username is %s", $recipient->username) . "</p>";
+            $passwordRecoveryUrl = WEB_ROOT . "/users/forgot-password";
+            $passwordRecoveryLink = "<a href='$passwordRecoveryUrl'>$passwordRecoveryUrl</a>";
+            $body .= "<p>" . __("To log in and change your username, request a password here:") . $passwordRecoveryLink . "<p>";
             $contributorMail->setBodyHtml($body);
             $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
             $contributorMail->addTo($toEmail);
@@ -393,8 +397,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             set_theme_base_url('admin');
             $url = record_url($item, 'show', true);
             $link = "<a href='$url'>$url</a>";
-            $body .= "<p>" . __("Contribution URL for review: ") . $link .  "</p>";            
-            
+            $body .= "<p>" . __("Contribution URL for review: ") . $link .  "</p>";
+
             revert_theme_base_url();
             $adminMail->setBodyHtml($body);
             $adminMail->setFrom($fromAddress, "$siteTitle");
