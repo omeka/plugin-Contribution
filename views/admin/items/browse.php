@@ -54,7 +54,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 $browseHeadings[__('Item')] = null;
                 $browseHeadings[__('Contributor')] = 'contributor';
                 if($allowToManage) {
-                    $browseHeadings[__('Publication Status (click to change)')] = null;
+                    $browseHeadings[__('Publication Status')] = null;
                 } else {
                     $browseHeadings[__('Publication Status')] = null;
                 }
@@ -74,11 +74,19 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 }
                 if ($item->public) {
                     $status = 'approved';
-                    $statusText = __('Public');
+                    if($allowToManage) {
+                        $statusText = __('Public (click to put in review)');
+                    } else {
+                        $statusText = __('Public');
+                    }
                 } else {
                     if ($contributedItem->public) {
                         $status = 'proposed';
-                        $statusText = __('Needs review');
+                        if($allowToManage) {
+                            $statusText = __('Needs review (click to make public)');
+                        } else {
+                            $statusText = __('Needs review');
+                        }
                     }
                     else {
                         $status = 'private';
@@ -108,7 +116,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                     <?php endif; ?>
                 </td>
                 <td class="contribution-status">
-                    <?php if ($allowToManage): ?>
+                    <?php if ($allowToManage && ($status != 'private')): ?>
                     <a href="<?php echo ADMIN_BASE_URL; ?>" id="contribution-<?php echo $contributedItem->id; ?>" class="contribution toggle-status status <?php echo $status; ?>"><?php echo $statusText; ?></a>
                     <?php else: ?>
                     <span class="contribution toggle-status status <?php echo $status; ?>"><?php echo $statusText; ?></span>
@@ -140,11 +148,11 @@ if (!Omeka_Captcha::isConfigured()): ?>
     <script type="text/javascript">
         Omeka.messages = jQuery.extend(Omeka.messages,
             {'contribution':{
-                'proposed':<?php echo json_encode(__('Needs review')); ?>,
-                'approved':<?php echo json_encode(__('Public')); ?>,
+                'proposed':<?php echo json_encode(__('Needs review (click to make public)')); ?>,
+                'approved':<?php echo json_encode(__('Public (click to put in review)')); ?>,
                 'private':<?php echo json_encode(__('Private')); ?>,
                 'rejected':<?php echo json_encode(__('Rejected')); ?>,
-                'confirmation':<?php echo json_encode(__('Are you sure youo want to remove these contributions?')); ?>
+                'confirmation':<?php echo json_encode(__('Are you sure you want to remove these contributions?')); ?>
             }}
         );
         Omeka.addReadyCallback(Omeka.ContributionBrowse.setupBatchEdit);
