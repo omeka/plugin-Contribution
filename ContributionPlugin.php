@@ -598,7 +598,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
-    public function pluginOptions()
+    public function getOptions()
     {
         return $this->_options;
     }
