@@ -100,7 +100,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
 
         $form->addElementToEditGroup('checkbox', 'contribution_simple', array(
             'label' => __("Use 'Simple' Options"),
-            'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, you cannot use the simple option. See documentation for details. "),
+            'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, you cannot use the simple option. See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
             ),
             array('checked'=> (bool) get_option('contribution_simple') ? 'checked' : '')
         );
