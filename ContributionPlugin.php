@@ -424,13 +424,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $elementTable = $this->_db->getTable('Element');
         $itemTypeTable = $this->_db->getTable('ItemType');
-        
         $textItemType = $itemTypeTable->findByName('Text');
         if($textItemType) {
             $storyType = new ContributionType;
             $storyType->item_type_id = $textItemType->id;
             $storyType->display_name = 'Story';
-    
             $storyType->file_permissions = 'Allowed';
             $storyType->save();
             $textElement = new ContributionTypeElement;
@@ -563,8 +561,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     private function _contributorsToGuestUsers($contributorsData)
     {
-        $map = array(); //contributor->id => $user->id
-        foreach($contributorsData as $index=>$contributor) {
+        $map = array();
+            foreach($contributorsData as $index=>$contributor) {
             $user = new User();
             $user->email = $contributor['email'];
             $user->name = $contributor['name'];
