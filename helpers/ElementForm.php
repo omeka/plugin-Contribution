@@ -115,6 +115,7 @@ class Contribution_View_Helper_ElementForm extends Omeka_View_Helper_ElementForm
     {
         return "Elements[".$this->_contributionTypeElement->element_id."][$index]";
     }
+    
    protected function _displayFormInput($inputNameStem, $value, $options=array())
     {
         $fieldDataType = $this->_getElementDataType();

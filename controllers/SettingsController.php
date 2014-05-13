@@ -33,7 +33,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
                 $this->_setOptions($form->getValues());
                 $this->_helper->flashMessenger(__('Settings have been saved.'));
             } else {
-                $this->flashError('There were errors found in your form. Please edit and resubmit.');
+                $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.', 'error'));
             }
         }
 
@@ -63,8 +63,9 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
     private function _setOptions($newOptions)
     {
         $cnt = new ContributionPlugin();
+        $options = $cnt->getOptions();
         foreach ($newOptions as $optionName => $optionValue) {
-            if (in_array($optionName, $cnt->pluginOptions())) {
+            if (in_array($optionName, $options)) {
                 set_option($optionName, $optionValue);
             }
         }
