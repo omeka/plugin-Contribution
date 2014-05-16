@@ -1,8 +1,8 @@
 
 <?php if (!$type): ?>
-<p>You must choose a contribution type to continue.</p>
+<p><?php echo __('You must choose a contribution type to continue.'); ?></p>
 <?php else: ?>
-<h2>Contribute a <?php echo $type->display_name; ?></h2>
+<h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
 
 <?php
 if ($type->isFileRequired()):
@@ -64,9 +64,9 @@ if (!isset($required) && $type->isFileAllowed()):
         <h2 class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'><?php echo  __('Your %s profile', $profileType->label); ?></h2>
         <p id='contribution-userprofile-visibility'>
         <?php if ($profile->exists()) :?>
-            <span class='contribution-userprofile-visibility'>Show</span><span class='contribution-userprofile-visibility' style='display:none'>Hide</span>
+            <span class='contribution-userprofile-visibility'><?php echo __('Show'); ?></span><span class='contribution-userprofile-visibility' style='display:none'><?php echo __('Hide'); ?></span>
             <?php else: ?>
-            <span class='contribution-userprofile-visibility' style='display:none'>Show</span><span class='contribution-userprofile-visibility'>Hide</span>
+            <span class='contribution-userprofile-visibility' style='display:none'><?php echo __('Show'); ?></span><span class='contribution-userprofile-visibility'><?php echo __('Hide'); ?></span>
         <?php endif; ?>
         </p>
         <div class='contribution-userprofile <?php echo $profile->exists() ? "exists" : ""  ?>'>
