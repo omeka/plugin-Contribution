@@ -64,6 +64,20 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if(plugin_is_active('UserProfiles')) {
             $this->_hooks[] = 'user_profiles_user_page';
         }
+        
+        if(! is_admin_theme()) {
+            //dig up all the elements being used, and add their ElementForm hook
+            $elementsTable = $this->_db->getTable('Element');
+            $select = $elementsTable->getSelect();
+            
+            $select->join(array('contribution_type_elements' => $this->_db->ContributionTypeElement),
+                    'element_id = elements.id', array());
+            $elements = $elementsTable->fetchObjects($select);
+            foreach($elements as $element) {
+                add_filter(array('ElementForm', 'Item', $element->set_name, $element->name ), array($this, 'elementFormFilter'), 2);
+                add_filter(array('ElementInput', 'Item', $element->set_name, $element->name ), array($this, 'elementInputFilter'), 2);
+            }
+        }
     }
 
     /**
@@ -599,5 +613,24 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function getOptions()
     {
         return $this->_options;
+    }
+    
+    public function elementInputFilter($components, $args)
+    {
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components;
+    }
+    
+    public function elementFormFilter($components, $args)
+    {
+        $element = $args['element'];
+        $view = get_view();
+        $type = $view->type;
+        $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
+        $prompt = $contributionElement->prompt;
+        $components['label'] = $prompt;
+        $components['add_input'] = null;
+        return $components;
     }
 }
