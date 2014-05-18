@@ -353,6 +353,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _validateContribution($post)
     {
+        
+        // ReCaptcha ignores the first argument.
+        if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
+            $errors[] = __('Your CAPTCHA submission was invalid, please try again.');
+            $isValid = false;
+        }
+                
         if ($post['terms-agree'] == 0) {
             $this->_helper->flashMessenger(__('You must agree to the Terms and Conditions.'), 'error');
             return false;
@@ -435,13 +442,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         $user = new User();
         $email = $post['contribution_simple_email'];
-        $split = explode('@', $email);
-        $name = $split[0];
-        $username = str_replace('@', 'AT', $name);
-        $username .= str_replace('.', 'DOT', $username);
+        if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
+            $username = str_replace('@', 'AT', $email);
+            $username = str_replace('.', 'DOT', $username);
+            $user->username = $username;
+        } else {
+            $user->username = $email;
+        }
         $user->email = $email;
         $user->name = $name;
-        $user->username = $username;
         $user->role = 'guest';
         $user->active = 1;
         try {
