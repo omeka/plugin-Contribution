@@ -57,6 +57,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     public function contributeAction()
     {
+        $this->_captcha = $this->_setupCaptcha();
         if(!empty($_POST)) {
             if ($this->_processForm($_POST)) {
                 $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
@@ -76,6 +77,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 }
             }
         } else {
+            if($this->_captcha) {
+                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+            }
             $defaultType = get_option('contribution_default_type');
             $this->_setupContributeSubmit($defaultType);
         }
@@ -134,6 +138,20 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $profile->type_id = $profileTypeId;
             }
             $this->view->profile = $profile;
+        }
+    }
+
+    /**
+     * Creates the reCAPTCHA object and returns it.
+     * 
+     * @return Zend_Captcha_Recaptcha|null
+     */
+    protected function _setupCaptcha()
+    {
+        if(current_user()) {
+            return false;
+        } else {
+            return Omeka_Captcha::getCaptcha();
         }
     }
 

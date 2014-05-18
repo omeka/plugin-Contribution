@@ -54,8 +54,11 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <?php if(isset($type)) { include('type-form.php'); }?>
                 </div>
             </fieldset>
-            
+
             <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
+                <?php if(isset($captchaScript)): ?>
+                    <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
+                <?php endif; ?>
                 <div class="inputs">
                     <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
