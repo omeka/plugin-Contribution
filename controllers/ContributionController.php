@@ -442,6 +442,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         $user = new User();
         $email = $post['contribution_simple_email'];
+        $split = explode('@', $email);
+        $name = $split[0];
         if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
             $username = str_replace('@', 'AT', $email);
             $username = str_replace('.', 'DOT', $username);
