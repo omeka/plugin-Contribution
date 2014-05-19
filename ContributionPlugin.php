@@ -27,7 +27,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'upgrade',
         'define_acl',
         'define_routes',
-        'admin_plugin_uninstall_message',
+        'uninstall_message',
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
@@ -207,7 +207,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
-    public function hookAdminPluginUninstallMessage()
+    public function hookUninstallMessage()
     {
         echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin
             will remove all information about contributors, as well as the
@@ -363,14 +363,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $html = '<div class="field">';
         $html .= '<div class="two columns alpha">';
-        $html .= get_view()->formLabel('contributed', 'Contribution Status');
+        $html .= get_view()->formLabel('contributed', __('Contribution Status'));
         $html .= '</div>';
         $html .= '<div class="inputs five columns omega">';
         $html .= '<div class="input-block">';
         $html .= get_view()->formSelect('contributed', null, null, array(
-           ''  => 'Select Below',
-           '1' => 'Only Contributed Items',
-           '0' => 'Only Non-Contributed Items'
+           ''  => __('Select Below'),
+           '1' => __('Only Contributed Items'),
+           '0' => __('Only Non-Contributed Items')
         ));
         $html .= '</div></div></div>';
         echo $html;
@@ -529,7 +529,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $uri        = html_escape(record_url($item, 'show', true));
 
         if($contribItem->anonymous) {
-            $cite = "Anonymous, ";
+            $cite = __("Anonymous, ");
         } else {
             $cite = $contribItem->Contributor->name . ", ";
         }
