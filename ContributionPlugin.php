@@ -615,13 +615,32 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         return $this->_options;
     }
     
+    /**
+     * Remove the form controls
+     * 
+     * @param array $components
+     * @param array $args
+     * @return NULL
+     */
     public function elementInputFilter($components, $args)
     {
+        $view = get_view();
+        $element = $args['element'];
+        $type = $view->type;
+        $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
+        if($contributionElement->long_text == 0) {
+            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value']); 
+        }
         $components['form_controls'] = null;
         $components['html_checkbox'] = null;
         return $components;
     }
     
+    /**
+     * Replace the prompt and remove the add input button
+     * @param array $components
+     * @param array $args
+     */
     public function elementFormFilter($components, $args)
     {
         $element = $args['element'];
