@@ -6,7 +6,7 @@
  * @package Contribution
  */
 
-contribution_admin_header(array(__('Contributors')));
+contribution_admin_header(array('Contributors'));
 ?>
 
 
@@ -17,7 +17,7 @@ echo $this->partial('contribution-navigation.php');
 <div id="primary">
 <?php
 echo flash();
-if (!has_loop_records('contribution_contributors')):
+if (empty($contribution_contributors)):
     echo '<p>No one has contributed to the site yet.</p>';
 else:
 ?>
@@ -28,19 +28,16 @@ else:
                 <th><?php echo __('ID'); ?></th>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Email'); ?></th>
-                <th><?php echo __('Contributed Items'); ?></th>
+                <th><?php echo __('Contribution'); ?></th>
             </tr>
         </thead>
         <tbody id="types-table-body">
-<?php 
-foreach (loop('contribution_contributors') as $contributor):
-    $id = $contributor->id;
-?>
+<?php foreach ($contribution_contributors as $contributor): ?>
     <tr>
         <td><?php echo html_escape($contributor->id); ?></td>
-        <td><a href="<?php echo url(array('action' => 'show', 'id' => $id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
+        <td><a href="<?php echo url(array('action' => 'show', 'id' => $contributor->id)); ?>"><?php echo html_escape($contributor->name); ?></a></td>
         <td><?php echo html_escape($contributor->email); ?></td>
-        <td><a href="<?php echo url("items/browse/contributor_id/$id") ?>">View</a></td>
+        <td><a href="<?php echo url("items/browse/contributor_id/{$contributor->id}") ?>">View</a></td>
     </tr>
 <?php endforeach; ?>
         </tbody>

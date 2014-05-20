@@ -15,6 +15,7 @@
  */
 class Table_ContributionTypeElement extends Omeka_Db_Table
 {
+    protected $_alias = 'cte';
     
     /**
      * Retrieves ContributionTypeElements associated with the given type.
@@ -31,6 +32,29 @@ class Table_ContributionTypeElement extends Omeka_Db_Table
         }
         
         return $this->findBySql('type_id = ?', array($typeId));
+    }
+    
+    /**
+     * Find the contribution type element based on what element it uses
+     * @param unknown_type $element
+     */
+    public function findByElementAndType($element, $type)
+    {
+        if (is_int($element)) {
+            $elementId = $element;
+        } else {
+            $elementId = $element->id;
+        }
+        
+        if (is_int($type)) {
+            $typeId = $type;
+        } else {
+            $typeId = $type->id;
+        }
+        $select = parent::getSelect();
+        $select->where('type_id = ?', $typeId);
+        $select->where('element_id = ?', $elementId);
+        return $this->fetchObject($select);    
     }
     
     public function getSelect()

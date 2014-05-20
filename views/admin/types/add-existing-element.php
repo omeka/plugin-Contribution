@@ -27,7 +27,7 @@
         echo "<span>" . __("Prompt:") . "</span>";
         echo $this->formText($element_prompt_name, $element_prompt_value, array('class'=>'prompt'));
         ?>
-        <span class='long-text'><?php echo __('Large text'); ?></span>
+        <span class='long-text'><?php echo __('Multiple rows'); ?></span>
         <?php echo $this->formCheckbox($element_long_name, null);    ?>        
         <?php
         echo $this->formHidden(

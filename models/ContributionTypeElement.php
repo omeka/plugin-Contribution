@@ -29,6 +29,9 @@ class ContributionTypeElement extends Omeka_Record_AbstractRecord
         if(empty($this->element_id)) {
             $this->addError('element', 'You must select an element to contribute.');
         }
+        if(empty($this->prompt)) {
+            $this->addError('prompt', 'You must provide a prompt for your contributors.');
+        }
     }
 
     /**

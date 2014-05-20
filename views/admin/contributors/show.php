@@ -5,11 +5,11 @@
  * @copyright Center for History and New Media, 2010
  * @package Contribution
  */
-$name = html_escape($contributor->name);
-queue_css_file('contributors');
-contribution_admin_header(array(__('Contributors'), "$name"));
-?>
+$id = html_escape($contribution_contributor->id);
+$customMetadata = $contribution_contributor->getMetadata();
 
+contribution_admin_header(array('Contributors', "#$id"));
+?>
 
 <?php 
 echo $this->partial('contribution-navigation.php');
@@ -17,45 +17,29 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <h2><?php echo $contributor->name; ?><?php echo __("'s contributions"); ?></h2>
-    
-    <?php if(plugin_is_active('UserProfiles')): ?>
-    <div id='contribution-profile-info'>
-        <?php 
-            $this->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
-            echo $this->linkToOwnerProfile(array('owner'=>$contributor, 'text'=>__("Profile: ")));   
-        ?>
-    </div>
-    <?php endif; ?>
-    
-    <div id='contribution-user-contributions'>
-        <?php foreach($items as $item): ?>
-        <?php set_current_record('item', $item->Item); ?>
-        <section class="seven columns omega contribution">
-            <?php 
-                if ($item->Item->public) {
-                    $status = __('Public');
-                } else {
-                    if($item->public) {
-                        $status = __('Needs review');
-                    } else {
-                        $status = __('Private contribution');
-                    }
-                }
-            ?>
-        
-            <h2><?php echo link_to_item(null, array(), 'edit'); ?></h2>
-            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
-            <?php
-            echo item_image_gallery(
-                array('linkWrapper' => array('class' => 'admin-thumb panel')),
-                'square_thumbnail', true);
-            ?>
-            <?php echo all_element_texts('item'); ?>
-        </section>   
-        
+    <h2>Basic Metadata</h2>
+    <table>
+        <tr>
+            <th>Name</th>
+            <td><?php echo html_escape($contribution_contributor->name); ?></td>
+        </tr>
+        <tr>
+            <th>Email Address</th>
+            <td><?php echo html_escape($contribution_contributor->email); ?></td>
+        </tr>
+        <tr>
+            <th>IP Address</th>
+            <td><?php echo $contribution_contributor->getDottedIpAddress(); ?></td>
+        </tr>
+    </table>
+    <h2>Custom Metadata</h2>
+    <table>
+        <?php foreach ($customMetadata as $metadataName => $metadataValue): ?>
+        <tr>
+            <th><?php echo html_escape($metadataName); ?></th>
+            <td><?php echo html_escape($metadataValue); ?></td>
+        </tr>
         <?php endforeach; ?>
-
-    </div>
+    </table>
 </div>
 <?php echo foot(); ?>

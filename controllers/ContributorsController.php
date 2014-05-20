@@ -11,18 +11,18 @@
  */
 class Contribution_ContributorsController extends Omeka_Controller_AbstractActionController
 {
+    
     public function init()
     {
-      //  $this->_helper->db->setDefaultModelName('User');
+        $this->_helper->db->setDefaultModelName('ContributionContributor');
+        $this->_browseRecordsPerPage = get_option('per_page_admin');
     }
-
     
-    public function showAction()
+    /**
+     * Index action; simply forwards to browse.
+     */
+    public function indexAction()
     {
-        $id = $this->getParam('id');
-        $user = $this->_helper->db->getTable('User')->find($id);
-        $this->view->contributor = $user;
-        $items = $this->_helper->db->getTable('ContributionContributedItem')->findBy(array('contributor'=>$user->id));
-        $this->view->items = $items;
+        $this->_forward('browse');
     }
 }

@@ -18,25 +18,23 @@ require_once 'Mixin/ContributionOrder.php';
  */
 class ContributionType extends Omeka_Record_AbstractRecord
 {
+    const FILE_PERMISSION_DISALLOWED = 'Disallowed';
+    const FILE_PERMISSION_ALLOWED = 'Allowed';
+    const FILE_PERMISSION_REQUIRED = 'Required';
 
     public $item_type_id;
     public $display_name;
-    public $file_permissions = 'Disallowed';
+    public $file_permissions = self::FILE_PERMISSION_DISALLOWED;
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
 
-    protected function filterPostData($post)
-    {
-        if(empty($post['display_name'])) {
-            $itemType = $this->getDb()->getTable('ItemType')->find($post['item_type_id']);
-            $post['display_name'] = $itemType = $itemType->name;
-        }
-        return $post;
-    }
-    
     protected function _validate()
     {
+        if(empty($this->display_name)) {
+            $this->addError('display_name', 'You must provide a display name.');
+        }
+
         if(empty($this->item_type_id)) {
             $this->addError('item_type_id', 'You must select an item type.');
         }
@@ -75,8 +73,8 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function isFileAllowed()
     {
-        return $this->file_permissions == 'Allowed'
-            || $this->file_permissions == 'Required';
+        return $this->file_permissions == self::FILE_PERMISSION_ALLOWED
+            || $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
     }
 
     /**
@@ -86,7 +84,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function isFileRequired()
     {
-        return $this->file_permissions == 'Required';
+        return $this->file_permissions == self::FILE_PERMISSION_REQUIRED;
     }
 
     /**
@@ -97,9 +95,9 @@ class ContributionType extends Omeka_Record_AbstractRecord
     public static function getPossibleFilePermissions()
     {
         return array(
-            'Disallowed' => __('Disallowed'),
-            'Allowed' => __('Allowed'),
-            'Required' => __('Required')
+            self::FILE_PERMISSION_DISALLOWED => self::FILE_PERMISSION_DISALLOWED,
+            self::FILE_PERMISSION_ALLOWED => self::FILE_PERMISSION_ALLOWED,
+            self::FILE_PERMISSION_REQUIRED => self::FILE_PERMISSION_REQUIRED
             );
     }
 
@@ -118,12 +116,11 @@ class ContributionType extends Omeka_Record_AbstractRecord
                 $element->saveForm($elementData);
             }
         }
-        foreach($post['newElements'] as $index => $elementData) {
+        foreach($post['newElements'] as $elementData) {
             // Skip totally empty elements
             if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
                 $element = new ContributionTypeElement;
-                $element->type_id = $this->id;
-                $element->order = count($post['Elements']) + $index;
+                $this->addChild($element);
                 $element->saveForm($elementData);
             }
         }
@@ -172,11 +169,5 @@ SQL;
             $options[$element['element_set_name']][$element['element_id']] = $element['element_name'];
         }
         return $options;
-    }
-    
-    public function getRecordUrl($action = 'show')
-    {
-        return url("contribution/types/$action/id/{$this->id}");
-        return array('controller' => 'contribution/types', 'action' => $action, 'id' => $this->id);
     }
 }
