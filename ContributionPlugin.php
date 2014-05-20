@@ -27,7 +27,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'upgrade',
         'define_acl',
         'define_routes',
-        'admin_plugin_uninstall_message',
+        'uninstall_message',
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
@@ -63,6 +63,20 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         parent::setUp();
         if(plugin_is_active('UserProfiles')) {
             $this->_hooks[] = 'user_profiles_user_page';
+        }
+        
+        if(! is_admin_theme()) {
+            //dig up all the elements being used, and add their ElementForm hook
+            $elementsTable = $this->_db->getTable('Element');
+            $select = $elementsTable->getSelect();
+            
+            $select->join(array('contribution_type_elements' => $this->_db->ContributionTypeElement),
+                    'element_id = elements.id', array());
+            $elements = $elementsTable->fetchObjects($select);
+            foreach($elements as $element) {
+                add_filter(array('ElementForm', 'Item', $element->set_name, $element->name ), array($this, 'elementFormFilter'), 2);
+                add_filter(array('ElementInput', 'Item', $element->set_name, $element->name ), array($this, 'elementInputFilter'), 2);
+            }
         }
     }
 
@@ -193,7 +207,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
-    public function hookAdminPluginUninstallMessage()
+    public function hookUninstallMessage()
     {
         echo '<p><strong>Warning</strong>: Uninstalling the Contribution plugin
             will remove all information about contributors, as well as the
@@ -349,14 +363,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $html = '<div class="field">';
         $html .= '<div class="two columns alpha">';
-        $html .= get_view()->formLabel('contributed', 'Contribution Status');
+        $html .= get_view()->formLabel('contributed', __('Contribution Status'));
         $html .= '</div>';
         $html .= '<div class="inputs five columns omega">';
         $html .= '<div class="input-block">';
         $html .= get_view()->formSelect('contributed', null, null, array(
-           ''  => 'Select Below',
-           '1' => 'Only Contributed Items',
-           '0' => 'Only Non-Contributed Items'
+           ''  => __('Select Below'),
+           '1' => __('Only Contributed Items'),
+           '0' => __('Only Non-Contributed Items')
         ));
         $html .= '</div></div></div>';
         echo $html;
@@ -516,7 +530,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $uri        = html_escape(record_url($item, 'show', true));
 
         if($contribItem->anonymous) {
-            $cite = "Anonymous, ";
+            $cite = __("Anonymous, ");
         } else {
             $cite = $contribItem->Contributor->name . ", ";
         }
@@ -600,5 +614,43 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function getOptions()
     {
         return $this->_options;
+    }
+    
+    /**
+     * Remove the form controls
+     * 
+     * @param array $components
+     * @param array $args
+     * @return NULL
+     */
+    public function elementInputFilter($components, $args)
+    {
+        $view = get_view();
+        $element = $args['element'];
+        $type = $view->type;
+        $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
+        if($contributionElement->long_text == 0) {
+            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value']); 
+        }
+        $components['form_controls'] = null;
+        $components['html_checkbox'] = null;
+        return $components;
+    }
+    
+    /**
+     * Replace the prompt and remove the add input button
+     * @param array $components
+     * @param array $args
+     */
+    public function elementFormFilter($components, $args)
+    {
+        $element = $args['element'];
+        $view = get_view();
+        $type = $view->type;
+        $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
+        $prompt = $contributionElement->prompt;
+        $components['label'] = $prompt;
+        $components['add_input'] = null;
+        return $components;
     }
 }

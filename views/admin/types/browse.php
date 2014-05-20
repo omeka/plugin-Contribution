@@ -8,7 +8,7 @@
 queue_css_file('contribution-type-form');
 contribution_admin_header(array(__('Types')));
 ?>
-<a id="add-type" class="small green button" href="<?php echo url(array('action' => 'add')); ?>">Add a Type</a>
+<a id="add-type" class="small green button" href="<?php echo url(array('action' => 'add')); ?>"><?php echo __('Add a Type'); ?></a>
     
 <?php 
 echo $this->partial('contribution-navigation.php');
