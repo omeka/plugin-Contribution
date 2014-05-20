@@ -467,7 +467,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
-    public function hookBeforeSaveItem($args){
+    public function hookBeforeSaveItem($args)
+    {
       $item = $args['record'];
       if($item->exists()) {
           //prevent admins from overriding the contributer's assertion of public vs private
