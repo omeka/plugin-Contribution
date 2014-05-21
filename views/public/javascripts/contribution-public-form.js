@@ -29,6 +29,7 @@ function enableContributionAjaxForm(url) {
                        form.append(data); 
                        form.show(duration, function() {
                            form.trigger('contribution-form-shown');
+                           form.trigger('omeka:tabselected');
                            elementsToHide.show();
                            //in case profile info is also being added, do the js for that form
                            jQuery(form).trigger('omeka:elementformload');
@@ -45,10 +46,4 @@ jQuery(document).ready(function() {
     jQuery('.contribution-userprofile-visibility').click(toggleProfileEdit);
     var form = jQuery('#contribution-type-form');
     jQuery(form).trigger('omeka:elementformload');
-});
-
-jQuery(document).on('omeka:elementformload', function() {
-    if(typeof anOmekaMapForm != 'undefined') {
-        anOmekaMapForm.initMap();    
-    }
 });
