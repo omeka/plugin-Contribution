@@ -46,3 +46,9 @@ jQuery(document).ready(function() {
     var form = jQuery('#contribution-type-form');
     jQuery(form).trigger('omeka:elementformload');
 });
+
+jQuery(document).on('omeka:elementformload', function() {
+    if(typeof anOmekaMapForm != 'undefined') {
+        anOmekaMapForm.initMap();    
+    }
+});
