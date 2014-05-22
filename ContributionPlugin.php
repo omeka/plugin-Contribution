@@ -168,8 +168,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $this->_db->query($sql);
     }
 
-    public function hookUpgrade($oldVersion, $newVersion)
+    public function hookUpgrade($args)
     {
+        $oldVersion = $args['old_version'];
+        $newVersion = $args['new_version'];
         // Catch-all for pre-2.0 versions
         if (version_compare($oldVersion, '2.0-dev', '<=')) {
             // Clean up old options
