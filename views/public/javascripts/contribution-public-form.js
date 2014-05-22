@@ -23,6 +23,7 @@ function enableContributionAjaxForm(url) {
                        form.append(data); 
                        form.show(duration, function() {
                            form.trigger('contribution-form-shown');
+                           form.trigger('omeka:tabselected');
                            elementsToHide.show();
                        });
                     });
