@@ -43,6 +43,18 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 }
 ?>
 
+<?php if ($type->add_tags) : ?>
+<div id="tag-form" class="field">
+    <div>
+        <?php echo $this->formLabel('tags', __('Add Tags')); ?>
+    </div>
+    <div>
+        <p id="add-tags-explanation" class="explanation"><?php echo __('Separate tags with %s', option('tag_delimiter')); ?></p>
+        <?php echo $this->formText('tags'); ?>
+    </div>
+</div>
+<?php endif; ?>
+
 <?php
 if (!isset($required) && $type->isFileAllowed()):
 ?>

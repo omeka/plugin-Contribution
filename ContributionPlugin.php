@@ -75,7 +75,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_hooks[] = 'user_profiles_user_page';
         }
 
-        if (! is_admin_theme()) {
+        if (!is_admin_theme()) {
             //dig up all the elements being used, and add their ElementForm hook
             $elementsTable = $this->_db->getTable('Element');
             $select = $elementsTable->getSelect();
@@ -110,6 +110,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `display_name` VARCHAR(255) NOT NULL,
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
             `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -219,6 +220,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (version_compare($oldVersion, '3.1', '<')) {
             $db = $this->_db;
             $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
             $db->query($sql);
         }
     }
@@ -499,17 +502,17 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookBeforeSaveItem($args)
     {
-        $item = $args['record'];
-        if ($item->exists()) {
-            //prevent admins from overriding the contributer's assertion of public vs private
-            $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-            if ($contributionItem) {
-                if (!$contributionItem->public && $item->public) {
-                    $item->public = false;
-                    Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
-                }
-            }
-        }
+      $item = $args['record'];
+      if ($item->exists()) {
+          //prevent admins from overriding the contributer's assertion of public vs private
+          $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
+          if($contributionItem) {
+              if(!$contributionItem->public && $item->public) {
+                  $item->public = false;
+                    Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage(__("Cannot override contributor's desire to leave contribution private"), 'error');
+              }
+          }
+      }
     }
 
     public function hookAfterDeleteItem($args)
@@ -525,8 +528,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $user = $args['user'];
         $contributionCount = $this->_db->getTable('ContributionContributedItem')->count(array('contributor' => $user->id));
-        if ($contributionCount !=0) {
-            echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>Contributed Items ($contributionCount)";
+        if ($contributionCount != 0) {
+            echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>" . __('Contributed Items (%d)', $contributionCount) . '</a>';
         }
     }
 

@@ -191,7 +191,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processForm($post)
     {
         if (!empty($post)) {
-
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
@@ -233,9 +232,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
                 return false;
             }
-            $itemMetadata = array('public'       => false,
-                                'featured'     => false,
-                                'item_type_id' => $itemTypeId);
+            $itemMetadata = array(
+                'public' => false,
+                'featured' => false,
+                'item_type_id' => $itemTypeId,
+            );
 
             $collectionId = get_option('contribution_collection_id');
             if (!empty($collectionId) && is_numeric($collectionId)) {
@@ -262,7 +263,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
                 if (strstr($e->getMessage(), "'contributed_file'")) {
-                    $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
+                    $this->_helper->flashMessenger(__('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 }
                 else {
                     $this->_helper->flashMessenger($e->getMessage());
@@ -273,8 +274,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             }
             $this->_addElementTextsToItem($item, $post['Elements']);
+            if ($contributionType->add_tags && isset($post['tags'])) {
+                $item->addTags($post['tags']);
+            }
             // Allow plugins to deal with the inputs they may have added to the form.
-            fire_plugin_hook('contribution_save_form', array('contributionType' => $contributionType,'record' => $item, 'post' => $post));
+            fire_plugin_hook('contribution_save_form', array('contributionType' => $contributionType, 'record' => $item, 'post' => $post));
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
