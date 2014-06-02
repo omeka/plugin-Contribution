@@ -50,6 +50,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'item_citation',
         'item_search_filters',
         'guest_user_links',
+        'guest_user_widgets',
     );
 
     /**
@@ -561,6 +562,30 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
              'uri' => contribution_contribute_url('my-contributions'),
         );
         return $nav;
+    }
+
+    public function filterGuestUserWidgets($widgets)
+    {
+        $user = current_user();
+        $widget = array('label' => __('My Contributions'));
+        $contributedItems = get_db()->getTable('ContributionContributedItem')->findBy(array('contributor' => $user->id), 5);
+        if ($contributedItems) {
+            $html = "<ul>";
+            foreach ($contributedItems as $contributedItem) {
+                $item = $contributedItem->Item;
+                $html .= sprintf("<li>%s</li>", link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))));
+            }
+            $html .= "</ul>";
+            $html .= sprintf('<a href="%s">%s</a>',
+                contribution_contribute_url('my-contributions'),
+                __('See all my contributions'));
+        }
+        else {
+            $html = '<p>' . __('No contribution yet.') . '</p>';
+        }
+        $widget['content'] = $html;
+        $widgets[] = $widget;
+        return $widgets;
     }
 
     private function _adminBaseInfo($args)
