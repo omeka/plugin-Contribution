@@ -1,8 +1,6 @@
 <li class="element">
     <div class="sortable-item">
         <?php
-        
-        
         $elementsArray = get_table_options(
                 'Element', null,
                     array(
@@ -19,16 +17,17 @@
                         'sort' => 'alpha',
                     )
                 );
-        $elementsArray['Dublin Core'] = $dcElements['Dublin Core'];
-        
+        unset($dcElements['']);
+        $elementsArray['Dublin Core'] = $dcElements;
+
         echo $this->formSelect(
             $element_id_name, $element_id_value,
             array('class' => 'existing-element-drop-down'), $elementsArray );
         echo "<span>" . __("Prompt:") . "</span>";
-        echo $this->formText($element_prompt_name, $element_prompt_value, array('class'=>'prompt'));
+        echo $this->formText($element_prompt_name, $element_prompt_value, array('class' => 'prompt'));
         ?>
         <span class='long-text'><?php echo __('Multiple rows'); ?></span>
-        <?php echo $this->formCheckbox($element_long_name, null);    ?>        
+        <?php echo $this->formCheckbox($element_long_name, null);    ?>
         <?php
         echo $this->formHidden(
             $element_order_name, $element_order_value,
