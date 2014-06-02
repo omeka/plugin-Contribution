@@ -206,10 +206,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_db->query($sql);
         }
         if(version_compare($oldVersion, '3.0', '<')) {
-            $sql = "ALTER TABLE `$db->ContributionTypeElement` ADD `long_text` BOOLEAN DEFAULT TRUE";
-            $db->query($sql);
+            $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
+            $this->_db->query($sql);
 
-            $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
+            $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
                 $typeElement->save();
@@ -217,10 +217,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             //clean up contributed item records if the corresponding item has been deleted
             //earlier verison of the plugin did not use the delete hook
-            $sql = "DELETE  FROM `$db->ContributionContributedItem`
-            WHERE NOT EXISTS (SELECT 1 FROM `$db->Item` WHERE `$db->ContributionContributedItem`.item_id = `$db->Item`.id)
-            ";
-            $db->query($sql);            
+            $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
+           
+            $this->_db->query($sql);           
         }
     }
 
