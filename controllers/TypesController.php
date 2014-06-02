@@ -139,7 +139,6 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
                             $contributionEl->save();
                         }
                     }
-
                     $toRemove = isset($_POST['elements_to_remove']) ? explode(',', $_POST['elements_to_remove']) : array();
 
                     foreach ($_POST['elements'] as $id => $elementInfo) {
