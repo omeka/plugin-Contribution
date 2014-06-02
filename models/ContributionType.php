@@ -22,9 +22,12 @@ class ContributionType extends Omeka_Record_AbstractRecord
     public $item_type_id;
     public $display_name;
     public $file_permissions = 'Disallowed';
-    
-    protected $_related = array('ContributionTypeElements' => 'getTypeElements',
-                                'ItemType' => 'getItemType');
+    public $multiple_files;
+
+    protected $_related = array(
+        'ContributionTypeElements' => 'getTypeElements',
+        'ItemType' => 'getItemType',
+    );
 
     protected function filterPostData($post)
     {
@@ -34,7 +37,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
         }
         return $post;
     }
-    
+
     protected function _validate()
     {
         if(empty($this->item_type_id)) {
@@ -47,7 +50,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
         $this->_mixins[] = new Mixin_ContributionOrder($this,
                 'ContributionTypeElement', 'type_id', 'Elements');
     }
-    
+
     /**
      * Get the type elements associated with this type.
      *
@@ -57,7 +60,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
     {
         return $this->_db->getTable('ContributionTypeElement')->findByType($this);
     }
-    
+
     /**
      * Get the item type associated with this type.
      *
@@ -173,7 +176,7 @@ SQL;
         }
         return $options;
     }
-    
+
     public function getRecordUrl($action = 'show')
     {
         return url("contribution/types/$action/id/{$this->id}");

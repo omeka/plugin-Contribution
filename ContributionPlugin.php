@@ -109,6 +109,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
+            `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -210,6 +211,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
            
             $this->_db->query($sql);   
+        }
+
+        if (version_compare($oldVersion, '3.1', '<')) {
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
         }
     }
 
