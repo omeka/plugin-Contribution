@@ -1,4 +1,3 @@
-
 <?php if (!$type): ?>
 <p><?php echo __('You must choose a contribution type to continue.'); ?></p>
 <?php else: ?>
@@ -40,7 +39,7 @@ jQuery(window).load(function () {
 
 <?php
 foreach ($type->getTypeElements() as $contributionTypeElement) {
-    echo $this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement'=>$contributionTypeElement));
+    echo $this->elementForm($contributionTypeElement->Element, $item, array('contributionTypeElement' => $contributionTypeElement));
 }
 ?>
 
@@ -75,17 +74,17 @@ jQuery(window).load(function () {
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
-<?php if(get_option('contribution_simple') && !$user) : ?>
+<?php if (get_option('contribution_simple') && !$user) : ?>
 <div class="field">
     <?php echo $this->formLabel('contribution_simple_email', __('Email (Required)')); ?>
     <?php
-        if(isset($_POST['contribution_simple_email'])) {
+        if (isset($_POST['contribution_simple_email'])) {
             $email = $_POST['contribution_simple_email'];
         } else {
             $email = '';
         }
     ?>
-    <?php echo $this->formText('contribution_simple_email', $email ); ?>
+    <?php echo $this->formText('contribution_simple_email', $email); ?>
 </div>
 
 <?php else: ?>
@@ -93,12 +92,12 @@ jQuery(window).load(function () {
 <?php endif; ?>
     <?php
     //pull in the user profile form if it is set
-    if( isset($profileType) ): ?>
+    if (isset($profileType)): ?>
 
     <script type="text/javascript" charset="utf-8">
     //<![CDATA[
     jQuery(document).bind('omeka:elementformload', function (event) {
-         Omeka.Elements.makeElementControls(event.target, <?php echo js_escape(url('user-profiles/profiles/element-form')); ?>,'UserProfilesProfile'<?php if ($id = metadata($profile, 'id')) echo ', '.$id; ?>);
+         Omeka.Elements.makeElementControls(event.target, <?php echo js_escape(url('user-profiles/profiles/element-form')); ?>,'UserProfilesProfile'<?php if ($id = metadata($profile, 'id')) echo ', ' . $id; ?>);
          Omeka.Elements.enableWysiwyg(event.target);
     });
     //]]>
@@ -127,6 +126,6 @@ jQuery(window).load(function () {
 <?php
 // Allow other plugins to append to the form (pass the type to allow decisions
 // on a type-by-type basis).
-fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
+fire_plugin_hook('contribution_type_form', array('type' => $type, 'view' => $this));
 ?>
 <?php endif; ?>

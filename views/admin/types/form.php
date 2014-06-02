@@ -4,7 +4,7 @@
 ?>
 <form method='post'>
 <section class='seven columns alpha'>
-<?php if($action == 'add'): ?>
+<?php if ($action == 'add'): ?>
     <div class="field">
         <div class="two columns alpha">
             <label><?php echo __("Item Type"); ?></label>
@@ -27,7 +27,7 @@
         <div class="inputs five columns omega">
             <p class="explanation"><?php echo __("The label you would like to use for this contribution type. If blank, the Item Type name will be used."); ?></p>
             <div class="input-block">
-             <?php echo $this->formText('display_name', $contribution_type->display_name, array()); ?>
+                <?php echo $this->formText('display_name', $contribution_type->display_name, array()); ?>
             </div>
         </div>
      </div>
@@ -39,7 +39,7 @@
         <div class="inputs five columns omega">
             <p class="explanation"><?php echo __("Enable or disable file uploads through the public contribution form. If set to &#8220;Required,&#8220; users must add a file to their contribution when selecting this item type."); ?></p>
             <div class="input-block">
-               <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array(), ContributionType::getPossibleFilePermissions()); ?>
+                <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array(), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
      </div>
@@ -68,8 +68,8 @@
                 <strong><?php echo html_escape($contributionElement->Element->name); ?></strong><span class='prompt'><?php echo __('Prompt'); ?></span>
                 <?php echo $this->formText("elements[$contributionElement->id][prompt]" , $contributionElement->prompt); ?>
                 <span class='long-text'><?php echo __('Multiple rows'); ?></span>
-                <?php echo $this->formCheckbox("elements[$contributionElement->id][long_text]", null, array('checked'=>$contributionElement->long_text));    ?>
-                <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
+                <?php echo $this->formCheckbox("elements[$contributionElement->id][long_text]", null, array('checked' => $contributionElement->long_text)); ?>
+                <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size' => 2, 'class' => 'element-order')); ?>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
                 <a id="return-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="undo-delete"><?php echo __('Undo'); ?></a>
                 <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element"><?php echo __('Remove'); ?></a>
@@ -124,7 +124,7 @@
     <div id='save' class='panel'>
 
             <input type="submit" class="big green button" value="<?php echo __('Save Changes');?>" id="submit" name="submit">
-            <?php if($contribution_type->exists()): ?>
+            <?php if ($contribution_type->exists()): ?>
             <?php echo link_to($contribution_type, 'delete-confirm', __('Delete'), array('class' => 'big red button delete-confirm')); ?>
             <?php endif; ?>
     </div>

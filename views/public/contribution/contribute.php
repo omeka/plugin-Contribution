@@ -7,14 +7,14 @@
  */
 
 $contributionPath = get_option('contribution_page_path');
-if(!$contributionPath) {
+if (!$contributionPath) {
     $contributionPath = 'contribution';
 }
 queue_css_file('form');
 
 queue_js_file('contribution-public-form');
 //load user profiles js and css if needed
-if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles') ) {
+if (get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles')) {
     queue_js_file('admin-globals');
     queue_js_file('tiny_mce', 'javascripts/vendor/tiny_mce');
     queue_js_file('elements');
@@ -26,7 +26,7 @@ $head = array('title' => 'Contribute',
 echo head($head); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url($contributionPath . '/type-form')); ?>);
 // ]]>
 </script>
 
@@ -35,7 +35,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 
     <h1><?php echo $head['title']; ?></h1>
 
-    <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
+    <?php if (!get_option('contribution_simple') && !$user = current_user()) :?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>
@@ -67,7 +67,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
             </fieldset>
 
             <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
-                <?php if(isset($captchaScript)): ?>
+                <?php if (isset($captchaScript)): ?>
                     <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
                 <?php endif; ?>
                 <div class="inputs">

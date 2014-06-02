@@ -25,8 +25,8 @@ class Table_ContributionType extends Omeka_Db_Table
     {
         $alias = $this->getTableAlias();
         return array($alias . '.id', $alias . '.display_name');
-    }    
-    
+    }
+
     /**
      * Get an array of type data, along with pertinent item type data.
      *
@@ -67,4 +67,4 @@ SQL;
         }
         return $options;
     }
-} 
+}

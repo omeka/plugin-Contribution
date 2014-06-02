@@ -7,7 +7,6 @@
  * @subpackage Models
  */
 
-
 require_once 'Mixin/ContributionOrder.php';
 
 /**
@@ -31,7 +30,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
 
     protected function filterPostData($post)
     {
-        if(empty($post['display_name'])) {
+        if (empty($post['display_name'])) {
             $itemType = $this->getDb()->getTable('ItemType')->find($post['item_type_id']);
             $post['display_name'] = $itemType = $itemType->name;
         }
@@ -40,7 +39,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
 
     protected function _validate()
     {
-        if(empty($this->item_type_id)) {
+        if (empty($this->item_type_id)) {
             $this->addError('item_type_id', 'You must select an item type.');
         }
     }
@@ -102,8 +101,8 @@ class ContributionType extends Omeka_Record_AbstractRecord
         return array(
             'Disallowed' => __('Disallowed'),
             'Allowed' => __('Allowed'),
-            'Required' => __('Required')
-            );
+            'Required' => __('Required'),
+        );
     }
 
     /**
@@ -113,15 +112,16 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function afterSaveForm($post)
     {
-        foreach($post['Elements'] as $elementId => $elementData) {
+        foreach ($post['Elements'] as $elementId => $elementData) {
             $element = $this->getDb()->getTable('ContributionTypeElement')->find($elementId);
-            if($elementData['delete']) {
+            if ($elementData['delete']) {
                 $element->delete();
-            } else {
+            }
+            else {
                 $element->saveForm($elementData);
             }
         }
-        foreach($post['newElements'] as $index => $elementData) {
+        foreach ($post['newElements'] as $index => $elementData) {
             // Skip totally empty elements
             if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
                 $element = new ContributionTypeElement;
