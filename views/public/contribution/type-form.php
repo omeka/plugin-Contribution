@@ -5,18 +5,40 @@
 <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
 
 <?php
+$allow_multiple_files = (boolean) $type->multiple_files;
+
 if ($type->isFileRequired()):
     $required = true;
 ?>
 
+<?php if ($allow_multiple_files) : ?>
+<script type="text/javascript" charset="utf-8">
+jQuery(window).load(function () {
+    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+});
+</script>
+<div id="files-form" class="field drawer-contents">
+    <?php echo $this->formLabel('contributed_file', __('Upload a file'), array(
+        'id' => 'file-inputs',
+    )); ?>
+    <div id="files-metadata" class="field">
+        <div id="upload-files" class="files"><?php /* four columns omega */ ?>
+            <?php echo $this->formFile('contributed_file[0]', array('class' => 'fileinput button')); ?>
+            <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
+        </div>
+    </div>
+</div>
+<?php else: ?>
 <div class="field">
     <div class="two columns alpha">
         <?php echo $this->formLabel('contributed_file', __('Upload a file')); ?>
     </div>
     <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput button')); ?>
+        <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
     </div>
 </div>
+<?php endif; ?>
 
 <?php endif; ?>
 
@@ -29,14 +51,35 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 <?php
 if (!isset($required) && $type->isFileAllowed()):
 ?>
-<div class="field">
-        <div class="two columns alpha">
-            <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+<?php if ($allow_multiple_files) : ?>
+<script type="text/javascript" charset="utf-8">
+jQuery(window).load(function () {
+    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+});
+</script>
+<div id="files-form" class="field drawer-contents">
+    <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)'), array(
+        'id' => 'file-inputs',
+    )); ?>
+    <div id="files-metadata" class="field">
+        <div id="upload-files" class="files"><?php /* four columns omega */ ?>
+            <?php echo $this->formFile('contributed_file[0]', array('class' => 'fileinput button')); ?>
+            <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
         </div>
-        <div class="inputs five columns omega">
-            <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
-        </div>
+    </div>
 </div>
+<?php else: ?>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput button')); ?>
+        <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+    </div>
+</div>
+<?php endif; ?>
+
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
