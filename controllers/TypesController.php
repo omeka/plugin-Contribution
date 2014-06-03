@@ -126,6 +126,9 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
                 if ($record->save()) {
                     if(isset($_POST['elements-to-add'])) {
                         foreach($_POST['elements-to-add'] as $tempId=>$elementInfo) {
+                            if (empty($elementInfo['id'])) {
+                                continue;
+                            }
                             if(empty($elementInfo['prompt'])) {
                                 $elementInfo['prompt'] = $elementTable->find($elementInfo['id'])->name;
                             }
