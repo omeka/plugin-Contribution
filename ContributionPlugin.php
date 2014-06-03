@@ -21,7 +21,11 @@ require_once CONTRIBUTION_HELPERS_DIR . DIRECTORY_SEPARATOR . 'ThemeHelpers.php'
  */
 class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 {
+    /**
+     * @var array Hooks for the plugin.
+     */
     protected $_hooks = array(
+        'initialize',
         'install',
         'uninstall',
         'upgrade',
@@ -34,18 +38,24 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'items_browse_sql',
         'before_save_item',
         'after_delete_item',
-        'initialize'
     );
 
+    /**
+     * @var array Filters for the plugin.
+     */
     protected $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
         'simple_vocab_routes',
         'item_citation',
         'item_search_filters',
-        'guest_user_links'
-        );
+        'guest_user_links',
+        'guest_user_widgets',
+    );
 
+    /**
+     * @var array Options and their default values.
+     */
     protected $_options = array(
         'contribution_page_path',
         'contribution_email_sender',
@@ -55,25 +65,25 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_default_type',
         'contribution_user_profile_type',
         'contribution_simple',
-        'contribution_email'
+        'contribution_email',
     );
 
     public function setUp()
     {
         parent::setUp();
-        if(plugin_is_active('UserProfiles')) {
+        if (plugin_is_active('UserProfiles')) {
             $this->_hooks[] = 'user_profiles_user_page';
         }
-        
-        if(! is_admin_theme()) {
+
+        if (! is_admin_theme()) {
             //dig up all the elements being used, and add their ElementForm hook
             $elementsTable = $this->_db->getTable('Element');
             $select = $elementsTable->getSelect();
-            
+
             $select->join(array('contribution_type_elements' => $this->_db->ContributionTypeElement),
                     'element_id = elements.id', array());
             $elements = $elementsTable->fetchObjects($select);
-            foreach($elements as $element) {
+            foreach ($elements as $element) {
                 add_filter(array('ElementForm', 'Item', $element->set_name, $element->name ), array($this, 'elementFormFilter'), 2);
                 add_filter(array('ElementInput', 'Item', $element->set_name, $element->name ), array($this, 'elementInputFilter'), 2);
             }
@@ -189,7 +199,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $db->query($sql);
 
             $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
-            foreach($contributionTypeElements as $typeElement) {
+            foreach ($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
                 $typeElement->save();
             }
@@ -224,7 +234,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl = $args['acl'];
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
-        if(get_option('contribution_simple')) {
+        if (get_option('contribution_simple')) {
             $acl->allow(null, 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
         } else {
             $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
@@ -276,7 +286,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         }
 
-        if(is_admin_theme()){
+        if (is_admin_theme()) {
             $router->addRoute('contributionAdmin',
                 new Zend_Controller_Router_Route('contribution/:controller/:action/*',
                     array('module' => 'contribution',
@@ -294,7 +304,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function filterAdminNavigationMain($nav)
     {
         $contributionCount = get_db()->getTable('ContributionContributedItems')->count();
-        if($contributionCount > 0) {
+        if ($contributionCount > 0) {
             $uri = url('contribution/items?sort_field=added&sort_dir=d');
             $label = __('Contributed Items');
         } else {
@@ -319,11 +329,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterPublicNavigationMain($nav)
     {
-       $nav[] = array(
-        'label' => __('Contribute an Item'),
-        'uri'   => contribution_contribute_url(),
-        'visible' => true
-       );
+        $nav[] = array(
+            'label' => __('Contribute an Item'),
+            'uri'   => contribution_contribute_url(),
+            'visible' => true,
+        );
         return $nav;
     }
 
@@ -345,10 +355,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function filterItemSearchFilters($displayArray, $args)
     {
         $request_array = $args['request_array'];
-        if(isset($request_array['status'])) {
+        if (isset($request_array['status'])) {
             $displayArray['Status'] = $request_array['status'];
         }
-        if(isset($request_array['contributor'])) {
+        if (isset($request_array['contributor'])) {
             $displayArray['Contributor'] = $this->_db->getTable('User')->find($request_array['contributor'])->name;
         }
         return $displayArray;
@@ -439,7 +449,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $elementTable = $this->_db->getTable('Element');
         $itemTypeTable = $this->_db->getTable('ItemType');
         $textItemType = $itemTypeTable->findByName('Text');
-        if($textItemType) {
+        if ($textItemType) {
             $storyType = new ContributionType;
             $storyType->item_type_id = $textItemType->id;
             $storyType->display_name = 'Story';
@@ -463,13 +473,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $textElement->save();
         }
         $imageItemType = $itemTypeTable->findByName('Still Image');
-        if($imageItemType) {
+        if ($imageItemType) {
             $imageType = new ContributionType;
             $imageType->item_type_id = 6;
             $imageType->display_name = 'Image';
             $imageType->file_permissions = 'Required';
             $imageType->save();
-    
+
             $descriptionElement = new ContributionTypeElement;
             $descriptionElement->type_id = $imageType->id;
             $dcDescriptionElement = $elementTable->findByElementSetNameAndElementName('Dublin Core', 'Description');
@@ -484,11 +494,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookBeforeSaveItem($args)
     {
       $item = $args['record'];
-      if($item->exists()) {
+      if ($item->exists()) {
           //prevent admins from overriding the contributer's assertion of public vs private
           $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-          if($contributionItem) {
-              if(!$contributionItem->public && $item->public) {
+          if ($contributionItem) {
+              if (!$contributionItem->public && $item->public) {
                   $item->public = false;
                   Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
               }
@@ -500,7 +510,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $item = $args['record'];
         $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-        if($contributionItem) {
+        if ($contributionItem) {
             $contributionItem->delete();
         }
     }
@@ -508,19 +518,20 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookUserProfilesUserPage($args)
     {
         $user = $args['user'];
-        $contributionCount = $this->_db->getTable('ContributionContributedItem')->count(array('contributor'=>$user->id));
-        if($contributionCount !=0) {
+        $contributionCount = $this->_db->getTable('ContributionContributedItem')->count(array('contributor' => $user->id));
+        if ($contributionCount !=0) {
             echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>Contributed Items ($contributionCount)";
         }
     }
 
-    public function filterItemCitation($cite,$args){
+    public function filterItemCitation($cite,$args)
+    {
         $item = $args['item'];
-        if(!$item) {
+        if (!$item) {
             return $cite;
         }
         $contribItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-        if(!$contribItem) {
+        if (!$contribItem) {
             return $cite;
         }
         $title      = metadata('item',array('Dublin Core', 'Title'));
@@ -529,7 +540,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $accessDate = date('F j, Y');
         $uri        = html_escape(record_url($item, 'show', true));
 
-        if($contribItem->anonymous) {
+        if ($contribItem->anonymous) {
             $cite = __("Anonymous, ");
         } else {
             $cite = $contribItem->Contributor->name . ", ";
@@ -546,24 +557,49 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function filterGuestUserLinks($nav)
     {
-        $nav['Contribution'] = array('label'=>'My Contributions',
-                                     'uri'=> contribution_contribute_url('my-contributions')
-                                    );
+        $nav['Contribution'] = array(
+            'label' => 'My Contributions',
+             'uri' => contribution_contribute_url('my-contributions'),
+        );
         return $nav;
+    }
+
+    public function filterGuestUserWidgets($widgets)
+    {
+        $user = current_user();
+        $widget = array('label' => __('My Contributions'));
+        $contributedItems = get_db()->getTable('ContributionContributedItem')->findBy(array('contributor' => $user->id), 5);
+        if ($contributedItems) {
+            $html = "<ul>";
+            foreach ($contributedItems as $contributedItem) {
+                $item = $contributedItem->Item;
+                $html .= sprintf("<li>%s</li>", link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))));
+            }
+            $html .= "</ul>";
+            $html .= sprintf('<a href="%s">%s</a>',
+                contribution_contribute_url('my-contributions'),
+                __('See all my contributions'));
+        }
+        else {
+            $html = '<p>' . __('No contribution yet.') . '</p>';
+        }
+        $widget['content'] = $html;
+        $widgets[] = $widget;
+        return $widgets;
     }
 
     private function _adminBaseInfo($args)
     {
         $item = $args['item'];
         $contributedItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-        if($contributedItem) {
+        if ($contributedItem) {
             $html = '';
             $name = $contributedItem->getContributor()->name;
             $html .= "<p><strong>" . __("Contributed by:") . "</strong><span class='contribution-contributor'> $name</span></p>";
 
             $publicMessage = '';
-            if(is_allowed($item, 'edit')) {
-                if($contributedItem->public) {
+            if (is_allowed($item, 'edit')) {
+                if ($contributedItem->public) {
                     $publicMessage = __("This item can be made public.");
                 } else {
                     $publicMessage = __("This item cannot be made public.");
@@ -577,7 +613,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     private function _contributorsToGuestUsers($contributorsData)
     {
         $map = array();
-            foreach($contributorsData as $index=>$contributor) {
+            foreach ($contributorsData as $index => $contributor) {
             $user = new User();
             $user->email = $contributor['email'];
             $user->name = $contributor['name'];
@@ -603,7 +639,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function _mapOwners($contribItemData, $map)
     {
         $itemTable = $this->_db->getTable('Item');
-        foreach($contribItemData as $contribItem) {
+        foreach ($contribItemData as $contribItem) {
             $item = $itemTable->find($contribItem['item_id']);
             $item->owner_id = $map[$contribItem['contributor_id']];
             $item->save();
@@ -615,10 +651,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         return $this->_options;
     }
-    
+
     /**
      * Remove the form controls
-     * 
+     *
      * @param array $components
      * @param array $args
      * @return NULL
@@ -629,14 +665,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $element = $args['element'];
         $type = $view->type;
         $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
-        if($contributionElement->long_text == 0) {
-            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value']); 
+        if ($contributionElement->long_text == 0) {
+            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value']);
         }
         $components['form_controls'] = null;
         $components['html_checkbox'] = null;
         return $components;
     }
-    
+
     /**
      * Replace the prompt and remove the add input button
      * @param array $components
