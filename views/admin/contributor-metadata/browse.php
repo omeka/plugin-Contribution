@@ -48,4 +48,4 @@ echo $this->partial('contribution-navigation.php');
         </tbody>
     </table>
 </div>
-<?php foot();
+<?php echo foot();
