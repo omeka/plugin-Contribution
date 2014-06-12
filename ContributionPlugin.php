@@ -258,31 +258,28 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
-        if (! is_admin_theme()) {
-            $router->addRoute('contributionDefault',
-                new Zend_Controller_Router_Route('contribution/:action/*',
+        $router->addRoute('contributionDefault',
+            new Zend_Controller_Router_Route('contribution/:action/*',
+                array('module'     => 'contribution',
+                      'controller' => 'contribution',
+                      'action'     => 'contribute')));
+
+        // get the base path
+        $bp = get_option('contribution_page_path');
+
+        if ($bp) {
+            $router->addRoute('contributionCustom',
+                new Zend_Controller_Router_Route("{$bp}/:action/*",
                     array('module'     => 'contribution',
                           'controller' => 'contribution',
                           'action'     => 'contribute')));
-
-            // get the base path
-            $bp = get_option('contribution_page_path');
-
-            if ($bp) {
-                $router->addRoute('contributionCustom',
-                    new Zend_Controller_Router_Route("{$bp}/:action/*",
-                        array('module'     => 'contribution',
-                              'controller' => 'contribution',
-                              'action'     => 'contribute')));
-            }
-        } else {
-            $router->addRoute('contributionAdmin',
-                new Zend_Controller_Router_Route('contribution/:controller/:action/*',
-                    array('module' => 'contribution',
-                          'controller' => 'index',
-                          'action'     => 'index'
-                            )));
         }
+        $router->addRoute('contributionAdmin',
+            new Zend_Controller_Router_Route('contribution/:controller/:action/*',
+                array('module' => 'contribution',
+                      'controller' => 'index',
+                      'action'     => 'index'
+                        )));
     }
 
     /**
