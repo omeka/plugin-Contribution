@@ -28,7 +28,7 @@ else:
                 <th><?php echo __('ID'); ?></th>
                 <th><?php echo __('Name'); ?></th>
                 <th><?php echo __('Email'); ?></th>
-                <th><?php echo __('Contribution'); ?></th>
+                <th><?php echo __('Contributions'); ?></th>
             </tr>
         </thead>
         <tbody id="types-table-body">
