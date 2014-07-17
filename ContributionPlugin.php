@@ -167,6 +167,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $oldVersion = $args['old_version'];
         $newVersion = $args['new_version'];
         // Catch-all for pre-2.0 versions
+        if (version_compare($oldVersion, '2.0-dev', '<=')) {
+            // Clean up old options
             delete_option('contribution_plugin_version');
             delete_option('contribution_db_migration');
 
