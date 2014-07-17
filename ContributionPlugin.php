@@ -166,10 +166,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $oldVersion = $args['old_version'];
         $newVersion = $args['new_version'];
-
         // Catch-all for pre-2.0 versions
-        if (version_compare($oldVersion, '2.0-dev', '<=')) {
-            // Clean up old options
             delete_option('contribution_plugin_version');
             delete_option('contribution_db_migration');
 
@@ -191,9 +188,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         }
         if (version_compare($oldVersion, '3.0', '<')) {
+
+            //change contributors to real guest users
+            Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
+            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
             $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
             $this->_db->query($sql);
-
             $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
@@ -205,10 +205,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
            
             $this->_db->query($sql);   
-
-            //change contributors to real guest users
-            Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
         }
     }
 
