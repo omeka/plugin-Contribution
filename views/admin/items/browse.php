@@ -96,7 +96,11 @@ if (!Omeka_Captcha::isConfigured()): ?>
             <tr class="contribution <?php if(++$key%2==1) echo 'odd'; else echo 'even'; ?>">
                 <?php if ($allowToManage): ?>
                 <td class="batch-edit-check" scope="row">
+                    <?php if ($status == 'private'): ?>
+                    <span><?php echo $statusText; ?></span>
+                    <?php else: ?>
                     <input type="checkbox" name="contributions[]" value="<?php echo $contributedItem->id; ?>" />
+                    <?php endif; ?>
                 </td>
                 <?php endif; ?>
                 <td class="record-info"><?php
