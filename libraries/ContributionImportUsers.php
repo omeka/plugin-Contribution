@@ -27,7 +27,7 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
                 //create username from email
                 $usernameParts = explode('@', $contributor['email']);
                 $username = preg_replace("/[^a-zA-Z0-9\s]/", "", $usernameParts[0]);
-        
+
                 if( (strlen($username) < $user::USERNAME_MIN_LENGTH) || !$uniqueUsernameValidator->isValid($username)) {
                     $username = $username . $usernameFiller;
                     $usernameFiller++;
@@ -45,7 +45,7 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
                 $user->email = $email;
                 $user->role = "guest";
                 $user->active = true;
-        
+
                 try {
                     $user->save();
                 } catch (Exception $e) {
@@ -62,10 +62,10 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
         $serialized = serialize($userContributorMap);
         $putResult = file_put_contents(CONTRIBUTION_PLUGIN_DIR . '/upgrade_files/user_contributor_map.txt', $serialized);
     }
-    
+
     private function _mapUsersToItems($userContributorMap)
     {
-        $db=get_db();        
+        $db=get_db();
         foreach($userContributorMap as $userId=>$contributorIds) {
             $contribIds = implode(',' , $contributorIds);
             //dig up the items contributed and set the owner
@@ -79,9 +79,9 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
             }
             $idsString = implode(',', $ids);
             if(!empty($idsString)) {
-                $sql = "UPDATE `omeka_items` SET `owner_id`=$userId WHERE `id` IN ($idsString)";
+                $sql = "UPDATE `$db->Item` SET `owner_id`=$userId WHERE `id` IN ($idsString)";
                 $res = $db->query($sql);
-            }            
+            }
         }
     }
 }
