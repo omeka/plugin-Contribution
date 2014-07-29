@@ -58,7 +58,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     public function contributeAction()
     {
         $this->_captcha = $this->_setupCaptcha();
+        $csrf = new Omeka_Form_SessionCsrf;
+        $this->view->csrf = $csrf;
         if(!empty($_POST)) {
+            if (!$csrf->isValid($_POST)) {
+                $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
+                return;
+            }
             if ($this->_processForm($_POST)) {
                 $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
                 $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);

@@ -77,6 +77,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 </div>
                 <?php echo $this->formSubmit('form-submit', __('Contribute'), array('class' => 'submitinput')); ?>
             </fieldset>
+            <?php echo $csrf; ?>
         </form>
     <?php endif; ?>
 </div>
