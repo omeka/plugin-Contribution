@@ -63,6 +63,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         if(!empty($_POST)) {
             if (!$csrf->isValid($_POST)) {
                 $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
+                $typeId = null;
+                if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
+                    $typeId = $postedType;
+                } else if ($defaultType = get_option('contribution_default_type')) {
+                    $typeId = $defaultType;
+                }
+                $this->_setupContributeSubmit($typeId);
                 return;
             }
             if ($this->_processForm($_POST)) {
@@ -392,7 +399,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
         //If this field is empty, don't send the email
         if (!empty($fromAddress)) {
-            $contributorMail = new Zend_Mail;
+            $contributorMail = new Zend_Mail('UTF-8');
             $body .= get_option('contribution_email');
             $url = record_url($item, 'show', true);
             $link = "<a href='$url'>$url</a>";
@@ -421,7 +428,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if (empty($toAddress)) {
                 continue;
             }
-            $adminMail = new Zend_Mail;
+            $adminMail = new Zend_Mail('UTF-8');
             $body = "<p>";
             $body .= __("A new contribution to %s has been made.", get_option('site_title'));
             $body .= "</p>";
