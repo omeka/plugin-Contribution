@@ -12,6 +12,7 @@
 class Contribution_ContributionController extends Omeka_Controller_AbstractActionController
 {   
     protected $_captcha;
+    protected $_csrf;
     
     /**
      * Index action; simply forwards to contributeAction.
@@ -26,6 +27,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     public function contributeAction()
     {
+        $csrf = new Omeka_Form_SessionCsrf;
+        $this->view->csrf = $csrf;
         $this->_captcha = $this->_setupCaptcha();
         if ($this->_processForm($_POST)) {
             $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
@@ -308,7 +311,10 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $errors[] = __('You must agree to the Terms and Conditions.');
             $isValid = false;
         }
-        
+        if (! $this->view->csrf->isValid($post)) {
+            $errors[] = __('The page is no longer valid. Please try again.');
+            $isValid = false;
+        }
         if ($errors) {
             $this->_helper->flashMessenger(join("\n", $errors), 'error');
         }
@@ -356,7 +362,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if (empty($toAddress)) {
                 continue;
             }
-            $adminMail = new Zend_Mail;
+            $adminMail = new Zend_Mail('UTF-8');
             $body = "<p>";
             $body .= __("A new contribution to %s has been made.", get_option('site_title'));
             $body .= "</p>";

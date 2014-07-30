@@ -18,6 +18,7 @@ echo head($head); ?>
     
     <h1><?php echo $head['title']; ?></h1>
     <form method="post" action="" enctype="multipart/form-data">
+        <?php echo $csrf; ?>
         <fieldset id="contribution-item-metadata">
             <div class="inputs">
                 <label for="contribution-type">What type of item do you want to contribute?</label>
