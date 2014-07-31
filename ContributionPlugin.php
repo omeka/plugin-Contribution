@@ -193,6 +193,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             if(!is_writable(CONTRIBUTION_PLUGIN_DIR . "/upgrade_files")) {
                 throw new Omeka_Plugin_Installer_Exception("'upgrade_files' directory must be writable by the web server");
             }
+            require_once(CONTRIBUTION_PLUGIN_DIR . '/libraries/ContributionImportUsers.php');
             //change contributors to real guest users
             Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
