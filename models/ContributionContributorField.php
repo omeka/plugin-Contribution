@@ -56,7 +56,11 @@ HTML;
     private function getFormInput()
     {
         $inputName = "ContributorFields[{$this->id}]";
-        $defaultValue = isset($_POST[$inputName]) ? $_POST[$inputName] : '';
+        if (isset($_POST['ContributorFields'])) {
+            $defaultValue = $_POST['ContributorFields'][$this->id];
+        } else {
+            $defaultValue = '';
+        }
         switch ($this->type) {
             case 'Tiny Text':
                 $input = get_view()->formText($inputName, $defaultValue, array('class' => 'textinput'));
