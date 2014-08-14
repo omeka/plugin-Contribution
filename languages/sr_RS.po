@@ -1,0 +1,584 @@
+# Translation for the Contribution plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# 
+# Translators:
+# Predrag Djukic <djukic.predrag@gmail.com>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2014-06-18 09:54+0000\n"
+"Last-Translator: Predrag Djukic <djukic.predrag@gmail.com>\n"
+"Language-Team: Serbian (Serbia) (http://www.transifex.com/projects/p/omeka/language/sr_RS/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: sr_RS\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: models/ContributionType.php:101
+msgid "Allowed"
+msgstr "Дозвољено"
+
+#: models/ContributionType.php:102
+msgid "Required"
+msgstr "Обавезно"
+
+#: models/ContributionType.php:100
+msgid "Disallowed"
+msgstr "Није дозовљено"
+
+#: models/ContributionContributedItem.php:46
+msgid "Deleted User"
+msgstr "Обрисан корисник"
+
+#: ContributionPlugin.php:285 views/admin/contributors/browse.php:31
+#: views/admin/types/browse.php:26
+msgid "Contributed Items"
+msgstr "Допринете јединице"
+
+#: ContributionPlugin.php:288 ContributionPlugin.php:370
+#: helpers/ThemeHelpers.php:21
+msgid "Contribution"
+msgstr "Допринос"
+
+#: ContributionPlugin.php:309
+msgid "Contribute an Item"
+msgstr "Допринеси јединицу"
+
+#: ContributionPlugin.php:549
+msgid "Contributed by:"
+msgstr "Допринео:"
+
+#: ContributionPlugin.php:554
+msgid "This item can be made public."
+msgstr "Ова јединица може бити јавна."
+
+#: ContributionPlugin.php:556
+msgid "This item cannot be made public."
+msgstr "Ова јединица не може бити јавна."
+
+#: controllers/ContributionController.php:42
+msgid "Your contributions have been updated."
+msgstr "Ваш допринос је ажуриран."
+
+#: controllers/ContributionController.php:192
+msgid "You must select a type for your contribution."
+msgstr "Морате одабрати врсту вашег доприноса."
+
+#: controllers/ContributionController.php:339
+msgid "You must agree to the Terms and Conditions."
+msgstr "Морате да се сложите са Условима."
+
+#: controllers/ContributionController.php:368
+msgid "Contribution URL (pending review by project staff): "
+msgstr "URL доприноса (особље пројекта тренутно врши преглед):"
+
+#: controllers/ContributionController.php:372
+#, php-format
+msgid "Your %s Contribution"
+msgstr "Ваш %s допринос"
+
+#: controllers/ContributionController.php:391
+#, php-format
+msgid "A new contribution to %s has been made."
+msgstr "Нови допринос %s је остварен."
+
+#: controllers/ContributionController.php:396
+msgid "Contribution URL for review: "
+msgstr "URL адреса за преглед:"
+
+#: controllers/ContributionController.php:402
+#, php-format
+msgid "New %s Contribution"
+msgstr "Нов %s допринос"
+
+#: controllers/SettingsController.php:34
+msgid "Settings have been saved."
+msgstr "Подешавања су сачувана."
+
+#: controllers/SettingsController.php:78
+msgid "Contribution Slug"
+msgstr "Машинско име доприноса"
+
+#: controllers/SettingsController.php:79
+msgid ""
+"Relative path from the Omeka root to the desired location for the "
+"contribution form. If left blank, the default path will be named "
+"&#8220;contribution.&#8221;"
+msgstr "Релативна путања са корена Омеке до жељене локације у оквиру формулара за допринос. Уколико се остави празна, дифолт путања ће бити названа  &#8220;contribution.&#8221;"
+
+#: controllers/SettingsController.php:84
+msgid "Contribution Confirmation Email"
+msgstr "Имејл за потврду доприноса"
+
+#: controllers/SettingsController.php:85
+msgid ""
+"An email message will be sent to each contributor from this address "
+"confirming that they submitted a contribution to this website. Leave blank "
+"if you do not want an email sent."
+msgstr "Са ове адресе ће бити послат имејл сваком доприносиоцу којим се потврђује да су послали доприност овом вебсајту. Остави празно уколико не желиш слање имејла."
+
+#: controllers/SettingsController.php:90
+msgid "New Contribution Notification Emails"
+msgstr "Имејл за обавештење о новом доприносу"
+
+#: controllers/SettingsController.php:91
+msgid ""
+"An email message will be sent to each address here whenever a new item is "
+"contributed. Leave blank if you do not want anyone to be alerted of "
+"contributions by email."
+msgstr "Биће послат имејл на адресу наведену овде сваки пут када нова јединица буде додата. Остави празно уколико не желиш да ико буде обавештен имејлом о новим јединицама."
+
+#: controllers/SettingsController.php:96
+msgid "Text of Terms of Service"
+msgstr "Текст услова услуге"
+
+#: controllers/SettingsController.php:97
+msgid "The text of the legal disclaimer to which contributors will agree."
+msgstr "Текст правног одрицвања са којим ће се доприносиоци сагласити."
+
+#: controllers/SettingsController.php:102
+msgid "Use 'Simple' Options"
+msgstr "Користи опцију 'Једноставно'"
+
+#: controllers/SettingsController.php:103
+msgid ""
+"This will require an email address from contributors, and create a guest "
+"user from that information. If those users want to use the account, they "
+"will have to request a new password for the account. If you want to collect "
+"additional information about contributors, you cannot use the simple option."
+" See documentation for details. "
+msgstr "Имејл адреса доприносиоца ће бити неопходна, као и креирање гостујућег налога са тим подацима. Уколико корисник жели да користи овај налог мораће да затражи нову лозинку. Уколико желите да прикупите додатне информације о доприносиоцу, не можете користи опцију - једноставно. Погледајте докуметацију за детаљније објашњење."
+
+#: controllers/SettingsController.php:109
+msgid "Email text to send to contributors"
+msgstr "Текст имејла за слање доприносиоцима"
+
+#: controllers/SettingsController.php:110
+msgid ""
+"Email text to send to contributors when they submit an item. A link to their"
+" contribution will be appended. If using the 'Simple' option, we recommend "
+"that you notify contributors that a guest user account has been created for "
+"them, and what they gain by confirming their account."
+msgstr "Текст имејла који ће бити послат доприносиоцима када пошаљу јединицу. Линк ка њихвом допринсу ће бити придодат. Ако се користи опција 'Једноставно', препоручујемо да обавестите доприносиоце да је гостујући кориснички налог креиран за њих и шта је то шта они добијају ако потврде свој налог."
+
+#: controllers/SettingsController.php:115
+msgid "Do not put contributions in any collection"
+msgstr "Не стављајте допринос у било коју колекцију"
+
+#: controllers/SettingsController.php:118
+msgid "Contribution Collection"
+msgstr "Колекција Допринос"
+
+#: controllers/SettingsController.php:119
+msgid ""
+"The collection to which contributions will be added. Changes here will only "
+"affect new contributions."
+msgstr "Који допринос ће бити додат којој колекцији. Промене овде утичо једино на нове доприносе."
+
+#: controllers/SettingsController.php:124
+msgid "No default type"
+msgstr "Нема подразумеване врсте"
+
+#: controllers/SettingsController.php:127
+msgid "Default Contribution Type"
+msgstr "Подразумевана врста доприноса"
+
+#: controllers/SettingsController.php:128
+msgid "The type that will be chosen for contributors by default."
+msgstr "Врсту доприноса ће одабрати доприносиоци према почетном подешавању."
+
+#: controllers/SettingsController.php:135
+msgid "Choose a profile type for contributors"
+msgstr "Одабери врсту профила за доприносиоце"
+
+#: controllers/SettingsController.php:136
+msgid "Configure the profile type under User Profiles"
+msgstr "Подеси врсту профила под Профила корисника"
+
+#: controllers/SettingsController.php:137
+msgid "None"
+msgstr "Нема"
+
+#: models/ContributionContributedItem.php:56
+#: views/admin/contributors/show.php:48 views/admin/items/browse.php:103
+#: views/public/contribution/my-contributions.php:9
+msgid "Anonymous"
+msgstr "Анониман"
+
+#: models/Mixin/ContributionOrder.php:101
+msgid "Cannot add a child to a record that does not exist yet!"
+msgstr "Не може се додати \"дете\" запису који још увек не постоји!"
+
+#: models/Mixin/ContributionOrder.php:105
+#, php-format
+msgid "Child must be an instance of \"%s\""
+msgstr "\"Дете\" мора бити инстанца од \"%s\""
+
+#: views/admin/common/contribution-quick-filters.php:2
+#: views/admin/common/contribution-quick-filters.php:4
+msgid "Filter by status"
+msgstr "Филтрирање по статусу"
+
+#: views/admin/common/contribution-quick-filters.php:8
+#: views/admin/contributors/show.php:40 views/admin/items/browse.php:81
+#: views/admin/items/browse.php:143
+msgid "Needs review"
+msgstr "Неопходан преглед"
+
+#: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
+#: views/admin/index/index.php:19
+msgid "Getting Started"
+msgstr "Почетак"
+
+#: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
+msgid "Contribution Types"
+msgstr "Врсте доприноса"
+
+#: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
+msgid "Submission Settings"
+msgstr "Подешавања слања"
+
+#: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
+msgid "Contributions"
+msgstr "Доприноси"
+
+#: views/admin/contributors/browse.php:28
+msgid "ID"
+msgstr "ИД"
+
+#: views/admin/contributors/show.php:20
+msgid "'s contributions"
+msgstr "'s доприноси"
+
+#: views/admin/contributors/show.php:26
+msgid "Profile: "
+msgstr "Профил:"
+
+#: views/admin/contributors/show.php:42 views/admin/items/browse.php:85
+msgid "Private contribution"
+msgstr "Приватни допринос"
+
+#: views/admin/index/index.php:20
+msgid ""
+"A basic contribution form is installed and ready to ask users to submit a "
+"Story or Image type, and to include their name and email address. If you "
+"want to modify the form, follow the steps below."
+msgstr "Формулар за основни допринос је инсталиран и спреман да од корисника преузме причи или врсту слике и да прикључи њихова имена и имејл адресе. Ако желит да измените формулар, молимо пратите кораке испод."
+
+#: views/admin/index/index.php:21
+msgid ""
+"While an account exists for all contributors, they can make any contribution"
+" anonymously. Only the admin and super roles can see the full information."
+msgstr "Док постоји налог за све доприносиоце заједно, они могу дати допринос анонимно. Само администраторски и супер налог могу видети пуне информације."
+
+#: views/admin/index/index.php:22
+msgid ""
+"Contributors can make any contribution public or not. Non-public "
+"contributions cannot be made publicly available on the site, but they are "
+"visible to the super, admin, contributor, and researcher roles, as well as "
+"to the contributors themselves."
+msgstr "Доприносиоци могу да одлуче да ли ће свој доприно поставити јавно или не. Допринос који није јаван не може бити видљив јавности на сајту, али је видиљив улогама администратора, доприносиоца и истраживача као и самом доприносиоцу."
+
+#: views/admin/index/index.php:24
+msgid "1. Set up Guest User information:"
+msgstr "1. Подеси податке о гостујућем кориснику:"
+
+#: views/admin/index/index.php:26
+msgid ""
+"To make repeat contributions easier, a reusable 'Guest User' account is "
+"created for contributors."
+msgstr "Налог 'Гостујући корисник' је креиран за доприносиоце како би било олакшано понављање доприноса."
+
+#: views/admin/index/index.php:26
+msgid "Configure Guest Users"
+msgstr "Подеси гостујуће кориснике"
+
+#: views/admin/index/index.php:26
+msgid "with the following suggestions."
+msgstr "са следећим сугестијама."
+
+#: views/admin/index/index.php:28
+msgid ""
+"Let visitors know a bit about how their contributions will be used and why "
+"they are so valuable in the 'Registration Features' information."
+msgstr "Дајте посетиоцу до знања нешто о томе како ће његов допринос бити коришћен и зашто су ове информације веома важне при 'Детаљима регистрације'."
+
+#: views/admin/index/index.php:29
+msgid ""
+"It is easiest to contribute if administrator approval is not required and "
+"you allow 20 minute instant access. To prevent spam, using ReCaptcha is "
+"recommended."
+msgstr "Најлакши начин за допринос ако вам администраторско одобрење није потребно јесте да искористите 20минутни тренутни приступ. Да би се предупредио спам, препоручено је коришћење ReCaptcha теста."
+
+#: views/admin/index/index.php:30
+msgid ""
+"Additional contribution-specific information for guest users can be created "
+"here."
+msgstr "Додатане информације специфичне за допринос гостујућих корисника могу се унети овде."
+
+#: views/admin/index/index.php:34
+msgid "2. Modify the contribution form:"
+msgstr "2. Измени формулар доприноса:"
+
+#: views/admin/index/index.php:37
+#, php-format
+msgid ""
+"Choose item types you wish visitors to share, and customize the fields they "
+"should use, in %s"
+msgstr "Одабери врсту јединице коју желиш да посетиоци могу да деле, и подеси поља која они треба да користе, у %s"
+
+#: views/admin/index/index.php:39
+msgid "user profiles type"
+msgstr "врсте корисничких профила"
+
+#: views/admin/index/index.php:39
+#, php-format
+msgid ""
+"Set up profile information you would like from your contributors by setting "
+"up a %s "
+msgstr "Подеси податке профила корисника које би желео да прикупш од својих допринисиоца уласком на  %s "
+
+#: views/admin/index/index.php:41
+msgid ""
+"The optional User Profiles plugin lets you set up additional information you"
+" would like to ask from your contributors. To use those features, please "
+"install that, then return here for additional guidance."
+msgstr "Опциони додатак за корисничке профиле омогућава подешавање додатних информација које би желео да прикупиш од својих доприносилаца. Инсталирај га да искористиш ову могућност а затим се врати овде за додатна упутства."
+
+#: views/admin/index/index.php:45
+msgid "submission settings"
+msgstr "подешавање слања"
+
+#: views/admin/index/index.php:45
+#, php-format
+msgid "3. Configure the %s for contributions:"
+msgstr "3. Подеси %s за доприносе:"
+
+#: views/admin/index/index.php:48
+msgid "Set the terms of service for contributing to the site."
+msgstr "Подеси услове услуге за допринос сајту."
+
+#: views/admin/index/index.php:49
+msgid ""
+"Set up an auto-generated email to send to all contributors after they submit"
+" their contribution."
+msgstr "Подеси аутоматски генерисан имејл за слање свим доприносиоцима након што пошаљу свој допринос."
+
+#: views/admin/index/index.php:50
+msgid ""
+"Decide whether to use the 'Simple' options. This requires only that "
+"contributors provide an email address."
+msgstr "Одлучи да ли ћеш корисити опцију 'Једноставно'. Код ње се једнино захтева да доприносиоци обезбеде имејл адресу. "
+
+#: views/admin/index/index.php:51
+msgid "Specify a collection for new contributed items."
+msgstr "Одреди колекцију за новоприспеле једнице доприноса."
+
+#: views/admin/index/index.php:54
+#, php-format
+msgid ""
+"4. Browse contributions and their status, with links to more contributor "
+"information, in %s"
+msgstr "4. Прегледај доприносе и њихове статусе, са линковима ка више информација о доприносиоцу, у %s"
+
+#: views/admin/items/browse.php:13
+#, php-format
+msgid "Contributed Items (%d)"
+msgstr "Допринете јединице (%d)"
+
+#: views/admin/items/browse.php:27
+msgid "security settings"
+msgstr "сигурносна подешавања"
+
+#: views/admin/items/browse.php:27
+#, php-format
+msgid ""
+"You have not entered your %s API keys under %s. We recommend adding these "
+"keys, or the contribution form will be vulnerable to spam."
+msgstr "Нисте унели ваш %s API кључ под %s. Препоручујемо додавање овог кључа, у супротном ће допринос бити рањиви за спам."
+
+#: views/admin/items/browse.php:36 views/admin/items/browse.php:125
+msgid "Set public"
+msgstr "Постави јавно"
+
+#: views/admin/items/browse.php:39 views/admin/items/browse.php:128
+msgid "Set Needs review"
+msgstr "Подеси Неопходан преглед"
+
+#: views/admin/items/browse.php:57
+msgid "Publication Status (click to change)"
+msgstr "Статус објављивања (кликни овде за измену)"
+
+#: views/admin/items/browse.php:59
+msgid "Publication Status"
+msgstr "Статус објављивања"
+
+#: views/admin/items/browse.php:106
+msgid "Info and contributions"
+msgstr "Информације и доприноси"
+
+#: views/admin/items/browse.php:146
+msgid "Rejected"
+msgstr "Одбијено"
+
+#: views/admin/items/browse.php:147
+msgid "Are you sure youo want to remove these contributions?"
+msgstr "Да ли си сигуран да желиш да уклониш овај допринос?"
+
+#: views/admin/items/browse.php:155
+msgid "There is no contribution yet."
+msgstr "Још увек нема доприноса."
+
+#: views/admin/items/browse.php:157
+#, php-format
+msgid "The query searched %d contributions and returned no results."
+msgstr "Упит је претражио %d доприноса и није вратио резултате."
+
+#: views/admin/items/browse.php:158
+msgid "See all contributions."
+msgstr "Види све доприносе."
+
+#: views/admin/types/add-existing-element.php:27
+msgid "Prompt:"
+msgstr "Спремно:"
+
+#: views/admin/types/add-existing-element.php:30
+msgid "Large text"
+msgstr "Велики текст"
+
+#: views/admin/types/add.php:35 views/admin/types/browse.php:9
+#: views/admin/types/edit.php:30
+msgid "Types"
+msgstr "Врсте"
+
+#: views/admin/types/add.php:35
+msgid "Add a new type"
+msgstr "Додај нову врсту"
+
+#: views/admin/types/browse.php:27
+msgid "File Upload"
+msgstr "Пошаљи документ"
+
+#: views/admin/types/form.php:13
+msgid "The Item Type, from your site's list of types, you would like to use."
+msgstr "Врста јединице коју бисте желели да корисите, са листе врста јединица са вашег сајта."
+
+#: views/admin/types/form.php:28
+msgid ""
+"The label you would like to use for this contribution type. If blank, the "
+"Item Type name will be used."
+msgstr "Ознака коју бисте желели д користите за ову врсту доприноса. Ако је остављена празно, биће коришћен назив Врста јединице."
+
+#: views/admin/types/form.php:37
+msgid "Allow File Upload Via Form"
+msgstr "Дозволи слање докумената преко формулара"
+
+#: views/admin/types/form.php:40
+msgid ""
+"Enable or disable file uploads through the public contribution form. If set "
+"to &#8220;Required,&#8220; users must add a file to their contribution when "
+"selecting this item type."
+msgstr "Омогући или онемогући слање документа кроз формулар за јавни допринос. Ако је подешено на &#8220;Required,&#8220; корисници морају додати документ њихвом доприносу приликом одабира ове врсте једнице."
+
+#: views/admin/types/form.php:42
+#, php-format
+msgid "%s"
+msgstr "%s"
+
+#: views/admin/types/form.php:58
+msgid "Prompt"
+msgstr "Спремно"
+
+#: views/admin/types/form.php:60
+msgid "Multiple rows"
+msgstr "Више редова"
+
+#: views/public/contribution/contribute.php:47
+msgid "What type of item do you want to contribute?"
+msgstr "Коју врсту јединице желите да допринесете?"
+
+#: views/public/contribution/contribute.php:62
+msgid "Publish my contribution on the web."
+msgstr "Објави мој допринос на вебу."
+
+#: views/public/contribution/contribute.php:67
+msgid "Contribute anonymously."
+msgstr "Допринеси анонимно."
+
+#: views/public/contribution/contribute.php:69
+msgid "Terms and Conditions"
+msgstr "Услови"
+
+#: views/public/contribution/contribute.php:69
+#, php-format
+msgid "In order to contribute, you must read and agree to the %s"
+msgstr "Да бисте допринели, морате прочитати и сложити се са %s"
+
+#: views/public/contribution/contribute.php:73
+msgid "I agree to the Terms and Conditions."
+msgstr "Слажем се са Условима."
+
+#: views/public/contribution/contribute.php:75
+msgid "Contribute"
+msgstr "Допринеси"
+
+#: views/public/contribution/my-contributions.php:11
+msgid "Added"
+msgstr "Додато"
+
+#: views/public/contribution/terms.php:2
+msgid "Contribution Terms of Service"
+msgstr "Услови доприноса"
+
+#: views/public/contribution/thankyou.php:3
+msgid "Thank you for contributing!"
+msgstr "Захваљујемо на доприносу!"
+
+#: views/public/contribution/thankyou.php:4
+msgid "make another contribution"
+msgstr "допринеси поново"
+
+#: views/public/contribution/thankyou.php:4
+msgid "browse the archive"
+msgstr "прегледај архиву"
+
+#: views/public/contribution/thankyou.php:4
+#, php-format
+msgid ""
+"Your contribution will show up in the archive once an administrator approves"
+" it. Meanwhile, feel free to %s or %s ."
+msgstr "Твој допринос ће се појавити у архиви након што га администратор одобри. У међувремену, можеш %s или %s ."
+
+#: views/public/contribution/thankyou.php:7
+msgid "this page"
+msgstr "ова страница"
+
+#: views/public/contribution/thankyou.php:7
+#, php-format
+msgid ""
+"If you would like to interact with the site further, you can use an account "
+"that is ready for you. Visit %s, and request a new password for the email "
+"you used"
+msgstr "Уколико желиш да користиш сајт даље, можеш употребити налог који је креиран за тебе. Посети %s, и затражи нову лозинку за имејл адресу коју си користио"
+
+#: views/public/contribution/type-form.php:29
+msgid "Upload a file (Optional)"
+msgstr "Пошаљи документ (опционо)"
+
+#: views/public/contribution/type-form.php:37
+msgid "Email (Required)"
+msgstr "Имјел (обавезно)"
+
+#: views/public/contribution/type-form.php:49
+#, php-format
+msgid "You are logged in as: %s"
+msgstr "Пријављени сте као: %s"
+
+#: views/public/contribution/type-form.php:64
+#, php-format
+msgid "Your %s profile"
+msgstr "Ваш %s профил"
