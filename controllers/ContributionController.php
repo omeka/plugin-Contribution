@@ -369,8 +369,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         
         // ReCaptcha ignores the first argument.
         if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
-            $errors[] = __('Your CAPTCHA submission was invalid, please try again.');
-            $isValid = false;
+            $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'), 'error');
+            return false;
         }
                 
         if ($post['terms-agree'] == 0) {
