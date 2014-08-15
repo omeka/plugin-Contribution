@@ -82,6 +82,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 } else if ($defaultType = get_option('contribution_default_type')) {
                     $typeId = $defaultType;
                 }
+                if ($this->_captcha) {
+                    $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+                }
                 $this->_setupContributeSubmit($typeId);
 
                 if(isset($this->_profile) && !$this->_profile->exists()) {
