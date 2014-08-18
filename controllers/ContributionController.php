@@ -260,6 +260,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item = update_item($item, $itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
                 $this->flashValidatonErrors($e);
+                $item->delete();
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
@@ -268,9 +269,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 } else {
                     $this->_helper->flashMessenger($e->getMessage());
                 }
+                $item->delete();
                 return false;
             } catch (Exception $e) {
                 $this->_helper->flashMessenger($e->getMessage());
+                $item->delete();
                 return false;
             }
             $this->_addElementTextsToItem($item, $post['Elements']);
