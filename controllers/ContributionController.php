@@ -243,6 +243,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
 
+            // TODO Check if there is at least one file if one file or more is required and remove the catch below.
             $fileMetadata = $this->_processFilesUpload($contributionType);
 
             // This is a hack to allow the file upload job to succeed
@@ -265,6 +266,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 if (strstr($e->getMessage(), "'contributed_file'")) {
                     $this->_helper->flashMessenger(__('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 }
+                // Check multiple files.
+                elseif (strstr($e->getMessage(), "contributed_file_")) {
+                    $this->_helper->flashMessenger(__('One or more files have not been uploaded.')
+                        . ' ' . __('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
+                }
                 else {
                     $this->_helper->flashMessenger($e->getMessage());
                 }
@@ -273,6 +279,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->_helper->flashMessenger($e->getMessage());
                 return false;
             }
+
             $this->_addElementTextsToItem($item, $post['Elements']);
             if ($contributionType->add_tags && isset($post['tags'])) {
                 $item->addTags($post['tags']);
@@ -323,12 +330,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     {
         if ($contributionType->isFileAllowed()) {
             $options = array();
-            if ($contributionType->isFileRequired()) {
-                $options['ignoreNoFile'] = false;
-            }
-            else {
-                $options['ignoreNoFile'] = true;
-            }
+            $options['ignoreNoFile'] = !$contributionType->isFileRequired();
 
             $fileMetadata = array(
                 'file_transfer_type' => 'Upload',
