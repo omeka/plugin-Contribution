@@ -509,13 +509,27 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
       if ($item->exists()) {
           //prevent admins from overriding the contributer's assertion of public vs private
           $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-          if($contributionItem) {
-              if(!$contributionItem->public && $item->public) {
-                  $item->public = false;
+          if ($contributionItem) {
+/*
+// TODO REMOVED in order to allow immediate publication by user.
+   TODO Change rights or create a new role.
+                if (!$contributionItem->public && $item->public) {
+                    $item->public = false;
                     Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage(__("Cannot override contributor's desire to leave contribution private"), 'error');
-              }
-          }
-      }
+                }
+                else {
+ */
+/*
+// Test
+                  if ($contributionItem->public) {
+                      $item->public = true;
+                  }
+                  else {
+                      $item->public = false;
+                  }
+*/
+            }
+        }
     }
 
     public function hookAfterDeleteItem($args)
