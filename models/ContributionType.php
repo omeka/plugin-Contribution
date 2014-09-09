@@ -7,7 +7,6 @@
  * @subpackage Models
  */
 
-
 require_once 'Mixin/ContributionOrder.php';
 
 /**
@@ -22,22 +21,26 @@ class ContributionType extends Omeka_Record_AbstractRecord
     public $item_type_id;
     public $display_name;
     public $file_permissions = 'Disallowed';
-    
-    protected $_related = array('ContributionTypeElements' => 'getTypeElements',
-                                'ItemType' => 'getItemType');
+    public $multiple_files;
+    public $add_tags;
+
+    protected $_related = array(
+        'ContributionTypeElements' => 'getTypeElements',
+        'ItemType' => 'getItemType',
+    );
 
     protected function filterPostData($post)
     {
-        if(empty($post['display_name'])) {
+        if (empty($post['display_name'])) {
             $itemType = $this->getDb()->getTable('ItemType')->find($post['item_type_id']);
             $post['display_name'] = $itemType = $itemType->name;
         }
         return $post;
     }
-    
+
     protected function _validate()
     {
-        if(empty($this->item_type_id)) {
+        if (empty($this->item_type_id)) {
             $this->addError('item_type_id', 'You must select an item type.');
         }
     }
@@ -47,7 +50,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
         $this->_mixins[] = new Mixin_ContributionOrder($this,
                 'ContributionTypeElement', 'type_id', 'Elements');
     }
-    
+
     /**
      * Get the type elements associated with this type.
      *
@@ -57,7 +60,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
     {
         return $this->_db->getTable('ContributionTypeElement')->findByType($this);
     }
-    
+
     /**
      * Get the item type associated with this type.
      *
@@ -99,8 +102,8 @@ class ContributionType extends Omeka_Record_AbstractRecord
         return array(
             'Disallowed' => __('Disallowed'),
             'Allowed' => __('Allowed'),
-            'Required' => __('Required')
-            );
+            'Required' => __('Required'),
+        );
     }
 
     /**
@@ -110,15 +113,16 @@ class ContributionType extends Omeka_Record_AbstractRecord
      */
     public function afterSaveForm($post)
     {
-        foreach($post['Elements'] as $elementId => $elementData) {
+        foreach ($post['Elements'] as $elementId => $elementData) {
             $element = $this->getDb()->getTable('ContributionTypeElement')->find($elementId);
-            if($elementData['delete']) {
+            if ($elementData['delete']) {
                 $element->delete();
-            } else {
+            }
+            else {
                 $element->saveForm($elementData);
             }
         }
-        foreach($post['newElements'] as $index => $elementData) {
+        foreach ($post['newElements'] as $index => $elementData) {
             // Skip totally empty elements
             if (!empty($elementData['prompt']) || !empty($elementData['element_set_id'])) {
                 $element = new ContributionTypeElement;
@@ -173,7 +177,7 @@ SQL;
         }
         return $options;
     }
-    
+
     public function getRecordUrl($action = 'show')
     {
         return url("contribution/types/$action/id/{$this->id}");

@@ -6,15 +6,15 @@
  * @package Contribution
  */
 
-queue_js_file('contribution-public-form');
 $contributionPath = get_option('contribution_page_path');
-if(!$contributionPath) {
+if (!$contributionPath) {
     $contributionPath = 'contribution';
 }
 queue_css_file('form');
 
+queue_js_file('contribution-public-form');
 //load user profiles js and css if needed
-if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles') ) {
+if (get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles')) {
     queue_js_file('admin-globals');
     queue_js_file('tiny_mce', 'javascripts/vendor/tiny_mce');
     queue_js_file('elements');
@@ -26,20 +26,20 @@ $head = array('title' => 'Contribute',
 echo head($head); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url($contributionPath . '/type-form')); ?>);
 // ]]>
 </script>
 
 <div id="primary">
 <?php echo flash(); ?>
-    
+
     <h1><?php echo $head['title']; ?></h1>
 
-    <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
+    <?php if (!get_option('contribution_simple') && !$user = current_user()) :?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>
-        <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>        
+        <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>
     <?php else: ?>
         <form method="post" action="" enctype="multipart/form-data">
             <fieldset id="contribution-item-metadata">
@@ -51,12 +51,23 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
                 <div id="contribution-type-form">
-                <?php if(isset($type)) { include('type-form.php'); }?>
+                    <?php if (isset($type)) {
+                        $partialOptions = array();
+                        $partialOptions['type'] = $type;
+                        $partialOptions['item'] = $item;
+                        if (isset($profileType)) {
+                            $partialOptions['profileType'] = $profileType;
+                        }
+                        if (isset($profile)) {
+                            $partialOptions['profile'] = $profile;
+                        }
+                        echo $this->partial('contribution/type-form.php', $partialOptions);
+                    }?>
                 </div>
             </fieldset>
 
             <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
-                <?php if(isset($captchaScript)): ?>
+                <?php if (isset($captchaScript)): ?>
                     <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
                 <?php endif; ?>
                 <div class="inputs">

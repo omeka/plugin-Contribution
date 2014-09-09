@@ -75,7 +75,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_hooks[] = 'user_profiles_user_page';
         }
 
-        if (! is_admin_theme()) {
+        if (!is_admin_theme()) {
             //dig up all the elements being used, and add their ElementForm hook
             $elementsTable = $this->_db->getTable('Element');
             $select = $elementsTable->getSelect();
@@ -109,6 +109,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
+            `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -132,6 +134,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_id` INT UNSIGNED NOT NULL,
             `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
@@ -187,8 +190,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             // Since this is an upgrade from an old version, we need to install
             // all our tables.
             $this->hookInstall();
-
         }
+
         if (version_compare($oldVersion, '3.0', '<')) {
             if(!is_writable(CONTRIBUTION_PLUGIN_DIR . "/upgrade_files")) {
                 throw new Omeka_Plugin_Installer_Exception("'upgrade_files' directory must be writable by the web server");
@@ -197,9 +200,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             //change contributors to real guest users
             Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
             //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
-            $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
-            $this->_db->query($sql);
-            $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
+            $db = $this->_db;
+            $sql = "ALTER TABLE `{$db->ContributionContributedItem}` ADD COLUMN `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
+            $sql = "ALTER TABLE `{$db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
+            $db->query($sql);
+            $contributionTypeElements = $db->getTable('ContributionTypeElement')->findAll();
             foreach($contributionTypeElements as $typeElement) {
                 $typeElement->long_text = true;
                 $typeElement->save();
@@ -207,9 +213,19 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             //clean up contributed item records if the corresponding item has been deleted
             //earlier verison of the plugin did not use the delete hook
-            $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
-           
-            $this->_db->query($sql);   
+            $sql = "DELETE  FROM `{$db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$db->prefix}items`  WHERE `{$db->prefix}contribution_contributed_items`.`item_id` = `{$db->prefix}items`.`id`)";
+
+            $this->_db->query($sql);
+        }
+
+        if (version_compare($oldVersion, '3.1', '<')) {
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
+            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `anonymous`";
+            $db->query($sql);
         }
     }
 
@@ -232,7 +248,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
         if (get_option('contribution_simple')) {
             $acl->allow(null, 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
-        } else {
+        }
+        else {
             $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
         }
 
@@ -272,8 +289,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     array('module'     => 'contribution',
                           'controller' => 'contribution',
                           'action'     => 'contribute')));
-        } else {
-
+        }
+        else {
             $router->addRoute('contributionDefault',
                   new Zend_Controller_Router_Route('contribution/:action/*',
                         array('module'     => 'contribution',
@@ -341,10 +358,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function filterSimpleVocabRoutes($routes)
     {
-
-        $routes[] = array('module' => 'contribution',
-                          'controller' => 'contribution',
-                          'actions' => array('type-form', 'contribute'));
+        $routes[] = array(
+            'module' => 'contribution',
+            'controller' => 'contribution',
+            'actions' => array('type-form', 'contribute'),
+        );
         return $routes;
     }
 
@@ -384,7 +402,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookAdminItemsShowSidebar($args)
     {
-
         $htmlBase = $this->_adminBaseInfo($args);
         echo "<div class='panel'>";
         echo "<h4>" . __("Contribution") . "</h4>";
@@ -405,9 +422,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookItemsBrowseSql($args)
     {
-
-    $select = $args['select'];
-    $params = $args['params'];
+        $select = $args['select'];
+        $params = $args['params'];
 
         if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
             $db = get_db();
@@ -493,10 +509,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
       if ($item->exists()) {
           //prevent admins from overriding the contributer's assertion of public vs private
           $contributionItem = $this->_db->getTable('ContributionContributedItem')->findByItem($item);
-          if ($contributionItem) {
-              if (!$contributionItem->public && $item->public) {
+          if($contributionItem) {
+              if(!$contributionItem->public && $item->public) {
                   $item->public = false;
-                  Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage("Cannot override contributor's desire to leave contribution private", 'error');
+                    Zend_Controller_Action_HelperBroker::getStaticHelper('FlashMessenger')->addMessage(__("Cannot override contributor's desire to leave contribution private"), 'error');
               }
           }
       }
@@ -515,8 +531,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $user = $args['user'];
         $contributionCount = $this->_db->getTable('ContributionContributedItem')->count(array('contributor' => $user->id));
-        if ($contributionCount !=0) {
-            echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>Contributed Items ($contributionCount)";
+        if ($contributionCount != 0) {
+            echo "<a href='" . url('contribution/contributors/show/id/' . $user->id) . "'>" . __('Contributed Items (%d)', $contributionCount) . '</a>';
         }
     }
 
@@ -538,7 +554,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         if ($contribItem->anonymous) {
             $cite = __("Anonymous, ");
-        } else {
+        }
+        else {
             $cite = $contribItem->Contributor->name . ", ";
         }
 
@@ -595,9 +612,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             $publicMessage = '';
             if (is_allowed($item, 'edit')) {
-                if ($contributedItem->public) {
+                if ($contributedItem->deleted) {
+                    $publicMessage = __('This item has been deleted by user. It cannot be made public.');
+                } elseif ($contributedItem->public) {
                     $publicMessage = __("This item can be made public.");
-                } else {
+                }
+                else {
                     $publicMessage = __("This item cannot be made public.");
                 }
                 $html .= "<p><strong>$publicMessage</strong></p>";
@@ -609,7 +629,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     private function _contributorsToGuestUsers($contributorsData)
     {
         $map = array();
-            foreach ($contributorsData as $index => $contributor) {
+        foreach ($contributorsData as $index => $contributor) {
             $user = new User();
             $user->email = $contributor['email'];
             $user->name = $contributor['name'];

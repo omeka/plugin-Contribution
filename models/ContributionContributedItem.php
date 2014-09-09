@@ -17,7 +17,8 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     public $item_id;
     public $public;
     public $anonymous;
-    
+    public $deleted = 0;
+
     protected $_related = array(
         'Item' => 'getItem',
         'Contributor' => 'getContributor'
@@ -36,7 +37,17 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
         $item->save();
         release_object($item);
     }
-    
+
+    /**
+     * Delete a contributed item. In fact, for security reason, make it private
+     * and invisible to contributor.
+     */
+    public function makeDeletedByUser()
+    {
+        $this->deleted = true;
+        $this->makeNotPublic();
+    }
+
     public function getContributor()
     {
         $owner = $this->Item->getOwner();

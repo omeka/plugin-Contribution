@@ -23,31 +23,44 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     public function myContributionsAction()
     {
+        $post = &$_POST;
         $user = current_user();
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
 
         $contribItems = array();
-        if(!empty($_POST)) {
-            foreach($_POST['contribution_public'] as $id=>$value) {
+        if (!empty($post)) {
+            foreach ($post['contribution_public'] as $id => $value) {
                 $contribItem = $contribItemTable->find($id);
-                if($value) {
+                if ($value) {
                     $contribItem->public = true;
-                } else {
+                }
+                else {
                     $contribItem->makeNotPublic();
                 }
                 $contribItem->public = $value;
-                $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
+                $contribItem->anonymous = $post['contribution_anonymous'][$id];
 
-                if($contribItem->save()) {
+                if ($post['contribution_deleted'][$id]) {
+                    $contribItem->makeDeletedByUser();
+                }
+
+                if ($contribItem->save()) {
                     $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
-                } else {
+                }
+                else {
                     $this->_helper->flashMessenger($contribItem->getErrors());
                 }
 
-                $contribItems[] = $contribItem;
+                if (!$contribItem->deleted) {
+                    $contribItems[] = $contribItem;
+                }
             }
-        } else {
-            $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
+        }
+        else {
+            $contribItems = $contribItemTable->findBy(array(
+                'contributor' => $user->id,
+                'deleted' => false,
+            ));
         }
         $this->view->contrib_items = $contribItems;
     }
@@ -75,7 +88,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if ($this->_processForm($_POST)) {
                 $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
                 $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
-            } else {
+            }
+            else {
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
@@ -87,13 +101,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 }
                 $this->_setupContributeSubmit($typeId);
 
-                if(isset($this->_profile) && !$this->_profile->exists()) {
+                if (isset($this->_profile) && !$this->_profile->exists()) {
                     $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
                     return;
                 }
             }
-        } else {
-            if($this->_captcha) {
+        }
+        else {
+            if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
             $defaultType = get_option('contribution_default_type');
@@ -141,15 +156,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
         //setup profile stuff, if needed
         $profileTypeId = get_option('contribution_user_profile_type');
-        if(plugin_is_active('UserProfiles') && $profileTypeId) {
+        if (plugin_is_active('UserProfiles') && $profileTypeId) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
 
-            if($user = current_user()) {
+            if ($user = current_user()) {
                 $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
             }
-            if(empty($profile)) {
+            if (empty($profile)) {
                 $profile = new UserProfilesProfile();
                 $profile->type_id = $profileTypeId;
             }
@@ -159,14 +174,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     /**
      * Creates the reCAPTCHA object and returns it.
-     * 
+     *
      * @return Zend_Captcha_Recaptcha|null
      */
     protected function _setupCaptcha()
     {
-        if(current_user()) {
+        if (current_user()) {
             return false;
-        } else {
+        }
+        else {
             return Omeka_Captcha::getCaptcha();
         }
     }
@@ -185,25 +201,24 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processForm($post)
     {
         if (!empty($post)) {
-
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
             $simple = get_option('contribution_simple');
 
-            if(!$user && $simple) {
+            if (!$user && $simple) {
                 $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
             }
 
             // if still not a user, need to create one based on the email address
-            if(!$user) {
+            if (!$user) {
                 $user = $this->_createNewGuestUser($post);
-                if($user->hasErrors()) {
+                if ($user->hasErrors()) {
                     $errors = $user->getErrors()->get();
                     //since we're creating the user behind the scenes, skip username and name errors
                     unset($errors['name']);
                     unset($errors['username']);
-                    foreach($errors as $error) {
+                    foreach ($errors as $error) {
                         $this->_helper->flashMessenger($error, 'error');
                     }
                     return false;
@@ -222,20 +237,24 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             if ($contributionTypeId !== "" && is_numeric($contributionTypeId)) {
                 $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
                 $itemTypeId = $contributionType->getItemType()->id;
-            } else {
-            	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
+            }
+            else {
+                $this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
                 return false;
             }
-            $itemMetadata = array('public'       => false,
-                                  'featured'     => false,
-                                  'item_type_id' => $itemTypeId);
+            $itemMetadata = array(
+                'public' => false,
+                'featured' => false,
+                'item_type_id' => $itemTypeId,
+            );
 
             $collectionId = get_option('contribution_collection_id');
             if (!empty($collectionId) && is_numeric($collectionId)) {
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
 
-            $fileMetadata = $this->_processFileUpload($contributionType);
+            // TODO Check if there is at least one file if one file or more is required and remove the catch below.
+            $fileMetadata = $this->_processFilesUpload($contributionType);
 
             // This is a hack to allow the file upload job to succeed
             // even with the synchronous job dispatcher.
@@ -251,22 +270,35 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item = update_item($item, $itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
                 $this->flashValidatonErrors($e);
+                $item->delete();
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
                 if (strstr($e->getMessage(), "'contributed_file'")) {
-                   $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
-                } else {
+                    $this->_helper->flashMessenger(__('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
+                }
+                // Check multiple files.
+                elseif (strstr($e->getMessage(), "contributed_file_")) {
+                    $this->_helper->flashMessenger(__('One or more files have not been uploaded.')
+                        . ' ' . __('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
+                }
+                else {
                     $this->_helper->flashMessenger($e->getMessage());
                 }
+                $item->delete();
                 return false;
             } catch (Exception $e) {
                 $this->_helper->flashMessenger($e->getMessage());
+                $item->delete();
                 return false;
             }
+
             $this->_addElementTextsToItem($item, $post['Elements']);
+            if ($contributionType->add_tags && isset($post['tags'])) {
+                $item->addTags($post['tags']);
+            }
             // Allow plugins to deal with the inputs they may have added to the form.
-            fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
+            fire_plugin_hook('contribution_save_form', array('contributionType' => $contributionType, 'record' => $item, 'post' => $post));
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
@@ -280,18 +312,18 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processUserProfile($post, $user)
     {
         $profileTypeId = get_option('contribution_user_profile_type');
-        if($profileTypeId && plugin_is_active('UserProfiles')) {
+        if ($profileTypeId && plugin_is_active('UserProfiles')) {
             $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
-            if(!$profile) {
+            if (!$profile) {
                 $profile = new UserProfilesProfile();
                 $profile->setOwner($user);
                 $profile->type_id = $profileTypeId;
                 $profile->public = 0;
-                $profile->setRelationData(array('subject_id'=>$user->id, 'user_id'=>$user->id));
+                $profile->setRelationData(array('subject_id' => $user->id, 'user_id' => $user->id));
             }
             $profile->setPostData($post);
             $this->_profile = $profile;
-            if(!$profile->save(false)) {
+            if (!$profile->save(false)) {
                 return false;
             }
         }
@@ -301,17 +333,17 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     /**
      * Deals with files specified on the contribution form.
      *
+     * @todo Check if multiple files are allowed.
+     * @todo Error when option is required and when multiple files are allowed: an empty contributed_file input generate an error.
+     *
      * @param ContributionType $contributionType Type of contribution.
-     * @return array File upload array.
+     * @return array Files upload array.
      */
-    protected function _processFileUpload($contributionType) {
+    protected function _processFilesUpload($contributionType)
+    {
         if ($contributionType->isFileAllowed()) {
             $options = array();
-            if ($contributionType->isFileRequired()) {
-                $options['ignoreNoFile'] = false;
-            } else {
-                $options['ignoreNoFile'] = true;
-            }
+            $options['ignoreNoFile'] = !$contributionType->isFileRequired();
 
             $fileMetadata = array(
                 'file_transfer_type' => 'Upload',
@@ -347,9 +379,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _addElementTextsToItem($item, $elements)
     {
         $elementTable = get_db()->getTable('Element');
-        foreach($elements as $elementId => $elementTexts) {
+        foreach ($elements as $elementId => $elementTexts) {
             $element = $elementTable->find($elementId);
-            foreach($elementTexts as $elementText) {
+            foreach ($elementTexts as $elementText) {
                 if (!empty($elementText['text'])) {
                     $item->addTextForElement($element, $elementText['text']);
                 }
@@ -369,13 +401,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _validateContribution($post)
     {
-        
+
         // ReCaptcha ignores the first argument.
         if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
             $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'), 'error');
             return false;
         }
-                
+
         if ($post['terms-agree'] == 0) {
             $this->_helper->flashMessenger(__('You must agree to the Terms and Conditions.'), 'error');
             return false;
@@ -412,7 +444,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $passwordRecoveryLink = "<a href='$passwordRecoveryUrl'>$passwordRecoveryUrl</a>";
             $body .= "<p>" . __("To log in and change your username, request a password here: ") . $passwordRecoveryLink . "<p>";
             $contributorMail->setBodyHtml($body);
-            $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle ));
+            $contributorMail->setFrom($fromAddress, __("%s Administrator", $siteTitle));
             $contributorMail->addTo($recipient->email);
             $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
             $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
@@ -444,7 +476,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $adminMail->setBodyHtml($body);
             $adminMail->setFrom($fromAddress, "$siteTitle");
             $adminMail->addTo($toAddress);
-            $adminMail->setSubject(__("New %s Contribution", $siteTitle ));
+            $adminMail->setSubject(__("New %s Contribution", $siteTitle));
             $adminMail->addHeader('X-Mailer', 'PHP/' . phpversion());
             try {
                 $adminMail->send();
@@ -460,11 +492,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $email = $post['contribution_simple_email'];
         $split = explode('@', $email);
         $name = $split[0];
-        if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
+        if (version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
             $username = str_replace('@', 'AT', $email);
             $username = str_replace('.', 'DOT', $username);
             $user->username = $username;
-        } else {
+        }
+        else {
             $user->username = $email;
         }
         $user->email = $email;
