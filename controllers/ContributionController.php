@@ -23,12 +23,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     public function myContributionsAction()
     {
+        $post = &$_POST;
         $user = current_user();
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
 
         $contribItems = array();
-        if (!empty($_POST)) {
-            foreach ($_POST['contribution_public'] as $id => $value) {
+        if (!empty($post)) {
+            foreach ($post['contribution_public'] as $id => $value) {
                 $contribItem = $contribItemTable->find($id);
                 if ($value) {
                     $contribItem->public = true;
@@ -37,7 +38,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     $contribItem->makeNotPublic();
                 }
                 $contribItem->public = $value;
-                $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
+                $contribItem->anonymous = $post['contribution_anonymous'][$id];
+
+                if ($post['contribution_deleted'][$id]) {
+                    $contribItem->makeDeletedByUser();
+                }
 
                 if ($contribItem->save()) {
                     $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
@@ -46,11 +51,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     $this->_helper->flashMessenger($contribItem->getErrors());
                 }
 
-                $contribItems[] = $contribItem;
+                if (!$contribItem->deleted) {
+                    $contribItems[] = $contribItem;
+                }
             }
         }
         else {
-            $contribItems = $contribItemTable->findBy(array('contributor' => $user->id));
+            $contribItems = $contribItemTable->findBy(array(
+                'contributor' => $user->id,
+                'deleted' => false,
+            ));
         }
         $this->view->contrib_items = $contribItems;
     }
