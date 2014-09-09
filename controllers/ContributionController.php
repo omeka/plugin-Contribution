@@ -38,16 +38,25 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $contribItem->public = $value;
                 $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
 
+                if ($post['contribution_deleted'][$id]) {
+                    $contribItem->makeDeletedByUser();
+                }
+
                 if($contribItem->save()) {
                     $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
                 } else {
                     $this->_helper->flashMessenger($contribItem->getErrors());
                 }
 
-                $contribItems[] = $contribItem;
+                if (!$contribItem->deleted) {
+                    $contribItems[] = $contribItem;
+                }
             }
         } else {
-            $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
+            $contribItems = $contribItemTable->findBy(array(
+                'contributor' => $user->id,
+                'deleted' => false,
+            ));
         }
         $this->view->contrib_items = $contribItems;
     }

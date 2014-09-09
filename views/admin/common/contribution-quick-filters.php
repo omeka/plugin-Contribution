@@ -6,6 +6,8 @@
         <li><a href="<?php echo url('contribution/items', array('status' => 'public')); ?>"><?php echo __('Public'); ?></a></li>
         <li><a href="<?php echo url('contribution/items', array('status' => 'private')); ?>"><?php echo __('Private'); ?></a></li>
         <li><a href="<?php echo url('contribution/items', array('status' => 'review')); ?>"><?php echo __('Needs review'); ?></a></li>
+        <li><a href="<?php echo url('contribution/items', array('deleted' => true)); ?>"><?php echo __('Deleted by User'); ?></a></li>
+        <li><a href="<?php echo url('contribution/items', array('deleted' => false)); ?>"><?php echo __('Not Deleted by User'); ?></a></li>
     </ul>
     </li>
 </ul>

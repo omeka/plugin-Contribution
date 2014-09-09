@@ -29,14 +29,16 @@ echo $this->partial('contribution-navigation.php');
     <?php endif; ?>
     
     <div id='contribution-user-contributions'>
-        <?php foreach($items as $item): ?>
-        <?php set_current_record('item', $item->Item); ?>
+        <?php foreach($items as $contributedItem): ?>
+        <?php set_current_record('item', $contributedItem->Item); ?>
         <section class="seven columns omega contribution">
-            <?php 
-                if ($item->Item->public) {
+            <?php
+                if ($contributedItem->deleted) {
+                    $status = __('User Deleted');
+                } elseif ($contributedItem->Item->public) {
                     $status = __('Public');
                 } else {
-                    if($item->public) {
+                    if($contributedItem->public) {
                         $status = __('Needs review');
                     } else {
                         $status = __('Private contribution');
@@ -45,7 +47,7 @@ echo $this->partial('contribution-navigation.php');
             ?>
         
             <h2><?php echo link_to_item(null, array(), 'edit'); ?></h2>
-            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
+            <p><?php echo $status;?> <?php echo (boolean) $contributedItem->anonymous ? " | " . __('Anonymous') : "";  ?></p>
             <?php
             echo item_image_gallery(
                 array('linkWrapper' => array('class' => 'admin-thumb panel')),
