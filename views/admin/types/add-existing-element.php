@@ -1,26 +1,14 @@
 <li class="element">
     <div class="sortable-item">
         <?php
-        
-        
+
         $elementsArray = get_table_options(
                 'Element', null,
                     array(
-                        'element_set_name' => ElementSet::ITEM_TYPE_NAME,
                         'sort' => 'alpha',
                         'item_type_id' => $item_type_id
                     )
                 );
-
-        $dcElements = get_table_options(
-                'Element', null,
-                    array(
-                        'element_set_name' => 'Dublin Core',
-                        'sort' => 'alpha',
-                    )
-                );
-        $elementsArray['Dublin Core'] = $dcElements['Dublin Core'];
-        
         echo $this->formSelect(
             $element_id_name, $element_id_value,
             array('class' => 'existing-element-drop-down'), $elementsArray );
