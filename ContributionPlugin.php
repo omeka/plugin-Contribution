@@ -27,11 +27,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_hooks = array(
         'initialize',
         'install',
-        'uninstall',
         'upgrade',
+        'uninstall',
+        'uninstall_message',
+        'config_form',
+        'config',
         'define_acl',
         'define_routes',
-        'uninstall_message',
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
@@ -59,7 +61,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      * @var array Options and their default values.
      */
     protected $_options = array(
-        'contribution_page_path',
+        'contribution_page_path' => 'contribution',
         'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
@@ -140,30 +142,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             ) ENGINE=InnoDB;";
         $this->_db->query($sql);
 
-        $this->_createDefaultContributionTypes();
-        set_option('contribution_email_recipients', get_option('administrator_email'));
-        set_option('contribution_page_path', 'contribution');
-    }
+        $this->_options['contribution_email_recipients'] = get_option('administrator_email');
+        $this->_installOptions();
 
-    /**
-     * Contribution uninstall hook
-     */
-    public function hookUninstall()
-    {
-        // Delete all the Contribution options
-        foreach ($this->_options as $option) {
-            delete_option($option);
-        }
-        $db = $this->_db;
-        // Drop all the Contribution tables
-        $sql = "DROP TABLE IF EXISTS
-            `$db->ContributionType`,
-            `$db->ContributionTypeElement`,
-            `$db->ContributionContributor`,
-            `$db->ContributionContributedItem`,
-            `$db->ContributionContributorField`,
-            `$db->ContributionContributorValue`;";
-        $this->_db->query($sql);
+        $this->_createDefaultContributionTypes();
     }
 
     public function hookUpgrade($args)
@@ -264,9 +246,28 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (version_compare($oldVersion, '3.1.4', '<')) {
             $pagePath = get_option('contribution_page_path');
             if (empty($pagePath)) {
-                set_option('contribution_page_path', 'contribution');
+                set_option('contribution_page_path', $this->_options['contribution_page_path']);
             }
         }
+    }
+
+    /**
+     * Contribution uninstall hook
+     */
+    public function hookUninstall()
+    {
+        $db = $this->_db;
+        // Drop all the Contribution tables
+        $sql = "DROP TABLE IF EXISTS
+            `$db->ContributionType`,
+            `$db->ContributionTypeElement`,
+            `$db->ContributionContributor`,
+            `$db->ContributionContributedItem`,
+            `$db->ContributionContributorField`,
+            `$db->ContributionContributorValue`;";
+        $this->_db->query($sql);
+
+        $this->_uninstallOptions();
     }
 
     public function hookUninstallMessage()
@@ -275,6 +276,52 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             will remove all information about contributors, as well as the
             data that marks which items in the archive were contributed.</p>
             <p>The contributed items themselves will remain.</p>';
+    }
+
+    /**
+     * Shows plugin configuration page.
+     */
+    public function hookConfigForm($args)
+    {
+        $view = $args['view'];
+
+        require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'forms' . DIRECTORY_SEPARATOR . 'Settings.php';
+        $form = new Contribution_Form_Settings;
+        $defaults = array();
+        foreach ($this->_options as $key => $value) {
+            if (is_string($key)) {
+                $defaults[$key] = get_option($key);
+            }
+            else {
+                $defaults[$value] = get_option($value);
+            }
+        }
+        $form->setDefaults($defaults);
+
+        echo $view->partial(
+            'plugins/contribution-config-form.php',
+            array(
+                'form' => $form,
+        ));
+    }
+
+    /**
+     * Saves plugin configuration page.
+     *
+     * @param array Options set in the config form.
+     */
+    public function hookConfig($args)
+    {
+        $post = $args['post'];
+
+        // Manage an exception.
+        if (empty($post['contribution_page_path'])) {
+            $post['contribution_page_path'] = $this->_options['contribution_page_path'];
+        }
+
+        foreach ($post as $key => $value) {
+            set_option($key, $value);
+        }
     }
 
     /**
@@ -327,7 +374,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         // Get the base path.
         $basePath = get_option('contribution_page_path');
-        $basePath = $basePath ?: 'contribution';
         $router->addRoute('contribution',
             new Zend_Controller_Router_Route(
                 "$basePath/:action/*",

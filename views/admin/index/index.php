@@ -42,7 +42,7 @@ echo $this->partial('contribution-navigation.php');
                 <?php endif; ?>
             </ul>
         </dd>
-        <dt><?php echo __("3. Configure the %s for contributions:", "<a href='" . url('contribution/settings') . "'>" . __('submission settings') . "</a>"); ?></dt>
+        <dt><?php echo __('3. Configure the submission settings for contributions in the %sconfiguration page of the plugin%s:', '<a href="' . url('plugins/config', array('name' => 'Contribution')) . '">', '</a>'); ?></dt>
         <dd>
             <ul>
                 <li><?php echo __("Set the terms of service for contributing to the site."); ?></li>
