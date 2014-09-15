@@ -287,15 +287,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'forms' . DIRECTORY_SEPARATOR . 'Settings.php';
         $form = new Contribution_Form_Settings;
-        $defaults = array();
-        foreach ($this->_options as $key => $value) {
-            if (is_string($key)) {
-                $defaults[$key] = get_option($key);
-            }
-            else {
-                $defaults[$value] = get_option($value);
-            }
-        }
+        $defaults = $form->getCurrentOptions();
         $form->setDefaults($defaults);
 
         echo $view->partial(
@@ -813,11 +805,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $item->save();
             release_object($item);
         }
-    }
-
-    public function getOptions()
-    {
-        return $this->_options;
     }
 
     /**

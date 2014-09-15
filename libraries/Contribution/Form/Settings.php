@@ -13,9 +13,9 @@ class Contribution_Form_Settings extends Omeka_Form
 {
     public function init()
     {
-        parent::init();
         $this->setOptions(array('type' => 'contribution_settings'));
         $this->setAttrib('id', 'settings-form');
+        parent::init();
 
         $db = get_db();
 
@@ -83,5 +83,16 @@ class Contribution_Form_Settings extends Omeka_Form
                 'multiOptions' => array('' => __("None")) + $profileTypes,
             ));
         }
+    }
+
+    public function getCurrentOptions()
+    {
+        $currents = array();
+        $elements = $this->getElements();
+        foreach ($elements as $element) {
+            $option = $element->getName();
+            $currents[$option] = get_option($option);
+        }
+        return $currents;
     }
 }
