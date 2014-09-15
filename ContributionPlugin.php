@@ -142,6 +142,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         $this->_createDefaultContributionTypes();
         set_option('contribution_email_recipients', get_option('administrator_email'));
+        set_option('contribution_page_path', 'contribution');
     }
 
     /**
@@ -259,6 +260,13 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
         }
+
+        if (version_compare($oldVersion, '3.1.4', '<')) {
+            $pagePath = get_option('contribution_page_path');
+            if (empty($pagePath)) {
+                set_option('contribution_page_path', 'contribution');
+            }
+        }
     }
 
     public function hookUninstallMessage()
@@ -305,40 +313,38 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     /**
      * Contribution define_routes hook
+     *
      * Defines public-only routes that set the contribution controller as the
      * only accessible one.
      */
     public function hookDefineRoutes($args)
     {
         $router = $args['router'];
+
         // Only apply custom routes on public theme.
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
 
-        // get the base path
-        $bp = get_option('contribution_page_path');
-        if ($bp) {
-            $router->addRoute('contributionCustom',
-                new Zend_Controller_Router_Route("$bp/:action/*",
-                    array('module'     => 'contribution',
-                          'controller' => 'contribution',
-                          'action'     => 'contribute')));
-        } else {
-
-            $router->addRoute('contributionDefault',
-                  new Zend_Controller_Router_Route('contribution/:action/*',
-                        array('module'     => 'contribution',
-                              'controller' => 'contribution',
-                              'action'     => 'contribute')));
-
-        }
+        // Get the base path.
+        $basePath = get_option('contribution_page_path');
+        $router->addRoute('contribution',
+            new Zend_Controller_Router_Route(
+                "$basePath/:action/*",
+                array(
+                    'module' => 'contribution',
+                    'controller' => 'contribution',
+                    'action' => 'contribute',
+        )));
 
         if (is_admin_theme()) {
             $router->addRoute('contributionAdmin',
-                new Zend_Controller_Router_Route('contribution/:controller/:action/*',
-                    array('module' => 'contribution',
-                          'controller' => 'index',
-                          'action' => 'index')));
+                new Zend_Controller_Router_Route(
+                    'contribution/:controller/:action/*',
+                    array(
+                        'module' => 'contribution',
+                        'controller' => 'index',
+                        'action' => 'index',
+            )));
         }
     }
 

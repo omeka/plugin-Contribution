@@ -15,7 +15,6 @@
  * @return string
  */
 
-
 function contribution_admin_header($subsections = array())
 {
     $mainTitle = __('Contribution');
@@ -48,16 +47,9 @@ function contribution_link_to_contribute($linkText = 'Contribute', $actionName =
  */
 function contribution_contribute_url($actionName = null)
 {
-    $path = get_option('contribution_page_path');
-    if (empty($path)) {
-        $route = 'contributionDefault';
-    } else {
-        $route = 'contributionCustom';
-    }
     $options = array();
     if (!empty($actionName)) {
         $options['action'] = $actionName;
     }
-    return get_view()->url($options, $route, array(), true);
+    return get_view()->url($options, 'contribution', array(), true);
 }
-

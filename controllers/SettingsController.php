@@ -78,8 +78,9 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
 
         $form->addElementToEditGroup('text', 'contribution_page_path', array(
             'label'       => __('Contribution Slug'),
-            'description' => __('Relative path from the Omeka root to the desired location for the contribution form. If left blank, the default path will be named &#8220;contribution.&#8221;'),
-            'filters'     => array(array('StringTrim', '/\\\s'))
+            'description' => __('Relative path from the Omeka root to the desired location for the contribution form. Default path is &#8220;contribution.&#8221;'),
+            'required' => true,
+            'filters'     => array(array('StringTrim', '/\\\s')),
         ));
 
         $form->addElementToEditGroup('text', 'contribution_email_sender', array(
