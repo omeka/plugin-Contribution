@@ -629,7 +629,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $html .= '<h4>' . __('Edit My Contribution') . '</h4>';
         $html .= '<ul>';
         $html .= '<li>' . contribution_link_to($contributedItem, 'edit', __('Edit')) . '</li>';
-        $html .= '<li>' . contribution_link_to($contributedItem, 'delete', __('Delete')) . '</li>';
+        // $html .= '<li>' . contribution_link_to($contributedItem, 'delete', __('Delete')) . '</li>';
         $html .= '</ul>';
         $html .= '</div>';
         echo $html;
