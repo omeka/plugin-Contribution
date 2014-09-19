@@ -29,25 +29,6 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
         return $this->getDb()->getTable('Item')->find($this->item_id);
     }
 
-    public function makeNotPublic()
-    {
-        $this->public = false;
-        $item = $this->Item;
-        $item->public = false;
-        $item->save();
-        release_object($item);
-    }
-
-    /**
-     * Delete a contributed item. In fact, for security reason, make it private
-     * and invisible to contributor.
-     */
-    public function makeDeletedByUser()
-    {
-        $this->deleted = true;
-        $this->makeNotPublic();
-    }
-
     public function getContributor()
     {
         $owner = $this->Item->getOwner();
@@ -67,5 +48,36 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
             $owner->name = __('Anonymous');
         }
         return $owner;
+    }
+
+    /**
+     * Before-save hook.
+     *
+     * @param array $args
+     */
+    protected function beforeSave($args)
+    {
+        // Delete a contributed item. In fact, for security reason, make it
+        // private and invisible to contributor.
+        if ($this->deleted) {
+            $this->public = false;
+        }
+    }
+
+    /**
+     * After-save hook.
+     *
+     * @param array $args
+     */
+    protected function afterSave($args)
+    {
+        if (!$this->public) {
+            $item = $this->Item;
+            if ($item->public) {
+                $item->public = false;
+                $item->save(false);
+            }
+            release_object($item);
+        }
     }
 }
