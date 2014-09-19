@@ -11,7 +11,16 @@
  */
 class Contribution_ContributionController extends Omeka_Controller_AbstractActionController
 {
+    protected $_autoCsrfProtection = true;
+
     protected $_captcha;
+
+    protected $_profile;
+
+    public function init()
+    {
+        $this->_helper->db->setDefaultModelName('ContributionContributedItem');
+    }
 
     /**
      * Index action; simply forwards to contributeAction.
@@ -109,6 +118,105 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     }
 
     /**
+     * Action for main contribution edit form.
+     *
+     * Current differences with "add contribution": The type cannot be changed;
+     * no captcha; old images are displayed and not removable.
+     */
+    public function editAction()
+    {
+        // Check contribution (else keep error 404?).
+        $contributedItem = $this->_helper->db->findById();
+        if (empty($contributedItem) || $contributedItem->deleted) {
+            $this->_helper->_flashMessenger(__("This contribution doesn't exist."), 'error');
+            return current_user()
+                ? $this->_helper->redirector('my-contributions')
+                : $this->_helper->redirector('index', 'index', 'default');
+        }
+
+        // Check rights of the user on this contribution (owner of the item).
+        $contributor = $contributedItem->getContributor();
+        $user = $this->getCurrentUser();
+        $item = $contributedItem->Item;
+        if (!$user || $user->id !== $contributor->id || $item->owner_id !== $user->id) {
+            $this->_helper->_flashMessenger(__('You are not the contributor of this item.'), 'error');
+            return $item->public
+                ? $this->_helper->redirector('show', 'items', 'default', array('id' => $item->id))
+                : $this->_helper->redirector('index', 'index', 'default');
+        }
+
+        // Prepare next view (TODO Set it in another method to avoid preparation if not needed?)
+        $csrf = new Omeka_Form_SessionCsrf;
+        $this->view->csrf = $csrf;
+        $this->view->contribution_contributed_item = $contributedItem;
+        $this->view->item = $item;
+        $contributionType = $this->_helper->db->getTable('ContributionType')->getByItemType($item->item_type_id);
+        $this->_setupContributionSubmit($contributionType);
+
+        if (!$this->getRequest()->isPost()) {
+            return;
+        }
+
+        if (!$csrf->isValid($_POST)) {
+            $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
+            return;
+        }
+
+        if (!$this->_validateContribution($_POST)) {
+            return;
+        }
+
+        // Because there is already one attached file when item is created,
+        // no new check is done on required file.
+
+        // If not simple and the profile doesn't process, send back false for the
+        // error. This should be done before processing item in order to set
+        // profile type and to avoid settings profile elements to item.
+        $this->_processUserProfile($user, $_POST);
+
+        // Use a specific setPostData() for item, because some post fields are
+        // not set in the post. Metadata are not changed via contribution
+        // form.
+        $this->_setPostData($item, $_POST);
+
+        // Tags are added separately.
+        if ($contributionType->add_tags && isset($_POST['tags'])) {
+            $item->addTags($_POST['tags']);
+        }
+
+        // Allow plugins to deal with the inputs they may have added to the form
+        // and that are not managed via hooks before or after save item.
+        fire_plugin_hook(
+            'contribution_save_form',
+            array(
+                'contributionType' => $contributionType,
+                'record' => $item,
+                'post' => $_POST,
+        ));
+
+        // Everything has been checked, so save item.
+        if ($item->save(false)) {
+            $successMessage = $this->_getEditSuccessMessage($contributedItem);
+            $this->_helper->flashMessenger($successMessage, 'success');
+
+            // Update contribution before redirect.
+            $contributedItem->public = (integer) $_POST['contribution-public'];
+            if (!$contributedItem->public) {
+                $contributedItem->makeNotPublic();
+            }
+            $contributedItem->anonymous = (integer) $_POST['contribution-anonymous'];
+            $contributedItem->deleted = 0;
+            $contributedItem->save();
+
+            $this->_redirectAfterEdit($contributedItem);
+        }
+        // Error during saving.
+        else {
+            $this->_helper->flashMessenger($item->getErrors());
+        }
+    }
+
+    /**
      * Action for AJAX request from contribute form.
      */
     public function typeFormAction()
@@ -134,19 +242,30 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     /**
      * Common tasks whenever displaying submit form for contribution.
      *
-     * @param int $typeId ContributionType id
+     * @param ContributionType|int $contributionType ContributionType id
      */
-    public function _setupContributeSubmit($typeId)
+    protected function _setupContributeSubmit($contributionType)
+    {
+        $this->view->item = new Item;
+        $this->_setupContributionSubmit($contributionType);
+    }
+
+    /**
+     * Common tasks whenever displaying submit form for contribution or edition.
+     *
+     * @param ContributionType|int $contributionType ContributionType or id.
+     */
+    protected function _setupContributionSubmit($contributionType)
     {
         // Override default element form display
         $this->view->addHelperPath(CONTRIBUTION_HELPERS_DIR, 'Contribution_View_Helper');
-        $item = new Item;
-        $this->view->item = $item;
 
-        $type = get_db()->getTable('ContributionType')->find($typeId);
-        $this->view->type = $type;
+        if (!is_object($contributionType)) {
+            $contributionType = get_db()->getTable('ContributionType')->find($contributionType);
+        }
+        $this->view->type = $contributionType;
 
-        //setup profile stuff, if needed
+        // Setup profile stuff, if needed.
         $profileTypeId = get_option('contribution_user_profile_type');
         if(plugin_is_active('UserProfiles') && $profileTypeId) {
             $this->view->addHelperPath(USER_PROFILES_DIR . '/helpers', 'UserProfiles_View_Helper_');
@@ -226,33 +345,30 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 }
             }
 
-            // The final form submit was not pressed.
-            if (!isset($post['form-submit'])) {
-                return false;
-            }
             if (!$this->_validateContribution($post)) {
                 return false;
             }
 
-            $contributionTypeId = trim($post['contribution_type']);
-            if ($contributionTypeId !== "" && is_numeric($contributionTypeId)) {
+            $contributionTypeId = (integer) $post['contribution_type'];
+            if (!empty($contributionTypeId)) {
                 $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
                 $itemTypeId = $contributionType->getItemType()->id;
             } else {
             	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
                 return false;
             }
+            // Public is updated with the contributed item.
             $itemMetadata = array('public'       => false,
                                   'featured'     => false,
                                   'item_type_id' => $itemTypeId);
 
-            $collectionId = get_option('contribution_collection_id');
-            if (!empty($collectionId) && is_numeric($collectionId)) {
-                $itemMetadata['collection_id'] = (int) $collectionId;
+            $collectionId = (integer) get_option('contribution_collection_id');
+            if (!empty($collectionId)) {
+                $itemMetadata['collection_id'] = $collectionId;
             }
 
             // TODO Check if there is at least one file if one file or more is required and remove the catch below.
-            $fileMetadata = $this->_processFilesUpload($contributionType);
+            $fileMetadata = $this->_prepareFilesUpload($contributionType);
 
             // This is a hack to allow the file upload job to succeed
             // even with the synchronous job dispatcher.
@@ -292,40 +408,67 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
 
             $this->_addElementTextsToItem($item, $post['Elements']);
+
+            // Tags are added separately.
             if ($contributionType->add_tags && isset($post['tags'])) {
                 $item->addTags($post['tags']);
             }
-            // Allow plugins to deal with the inputs they may have added to the form.
+            // Allow plugins to deal with the inputs they may have added to the form
+            // and that are not managed via hooks before or after save item.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
+
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
-            $this->_processUserProfile($post, $user);
-            $this->_linkItemToContributedItem($item, null, $post);
+            $this->_processUserProfile($user, $post);
+            $this->_linkItemToContributedItem($item, $post);
             $this->_sendEmailNotifications($user, $item);
             return true;
         }
         return false;
     }
 
-    protected function _processUserProfile($post, $user)
+    protected function _processUserProfile($user, $post)
     {
-        $profileTypeId = get_option('contribution_user_profile_type');
-        if($profileTypeId && plugin_is_active('UserProfiles')) {
-            $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
-            if(!$profile) {
-                $profile = new UserProfilesProfile();
-                $profile->setOwner($user);
-                $profile->type_id = $profileTypeId;
-                $profile->public = 0;
-                $profile->setRelationData(array('subject_id'=>$user->id, 'user_id'=>$user->id));
+        $profile = $this->_getProfileForUser($user);
+        // Check if there is a profile.
+        if (!$profile) {
+            return true;
+        }
+        $profile->setPostData($post);
+        return $profile->save(false);
+    }
+
+    /**
+     * Get the user profile if the plugin User Profile is used and active. The
+     * profile is a new one, for the current user, if it is not set.
+     *
+     * @param User $user Current user if null.
+     * @return UserProfilesProfile|false. False if the plugin is not used.
+     */
+    protected function _getProfileForUser($user = null)
+    {
+        if (is_null($this->_profile)) {
+            $profileTypeId = get_option('contribution_user_profile_type');
+            if ($profileTypeId && plugin_is_active('UserProfiles')) {
+                if (is_null($user)) {
+                    $user = current_user();
+                }
+                $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
+                if (!$profile) {
+                    $profile = new UserProfilesProfile;
+                    $profile->setOwner($user);
+                    $profile->type_id = $profileTypeId;
+                    $profile->public = 0;
+                    $profile->setRelationData(array('subject_id' => $user->id, 'user_id' => $user->id));
+                }
+                $this->_profile = $profile;
             }
-            $profile->setPostData($post);
-            $this->_profile = $profile;
-            if(!$profile->save(false)) {
-                return false;
+            // The plugin is not used.
+            else {
+                $this->_profile = false;
             }
         }
-        return true;
+        return $this->_profile;
     }
 
     /**
@@ -337,7 +480,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      * @param ContributionType $contributionType Type of contribution.
      * @return array Files upload array.
      */
-    protected function _processFilesUpload($contributionType)
+    protected function _prepareFilesUpload($contributionType)
     {
         if ($contributionType->isFileAllowed()) {
             $options = array();
@@ -358,12 +501,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         return array();
     }
 
-    protected function _linkItemToContributedItem($item, $contributor, $post)
+    protected function _linkItemToContributedItem($item, $post)
     {
         $linkage = new ContributionContributedItem;
         $linkage->item_id = $item->id;
-        $linkage->public = $post['contribution-public'];
-        $linkage->anonymous = $post['contribution-anonymous'];
+        $linkage->public = (integer) $post['contribution-public'];
+        $linkage->anonymous = (integer) $post['contribution-anonymous'];
+        $linkage->deleted = 0;
         $linkage->save();
     }
 
@@ -395,6 +539,74 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     }
 
     /**
+     * Set post data to an item.
+     *
+     * All data in the post are set: elements, basic metadata (item_type_id,
+     * collection_id, featured, public, owner_id), and other data attached to an
+     * item, like geolocation.
+     *
+     * @todo Use builder?
+     *
+     * @param Item $item Item to add texts to.
+     * @param array $post Array of element inputs from form.
+     * @param array $itemMetadata Array of basic data of item (public...).
+     * @return boolean True if success, false else.
+     */
+    protected function _setPostData($item, $post, $itemMetadata = array())
+    {
+        // Check if there is a profile in order to remove elements data used for
+        // profile because they are related to profile, not to item.
+        $profile = $this->_getProfileForUser();
+        if ($profile) {
+            $profileElements = $profile->getAllElements();
+            foreach ($profileElements as $key => $value) {
+                foreach ($value as $element) {
+                    unset($post['Elements'][$element->id]);
+                }
+            }
+        }
+
+        if (!isset($post['Elements'])) {
+            $post['Elements'] = array();
+        }
+
+        // Overwrite post data with internal itemMetadata.
+        if ($itemMetadata) {
+            $post += $itemMetadata;
+        }
+        // Else reset metadata to keep clean current ones (avoid checking post).
+        else {
+            unset($post['item_type_id']);
+            unset($post['collection_id']);
+            unset($post['featured']);
+            unset($post['public']);
+            unset($post['owner_id']);
+        }
+
+        // If ReplaceElementTexts() is true, all element texts are removed.
+        // If an element is set, it replaces all fields of the element.
+        // If an element is not set, it is removed.
+        // If a non element is not set, it is not changed.
+        // So, to get all element texts is needed to update a record.
+
+        // Get and format current metadata.
+        $currentElements = array();
+        foreach ($item->getAllElementTexts() as $elementText) {
+            $currentElements[$elementText->element_id] = array(
+                array(
+                    'text' => $elementText->text,
+                    'html' => $elementText->html,
+                ),
+            );
+        }
+
+        // This is not a merge, but an update.
+        $post['Elements'] += $currentElements;
+
+        $item->setPostData($post);
+    }
+
+    /**
      * Validate the contribution form submission.
      *
      * Will flash validation errors that occur.
@@ -406,10 +618,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _validateContribution($post)
     {
+        if (empty($post)) {
+            return false;
+        }
 
-        // ReCaptcha ignores the first argument.
-        if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
-            $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'), 'error');
+        // The final form submit was not pressed.
+        if (!isset($post['form-submit'])) {
+            $this->_helper->flashMessenger(__('You should press submit button.'), 'error');
             return false;
         }
 
@@ -417,6 +632,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $this->_helper->flashMessenger(__('You must agree to the Terms and Conditions.'), 'error');
             return false;
         }
+
+        // ReCaptcha ignores the first argument.
+        if ($this->_captcha and !$this->_captcha->isValid(null, $post)) {
+            $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'), 'error');
+            return false;
+        }
+
         return true;
     }
 
@@ -547,5 +769,39 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user->active = 0;
         $user->save();
         return $user;
+    }
+
+    /**
+     * Return the success message for editing a record.
+     *
+     * @param Omeka_Record_AbstractRecord $record
+     * @return string
+     */
+    protected function _getEditSuccessMessage($record)
+    {
+        $itemTitle = $this->_getElementMetadata($record->Item, 'Dublin Core', 'Title');
+        if ($itemTitle != '') {
+            return __('The contributed item "%s" was successfully updated!', $itemTitle);
+        } else {
+            return __('The contributed item #%s was successfully updated!', strval($item->id));
+        }
+    }
+
+    protected function _getElementMetadata($record, $elementSetName, $elementName)
+    {
+        $m = new Omeka_View_Helper_Metadata;
+        return strip_formatting($m->metadata($record, array($elementSetName, $elementName)));
+    }
+
+    /**
+     * Redirect to items/show after a contribution is successfully edited.
+     *
+     * The default is to redirect to this record's show page.
+     *
+     * @param Omeka_Record_AbstractRecord $record
+     */
+    protected function _redirectAfterEdit($record)
+    {
+        $this->_helper->redirector('show', 'items', 'default', array('id' => $record->item_id));
     }
 }

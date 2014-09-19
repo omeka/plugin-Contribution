@@ -18,19 +18,23 @@ if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfile
     queue_css_string("input.add-element {display: block}");
 }
 
-$head = array('title' => 'Contribute',
-              'bodyclass' => 'contribution');
-echo head($head); ?>
+$title = __('Contribute');
+$bodyClass = 'contribution add';
+
+echo head(array(
+    'title' => $title,
+    'bodyclass' => $bodyClass,
+)); ?>
 <script type="text/javascript">
 // <![CDATA[
-enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-form')); ?>);
+enableContributionAjaxForm(<?php echo js_escape(url($contributionPath . '/type-form')); ?>);
 // ]]>
 </script>
 
 <div id="primary">
 <?php echo flash(); ?>
 
-    <h1><?php echo $head['title']; ?></h1>
+    <h1><?php echo $title; ?></h1>
 
     <?php if(! ($user = current_user() )
               && !(get_option('contribution_open') )
@@ -57,8 +61,10 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                     <?php if (isset($type)) {
                         $partialOptions = array();
                         $partialOptions['preset'] = true;
+                        $partialOptions['process'] = 'add';
                         $partialOptions['type'] = $type;
                         $partialOptions['item'] = $item;
+                        $partialOptions['tags'] = isset($_POST['tags']) ? $_POST['tags'] : null;
                         if (isset($profileType)) {
                             $partialOptions['profileType'] = $profileType;
                         }
@@ -70,29 +76,14 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 </div>
             </fieldset>
 
-            <fieldset id="contribution-confirm-submit" <?php if (empty($type)) { echo 'style="display: none;"'; }?>>
-                <?php if(!empty($captchaScript)): ?>
-                    <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
-                <?php endif; ?>
-                <div class="inputs">
-                    <?php $public = isset($_POST['contribution-public']) ? $_POST['contribution-public'] : 0; ?>
-                    <?php echo $this->formCheckbox('contribution-public', $public, null, array('1', '0')); ?>
-                    <?php echo $this->formLabel('contribution-public', __('Publish my contribution on the web.')); ?>
-                </div>
-                <div class="inputs">
-                    <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
-                    <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
-                    <?php echo $this->formLabel('contribution-anonymous', __("Keep identity private.")); ?>
-                </div>
-                <p><?php echo __("In order to contribute, you must read and agree to the %s",  "<a href='" . contribution_contribute_url('terms') . "' target='_blank'>" . __('Terms and Conditions') . ".</a>"); ?></p>
-                <div class="inputs">
-                    <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
-                    <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
-                    <?php echo $this->formLabel('terms-agree', __('I agree to the Terms and Conditions.')); ?>
-                </div>
-                <?php echo $this->formSubmit('form-submit', __('Contribute'), array('class' => 'submitinput')); ?>
-            </fieldset>
-            <?php echo $csrf; ?>
+            <?php
+            $submitOptions = array();
+            $submitOptions['process'] = 'add';
+            $submitOptions['captchaScript'] = isset($captchaScript) ? $captchaScript : null;
+            $submitOptions['type'] = isset($type) ? $type : null;
+            $submitOptions['submitLabel'] = __('Contribute');
+            echo $this->partial('contribution/contribution-submit-form.php', $submitOptions);
+            echo $csrf; ?>
         </form>
     <?php endif; ?>
 </div>

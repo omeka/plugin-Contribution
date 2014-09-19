@@ -15,6 +15,19 @@
  */
 class Table_ContributionType extends Omeka_Db_Table
 {
+    /**
+     * Get a contribution type by item type.
+     *
+     * @param ItemType|integer $itemType Item type record or id.
+     * @return ContributionType|null
+     */
+    public function getByItemType($itemType)
+    {
+        $params = array();
+        $params['item_type_id'] = is_object($itemType) ? $itemType->id : (integer) $itemType;
+        $result = $this->findBy($params, 1);
+        return $result ? reset($result) : null;
+    }
 
     /**
      * Used to create options for HTML select form elements.

@@ -5,7 +5,11 @@ $isRequired = $type->isFileRequired();
 $isAllowed = $type->isFileAllowed();
 $allowMultipleFiles = $isAllowed && $type->multiple_files;
 ?>
-<h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
+<h2><?php
+    if (isset($process) && $process == 'add') {
+        echo __('Contribute a %s', $type->display_name);
+    } ?>
+</h2>
 
 <?php
 // When a file is required, the upload element is displayed before other ones.

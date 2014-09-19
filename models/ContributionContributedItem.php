@@ -23,7 +23,7 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
         'Item' => 'getItem',
         'Contributor' => 'getContributor'
         );
-    
+
     public function getItem()
     {
         return $this->getDb()->getTable('Item')->find($this->item_id);
@@ -31,7 +31,15 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
 
     public function getContributor()
     {
-        $owner = $this->Item->getOwner();
+        $item = $this->Item;
+        // If there is no item, make a fake user called "No User".
+        if (empty($item)) {
+            $owner = new User();
+            $owner->name = __('No User');
+            return $owner;
+        }
+
+        $owner = $item->getOwner();
         //if the user has been deleted, make a fake user called "Deleted User"
         if(!$owner) {
             $owner = new User();

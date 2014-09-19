@@ -90,6 +90,13 @@ class Contribution_Form_Settings extends Omeka_Form
                 'multiOptions' => array('' => __("None")) + $profileTypes,
             ));
         }
+
+        $this->addElement('checkbox', 'contribution_allow_edit', array(
+            'label' => __("Allow to Edit Contribution"),
+            'description' => __('If checked, contributors will be able to edit and to delete their contributions.'),
+            ),
+            array('checked' => (bool) get_option('contribution_allow_edit') ? 'checked' : '')
+        );
     }
 
     public function getCurrentOptions()

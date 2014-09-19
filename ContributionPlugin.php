@@ -37,6 +37,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'admin_items_search',
         'admin_items_show_sidebar',
         'admin_items_browse_detailed_each',
+        'public_items_show',
         'items_browse_sql',
         'before_save_item',
         'after_delete_item',
@@ -71,6 +72,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_open' => false,
         'contribution_email' => '',
         'contribution_strict_anonymous' => false,
+        'contribution_allow_edit' => false,
     );
 
     public function setUp()
@@ -351,10 +353,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
+        $privileges = array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form');
+        if (get_option('contribution_allow_edit')) {
+            $privileges[] = 'edit';
+        }
         if (get_option('contribution_open')) {
-            $acl->allow(null, 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
+            $acl->allow(null, 'Contribution_Contribution', $privileges);
         } else {
-            $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
+            $acl->allow('guest', 'Contribution_Contribution', $privileges);
         }
 
         $acl->allow(null, 'Contribution_Contribution', array('contribute', 'terms', 'thankyou'));
@@ -396,6 +402,19 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     'module' => 'contribution',
                     'controller' => 'contribution',
                     'action' => 'contribute',
+        )));
+
+        $router->addRoute('contributionId',
+            new Zend_Controller_Router_Route(
+                "$basePath/:action/:id/*",
+                array(
+                    'module'     => 'contribution',
+                    'controller' => 'contribution',
+                    'action'     => 'contribute',
+                ),
+                array(
+                    'action' => 'edit',
+                    'id' => '\d+',
         )));
 
         if (is_admin_theme()) {
@@ -582,6 +601,38 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookAdminItemsBrowseDetailedEach($args)
     {
         echo $this->_adminBaseInfo($args);
+    }
+
+    public function hookPublicItemsShow($args)
+    {
+        if (!is_allowed('Contribution_Contribution', 'edit')) {
+            return;
+        }
+
+        if (!plugin_is_active('UserProfiles')) {
+            return;
+        }
+
+        $user = current_user();
+        $item = $args['item'];
+        if (!$user || $user->id != $item->owner_id) {
+            return;
+        }
+
+        $contributedItem = get_db()->getTable('ContributionContributedItem')->findByItem($item);
+        if (!$contributedItem) {
+            return;
+        }
+
+        $html = '';
+        $html .= '<div class="edit-contribution">';
+        $html .= '<h4>' . __('Edit My Contribution') . '</h4>';
+        $html .= '<ul>';
+        $html .= '<li>' . contribution_link_to($contributedItem, 'edit', __('Edit')) . '</li>';
+        $html .= '<li>' . contribution_link_to($contributedItem, 'delete', __('Delete')) . '</li>';
+        $html .= '</ul>';
+        $html .= '</div>';
+        echo $html;
     }
 
     /**
