@@ -327,6 +327,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         // Get the base path.
         $basePath = get_option('contribution_page_path');
+        $basePath = $basePath ?: 'contribution';
         $router->addRoute('contribution',
             new Zend_Controller_Router_Route(
                 "$basePath/:action/*",
