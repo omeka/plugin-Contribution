@@ -88,28 +88,32 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->_setupContributeSubmit($typeId);
                 return;
             }
-            if ($this->_processForm($_POST)) {
-                $route = $this->getFrontController()->getRouter()->getCurrentRouteName();
-                $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), $route);
-            } else {
-                $typeId = null;
-                if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
-                    $typeId = $postedType;
-                } elseif ($defaultType) {
-                    $typeId = $defaultType;
-                }
-                if ($this->_captcha) {
-                    $this->view->captchaScript = $this->_captcha->render(new Zend_View);
-                }
-                $this->_setupContributeSubmit($typeId);
 
-                if(isset($this->_profile) && !$this->_profile->exists()) {
-                    $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
-                    return;
-                }
+            if ($this->_processForm($_POST)) {
+                return $this->_helper->_redirector->gotoRoute(array('action' => 'thankyou'), 'contribution');
             }
-        } else {
-            if($this->_captcha) {
+
+            // Error in contribution, so refresh view.
+            $typeId = null;
+            if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
+                $typeId = $postedType;
+            } elseif ($defaultType) {
+                $typeId = $defaultType;
+            }
+            if ($this->_captcha) {
+                $this->view->captchaScript = $this->_captcha->render(new Zend_View);
+            }
+            $this->_setupContributeSubmit($typeId);
+
+            if (!empty($this->_profile) && !$this->_profile->exists()) {
+                $this->_helper->flashMessenger($this->_profile->getErrors(), 'error');
+                return;
+            }
+        }
+
+        // No post, so prepare base view.
+        else {
+            if ($this->_captcha) {
                 $this->view->captchaScript = $this->_captcha->render(new Zend_View);
             }
             $defaultType = get_option('contribution_default_type');
@@ -311,118 +315,109 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _processForm($post)
     {
-        if (!empty($post)) {
-            //for the "Simple" configuration, look for the user if exists by email. Log them in.
-            //If not, create the user and log them in.
-            $user = current_user();
-            $open = get_option('contribution_open');
-            if ( get_option('contribution_strict_anonymous') ) {
-                $strictAnonymous = empty($post['contribution_email']);
-            } else {
-                $strictAnonymous = false;
-            }
-            
+        if (!$this->_validateContribution($post)) {
+            return false;
+        }
 
-            if(!$user && $open && !$strictAnonymous) {
-                $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_email']);
-            }
+        // For the "Simple" configuration, look for the user if exists by email.
+        // Log them in. If not, create the user and log them in.
+        $user = current_user();
+        $open = get_option('contribution_open');
+        if ( get_option('contribution_strict_anonymous') ) {
+            $strictAnonymous = empty($post['contribution_email']);
+        } else {
+            $strictAnonymous = false;
+        }
 
-            if (!$user && $strictAnonymous) {
-                $user = $this->_createNewAnonymousUser();
-            }
-            // if still not a user, need to create one based on the email address
-            if(!$user) {
-                $user = $this->_createNewGuestUser($post);
-                if($user->hasErrors()) {
-                    $errors = $user->getErrors()->get();
-                    //since we're creating the user behind the scenes, skip username and name errors
-                    unset($errors['name']);
-                    unset($errors['username']);
-                    foreach($errors as $error) {
-                        $this->_helper->flashMessenger($error, 'error');
-                    }
-                    return false;
+        if(!$user && $open && !$strictAnonymous) {
+            $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_email']);
+        }
+
+        if (!$user && $strictAnonymous) {
+            $user = $this->_createNewAnonymousUser();
+        }
+        // If still not a user, need to create one based on the email address.
+        if (!$user) {
+            $user = $this->_createNewGuestUser($post);
+            if ($user->hasErrors()) {
+                $errors = $user->getErrors()->get();
+                // Since we're creating the user behind the scenes, skip
+                // username and name errors.
+                unset($errors['name']);
+                unset($errors['username']);
+                foreach ($errors as $error) {
+                    $this->_helper->flashMessenger($error, 'error');
                 }
-            }
-
-            if (!$this->_validateContribution($post)) {
                 return false;
             }
+        }
 
-            $contributionTypeId = (integer) $post['contribution_type'];
-            if (!empty($contributionTypeId)) {
-                $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
-                $itemTypeId = $contributionType->getItemType()->id;
-            } else {
-            	$this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
-                return false;
-            }
-            // Public is updated with the contributed item.
-            $itemMetadata = array('public'       => false,
-                                  'featured'     => false,
-                                  'item_type_id' => $itemTypeId);
+        $contributionTypeId = (integer) $post['contribution_type'];
+        if (!empty($contributionTypeId)) {
+            $contributionType = get_db()->getTable('ContributionType')->find($contributionTypeId);
+            $itemTypeId = $contributionType->getItemType()->id;
+        } else {
+            $this->_helper->flashMessenger(__('You must select a type for your contribution.'), 'error');
+            return false;
+        }
+        // Public is updated with the contributed item.
+        $itemMetadata = array('public'       => false,
+                              'featured'     => false,
+                              'item_type_id' => $itemTypeId);
 
-            $collectionId = (integer) get_option('contribution_collection_id');
-            if (!empty($collectionId)) {
-                $itemMetadata['collection_id'] = $collectionId;
-            }
+        $collectionId = (integer) get_option('contribution_collection_id');
+        if (!empty($collectionId)) {
+            $itemMetadata['collection_id'] = $collectionId;
+        }
 
-            // TODO Check if there is at least one file if one file or more is required and remove the catch below.
-            $fileMetadata = $this->_prepareFilesUpload($contributionType);
+        // In case we're doing Simple, create and save the Item so the owner
+        // is set, then update with the data.
+        $item = new Item();
+        $item->setOwner($user);
 
-            // This is a hack to allow the file upload job to succeed
-            // even with the synchronous job dispatcher.
-            $acl = get_acl();
-            if ($acl) {
-                $acl->allow(null, 'Items', 'showNotPublic');
-                $acl->allow(null, 'Collections', 'showNotPublic');
-            }
-            try {
-                //in case we're doing Simple, create and save the Item so the owner is set, then update with the data
-                $item = new Item();
-                $item->setOwner($user);
-                $item->save();
-                $item = update_item($item, $itemMetadata, array(), $fileMetadata);
-            } catch(Omeka_Validate_Exception $e) {
-                $this->flashValidatonErrors($e);
+        $fileMetadata = $this->_prepareFilesUpload($contributionType);
+
+        // If not simple and the profile doesn't process, send back false for the
+        // error. This should be done before processing item in order to set
+        // profile type and to avoid settings profile elements to item.
+        $this->_processUserProfile($user, $post);
+
+        // Use a specific setPostData() for item, because some post fields are
+        // not set in the post.
+        $this->_setPostData($item, $post, $itemMetadata);
+
+        // Tags are added separately.
+        if ($contributionType->add_tags && isset($post['tags'])) {
+            $item->addTags($post['tags']);
+        }
+
+        // Allow plugins to deal with the inputs they may have added to the form
+        // and that are not managed via hooks before or after save item.
+        fire_plugin_hook(
+            'contribution_save_form',
+            array(
+                'contributionType' => $contributionType,
+                'record' => $item,
+                'post' => $post,
+        ));
+
+        // Everything has been checked, so save item.
+        if ($item->save(false)) {
+            // Check if a required file has been uploaded.
+            if ($contributionType->isFileRequired() && empty($item->fileCount())) {
+                $this->_helper->flashMessenger($item->getErrors());
+                $this->_helper->flashMessenger(__('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 $item->delete();
-                return false;
-            } catch (Omeka_File_Ingest_InvalidException $e) {
-                // Copying this cruddy hack
-                if (strstr($e->getMessage(), "'file'")) {
-                   $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
-                }
-                // Check multiple files.
-                elseif (strstr($e->getMessage(), "file_")) {
-                    $this->_helper->flashMessenger(__('One or more files have not been uploaded.')
-                        . ' ' . __('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
-                } else {
-                    $this->_helper->flashMessenger($e->getMessage());
-                }
-                $item->delete();
-                return false;
-            } catch (Exception $e) {
-                $this->_helper->flashMessenger($e->getMessage());
-                $item->delete();
-                return false;
+                return;
             }
-
-            $this->_addElementTextsToItem($item, $post['Elements']);
-
-            // Tags are added separately.
-            if ($contributionType->add_tags && isset($post['tags'])) {
-                $item->addTags($post['tags']);
-            }
-            // Allow plugins to deal with the inputs they may have added to the form
-            // and that are not managed via hooks before or after save item.
-            fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
-
-            $item->save();
-            //if not simple and the profile doesn't process, send back false for the error
-            $this->_processUserProfile($user, $post);
-            $this->_linkItemToContributedItem($item, $post);
+            $this->_linkItemToContributedItem($item, $contributor, $post);
             $this->_sendEmailNotifications($user, $item);
             return true;
+        }
+        // Error during saving.
+        else {
+            $this->_helper->flashMessenger($item->getErrors());
+            $item->delete();
         }
         return false;
     }
@@ -509,33 +504,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $linkage->anonymous = (integer) $post['contribution-anonymous'];
         $linkage->deleted = 0;
         $linkage->save();
-    }
-
-    /**
-     * Adds ElementTexts to item.
-     *
-     * @param Item $item Item to add texts to.
-     * @param array $elements Array of element inputs from form
-     */
-    protected function _addElementTextsToItem($item, $elements)
-    {
-        $db = get_db();
-        $elementTable = $db->getTable('Element');
-        $sql = "SELECT DISTINCT `id` from `$db->ElementSet` WHERE `record_type` = 'UserProfilesType' ";
-        $userProfilesElementSets = $db->fetchCol($sql);
-        foreach($elements as $elementId => $elementTexts) {
-            $element = $elementTable->find($elementId);
-            $elSet = $element->getElementSet();
-            //need to skip over elements that are intended for a User Profile, not the item
-            if (in_array($elSet->id, $userProfilesElementSets)) {
-                continue;
-            }
-            foreach($elementTexts as $elementText) {
-                if (!empty($elementText['text'])) {
-                    $item->addTextForElement($element, $elementText['text']);
-                }
-            }
-        }
     }
 
     /**
