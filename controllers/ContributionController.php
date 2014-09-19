@@ -264,11 +264,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
-                if (strstr($e->getMessage(), "'contributed_file'")) {
+                if (strstr($e->getMessage(), "'file'")) {
                    $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
                 }
                 // Check multiple files.
-                elseif (strstr($e->getMessage(), "contributed_file_")) {
+                elseif (strstr($e->getMessage(), "file_")) {
                     $this->_helper->flashMessenger(__('One or more files have not been uploaded.')
                         . ' ' . __('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 } else {
@@ -331,7 +331,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
             $fileMetadata = array(
                 'file_transfer_type' => 'Upload',
-                'files' => 'contributed_file',
+                'files' => 'file',
                 'file_ingest_options' => $options
             );
 

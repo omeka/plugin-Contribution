@@ -18,12 +18,12 @@ jQuery(window).load(function () {
 });
 </script>
 <div id="files-form" class="field drawer-contents">
-    <?php echo $this->formLabel('contributed_file', __('Upload a file'), array(
+    <?php echo $this->formLabel('file', __('Upload a file'), array(
         'id' => 'file-inputs',
     )); ?>
     <div id="files-metadata" class="field">
         <div id="upload-files" class="files"><?php /* four columns omega */ ?>
-            <?php echo $this->formFile('contributed_file[0]', array('class' => 'fileinput button')); ?>
+            <?php echo $this->formFile('file[0]', array('class' => 'fileinput button')); ?>
             <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
         </div>
     </div>
@@ -31,10 +31,10 @@ jQuery(window).load(function () {
 <?php else: ?>
 <div class="field">
     <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a file')); ?>
+        <?php echo $this->formLabel('file', __('Upload a file')); ?>
     </div>
     <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput button')); ?>
+        <?php echo $this->formFile('file', array('class' => 'fileinput button')); ?>
         <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
     </div>
 </div>
@@ -58,12 +58,12 @@ jQuery(window).load(function () {
 });
 </script>
 <div id="files-form" class="field drawer-contents">
-    <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)'), array(
+    <?php echo $this->formLabel('file', __('Upload a file (Optional)'), array(
         'id' => 'file-inputs',
     )); ?>
     <div id="files-metadata" class="field">
         <div id="upload-files" class="files"><?php /* four columns omega */ ?>
-            <?php echo $this->formFile('contributed_file[0]', array('class' => 'fileinput button')); ?>
+            <?php echo $this->formFile('file[0]', array('class' => 'fileinput button')); ?>
             <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
         </div>
     </div>
@@ -71,10 +71,10 @@ jQuery(window).load(function () {
 <?php else: ?>
 <div class="field">
     <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+        <?php echo $this->formLabel('file', __('Upload a file (Optional)')); ?>
     </div>
     <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput button')); ?>
+        <?php echo $this->formFile('file', array('class' => 'fileinput button')); ?>
         <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
     </div>
 </div>

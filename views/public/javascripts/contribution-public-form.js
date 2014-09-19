@@ -48,7 +48,7 @@ Omeka.Items = {};
             event.preventDefault();
             var inputs = filesDiv.find('input');
             var inputCount = inputs.length;
-            var fileHtml = '<input name="contributed_file[' + inputCount + ']" type="file" class="fileinput button"></div>';
+            var fileHtml = '<input name="file[' + inputCount + ']" type="file" class="fileinput button"></div>';
             $(fileHtml).insertAfter(inputs.last()).hide().slideDown(200, function () {
                 // Extra show fixes IE bug.
                 $(this).show();
