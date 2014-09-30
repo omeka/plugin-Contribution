@@ -51,6 +51,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'item_search_filters',
         'guest_user_links',
         'guest_user_widgets',
+        'api_resources',
+        'api_import_omeka_adapters'
     );
 
     /**
@@ -291,6 +293,43 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         }
     }
 
+    public function filterApiResources($apiResources)
+    {
+        $apiResources['contributions'] = array(
+                'record_type' => 'ContributionContributedItem',
+                'actions' => array('get', 'index'),
+                //'index_params' => array('record_type', 'record_id')
+        );
+
+        $apiResources['contribution_types'] = array(
+                'record_type' => 'ContributionType',
+                'actions'     => array('get', 'index')
+        );
+
+        $apiResources['contribution_type_elements'] = array(
+                'record_type' => 'ContributionTypeElement',
+                'actions'     => array('get', 'index')
+        );
+        return $apiResources;
+    }
+    
+    public function filterApiImportOmekaAdapters($adapters, $args)
+    {
+        $contributedItemAdapter = 
+            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
+        $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
+        $adapters['contribtions'] = $contributedItemAdapter;
+        
+        $contributionTypeAdapter = 
+            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
+        $contributionTypeAdapter->setResourceProperties(array('item_type' => 'ItemType'));
+        $adapters['contribution_types'] = $contributionTypeAdapter;
+
+        $contributionTypeElementsAdapter =
+            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
+        $contributionTypeElementsAdapter->setResourceProperties(array('element' => 'Element'));
+        return $adapters;
+    }
     /**
      * Append a Contribution entry to the admin navigation.
      *
