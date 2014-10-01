@@ -15,6 +15,11 @@ class Api_ContributionTypeElement extends Omeka_Record_Api_AbstractRecordAdapter
                 'url'      => self::getResourceUrl("/elements/{$typeElement->element_id}"),
                 'resource' => 'elements'
                 );
+        $representation['type'] = array(
+                'id'       => $typeElement->type_id,
+                'url'      => self::getResourceUrl("/contribution_types/{$typeElement->type_id}"),
+                'resource' => 'contribution_types'
+                );
         return $representation;
     }
     

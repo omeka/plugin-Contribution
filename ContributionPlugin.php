@@ -318,7 +318,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $contributedItemAdapter = 
             new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
         $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
-        $adapters['contribtions'] = $contributedItemAdapter;
+        $adapters['contributions'] = $contributedItemAdapter;
         
         $contributionTypeAdapter = 
             new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
@@ -327,7 +327,14 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
         $contributionTypeElementsAdapter =
             new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
-        $contributionTypeElementsAdapter->setResourceProperties(array('element' => 'Element'));
+        $contributionTypeElementsAdapter->setResourceProperties(
+                array(
+                     'element' => 'Element',
+                     'type'    => 'ContributionType'
+                     )
+                );
+        
+        $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
         return $adapters;
     }
     /**
