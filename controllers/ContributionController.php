@@ -351,6 +351,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             }
         }
+        $contributor = $user;
 
         $contributionTypeId = (integer) $post['contribution_type'];
         if (!empty($contributionTypeId)) {
@@ -410,7 +411,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item->delete();
                 return;
             }
-            $this->_linkItemToContributedItem($item, $contributor, $post);
+            $this->_linkItemToContributedItem($item, $post);
             $this->_sendEmailNotifications($user, $item);
             return true;
         }
