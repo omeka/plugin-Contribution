@@ -6,6 +6,7 @@ class Api_ContributionContributedItem extends Omeka_Record_Api_AbstractRecordAda
     {
         $representation = array(
                 'id'         => $contributedItem->id,
+                'url'        => self::getResourceUrl("/contributions/{$contributedItem->id}"),
                 'public'     => (bool) $contributedItem->public,
                 'anonymous'  => (bool) $contributedItem->anonymous
                 );

@@ -6,6 +6,7 @@ class Api_ContributionType extends Omeka_Record_Api_AbstractRecordAdapter implem
     {
         $representation = array(
                 'id'               => $type->id,
+                'url'              => self::getResourceUrl("/contribution_types/{$ype->id}"),
                 'display_name'     => $type->display_name,
                 'file_permissions' => $type->file_permissions
                 );

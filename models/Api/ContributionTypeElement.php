@@ -6,6 +6,7 @@ class Api_ContributionTypeElement extends Omeka_Record_Api_AbstractRecordAdapter
     {
         $representation = array(
                 'id'        => $typeElement->id,
+                'url'       => self::getResourceUrl("/contribution_type_elements/{$typeElement->id}"),
                 'prompt'    => $typeElement->prompt,
                 'order'     => (int) $typeElement->order,
                 'long_text' => (bool) $typeElement->long_text
