@@ -8,7 +8,6 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
         $sql = "SELECT * FROM $db->ContributionContributors";
         $res = $db->query($sql);
         $data = $res->fetchAll();
-        debug(print_r($data, true));
         $contributorUserMap = array();
         $validatorOptions = array(
                 'table'   => $db->getTable('User')->getTableName(),
@@ -17,7 +16,6 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
         );
         $emailValidator = new Zend_Validate_EmailAddress();
         foreach($data as $contributor) {
-            debug(print_r($contributor, true));
             //create username from email and set up for some validation checks
             $username = $contributor['email'];
             $email = $contributor['email'];
