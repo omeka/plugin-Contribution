@@ -405,7 +405,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         // Everything has been checked, so save item.
         if ($item->save(false)) {
             // Check if a required file has been uploaded.
-            if ($contributionType->isFileRequired() && empty($item->fileCount())) {
+            $fileCount = $item->fileCount();
+            if ($contributionType->isFileRequired() && empty($fileCount)) {
                 $this->_helper->flashMessenger($item->getErrors());
                 $this->_helper->flashMessenger(__('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 $item->delete();
