@@ -564,7 +564,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         foreach ($item->getAllElementTexts() as $elementText) {
             $currentElements[$elementText->element_id] = array(
                 array(
-                    'text' => $elementText->text,
+                    'text' => trim($elementText->text),
                     'html' => $elementText->html,
                 ),
             );
