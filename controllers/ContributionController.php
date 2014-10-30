@@ -346,9 +346,17 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _addElementTextsToItem($item, $elements)
     {
-        $elementTable = get_db()->getTable('Element');
+        $db = get_db();
+        $elementTable = $db->getTable('Element');
+        $sql = "SELECT DISTINCT `id` from `$db->ElementSet` WHERE `record_type` = 'UserProfilesType' ";
+        $userProfilesElementSets = $db->fetchCol($sql);
         foreach($elements as $elementId => $elementTexts) {
             $element = $elementTable->find($elementId);
+            $elSet = $element->getElementSet();
+            //need to skip over elements that are intended for a User Profile, not the item
+            if (in_array($elSet->id, $userProfilesElementSets)) {
+                continue;
+            }
             foreach($elementTexts as $elementText) {
                 if (!empty($elementText['text'])) {
                     $item->addTextForElement($element, $elementText['text']);
