@@ -727,7 +727,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $type = $view->type;
         $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
         $prompt = $contributionElement->prompt;
-        $components['label'] = $prompt;
+        $components['label'] = '<label>' . $prompt . '</label>';
         $components['add_input'] = null;
         return $components;
     }

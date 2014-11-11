@@ -10,8 +10,12 @@ if ($type->isFileRequired()):
 ?>
 
 <div class="field">
+    <div class="two columns alpha">
         <?php echo $this->formLabel('contributed_file', __('Upload a file')); ?>
+    </div>
+    <div class="inputs five columns omega">
         <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+    </div>
 </div>
 
 <?php endif; ?>
@@ -26,15 +30,22 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 if (!isset($required) && $type->isFileAllowed()):
 ?>
 <div class="field">
-        <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+        </div>
 </div>
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
 <?php if(get_option('contribution_simple') && !$user) : ?>
 <div class="field">
+    <div class="two columns alpha">
     <?php echo $this->formLabel('contribution_simple_email', __('Email (Required)')); ?>
+    </div>
+    <div class="inputs five columns omega">
     <?php
         if(isset($_POST['contribution_simple_email'])) {
             $email = $_POST['contribution_simple_email'];
@@ -43,6 +54,7 @@ if (!isset($required) && $type->isFileAllowed()):
         }
     ?>
     <?php echo $this->formText('contribution_simple_email', $email ); ?>
+    </div>
 </div>
 
 <?php else: ?>
