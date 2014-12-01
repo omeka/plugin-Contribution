@@ -1,0 +1,585 @@
+# Translation for the Contribution plugin for Omeka.
+# Copyright (C) 2011 Roy Rosenzweig Center for History and New Media
+# This file is distributed under the same license as the Omeka package.
+# 
+# Translators:
+# dario hereñu <magallania@gmail.com>, 2014
+# Pablo Laguna <pablolaguna@vera.com.uy>, 2014
+msgid ""
+msgstr ""
+"Project-Id-Version: Omeka\n"
+"Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
+"POT-Creation-Date: 2012-01-09 21:49-0500\n"
+"PO-Revision-Date: 2014-10-01 18:59+0000\n"
+"Last-Translator: dario hereñu <magallania@gmail.com>\n"
+"Language-Team: Spanish (http://www.transifex.com/projects/p/omeka/language/es/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: es\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: models/ContributionType.php:101
+msgid "Allowed"
+msgstr "Permitido"
+
+#: models/ContributionType.php:102
+msgid "Required"
+msgstr "Requerido"
+
+#: models/ContributionType.php:100
+msgid "Disallowed"
+msgstr "No permitido"
+
+#: models/ContributionContributedItem.php:46
+msgid "Deleted User"
+msgstr "Usuario eliminado"
+
+#: ContributionPlugin.php:285 views/admin/contributors/browse.php:31
+#: views/admin/types/browse.php:26
+msgid "Contributed Items"
+msgstr "Elementos contribuidos"
+
+#: ContributionPlugin.php:288 ContributionPlugin.php:370
+#: helpers/ThemeHelpers.php:21
+msgid "Contribution"
+msgstr "Contribución"
+
+#: ContributionPlugin.php:309
+msgid "Contribute an Item"
+msgstr "Contribuir un elemento"
+
+#: ContributionPlugin.php:549
+msgid "Contributed by:"
+msgstr "Contribuido por:"
+
+#: ContributionPlugin.php:554
+msgid "This item can be made public."
+msgstr "Este elemento puede ser hecho público."
+
+#: ContributionPlugin.php:556
+msgid "This item cannot be made public."
+msgstr "Este elemento no puede ser hecho público."
+
+#: controllers/ContributionController.php:42
+msgid "Your contributions have been updated."
+msgstr "Sus contribuciones han sido actualizadas."
+
+#: controllers/ContributionController.php:192
+msgid "You must select a type for your contribution."
+msgstr "Dege elegir un tipo para poder contribuir."
+
+#: controllers/ContributionController.php:339
+msgid "You must agree to the Terms and Conditions."
+msgstr "Debe aceptar los Términos y Condiciones."
+
+#: controllers/ContributionController.php:368
+msgid "Contribution URL (pending review by project staff): "
+msgstr "URL de la contribución (pendiente de revisar por el personal del proyecto):"
+
+#: controllers/ContributionController.php:372
+#, php-format
+msgid "Your %s Contribution"
+msgstr "Su contribución %s"
+
+#: controllers/ContributionController.php:391
+#, php-format
+msgid "A new contribution to %s has been made."
+msgstr "Se ha hecho una nueva contribución para %s."
+
+#: controllers/ContributionController.php:396
+msgid "Contribution URL for review: "
+msgstr "URL de la contribución a revisar:"
+
+#: controllers/ContributionController.php:402
+#, php-format
+msgid "New %s Contribution"
+msgstr "Nueva contribución %s"
+
+#: controllers/SettingsController.php:34
+msgid "Settings have been saved."
+msgstr "Los ajustes han sido guardados."
+
+#: controllers/SettingsController.php:78
+msgid "Contribution Slug"
+msgstr "Posta de contribución"
+
+#: controllers/SettingsController.php:79
+msgid ""
+"Relative path from the Omeka root to the desired location for the "
+"contribution form. If left blank, the default path will be named "
+"&#8220;contribution.&#8221;"
+msgstr "Ruta relativa desde la raíz de Omeka a la ubicación deseada para el formulario de contribución. Si se deja en blanco, la ruta predeterminada se llamará &#8220;contribución.&#8221;"
+
+#: controllers/SettingsController.php:84
+msgid "Contribution Confirmation Email"
+msgstr "Mensaje de confirmación de contribución"
+
+#: controllers/SettingsController.php:85
+msgid ""
+"An email message will be sent to each contributor from this address "
+"confirming that they submitted a contribution to this website. Leave blank "
+"if you do not want an email sent."
+msgstr "Un mensaje de correo electrónico será enviado a cada contribuyente desde esta dirección electrónica confirmando que presentaron una contribución a este sitio de internet. Deje en blanco si no desea que le sea enviado un correo electrónico."
+
+#: controllers/SettingsController.php:90
+msgid "New Contribution Notification Emails"
+msgstr "Nuevos mensajes de notificación de contribución"
+
+#: controllers/SettingsController.php:91
+msgid ""
+"An email message will be sent to each address here whenever a new item is "
+"contributed. Leave blank if you do not want anyone to be alerted of "
+"contributions by email."
+msgstr "Un mensaje de correo electrónico será enviado a cada dirección cada vez que un nuevo elemento sea aportado. Dejar en blanco si no desea que nadie sea alertado de contribuciones por correo electrónico."
+
+#: controllers/SettingsController.php:96
+msgid "Text of Terms of Service"
+msgstr "Texto de los Términos del Servicio"
+
+#: controllers/SettingsController.php:97
+msgid "The text of the legal disclaimer to which contributors will agree."
+msgstr "El texto del aviso legal que los contribuyentes deben aceptar."
+
+#: controllers/SettingsController.php:102
+msgid "Use 'Simple' Options"
+msgstr "Usar opciones \"Simple\""
+
+#: controllers/SettingsController.php:103
+msgid ""
+"This will require an email address from contributors, and create a guest "
+"user from that information. If those users want to use the account, they "
+"will have to request a new password for the account. If you want to collect "
+"additional information about contributors, you cannot use the simple option."
+" See documentation for details. "
+msgstr "Esto requerirá una dirección de correo electrónico de los contribuyentes, y crear un usuario invitado desde dicha información. Si los usuarios desean utilizar la cuenta, tendrán que solicitar una nueva contraseña para dicha cuenta. Si desea obtener información adicional acerca de los contribuyentes, no puede utilizar la opción \"Simple\". Consulte la documentación para más detalles."
+
+#: controllers/SettingsController.php:109
+msgid "Email text to send to contributors"
+msgstr "Mensaje para ser enviado a los contribuyentes"
+
+#: controllers/SettingsController.php:110
+msgid ""
+"Email text to send to contributors when they submit an item. A link to their"
+" contribution will be appended. If using the 'Simple' option, we recommend "
+"that you notify contributors that a guest user account has been created for "
+"them, and what they gain by confirming their account."
+msgstr "Texto de correo electrónico a enviar a los contribuyentes cuando envian un artículo. Un enlace a dicha contribución será agregado. Si utiliza la opción \"Simple\", le recomendamos que notifique a los contribuyentes que una cuenta de usuario invitado se ha creado para ellos, y lo que ganan al confirmar su cuenta."
+
+#: controllers/SettingsController.php:115
+msgid "Do not put contributions in any collection"
+msgstr "No añadir contribuciones a ninguna colección"
+
+#: controllers/SettingsController.php:118
+msgid "Contribution Collection"
+msgstr "Colección de contribución"
+
+#: controllers/SettingsController.php:119
+msgid ""
+"The collection to which contributions will be added. Changes here will only "
+"affect new contributions."
+msgstr "La colección a la que se agregarán las contribuciones. Los cambios aquí sólo afectarán a las nuevas aportaciones."
+
+#: controllers/SettingsController.php:124
+msgid "No default type"
+msgstr "Sin tipo predeterminado"
+
+#: controllers/SettingsController.php:127
+msgid "Default Contribution Type"
+msgstr "Tipo de contribución predeterminado"
+
+#: controllers/SettingsController.php:128
+msgid "The type that will be chosen for contributors by default."
+msgstr "El tipo que se eligirá para los contribuyentes de forma predeterminada."
+
+#: controllers/SettingsController.php:135
+msgid "Choose a profile type for contributors"
+msgstr "Elija un tipo de perfil de contribuyente"
+
+#: controllers/SettingsController.php:136
+msgid "Configure the profile type under User Profiles"
+msgstr "Configure el tipo de perfil en Perfiles de Usuarios"
+
+#: controllers/SettingsController.php:137
+msgid "None"
+msgstr "Ninguno"
+
+#: models/ContributionContributedItem.php:56
+#: views/admin/contributors/show.php:48 views/admin/items/browse.php:103
+#: views/public/contribution/my-contributions.php:9
+msgid "Anonymous"
+msgstr "Anónimo"
+
+#: models/Mixin/ContributionOrder.php:101
+msgid "Cannot add a child to a record that does not exist yet!"
+msgstr "No se puede agregar un niño a un registro que aún no existe!"
+
+#: models/Mixin/ContributionOrder.php:105
+#, php-format
+msgid "Child must be an instance of \"%s\""
+msgstr "El niño debe ser una instancia de \"%s\""
+
+#: views/admin/common/contribution-quick-filters.php:2
+#: views/admin/common/contribution-quick-filters.php:4
+msgid "Filter by status"
+msgstr "Filtrar por estados"
+
+#: views/admin/common/contribution-quick-filters.php:8
+#: views/admin/contributors/show.php:40 views/admin/items/browse.php:81
+#: views/admin/items/browse.php:143
+msgid "Needs review"
+msgstr "Necesita revisar"
+
+#: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
+#: views/admin/index/index.php:19
+msgid "Getting Started"
+msgstr "Comenzando"
+
+#: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
+msgid "Contribution Types"
+msgstr "Tipos de contribución"
+
+#: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
+msgid "Submission Settings"
+msgstr "Ajustes de presentación"
+
+#: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
+msgid "Contributions"
+msgstr "Contribuciones"
+
+#: views/admin/contributors/browse.php:28
+msgid "ID"
+msgstr "ID"
+
+#: views/admin/contributors/show.php:20
+msgid "'s contributions"
+msgstr "contribuciones"
+
+#: views/admin/contributors/show.php:26
+msgid "Profile: "
+msgstr "Perfil:"
+
+#: views/admin/contributors/show.php:42 views/admin/items/browse.php:85
+msgid "Private contribution"
+msgstr "Contribución privada"
+
+#: views/admin/index/index.php:20
+msgid ""
+"A basic contribution form is installed and ready to ask users to submit a "
+"Story or Image type, and to include their name and email address. If you "
+"want to modify the form, follow the steps below."
+msgstr "Un formulario de contribución básica está instalado y listo para pedir a los usuarios que presenten una Historia o un tipo de Imagen, y de incluir su nombre y dirección de correo electrónico. Si desea modificar el formulario, siga a continuación los pasos."
+
+#: views/admin/index/index.php:21
+msgid ""
+"While an account exists for all contributors, they can make any contribution"
+" anonymously. Only the admin and super roles can see the full information."
+msgstr "Si bien existe una cuenta para todos los contribuyentes, ellos pueden hacer una contribución anónimamente. Sólo el administrador y con roles de súper pueden ver la información completa."
+
+#: views/admin/index/index.php:22
+msgid ""
+"Contributors can make any contribution public or not. Non-public "
+"contributions cannot be made publicly available on the site, but they are "
+"visible to the super, admin, contributor, and researcher roles, as well as "
+"to the contributors themselves."
+msgstr "Los colaboradores pueden hacer cualquier contribución, pública o no. Contribuciones no públicas no pueden ser vistas en el sitio, pero son visibles por aquellos con roles de super, admin, colaborador e investigadores, así como los  propios contribuyentes."
+
+#: views/admin/index/index.php:24
+msgid "1. Set up Guest User information:"
+msgstr "1. Configurar información de usuario invitado:"
+
+#: views/admin/index/index.php:26
+msgid ""
+"To make repeat contributions easier, a reusable 'Guest User' account is "
+"created for contributors."
+msgstr "Para hacer la repetición de contribuciones más fáciles, se crea una cuenta reutilizable 'Invitado' para los contribuyentes."
+
+#: views/admin/index/index.php:26
+msgid "Configure Guest Users"
+msgstr "Configurar usuarios invitados"
+
+#: views/admin/index/index.php:26
+msgid "with the following suggestions."
+msgstr "con las siguientes sugerencias."
+
+#: views/admin/index/index.php:28
+msgid ""
+"Let visitors know a bit about how their contributions will be used and why "
+"they are so valuable in the 'Registration Features' information."
+msgstr "Deje que los visitantes sepan un poco sobre cómo se usarán sus contribuciones y por qué son tan valiosas en la información de 'Funciones del Registro'."
+
+#: views/admin/index/index.php:29
+msgid ""
+"It is easiest to contribute if administrator approval is not required and "
+"you allow 20 minute instant access. To prevent spam, using ReCaptcha is "
+"recommended."
+msgstr "Es más fácil contribuir si no se requiere la aprobación del administrador y permite 20 minutos de acceso instantáneo. Para evitar el correo basura, se recomienda el uso de reCAPTCHA."
+
+#: views/admin/index/index.php:30
+msgid ""
+"Additional contribution-specific information for guest users can be created "
+"here."
+msgstr "Información adicional de contribución específica para los usuarios invitados puede ser creada aquí."
+
+#: views/admin/index/index.php:34
+msgid "2. Modify the contribution form:"
+msgstr "2. Modificar el formulario de contribución:"
+
+#: views/admin/index/index.php:37
+#, php-format
+msgid ""
+"Choose item types you wish visitors to share, and customize the fields they "
+"should use, in %s"
+msgstr "Elija los tipos de elementos que desea que los visitantes compartan y personalice los campos que deben utilizar, en %s"
+
+#: views/admin/index/index.php:39
+msgid "user profiles type"
+msgstr "tipo de perfiles de usuario"
+
+#: views/admin/index/index.php:39
+#, php-format
+msgid ""
+"Set up profile information you would like from your contributors by setting "
+"up a %s "
+msgstr "Configure la información de perfil que desea de sus colaboradores mediante la creación de un %s"
+
+#: views/admin/index/index.php:41
+msgid ""
+"The optional User Profiles plugin lets you set up additional information you"
+" would like to ask from your contributors. To use those features, please "
+"install that, then return here for additional guidance."
+msgstr "El plugin opcional de Perfiles de Usuario le permite configurar la información adicional que le gustaría pedir a sus colaboradores. Para utilizar estas características, por favor, instálelo y a continuación, retorne aquí para una guía adicional."
+
+#: views/admin/index/index.php:45
+msgid "submission settings"
+msgstr "ajustes de presentación"
+
+#: views/admin/index/index.php:45
+#, php-format
+msgid "3. Configure the %s for contributions:"
+msgstr "3. Configure el %s para las contribuciones:"
+
+#: views/admin/index/index.php:48
+msgid "Set the terms of service for contributing to the site."
+msgstr "Establezca los términos de servicio para contribuir al sitio."
+
+#: views/admin/index/index.php:49
+msgid ""
+"Set up an auto-generated email to send to all contributors after they submit"
+" their contribution."
+msgstr "Configure un correo electrónico generado automáticamente para enviar a todos los contribuyentes después de la presentación de su contribución."
+
+#: views/admin/index/index.php:50
+msgid ""
+"Decide whether to use the 'Simple' options. This requires only that "
+"contributors provide an email address."
+msgstr "Decida si desea utilizar las opciones 'simples'. Esto sólo requiere que los contribuyentes suministren una dirección de correo electrónico."
+
+#: views/admin/index/index.php:51
+msgid "Specify a collection for new contributed items."
+msgstr "Especifique una colección de nuevos elementos aportados."
+
+#: views/admin/index/index.php:54
+#, php-format
+msgid ""
+"4. Browse contributions and their status, with links to more contributor "
+"information, in %s"
+msgstr "4. Recorra las contribuciones y su estado, con enlaces para más información del contribuyente, en %s"
+
+#: views/admin/items/browse.php:13
+#, php-format
+msgid "Contributed Items (%d)"
+msgstr "Elementos contribuidos (%d)"
+
+#: views/admin/items/browse.php:27
+msgid "security settings"
+msgstr "ajustes de seguridad"
+
+#: views/admin/items/browse.php:27
+#, php-format
+msgid ""
+"You have not entered your %s API keys under %s. We recommend adding these "
+"keys, or the contribution form will be vulnerable to spam."
+msgstr "No ha ingresado sus claves %s API bajo %s. Le recomendamos que añada estas claves, o el formulario de contribución serán vulnerables al correo basura."
+
+#: views/admin/items/browse.php:36 views/admin/items/browse.php:125
+msgid "Set public"
+msgstr "Hacer público"
+
+#: views/admin/items/browse.php:39 views/admin/items/browse.php:128
+msgid "Set Needs review"
+msgstr "Necesita revisión"
+
+#: views/admin/items/browse.php:57
+msgid "Publication Status (click to change)"
+msgstr "Estado de la publicación (clicar para cambiar)"
+
+#: views/admin/items/browse.php:59
+msgid "Publication Status"
+msgstr "Estado de la publicación"
+
+#: views/admin/items/browse.php:106
+msgid "Info and contributions"
+msgstr "Información y contribuciones"
+
+#: views/admin/items/browse.php:146
+msgid "Rejected"
+msgstr "Rechazado"
+
+#: views/admin/items/browse.php:147
+msgid "Are you sure youo want to remove these contributions?"
+msgstr "¿Seguro que deseas eliminar estas contribuciones?"
+
+#: views/admin/items/browse.php:155
+msgid "There is no contribution yet."
+msgstr "No hay ninguna contribución todavía."
+
+#: views/admin/items/browse.php:157
+#, php-format
+msgid "The query searched %d contributions and returned no results."
+msgstr "La consulta buscó %d contribuciones y no hay ningún resultado."
+
+#: views/admin/items/browse.php:158
+msgid "See all contributions."
+msgstr "Ver todas las contribuciones."
+
+#: views/admin/types/add-existing-element.php:27
+msgid "Prompt:"
+msgstr "Mensaje:"
+
+#: views/admin/types/add-existing-element.php:30
+msgid "Large text"
+msgstr "Texto grande"
+
+#: views/admin/types/add.php:35 views/admin/types/browse.php:9
+#: views/admin/types/edit.php:30
+msgid "Types"
+msgstr "Tipos"
+
+#: views/admin/types/add.php:35
+msgid "Add a new type"
+msgstr "Añadir nuevo tipo"
+
+#: views/admin/types/browse.php:27
+msgid "File Upload"
+msgstr "Subida de fichero"
+
+#: views/admin/types/form.php:13
+msgid "The Item Type, from your site's list of types, you would like to use."
+msgstr "El Tipo de artículo, de la lista de tipos de su sitio, que le gustaría usar."
+
+#: views/admin/types/form.php:28
+msgid ""
+"The label you would like to use for this contribution type. If blank, the "
+"Item Type name will be used."
+msgstr "La etiqueta que le gustaría utilizar para este tipo de contribución. Si está en blanco, se usará el nombre del tipo de artículo."
+
+#: views/admin/types/form.php:37
+msgid "Allow File Upload Via Form"
+msgstr "Permitir subida de fichero mediante el formulario"
+
+#: views/admin/types/form.php:40
+msgid ""
+"Enable or disable file uploads through the public contribution form. If set "
+"to &#8220;Required,&#8220; users must add a file to their contribution when "
+"selecting this item type."
+msgstr "Active o desactive la carga de archivos a través del formulario de contribución pública. Si se define como &#8220;Requerido,&#8220; los usuarios deben agregar un archivo a su contribución cuando seleccionan este tipo de elemento."
+
+#: views/admin/types/form.php:42
+#, php-format
+msgid "%s"
+msgstr "%s"
+
+#: views/admin/types/form.php:58
+msgid "Prompt"
+msgstr "Mensaje"
+
+#: views/admin/types/form.php:60
+msgid "Multiple rows"
+msgstr "Múltiples filas"
+
+#: views/public/contribution/contribute.php:47
+msgid "What type of item do you want to contribute?"
+msgstr "¿Qué tipo de elemento desea contribuir?"
+
+#: views/public/contribution/contribute.php:62
+msgid "Publish my contribution on the web."
+msgstr "Publicar mi contribución en la web."
+
+#: views/public/contribution/contribute.php:67
+msgid "Contribute anonymously."
+msgstr "Contribuir anónimamente."
+
+#: views/public/contribution/contribute.php:69
+msgid "Terms and Conditions"
+msgstr "Términos y Condiciones"
+
+#: views/public/contribution/contribute.php:69
+#, php-format
+msgid "In order to contribute, you must read and agree to the %s"
+msgstr "Para contribuir, debe leer y aceptar los %s"
+
+#: views/public/contribution/contribute.php:73
+msgid "I agree to the Terms and Conditions."
+msgstr "Acepto los Términos y Condiciones."
+
+#: views/public/contribution/contribute.php:75
+msgid "Contribute"
+msgstr "Contribuir"
+
+#: views/public/contribution/my-contributions.php:11
+msgid "Added"
+msgstr "Añadido"
+
+#: views/public/contribution/terms.php:2
+msgid "Contribution Terms of Service"
+msgstr "Términos del Servicio de Contribución"
+
+#: views/public/contribution/thankyou.php:3
+msgid "Thank you for contributing!"
+msgstr "¡Gracias por contribuir!"
+
+#: views/public/contribution/thankyou.php:4
+msgid "make another contribution"
+msgstr "haber otra contribución"
+
+#: views/public/contribution/thankyou.php:4
+msgid "browse the archive"
+msgstr "navegar por el archivo"
+
+#: views/public/contribution/thankyou.php:4
+#, php-format
+msgid ""
+"Your contribution will show up in the archive once an administrator approves"
+" it. Meanwhile, feel free to %s or %s ."
+msgstr "Su contribución se mostrará en el archivo una vez que un administrador lo apruebe. Mientras tanto, no dude en %s o %s."
+
+#: views/public/contribution/thankyou.php:7
+msgid "this page"
+msgstr "esta página"
+
+#: views/public/contribution/thankyou.php:7
+#, php-format
+msgid ""
+"If you would like to interact with the site further, you can use an account "
+"that is ready for you. Visit %s, and request a new password for the email "
+"you used"
+msgstr "Si desea interactuar con el sitio posteriormente, puede utilizar una cuenta que está listo para usted. Visite %s, y solicite una nueva contraseña para el correo electrónico que utilizó"
+
+#: views/public/contribution/type-form.php:29
+msgid "Upload a file (Optional)"
+msgstr "Subir un fichero (opcional)"
+
+#: views/public/contribution/type-form.php:37
+msgid "Email (Required)"
+msgstr "Email (requerido)"
+
+#: views/public/contribution/type-form.php:49
+#, php-format
+msgid "You are logged in as: %s"
+msgstr "Estás identificado como: %s"
+
+#: views/public/contribution/type-form.php:64
+#, php-format
+msgid "Your %s profile"
+msgstr "Tu perfil %s"
