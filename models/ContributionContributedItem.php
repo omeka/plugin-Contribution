@@ -10,7 +10,7 @@
 /**
  * Record that keeps track of contributions; links items to contributors.
  */
-class ContributionContributedItem extends Omeka_Record_AbstractRecord
+class ContributionContributedItem extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
     public $item_id;
     public $contributor_id;
@@ -29,5 +29,10 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     public function getContributor()
     {
         return $this->getDb()->getTable('ContributionContributor')->find($this->contributor_id);
+    }
+    
+    public function getResourceId()
+    {
+        return 'Contribution_ContributedItem';
     }
 }

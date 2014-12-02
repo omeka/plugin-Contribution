@@ -45,7 +45,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     protected $_filters = array(
         'admin_navigation_main',
         'public_navigation_main',
-        'simple_vocab_routes');
+        'simple_vocab_routes',
+        'api_resources',
+        );
 
     protected $_options = array(
         'contribution_page_path',
@@ -245,6 +247,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl->addResource('Contribution_Settings');
         
         $acl->allow(null, 'Contribution_Contribution', array('contribute', 'type-form', 'thankyou'));
+        
+        //for API
+        $acl->addResource('Contribution_ContributedItem');
+        $acl->addResource('Contribution_ContributorField');
+        $acl->addResource('Contribution_ContributorValue');
     }
 
     /**
@@ -298,6 +305,31 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $nav['Contribution'] = array('label'=>'Contribution', 'uri' => url('contribution/index'));
         }
         return $nav;
+    }
+    
+    public function filterApiResources($apiResources)
+    {
+        $apiResources['contribution_contributed_items'] = array(
+                'record_type' => 'ContributionContributedItem',
+                'actions' => array('get', 'index'),
+                );
+
+        $apiResources['contribution_contributors'] = array(
+            'record_type' => 'ContributionContributor',
+            'actions' => array('get', 'index'),
+            );
+
+        $apiResources['contribution_contributor_fields'] = array(
+                'record_type' => 'ContributionContributorField',
+                'actions' => array('get', 'index'),
+                );
+        
+        $apiResources['contribution_contributor_values'] = array(
+            'record_type' => 'ContributionContributorValue',
+            'actions' => array('get', 'index'),
+            );
+
+        return $apiResources;
     }
 
     /**

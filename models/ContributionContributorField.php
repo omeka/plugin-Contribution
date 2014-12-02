@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributorField extends Omeka_Record_AbstractRecord
+class ContributionContributorField extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
     public $prompt;
     public $type;
@@ -53,6 +53,11 @@ class ContributionContributorField extends Omeka_Record_AbstractRecord
 HTML;
     }
 
+    public function getResourceId()
+    {
+        return 'Contribution_ContributorField';
+    }
+    
     private function getFormInput()
     {
         $inputName = "ContributorFields[{$this->id}]";

@@ -13,9 +13,14 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributorValue extends Omeka_Record_AbstractRecord
+class ContributionContributorValue extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
     public $field_id;
     public $contributor_id;
     public $value;
+    
+    public function getResourceId()
+    {
+        return 'Contribution_ContributorValue';
+    }
 }
