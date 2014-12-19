@@ -198,30 +198,46 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             require_once(CONTRIBUTION_PLUGIN_DIR . '/libraries/ContributionImportUsers.php');
             //change contributors to real guest users
             Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
-            $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
-            try {
+
+            //fix some previous bad upgrades
+            //check ContributionTypeElement
+
+            $sql = "SHOW COLUMNS IN `{$this->_db->ContributionTypeElement}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+
+            if (! in_array('long_text', $cols)) {
+                $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
                 $this->_db->query($sql);
-            } catch(Exception $e) {
-                _log($e);
-            }
-            $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
-            foreach($contributionTypeElements as $typeElement) {
-                $typeElement->long_text = true;
-                $typeElement->save();
+                $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
+                foreach($contributionTypeElements as $typeElement) {
+                    $typeElement->long_text = true;
+                    $typeElement->save();
+                }
             }
 
-            $sql = "
-                ALTER TABLE `{$this->_db->ContributionContributedItem}` CHANGE `contributor_posting` `anonymous` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';
+            //need to check if contributor_posting was properly changed to anonymous
+            $sql = "SHOW COLUMNS IN `{$this->_db->ContributionContributedItem}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+
+            if(in_array('contributor_posting', $cols)) {
+                $sql = "
+                    ALTER TABLE `{$this->_db->ContributionContributedItem}` CHANGE `contributor_posting` `anonymous` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';
+                    ";
+                $this->_db->query($sql);
+            }
+
+            if(in_array('contributor_id', $cols)) {
+                $sql = "
+                    ALTER TABLE `{$this->_db->ContributionContributedItem}` DROP `contributor_id` ;
                 ";
-            $this->_db->query($sql);
-            $sql = "
-                ALTER TABLE `{$this->_db->ContributionContributedItem}` DROP `contributor_id` ;
-            ";
-            $this->_db->query($sql);
+                $this->_db->query($sql);
+            }
+
             //clean up contributed item records if the corresponding item has been deleted
             //earlier verison of the plugin did not use the delete hook
-            $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
+            $sql = "DELETE FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
 
             $this->_db->query($sql);
         }
