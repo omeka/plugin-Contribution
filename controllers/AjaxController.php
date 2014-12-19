@@ -40,7 +40,7 @@ class Contribution_AjaxController extends Omeka_Controller_AbstractActionControl
             }
 
             $id = (integer) $this->_getParam('id');
-            $contributedItem = get_record_by_id('ContributionContributedItem', $id);
+            $contributedItem = $this->_helper->db->find($id);
             if (!$contributedItem) {
                 $this->getResponse()->setHttpResponseCode(400);
                 return;
@@ -74,7 +74,7 @@ class Contribution_AjaxController extends Omeka_Controller_AbstractActionControl
         // Handle action.
         try {
             $id = (integer) $this->_getParam('id');
-            $contributedItem = get_record_by_id('ContributionContributedItem', $id);
+            $contributedItem = $this->_helper->db->find($id);
             if (!$contributedItem) {
                 $this->getResponse()->setHttpResponseCode(400);
                 return;
