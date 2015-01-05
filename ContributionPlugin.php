@@ -201,9 +201,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             //fix some previous bad upgrades
             //check ContributionTypeElement
-
+            $db = $this->_db;
             $sql = "SHOW COLUMNS IN `{$this->_db->ContributionTypeElement}`";
-            $result = $db->query($sql);
+            $result = $this->_db->query($sql);
             $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
 
             if (! in_array('long_text', $cols)) {
@@ -224,6 +224,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             if(in_array('contributor_posting', $cols)) {
                 $sql = "
                     ALTER TABLE `{$this->_db->ContributionContributedItem}` CHANGE `contributor_posting` `anonymous` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';
+                    ";
+                $this->_db->query($sql);
+            } else if (! in_array('anonymous', $cols)) {
+                $sql = "
+                    ALTER TABLE `{$this->_db->ContributionContributedItem}` ADD `anonymous` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';
                     ";
                 $this->_db->query($sql);
             }
