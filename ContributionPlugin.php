@@ -191,7 +191,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->hookInstall();
 
         }
-        if (version_compare($oldVersion, '3.0', '<')) {
+        if (version_compare($oldVersion, '3.1', '<')) {
             if(!is_writable(CONTRIBUTION_PLUGIN_DIR . "/upgrade_files")) {
                 throw new Omeka_Plugin_Installer_Exception("'upgrade_files' directory must be writable by the web server");
             }
