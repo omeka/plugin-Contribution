@@ -191,31 +191,44 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->hookInstall();
 
         }
-        if (version_compare($oldVersion, '3.1', '<')) {
+        
+            if (version_compare($oldVersion, '3.0', '<')) {
             if(!is_writable(CONTRIBUTION_PLUGIN_DIR . "/upgrade_files")) {
                 throw new Omeka_Plugin_Installer_Exception("'upgrade_files' directory must be writable by the web server");
             }
             require_once(CONTRIBUTION_PLUGIN_DIR . '/libraries/ContributionImportUsers.php');
             //change contributors to real guest users
             Zend_Registry::get('bootstrap')->getResource('jobs')->sendLongRunning('ContributionImportUsers');
-
-            //fix some previous bad upgrades
-            //check ContributionTypeElement
-            $db = $this->_db;
-            $sql = "SHOW COLUMNS IN `{$this->_db->ContributionTypeElement}`";
-            $result = $this->_db->query($sql);
-            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
-
-            if (! in_array('long_text', $cols)) {
-                $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
+            //if the optional UserProfiles plugin is installed, handle the upgrade via the configuration page
+            $sql = "ALTER TABLE `{$this->_db->ContributionTypeElement}` ADD `long_text` BOOLEAN DEFAULT TRUE";
+            try {
                 $this->_db->query($sql);
-                $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
-                foreach($contributionTypeElements as $typeElement) {
-                    $typeElement->long_text = true;
-                    $typeElement->save();
-                }
+            } catch(Exception $e) {
+                _log($e);
+            }
+            $contributionTypeElements = $this->_db->getTable('ContributionTypeElement')->findAll();
+            foreach($contributionTypeElements as $typeElement) {
+                $typeElement->long_text = true;
+                $typeElement->save();
             }
 
+            $sql = "
+                ALTER TABLE `{$this->_db->ContributionContributedItem}` CHANGE `contributor_posting` `anonymous` TINYINT( 1 ) UNSIGNED NOT NULL DEFAULT '0';
+                ";
+            $this->_db->query($sql);
+            $sql = "
+                ALTER TABLE `{$this->_db->ContributionContributedItem}` DROP `contributor_id` ;
+            ";
+            $this->_db->query($sql);
+            //clean up contributed item records if the corresponding item has been deleted
+            //earlier verison of the plugin did not use the delete hook
+            $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
+
+            $this->_db->query($sql);
+        }
+        
+        if (version_compare($oldVersion, '3.1', '<')) {
+            //fix some previous bad upgrades
             //need to check if contributor_posting was properly changed to anonymous
             $sql = "SHOW COLUMNS IN `{$this->_db->ContributionContributedItem}`";
             $result = $db->query($sql);
@@ -239,12 +252,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 ";
                 $this->_db->query($sql);
             }
-
-            //clean up contributed item records if the corresponding item has been deleted
-            //earlier verison of the plugin did not use the delete hook
-            $sql = "DELETE FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
-
-            $this->_db->query($sql);
         }
     }
 
