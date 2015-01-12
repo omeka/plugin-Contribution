@@ -227,7 +227,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->_db->query($sql);
         }
         
-        if (version_compare($oldVersion, '3.1', '<')) {
+        if (version_compare($oldVersion, '3.0.2', '<')) {
             //fix some previous bad upgrades
             //need to check if contributor_posting was properly changed to anonymous
             $sql = "SHOW COLUMNS IN `{$this->_db->ContributionContributedItem}`";
