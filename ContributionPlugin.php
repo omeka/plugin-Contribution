@@ -329,6 +329,15 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             'actions' => array('get', 'index'),
             );
 
+        $apiResources['contribution_types'] = array(
+            'record_type' => 'ContributionType',
+            'actions' => array('get', 'index'),
+            );
+        
+        $apiResources['contribution_type_elements'] = array(
+            'record_type' => 'ContributionTypeElement',
+            'actions' => array('get', 'index'),
+            );
         return $apiResources;
     }
 
