@@ -231,7 +231,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             //fix some previous bad upgrades
             //need to check if contributor_posting was properly changed to anonymous
             $sql = "SHOW COLUMNS IN `{$this->_db->ContributionContributedItem}`";
-            $result = $db->query($sql);
+            $result = $this->_db->query($sql);
             $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
 
             if(in_array('contributor_posting', $cols)) {
