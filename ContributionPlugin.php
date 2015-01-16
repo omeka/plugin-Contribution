@@ -327,6 +327,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $apiResources['contribution_contributor_values'] = array(
             'record_type' => 'ContributionContributorValue',
             'actions' => array('get', 'index'),
+            'index_params' => array('contributor_id')
             );
 
         $apiResources['contribution_types'] = array(
