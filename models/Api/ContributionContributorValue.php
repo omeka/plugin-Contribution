@@ -13,12 +13,12 @@ class Api_ContributionContributorValue extends Omeka_Record_Api_AbstractRecordAd
         $representation['contributor'] = array(
                 'id'       => $record->contributor_id,
                 'url'      => self::getResourceUrl("/contribution_contributors/{$record->contributor_id}"), 
-                'resource' => 'items'
+                'resource' => 'contribution_contributors'
             );
         $representation['field'] = array(
             'id'       => $record->field_id,
             'url'      => self::getResourceUrl("/contribution_contributor_fields/{$record->field_id}"), 
-            'resource' => 'items'
+            'resource' => 'contribution_contributor_fields'
         );
         return $representation;
     }
