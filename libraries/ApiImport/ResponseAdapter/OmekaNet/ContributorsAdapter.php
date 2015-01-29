@@ -31,14 +31,12 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter extends ApiImport_R
     {
         //from the contributor_id, go to contribution_values?contributor_id=
         //create field->element maps as needed and make 
-        debug('id: ' . $this->responseData['id']);
         $this->resetService();
         $response = $this->service
                            ->contribution_contributor_values
                            ->get(array('contributor_id' => $this->responseData['id'] ));
         $valuesData = json_decode($response->getBody(), true);
         foreach ($valuesData as $data) {
-            debug('data ' . $data);
             $this->valuesAdapter->resetResponseData($data);
             $this->valuesAdapter->import();
         }

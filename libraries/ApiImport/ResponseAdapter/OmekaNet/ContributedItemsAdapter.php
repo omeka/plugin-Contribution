@@ -22,7 +22,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter extends ApiImpo
     protected function getContributor()
     {
         $contributorId = $this->responseData['contributor']['id'];
-        $response = $this->omeka->contribution_contributors->get($contributorId);
+        $response = $this->service->contribution_contributors->get($contributorId);
         if ($response->getStatus() == 200) {
             $this->contributorData = json_decode($response->getBody(), true);
         } else {
