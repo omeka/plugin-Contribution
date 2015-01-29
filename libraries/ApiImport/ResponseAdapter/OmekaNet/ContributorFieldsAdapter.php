@@ -6,7 +6,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorFieldsAdapter extends ApiImp
 {
     protected $elementSet;
     protected $recordType = 'Element';
-    
+
     public function import()
     {
         $elSet = $this->getElementSet();
@@ -18,20 +18,19 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorFieldsAdapter extends ApiImp
         $this->record->save();
         $this->addOmekaApiImportRecordIdMap();
     }
-    
-    
+
     protected function getElementSet()
     {
         if ($this->elementSet) {
             return $this->elementSet;
         }
-        
+
         $this->elementSet = new ElementSet();
         $this->elementSet->name = "Imported Contributor Elements";
         $this->elementSet->description = "Contributor information imported from {$this->endpointUri}";
         $this->elementSet->record_type = 'UserProfilesType';
         $this->elementSet->save();
-        
+
         $userProfilesType = new UserProfilesType();
         $userProfilesType->required_element_ids = serialize(array());
         $userProfilesType->required_multielement_ids = serialize(array());
@@ -42,6 +41,5 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorFieldsAdapter extends ApiImp
         $userProfilesType->element_set_id = $this->elementSet->id;
         $userProfileType->save();
         return $this->elementSet;
-        
     }
 }

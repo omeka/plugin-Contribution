@@ -355,7 +355,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     
     public function filterApiImportOmekaAdapters($adapters, $args)
     {
-        debug('filtering');
         if (strpos($args['endpointUri'], 'omeka.net') !== false) {
             $contributedItemAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
@@ -375,27 +374,22 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                          'type'    => 'ContributionType'
                          )
                     );
-            
             $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
         } else {
-            debug('net filters');
             $contributionContributorsAdapter = 
                 new ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter(
                     null, $args['endpointUri'], 'User'
                     );
             $adapters['contribution_contributors'] = $contributionContributorsAdapter;
-            debug('contributors');
             $contributedItemAdapter = 
                 new ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter(
                         null, $args['endpointUri'], 'ContributionContributedItem'
                     );
             $adapters['contribution_contributed_items'] = $contributedItemAdapter;
- debug('items');           
             $typesAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
             $typesAdapter->setResourceProperties(array('item_type' => 'ItemType'));
             $adapters['contribution_types'] = $typesAdapter;
-        debug('types');
             $typeElementsAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
             $typeElementsAdapter->setResourceProperties(
@@ -403,16 +397,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                           'element' => 'Element'
                     ));
             $adapters['contribution_type_elements'] = $typeElementsAdapter;
-            debug('type elements');
-            /*
-            if (plugin_is_active('UserProfiles')) {
-                $contributorValuesAdapter = 
-                    new ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter(
-                        null, $args['endpointUri'], 'ElementText'
-                    );
-                $adapters['contribution_contributor_values'] = $contributorValuesAdapter;
-            }
-            */
         }
         return $adapters;
     }
