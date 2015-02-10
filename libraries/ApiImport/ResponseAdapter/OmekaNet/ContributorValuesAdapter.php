@@ -105,29 +105,40 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
     
     protected function getUserProfilesType()
     {
+        global $contributionImportUserProfilesType;
+        
+        // I'm not proud of the use of a global, but it's a fast fix
+        // and I've accepted more things that I'm less proud of
+        if ($contributionImportUserProfilesType) {
+            $this->userProfilesType = $contributionImportUserProfilesType;
+        }
         if ($this->userProfilesType) {
             return $this->userProfilesType;
         }
-        
-        $userProfilesType = new UserProfilesType();
-        $userProfilesType->required_element_ids = serialize(array());
-        $userProfilesType->required_multielement_ids = serialize(array());
-        $userProfilesType->label = 'Imported Contributor Information';
-        $userProfilesType->description = "Contributor information imported from {$this->endpointUri}";
-        $userProfilesType->public = 0;
-        $userProfilesType->required = 0;
-        $userProfilesType->element_set_id = $this->elementSet->id;
-        $userProfilesType->save();
+
+        $types = get_db()->getTable('UserProfilesType')->findBy(array('label' => 'Imported Contributor Information'));
+
+        if (count($types) != 0 ) {
+            $userProfilesType = $types[0];
+        } else {
+            $userProfilesType = new UserProfilesType();
+            $userProfilesType->required_element_ids = serialize(array());
+            $userProfilesType->required_multielement_ids = serialize(array());
+            $userProfilesType->label = 'Imported Contributor Information';
+            $userProfilesType->description = "Contributor information imported from {$this->endpointUri}";
+            $userProfilesType->public = 0;
+            $userProfilesType->required = 0;
+            $userProfilesType->element_set_id = $this->elementSet->id;
+            $userProfilesType->save();
+        }
+
         $this->userProfilesType = $userProfilesType;
-        return $this->userProfilesType;        
+        $contributionImportUserProfilesType = $userProfilesType;
+        return $this->userProfilesType;
     }
     
     protected function getElement($fieldId)
     {
-        //make sure UPType, elementSet, and Element exist here.
-        //might be handled by the Field adapter?
-        //this will also create the UPType and have
-        //need a way to get the UPType back into here
         if( key_exists($fieldId, $this->fieldIdElementsMap) ) {
             return $this->fieldIdElementsMap[$fieldId];
         }
