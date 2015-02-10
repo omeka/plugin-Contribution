@@ -18,7 +18,7 @@
 class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImport_ResponseAdapter_Omeka_GenericAdapter
 {
     const ELEMENT_SET_NAME = "Imported Contributor Elements";
-    
+
     protected $recordType = 'ElementText'; //not really using this, because it isn't a real 1-1 onto mapping
     protected $contributorData;
     protected $userProfile;
@@ -27,7 +27,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
     protected $element;
     protected $fieldIdElementsMap = array();
     protected $contributorIdProfileMap = array();
-    
+
     public function import()
     {
         $this->getElementSet();
@@ -42,12 +42,12 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         $this->record->record_id = $userProfile->id;
         $this->record->save();
     }
-    
+
     public function setContributorData($contributorData)
     {
         $this->contributorData = $contributorData;
     }
-    
+
     protected function getUserProfile()
     {
         $contributorData = $this->contributorData;
@@ -62,51 +62,44 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         $email = $contributorData['email'];
         $user = $db->getTable('User')->findByEmail($email);
         $profile = $db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $this->userProfilesType->id);
-        
         if ($profile) {
             $this->contributorIdProfileMap[$contributorId] = $profile;
             return $profile;
         }
-        
         //finally, create a new profile if all else failed
         $profile = new UserProfilesProfile;
         $profile->owner_id = $user->id;
         $profile->type_id = $this->userProfilesType->id;
-        
         $profile->setRelationData(array('subject_id' => $this->userProfilesType->id));
         $profile->public = 0;
         $profile->save(true);
         $this->contributorIdProfileMap[$contributorId] = $profile;
         return $profile;
     }
-    
+
     protected function getElementSet()
     {
         if ($this->elementSet) {
             return $this->elementSet;
         }
-        
         $elementSet = get_db()->getTable('ElementSet')->findByName(self::ELEMENT_SET_NAME);
-        
         if ($elementSet) {
             $this->elementSet = $elementSet;
             return $elementSet;
         }
-        
         $this->elementSet = new ElementSet();
         $this->elementSet->name = self::ELEMENT_SET_NAME;
         $this->elementSet->description = "Contributor information imported from {$this->endpointUri}";
         $this->elementSet->record_type = 'UserProfilesType';
         $this->elementSet->save();
-        
 
         return $this->elementSet;
     }
-    
+
     protected function getUserProfilesType()
     {
         global $contributionImportUserProfilesType;
-        
+
         // I'm not proud of the use of a global, but it's a fast fix
         // and I've accepted more things that I'm less proud of
         if ($contributionImportUserProfilesType) {
@@ -136,7 +129,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         $contributionImportUserProfilesType = $userProfilesType;
         return $this->userProfilesType;
     }
-    
+
     protected function getElement($fieldId)
     {
         if( key_exists($fieldId, $this->fieldIdElementsMap) ) {
@@ -147,11 +140,11 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         // @TODO, error handling. keep it here instead of another adapter
         // to be able to cache
         $fieldData = json_decode($response->getBody(), true);
-        
+
         $prompt = $fieldData['prompt'];
         $element = get_db()->getTable('Element')
                            ->findByElementSetNameAndElementName(self::ELEMENT_SET_NAME, $prompt);
-        
+
         if ($element) {
             $this->fieldIdElementsMap[$fieldId] = $element;
             return $element;
