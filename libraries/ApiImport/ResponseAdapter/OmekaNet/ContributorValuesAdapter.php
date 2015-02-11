@@ -70,7 +70,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         $profile = new UserProfilesProfile;
         $profile->owner_id = $user->id;
         $profile->type_id = $this->userProfilesType->id;
-        $profile->setRelationData(array('subject_id' => $this->userProfilesType->id));
+        $profile->setRelationData(array('subject_id' => $user->id));
         $profile->public = 0;
         $profile->save(true);
         $this->contributorIdProfileMap[$contributorId] = $profile;
@@ -98,13 +98,6 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
 
     protected function getUserProfilesType()
     {
-        global $contributionImportUserProfilesType;
-
-        // I'm not proud of the use of a global, but it's a fast fix
-        // and I've accepted more things that I'm less proud of
-        if ($contributionImportUserProfilesType) {
-            $this->userProfilesType = $contributionImportUserProfilesType;
-        }
         if ($this->userProfilesType) {
             return $this->userProfilesType;
         }
@@ -126,7 +119,6 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter extends ApiImp
         }
 
         $this->userProfilesType = $userProfilesType;
-        $contributionImportUserProfilesType = $userProfilesType;
         return $this->userProfilesType;
     }
 

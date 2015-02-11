@@ -7,12 +7,20 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter extends ApiImport_R
     
     public function construct($responseData, $endpointUri, $recordType)
     {
+        global $contributionImportValuesAdapter;
+
         parent::construct($responseData, $endpointUri, $recordType);
-        $this->valuesAdapter = new ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter(null, $endpointUri, 'ElementText');
+        if ( isset($contributionImportValuesAdapter)) {
+            $this->valuesAdapter = $contributionImportValuesAdapter;
+        } else {
+            $contributionImportValuesAdapter = new ApiImport_ResponseAdapter_OmekaNet_ContributorValuesAdapter(null, $endpointUri, 'ElementText'); 
+            $this->valuesAdapter = $contributionImportValuesAdapter;
+        }
+
         $this->valuesAdapter->setService($this->service);
         $this->valuesAdapter->setContributorData($responseData);
     }
-    
+
     public function import()
     {
         $this->record = $this->findUser();
