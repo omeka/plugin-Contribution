@@ -355,26 +355,49 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     
     public function filterApiImportOmekaAdapters($adapters, $args)
     {
-        $contributedItemAdapter = 
-            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
-        $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
-        $adapters['contributions'] = $contributedItemAdapter;
-        
-        $contributionTypeAdapter = 
-            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
-        $contributionTypeAdapter->setResourceProperties(array('item_type' => 'ItemType'));
-        $adapters['contribution_types'] = $contributionTypeAdapter;
-
-        $contributionTypeElementsAdapter =
-            new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
-        $contributionTypeElementsAdapter->setResourceProperties(
-                array(
-                     'element' => 'Element',
-                     'type'    => 'ContributionType'
-                     )
-                );
-        
-        $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
+        if (strpos($args['endpointUri'], 'omeka.net') !== false) {
+            $contributedItemAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
+            $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
+            $adapters['contributions'] = $contributedItemAdapter;
+            
+            $contributionTypeAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
+            $contributionTypeAdapter->setResourceProperties(array('item_type' => 'ItemType'));
+            $adapters['contribution_types'] = $contributionTypeAdapter;
+    
+            $contributionTypeElementsAdapter =
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
+            $contributionTypeElementsAdapter->setResourceProperties(
+                    array(
+                         'element' => 'Element',
+                         'type'    => 'ContributionType'
+                         )
+                    );
+            $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
+        } else {
+            $contributionContributorsAdapter = 
+                new ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter(
+                    null, $args['endpointUri'], 'User'
+                    );
+            $adapters['contribution_contributors'] = $contributionContributorsAdapter;
+            $contributedItemAdapter = 
+                new ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter(
+                        null, $args['endpointUri'], 'ContributionContributedItem'
+                    );
+            $adapters['contribution_contributed_items'] = $contributedItemAdapter;
+            $typesAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
+            $typesAdapter->setResourceProperties(array('item_type' => 'ItemType'));
+            $adapters['contribution_types'] = $typesAdapter;
+            $typeElementsAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
+            $typeElementsAdapter->setResourceProperties(
+                    array('type' => 'ContributionType',
+                          'element' => 'Element'
+                    ));
+            $adapters['contribution_type_elements'] = $typeElementsAdapter;
+        }
         return $adapters;
     }
     /**
