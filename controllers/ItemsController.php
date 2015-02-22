@@ -2,7 +2,6 @@
 
 class Contribution_ItemsController extends Omeka_Controller_AbstractActionController
 {
-    
     public function _getBrowseRecordsPerPage($pluralName = null)
     {
         if (is_admin_theme()) {
@@ -10,11 +9,10 @@ class Contribution_ItemsController extends Omeka_Controller_AbstractActionContro
         } else {
             return (int) get_option('per_page_public');
         }
-    }    
-    
+    }
+
     public function init()
     {
         $this->_helper->db->setDefaultModelName('ContributionContributedItem');
-    }  
-    
+    }
 }
