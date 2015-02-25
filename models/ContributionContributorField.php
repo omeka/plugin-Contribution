@@ -58,6 +58,12 @@ HTML;
         return 'Contribution_ContributorField';
     }
     
+    public function getRecordUrl($action = 'show')
+    {
+        $controller = str_replace('_', '-', Inflector::tableize('Contribution_ContributorMetadata'));
+        return array('module' => 'contribution' , 'controller' => 'contributor-metadata', 'action' => $action, 'id' => $this->id);
+    }
+    
     private function getFormInput()
     {
         $inputName = "ContributorFields[{$this->id}]";
