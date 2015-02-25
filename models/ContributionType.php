@@ -176,4 +176,12 @@ SQL;
         return url("contribution/types/$action/id/{$this->id}");
         return array('controller' => 'contribution/types', 'action' => $action, 'id' => $this->id);
     }
+    
+    public function setPostData($post) {
+        parent::setPostData($post);
+        if ( ! $this->display_name) {
+            $itemType = $this->getItemType();
+            $this->display_name = $itemType->name;
+        }
+    }
 }
