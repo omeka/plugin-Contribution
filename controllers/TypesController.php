@@ -119,7 +119,7 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
     private function _processForm($record)
     {
         $elementTable = $this->_helper->db->getTable('Element');
-        $contributionElTable = $this->_helper->db->getTable('ContributionTypeElement');
+        $contributionElTable = $this->_helper->db->getTable('ContributionTypeElement');        
         if ($this->getRequest()->isPost()) {
             try {
                 $record->setPostData($_POST);
