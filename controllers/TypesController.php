@@ -166,6 +166,11 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
             // Catch validation errors.
             } catch (Omeka_Validate_Exception $e) {
                 $this->_helper->flashMessenger($e);
+                //if adding a type, and type saved, but errors in the elements,
+                //go direct to the record's edit page
+                if ($record->exists()) {
+                    $this->_helper->redirector->gotoSimple('edit', 'types', 'contribution', array('id' => $record->id) );
+                }
             }            
         }
     }
