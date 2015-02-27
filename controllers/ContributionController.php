@@ -150,6 +150,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             // even with the synchronous job dispatcher.
             if ($acl = get_acl()) {
                 $acl->allow(null, 'Items', 'showNotPublic');
+                $acl->allow(null, 'Collections', 'showNotPublic');
             }
 
             try {
