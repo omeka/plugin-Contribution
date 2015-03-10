@@ -249,9 +249,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $acl->allow(null, 'Contribution_Contribution', array('contribute', 'type-form', 'thankyou'));
         
         //for API
+        
         $acl->addResource('Contribution_ContributedItem');
         $acl->addResource('Contribution_ContributorField');
         $acl->addResource('Contribution_ContributorValue');
+        
     }
 
     /**
