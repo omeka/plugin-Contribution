@@ -13,7 +13,7 @@
  * @package Contribution
  * @subpackage Models
  */
-class ContributionContributor extends Omeka_Record_AbstractRecord
+class ContributionContributor extends Omeka_Record_AbstractRecord implements Zend_Acl_Resource_Interface
 {
     public $name;
     public $email;
@@ -104,4 +104,9 @@ WHERE `ccv`.`contributor_id` = ?;
 SQL;
         return $this->getDb()->fetchPairs($sql, $this->id);
     }
+    
+    public function getResourceId()
+    {
+        return 'Contribution_Contributors';
+    }    
 }

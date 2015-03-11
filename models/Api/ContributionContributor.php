@@ -1,5 +1,5 @@
 <?php
-class Api_ContributionContributor extends Omeka_Record_Api_AbstractRecordAdapter
+class Api_ContributionContributor extends Omeka_Record_Api_AbstractRecordAdapter implements Zend_Acl_Resource_Interface
 {
     
     public function getRepresentation(Omeka_Record_AbstractRecord $record)
@@ -19,4 +19,9 @@ class Api_ContributionContributor extends Omeka_Record_Api_AbstractRecordAdapter
     
     public function setPutData(Omeka_Record_AbstractRecord $record, $data)
     {}
+    
+    public function getResourceId()
+    {
+        return 'Contribution_Contributors';
+    }
 }

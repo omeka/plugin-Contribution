@@ -16,6 +16,18 @@ class Table_ContributionContributedItem extends Omeka_Db_Table
     public $contributor_id;
     public $public;
 
+    public function getSelect()
+    {
+        $select = parent::getSelect();
+        $db = $this->getDb();
+        $select->joinInner(array('items' => $db->Item), 'items.id = contribution_contributed_items.item_id', array());
+
+        $permissions = new Omeka_Db_Select_PublicPermissions('Items');
+        $permissions->apply($select, 'items');
+
+        return $select;
+    }
+    
     public function findByItem($item)
     {
         if ($item instanceof Omeka_Record_AbstractRecord) {
