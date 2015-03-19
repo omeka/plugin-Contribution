@@ -381,6 +381,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     null, $args['endpointUri'], 'User'
                     );
             $adapters['contribution_contributors'] = $contributionContributorsAdapter;
+
             $contributedItemAdapter = 
                 new ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter(
                         null, $args['endpointUri'], 'ContributionContributedItem'

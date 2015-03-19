@@ -6,17 +6,23 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter extends ApiImpo
     public function import()
     {
         $item = $this->localRecord('Item', $this->responseData['item']['id']);
-        //can't use localRecord, because of the map from contributor to user. ids won't match
-        $user = $this->findUser();
+        
+        if ($item) {
+            //can't use localRecord, because of the map from contributor to user. ids won't match
+            $user = $this->findUser();
+    
+            $this->record = new ContributionContributedItem();
+            $this->record->item_id = $item->id;
+            $this->record->public = $this->responseData['public'];
+            $this->record->anonymous = 0;
+            $this->record->save();
+            $item->owner_id = $user->id;
+            $item->save();
+            $this->addOmekaApiImportRecordIdMap();            
+        } else {
+            _log('Skipped contribution with no public item');
+        }
 
-        $this->record = new ContributionContributedItem();
-        $this->record->item_id = $item->id;
-        $this->record->public = $this->responseData['public'];
-        $this->record->anonymous = 0;
-        $this->record->save();
-        $item->owner_id = $user->id;
-        $item->save();
-        $this->addOmekaApiImportRecordIdMap();
     }
     
     protected function getContributor()
