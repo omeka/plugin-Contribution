@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Doru  DEACONU <dumitrudeaconu@yahoo.com>, 2014
+# Nicolaie Constantinescu <kosson@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-11-28 09:29+0000\n"
-"Last-Translator: Doru  DEACONU <dumitrudeaconu@yahoo.com>\n"
+"PO-Revision-Date: 2015-02-26 10:20+0000\n"
+"Last-Translator: Nicolaie Constantinescu <kosson@gmail.com>\n"
 "Language-Team: Romanian (http://www.transifex.com/projects/p/omeka/language/ro/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,33 +63,33 @@ msgstr "Această resursă nu poate fi făcută publică."
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
-msgstr "Contribuţiile dvs. au fost actualizate."
+msgstr "Contribuţiile personale au fost actualizate."
 
 #: controllers/ContributionController.php:192
 msgid "You must select a type for your contribution."
-msgstr "Trebuie să selectaţi un tip pentru contribuţia dvs."
+msgstr "Trebuie să selectaţi un tip pentru contribuţia proprie"
 
 #: controllers/ContributionController.php:339
 msgid "You must agree to the Terms and Conditions."
-msgstr ""
+msgstr "Trebuie să fiți de acord cu termenii și condițiile."
 
 #: controllers/ContributionController.php:368
 msgid "Contribution URL (pending review by project staff): "
-msgstr ""
+msgstr "URL-ul contribuției (evaluare în așteptare din partea personalului răspunzător de proiect)"
 
 #: controllers/ContributionController.php:372
 #, php-format
 msgid "Your %s Contribution"
-msgstr ""
+msgstr "Contribuția ta de %s"
 
 #: controllers/ContributionController.php:391
 #, php-format
 msgid "A new contribution to %s has been made."
-msgstr ""
+msgstr "A fost adăugată o nouă contribuție la %s ."
 
 #: controllers/ContributionController.php:396
 msgid "Contribution URL for review: "
-msgstr "URL  contribuţie pentru revizuire:"
+msgstr "URL-ul contribuţiei gata pentru evaluare:"
 
 #: controllers/ContributionController.php:402
 #, php-format
@@ -101,48 +102,48 @@ msgstr "Configurările au fost salvate."
 
 #: controllers/SettingsController.php:78
 msgid "Contribution Slug"
-msgstr ""
+msgstr "Punct de pornire pentru o contribuție"
 
 #: controllers/SettingsController.php:79
 msgid ""
 "Relative path from the Omeka root to the desired location for the "
 "contribution form. If left blank, the default path will be named "
 "&#8220;contribution.&#8221;"
-msgstr ""
+msgstr "Calea relativă din rădăcina Omeka către locația formularului dorit. Dacă se lasă liber, calea implicită va fi numită &#8220;contribuție.&#8221;"
 
 #: controllers/SettingsController.php:84
 msgid "Contribution Confirmation Email"
-msgstr "Email configurare Contribuţie"
+msgstr "Email de confirmare pentru contribuția făcută"
 
 #: controllers/SettingsController.php:85
 msgid ""
 "An email message will be sent to each contributor from this address "
 "confirming that they submitted a contribution to this website. Leave blank "
 "if you do not want an email sent."
-msgstr ""
+msgstr "Va fi trimis une mesaj email către fiecare dintre contribuitorii din această adresă, confirmându-se faptul că au trimis această contribuție la site. Lasă gol dacă nu doreștri trimiterea mailurilor."
 
 #: controllers/SettingsController.php:90
 msgid "New Contribution Notification Emails"
-msgstr ""
+msgstr "Emailuri de notificare pentru noile contribuții"
 
 #: controllers/SettingsController.php:91
 msgid ""
 "An email message will be sent to each address here whenever a new item is "
 "contributed. Leave blank if you do not want anyone to be alerted of "
 "contributions by email."
-msgstr ""
+msgstr "Va fi trimis câte un mesaj email fiecărei adrese de aici de fiecare dată când o nouă resursă va fi trimisă. Lasă gol dacă nu dorești atenționarea prin email privind contribuția făcută."
 
 #: controllers/SettingsController.php:96
 msgid "Text of Terms of Service"
-msgstr ""
+msgstr "Textul termenilor serviciului oferit."
 
 #: controllers/SettingsController.php:97
 msgid "The text of the legal disclaimer to which contributors will agree."
-msgstr ""
+msgstr "Textul disclamer-ului legal aprobat de contribuitori."
 
 #: controllers/SettingsController.php:102
 msgid "Use 'Simple' Options"
-msgstr ""
+msgstr "Folosește opțiunea „Simplu”"
 
 #: controllers/SettingsController.php:103
 msgid ""
@@ -151,11 +152,11 @@ msgid ""
 "will have to request a new password for the account. If you want to collect "
 "additional information about contributors, you cannot use the simple option."
 " See documentation for details. "
-msgstr ""
+msgstr "Acesta necesită o adresă de email a contribuitorului și creează un utilizator oaspete din această informație oferită. Dacă acei utilizatori doresc folosirea contului, aceștia vor trebui să solicite o nouă parolă pentru cont. Dacă dorești să colectezi informații suplimentare despre contribuitori, nu poți folosi opțiunea simplă. Vezi documentația pentru acest caz."
 
 #: controllers/SettingsController.php:109
 msgid "Email text to send to contributors"
-msgstr ""
+msgstr "Textul emailului care va fi trimis în email către contribuitori"
 
 #: controllers/SettingsController.php:110
 msgid ""
@@ -163,11 +164,11 @@ msgid ""
 " contribution will be appended. If using the 'Simple' option, we recommend "
 "that you notify contributors that a guest user account has been created for "
 "them, and what they gain by confirming their account."
-msgstr ""
+msgstr "Textul care va fi expediat în email către contribuitorii care trimit o resursă. Un link către propria contribuție va fi atașat. Dacă se folosește opțiunea „simplu”, este bine să avertizați contribuitorii că li s-a creat un cont de gazdă care are nevoie de confirmare."
 
 #: controllers/SettingsController.php:115
 msgid "Do not put contributions in any collection"
-msgstr ""
+msgstr "Nu puneți contribuții la întâmplare în colecții"
 
 #: controllers/SettingsController.php:118
 msgid "Contribution Collection"
@@ -177,31 +178,31 @@ msgstr "Colecţie Contribuţie"
 msgid ""
 "The collection to which contributions will be added. Changes here will only "
 "affect new contributions."
-msgstr ""
+msgstr "Colecția la care contribuțiile vor fi adăugate. Modificările de aici vor afecta doar noile contribuții."
 
 #: controllers/SettingsController.php:124
 msgid "No default type"
-msgstr ""
+msgstr "Nu există un tip presetat"
 
 #: controllers/SettingsController.php:127
 msgid "Default Contribution Type"
-msgstr ""
+msgstr "Tip de contribuție presetată"
 
 #: controllers/SettingsController.php:128
 msgid "The type that will be chosen for contributors by default."
-msgstr ""
+msgstr "Tipul presetat pentru contribuitori."
 
 #: controllers/SettingsController.php:135
 msgid "Choose a profile type for contributors"
-msgstr ""
+msgstr "Alege un profil tip pentru contribuitori"
 
 #: controllers/SettingsController.php:136
 msgid "Configure the profile type under User Profiles"
-msgstr ""
+msgstr "Configurează profilul din Profiluri Utilizator"
 
 #: controllers/SettingsController.php:137
 msgid "None"
-msgstr ""
+msgstr "Niciunul"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:103
@@ -211,17 +212,17 @@ msgstr "Anonim"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
-msgstr ""
+msgstr "Nu pot adăuga un descendent la o înregistrare care încă nu există!"
 
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
-msgstr ""
+msgstr "Copilul trebuie să fie o instanță a \"%s\""
 
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Filtrează după status"
+msgstr "Filtrează după stare"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:81
@@ -240,7 +241,7 @@ msgstr "Tipuri Contribuţie"
 
 #: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
 msgid "Submission Settings"
-msgstr ""
+msgstr "Setări pentru încărcare"
 
 #: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
 msgid "Contributions"
@@ -267,13 +268,13 @@ msgid ""
 "A basic contribution form is installed and ready to ask users to submit a "
 "Story or Image type, and to include their name and email address. If you "
 "want to modify the form, follow the steps below."
-msgstr ""
+msgstr "Formularul pentru o contribuție simplă este instalat și gata pentru a ruga utilizatorii să introducă o poveste sau o imagine și să includă numele lor și adresa de email. Dacă dorețti să modifici formularul, urmează pașii de mai jos."
 
 #: views/admin/index/index.php:21
 msgid ""
 "While an account exists for all contributors, they can make any contribution"
 " anonymously. Only the admin and super roles can see the full information."
-msgstr ""
+msgstr "De vreme ce există câte un cont pentru toți contribuitorii, aceștia pot încărca contribuții anonime. Doar administratorul și utilizatorii cu drepturi elevate pot vedea întreaga informație."
 
 #: views/admin/index/index.php:22
 msgid ""
@@ -281,21 +282,21 @@ msgid ""
 "contributions cannot be made publicly available on the site, but they are "
 "visible to the super, admin, contributor, and researcher roles, as well as "
 "to the contributors themselves."
-msgstr ""
+msgstr "Contribuitorii pot face orice contribuție publică sau contrariul. Contribuțiile private nu pot fi făcute public pe site, dar sunt vizibile următoarelor roluri: super, admin, contribuitor și cercetători, precum și celor care au făcut aceste contribuții."
 
 #: views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
-msgstr ""
+msgstr "1. Setează informațiile de utilizator oaspete:"
 
 #: views/admin/index/index.php:26
 msgid ""
 "To make repeat contributions easier, a reusable 'Guest User' account is "
 "created for contributors."
-msgstr ""
+msgstr "Pentru a ușura repetarea procesul de introducere a contribuțiilor, un cont de „Utilizator oaspete” este creat pentru cei ce introduc."
 
 #: views/admin/index/index.php:26
 msgid "Configure Guest Users"
-msgstr ""
+msgstr "Configurează utilizatorii oaspeți"
 
 #: views/admin/index/index.php:26
 msgid "with the following suggestions."
@@ -305,85 +306,85 @@ msgstr "cu următoarele sugestii"
 msgid ""
 "Let visitors know a bit about how their contributions will be used and why "
 "they are so valuable in the 'Registration Features' information."
-msgstr ""
+msgstr "Permite vizitatorilor să afle câte ceva despre felul în care vor fi folosite propriile contribuții și de ce sunt atât de valoroase în zona informațiilor ce țin de „Informații de înregistrare”."
 
 #: views/admin/index/index.php:29
 msgid ""
 "It is easiest to contribute if administrator approval is not required and "
 "you allow 20 minute instant access. To prevent spam, using ReCaptcha is "
 "recommended."
-msgstr ""
+msgstr "Este mai ușor să contribui dacă nu este necesară aprobarea administratorului și permiți 20 de minute de acces instant. Pentru a combate spam-ul, folosirea ReCaptcha este recomandabilă."
 
 #: views/admin/index/index.php:30
 msgid ""
 "Additional contribution-specific information for guest users can be created "
 "here."
-msgstr ""
+msgstr "Aici pot fi create informații specifice per fiecare contribuție pentru utilizatorii oaspeți."
 
 #: views/admin/index/index.php:34
 msgid "2. Modify the contribution form:"
-msgstr ""
+msgstr "2. Modifică formularul de contribuții:"
 
 #: views/admin/index/index.php:37
 #, php-format
 msgid ""
 "Choose item types you wish visitors to share, and customize the fields they "
 "should use, in %s"
-msgstr ""
+msgstr "Alege tipurile de elemente pe care dorești ca vizitatorii să le vadă și particularizează câmpurile pe care aceștia ar trebui să le folosească în %s"
 
 #: views/admin/index/index.php:39
 msgid "user profiles type"
-msgstr ""
+msgstr "profil tip pentru utilizator"
 
 #: views/admin/index/index.php:39
 #, php-format
 msgid ""
 "Set up profile information you would like from your contributors by setting "
 "up a %s "
-msgstr ""
+msgstr "Setează informațiile de profil pe care le soliciți contribuitorilor prin setarea %s"
 
 #: views/admin/index/index.php:41
 msgid ""
 "The optional User Profiles plugin lets you set up additional information you"
 " would like to ask from your contributors. To use those features, please "
 "install that, then return here for additional guidance."
-msgstr ""
+msgstr "Pluginul opțional al Profilelor de Utilizator, permit setarea de informații suplimentare solicitate contribuitorilor. Pentru a folosi aceste caracteristici, vă rugăm să le instalați și apoi să vă reîntoarceți aici pentru ghidaj suplimentar."
 
 #: views/admin/index/index.php:45
 msgid "submission settings"
-msgstr ""
+msgstr "setarea încărcărilor"
 
 #: views/admin/index/index.php:45
 #, php-format
 msgid "3. Configure the %s for contributions:"
-msgstr ""
+msgstr "3. Configurarea %s pentru contribuții:"
 
 #: views/admin/index/index.php:48
 msgid "Set the terms of service for contributing to the site."
-msgstr ""
+msgstr "Setează termenii de furnizare a serviciului pentru contribuțiile făcute la site."
 
 #: views/admin/index/index.php:49
 msgid ""
 "Set up an auto-generated email to send to all contributors after they submit"
 " their contribution."
-msgstr ""
+msgstr "Setează un email autogenerat pentru a trimite către toți contributorii după ce fac încărcarea."
 
 #: views/admin/index/index.php:50
 msgid ""
 "Decide whether to use the 'Simple' options. This requires only that "
 "contributors provide an email address."
-msgstr ""
+msgstr "Decide dacă folosești opțiunea „Simplu”. Aceasta cere doar ca cei care fac contribuțiile să introducă o adresă de email."
 
 #: views/admin/index/index.php:51
 msgid "Specify a collection for new contributed items."
-msgstr ""
+msgstr "Specifică o colecție pentru noile resurse contribuite."
 
 #: views/admin/index/index.php:54
 #, php-format
 msgid ""
 "4. Browse contributions and their status, with links to more contributor "
 "information, in %s"
-msgstr ""
+msgstr "4. Treci prin contribuții și după starea lor, având linkuri către mai multe informații despre cel care le-a făcut în %s"
 
 #: views/admin/items/browse.php:13
 #, php-format
@@ -399,23 +400,23 @@ msgstr "setări de securitate"
 msgid ""
 "You have not entered your %s API keys under %s. We recommend adding these "
 "keys, or the contribution form will be vulnerable to spam."
-msgstr ""
+msgstr "Nu ai introdus cheia API pentru %s sub %s. Recomandarea este să fie adăugate aceste chei, altfel, formularul poate fi abuzat de spammeri."
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:125
 msgid "Set public"
-msgstr "Setează public"
+msgstr "Setează ca public"
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:128
 msgid "Set Needs review"
-msgstr ""
+msgstr "Setează necesită evaluare"
 
 #: views/admin/items/browse.php:57
 msgid "Publication Status (click to change)"
-msgstr "Starea publicaţiei (click pentru a schimba)"
+msgstr "Etapa editorială (click pentru a schimba)"
 
 #: views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr "Starea publicaţiei"
+msgstr "Etapa editorială"
 
 #: views/admin/items/browse.php:106
 msgid "Info and contributions"
@@ -423,11 +424,11 @@ msgstr "Info şi contribuţii"
 
 #: views/admin/items/browse.php:146
 msgid "Rejected"
-msgstr ""
+msgstr "Respins"
 
 #: views/admin/items/browse.php:147
 msgid "Are you sure youo want to remove these contributions?"
-msgstr ""
+msgstr "Ești sigur că dorești să elimini aceste contribuții?"
 
 #: views/admin/items/browse.php:155
 msgid "There is no contribution yet."
@@ -436,19 +437,19 @@ msgstr "Încă nu există nicio contribuţie."
 #: views/admin/items/browse.php:157
 #, php-format
 msgid "The query searched %d contributions and returned no results."
-msgstr ""
+msgstr "Interogarea a căutat prin %d contribuții și nu a returnat rezultate."
 
 #: views/admin/items/browse.php:158
 msgid "See all contributions."
-msgstr ""
+msgstr "Vezi toate contribuțiile."
 
 #: views/admin/types/add-existing-element.php:27
 msgid "Prompt:"
-msgstr ""
+msgstr "Prompt:"
 
 #: views/admin/types/add-existing-element.php:30
 msgid "Large text"
-msgstr ""
+msgstr "Text mărit"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
@@ -461,28 +462,28 @@ msgstr "Adaugă un tip nou"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr ""
+msgstr "Încarcă fișier"
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
-msgstr ""
+msgstr "Tipul de resursă din lista de resurse a siteului pe care ai dori să o folosești."
 
 #: views/admin/types/form.php:28
 msgid ""
 "The label you would like to use for this contribution type. If blank, the "
 "Item Type name will be used."
-msgstr ""
+msgstr "Eticheta pe care ai dori să o folosești pentru acest tip de contribuție. Dacă este necompletată, atunci numele Tipului de Resursă va fi folosit."
 
 #: views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
-msgstr ""
+msgstr "Permite încărcarea fișierului prin intermediul formularului"
 
 #: views/admin/types/form.php:40
 msgid ""
 "Enable or disable file uploads through the public contribution form. If set "
 "to &#8220;Required,&#8220; users must add a file to their contribution when "
 "selecting this item type."
-msgstr ""
+msgstr "Activează sau dezactivează încărcarea de fișiere prin intermediul formularului dedicat contribuțiilor publice. Dacă este setat la &#8220;Obligatoriu,&#8220; , utilizatorii trebuie să adauge un fițier contribuțiilor pe care le fac selectând acest tip de resursă."
 
 #: views/admin/types/form.php:42
 #, php-format
@@ -491,7 +492,7 @@ msgstr "%s"
 
 #: views/admin/types/form.php:58
 msgid "Prompt"
-msgstr ""
+msgstr "Prompt"
 
 #: views/admin/types/form.php:60
 msgid "Multiple rows"
@@ -499,15 +500,15 @@ msgstr "Multiple rânduri"
 
 #: views/public/contribution/contribute.php:47
 msgid "What type of item do you want to contribute?"
-msgstr ""
+msgstr "Ce tip de resursă dorești să încarci?"
 
 #: views/public/contribution/contribute.php:62
 msgid "Publish my contribution on the web."
-msgstr ""
+msgstr "Publică-mi contribuția pe web."
 
 #: views/public/contribution/contribute.php:67
 msgid "Contribute anonymously."
-msgstr ""
+msgstr "Contribuie anonim."
 
 #: views/public/contribution/contribute.php:69
 msgid "Terms and Conditions"
@@ -516,11 +517,11 @@ msgstr "Termeni şi condiţii"
 #: views/public/contribution/contribute.php:69
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
-msgstr ""
+msgstr "Pentru a face o contribuție, trebuie să citești și să aprobi %s"
 
 #: views/public/contribution/contribute.php:73
 msgid "I agree to the Terms and Conditions."
-msgstr ""
+msgstr "Sunt de acord cu Termenii și Condițiile."
 
 #: views/public/contribution/contribute.php:75
 msgid "Contribute"
@@ -532,26 +533,26 @@ msgstr "Adăugat"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
-msgstr ""
+msgstr "Termeni și Condiții per contribuție"
 
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
-msgstr ""
+msgstr "Mulțumiri pentru contribuție!"
 
 #: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
-msgstr ""
+msgstr "Fă o nouă contribuție"
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr ""
+msgstr "răsfoiește arhiva"
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
 msgid ""
 "Your contribution will show up in the archive once an administrator approves"
 " it. Meanwhile, feel free to %s or %s ."
-msgstr ""
+msgstr "Contribuția personală va apărea în arhivă de îndată ce un administrator o va aproba. Între timp, poți să %s ori să %s ."
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
@@ -563,22 +564,22 @@ msgid ""
 "If you would like to interact with the site further, you can use an account "
 "that is ready for you. Visit %s, and request a new password for the email "
 "you used"
-msgstr ""
+msgstr "Dacă dorești să interacționezi mai departe cu acest site, poți folosi un cont care te așteaptă deja. Mergi la %s și cere o nouă parolă pentru emailul folosit"
 
 #: views/public/contribution/type-form.php:29
 msgid "Upload a file (Optional)"
-msgstr ""
+msgstr "Încarcă un fișier (opțional)"
 
 #: views/public/contribution/type-form.php:37
 msgid "Email (Required)"
-msgstr "Email (Cerut)"
+msgstr "Email (obligatoriu)"
 
 #: views/public/contribution/type-form.php:49
 #, php-format
 msgid "You are logged in as: %s"
-msgstr ""
+msgstr "Ești logat ca %s"
 
 #: views/public/contribution/type-form.php:64
 #, php-format
 msgid "Your %s profile"
-msgstr ""
+msgstr "Profilul personal %s"

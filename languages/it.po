@@ -3,105 +3,105 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Gabriel Radev <gabosss@gmail.com>, 2014-2015
+# Guybrush88 <erpizzo@alice.it>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2015-03-12 22:43+0000\n"
-"Last-Translator: Gabriel Radev <gabosss@gmail.com>\n"
-"Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/projects/p/omeka/language/bg_BG/)\n"
+"PO-Revision-Date: 2015-03-17 19:19+0000\n"
+"Last-Translator: Guybrush88 <erpizzo@alice.it>\n"
+"Language-Team: Italian (http://www.transifex.com/projects/p/omeka/language/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: bg_BG\n"
+"Language: it\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: models/ContributionType.php:101
 msgid "Allowed"
-msgstr "Допустим"
+msgstr ""
 
 #: models/ContributionType.php:102
 msgid "Required"
-msgstr "Задължителен"
+msgstr "Richiesto"
 
 #: models/ContributionType.php:100
 msgid "Disallowed"
-msgstr "Недопустим"
+msgstr "Non permesso"
 
 #: models/ContributionContributedItem.php:46
 msgid "Deleted User"
-msgstr "Изтрит потребител"
+msgstr "Utente eliminato"
 
 #: ContributionPlugin.php:285 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
-msgstr "Документи от Сътрудник"
+msgstr "Oggetti contribuiti"
 
 #: ContributionPlugin.php:288 ContributionPlugin.php:370
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
-msgstr "Сътрудник"
+msgstr ""
 
 #: ContributionPlugin.php:309
 msgid "Contribute an Item"
-msgstr "Документ на Сътрудник"
+msgstr "Contribuisci un oggetto"
 
 #: ContributionPlugin.php:549
 msgid "Contributed by:"
-msgstr "Допринесъл с:"
+msgstr "Contribuito da:"
 
 #: ContributionPlugin.php:554
 msgid "This item can be made public."
-msgstr "Този документ може да бъде публичен"
+msgstr "Questo oggetto può essere reso pubblico."
 
 #: ContributionPlugin.php:556
 msgid "This item cannot be made public."
-msgstr "Този документ не може да е публичен"
+msgstr "Questo oggetto non può essere reso pubblico."
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
-msgstr "Вашите приноси са обновени."
+msgstr "I tuoi contributi sono stati aggiornati."
 
 #: controllers/ContributionController.php:192
 msgid "You must select a type for your contribution."
-msgstr "Трябва да изберете типа за вашият принос"
+msgstr "Devi selezionare un tipo per il tuo contributo."
 
 #: controllers/ContributionController.php:339
 msgid "You must agree to the Terms and Conditions."
-msgstr "Трябва да се съгласите с Правилата и условията."
+msgstr "Devi accettare le condizioni d'uso."
 
 #: controllers/ContributionController.php:368
 msgid "Contribution URL (pending review by project staff): "
-msgstr "URL на Сътрудник (изчакване на преглед от екипа)"
+msgstr ""
 
 #: controllers/ContributionController.php:372
 #, php-format
 msgid "Your %s Contribution"
-msgstr "Вашият %s Принос"
+msgstr "Il tuo contributo %s"
 
 #: controllers/ContributionController.php:391
 #, php-format
 msgid "A new contribution to %s has been made."
-msgstr "Ново сътрудничество с %s беше създадено."
+msgstr ""
 
 #: controllers/ContributionController.php:396
 msgid "Contribution URL for review: "
-msgstr "Сътрудническо URL за преглед:"
+msgstr ""
 
 #: controllers/ContributionController.php:402
 #, php-format
 msgid "New %s Contribution"
-msgstr "Ново %s Сътрудничество"
+msgstr "Nuovo contributo %s"
 
 #: controllers/SettingsController.php:34
 msgid "Settings have been saved."
-msgstr "Настройките бяха записани"
+msgstr ""
 
 #: controllers/SettingsController.php:78
 msgid "Contribution Slug"
-msgstr "Кратко име за Съпричастен"
+msgstr ""
 
 #: controllers/SettingsController.php:79
 msgid ""
@@ -112,7 +112,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:84
 msgid "Contribution Confirmation Email"
-msgstr "Потвърждаващ имейл за Сътрудник"
+msgstr ""
 
 #: controllers/SettingsController.php:85
 msgid ""
@@ -123,7 +123,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:90
 msgid "New Contribution Notification Emails"
-msgstr "Уведомителни писма за нов Сътрудник"
+msgstr ""
 
 #: controllers/SettingsController.php:91
 msgid ""
@@ -134,7 +134,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:96
 msgid "Text of Terms of Service"
-msgstr "Текст на Условия за ползване на услугата"
+msgstr ""
 
 #: controllers/SettingsController.php:97
 msgid "The text of the legal disclaimer to which contributors will agree."
@@ -142,7 +142,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:102
 msgid "Use 'Simple' Options"
-msgstr "Използване на \"Прости\" настройки"
+msgstr ""
 
 #: controllers/SettingsController.php:103
 msgid ""
@@ -155,7 +155,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:109
 msgid "Email text to send to contributors"
-msgstr "Текст на емайла за изпращане на сътрудниците"
+msgstr ""
 
 #: controllers/SettingsController.php:110
 msgid ""
@@ -167,7 +167,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:115
 msgid "Do not put contributions in any collection"
-msgstr "Да не се слагат сътрудниците в никоя колекция"
+msgstr ""
 
 #: controllers/SettingsController.php:118
 msgid "Contribution Collection"
@@ -181,11 +181,11 @@ msgstr ""
 
 #: controllers/SettingsController.php:124
 msgid "No default type"
-msgstr "Няма тип по подразбиране"
+msgstr "Nessun tipo predefinito"
 
 #: controllers/SettingsController.php:127
 msgid "Default Contribution Type"
-msgstr "Тип сътрудник по подразбиране"
+msgstr "Tipo di contributo predefinito"
 
 #: controllers/SettingsController.php:128
 msgid "The type that will be chosen for contributors by default."
@@ -193,21 +193,21 @@ msgstr ""
 
 #: controllers/SettingsController.php:135
 msgid "Choose a profile type for contributors"
-msgstr "Изберете типа профил за сътрудниците"
+msgstr ""
 
 #: controllers/SettingsController.php:136
 msgid "Configure the profile type under User Profiles"
-msgstr "Конфигуриране на типа профил от Потребителски профили"
+msgstr ""
 
 #: controllers/SettingsController.php:137
 msgid "None"
-msgstr "Нищо"
+msgstr "Niente"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:103
 #: views/public/contribution/my-contributions.php:9
 msgid "Anonymous"
-msgstr "Анонимен"
+msgstr "Anonimo"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
@@ -221,30 +221,30 @@ msgstr ""
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Филтриране по статус"
+msgstr "Filtra per stato"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:81
 #: views/admin/items/browse.php:143
 msgid "Needs review"
-msgstr "Изисква преглед"
+msgstr "Deve essere revisionato"
 
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
-msgstr "Да започваме"
+msgstr "Incominciare"
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
 msgid "Contribution Types"
-msgstr "Типове Сътрудници"
+msgstr "Tipi di contributo"
 
 #: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
 msgid "Submission Settings"
-msgstr "Изпращане на настройките"
+msgstr ""
 
 #: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
 msgid "Contributions"
-msgstr "Сътрудници"
+msgstr "Contributi"
 
 #: views/admin/contributors/browse.php:28
 msgid "ID"
@@ -252,15 +252,15 @@ msgstr "ID"
 
 #: views/admin/contributors/show.php:20
 msgid "'s contributions"
-msgstr "'s сътрудници"
+msgstr "contributi di"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
-msgstr "Профил:"
+msgstr "Profilo:"
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:85
 msgid "Private contribution"
-msgstr "Таен сътрудник"
+msgstr "Contributo privato"
 
 #: views/admin/index/index.php:20
 msgid ""
@@ -285,7 +285,7 @@ msgstr ""
 
 #: views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
-msgstr "1. Настройка на информация за Гост потребител:"
+msgstr ""
 
 #: views/admin/index/index.php:26
 msgid ""
@@ -295,11 +295,11 @@ msgstr ""
 
 #: views/admin/index/index.php:26
 msgid "Configure Guest Users"
-msgstr ""
+msgstr "Configura gli utenti ospiti"
 
 #: views/admin/index/index.php:26
 msgid "with the following suggestions."
-msgstr "със следните предложения."
+msgstr "con i seguenti suggerimenti."
 
 #: views/admin/index/index.php:28
 msgid ""
@@ -333,7 +333,7 @@ msgstr ""
 
 #: views/admin/index/index.php:39
 msgid "user profiles type"
-msgstr "типове потребителски профили"
+msgstr ""
 
 #: views/admin/index/index.php:39
 #, php-format
@@ -392,7 +392,7 @@ msgstr ""
 
 #: views/admin/items/browse.php:27
 msgid "security settings"
-msgstr "настройки на сигурността"
+msgstr ""
 
 #: views/admin/items/browse.php:27
 #, php-format
@@ -403,11 +403,11 @@ msgstr ""
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:125
 msgid "Set public"
-msgstr "Направи публичен"
+msgstr ""
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:128
 msgid "Set Needs review"
-msgstr "Отбележи като нуждаещ се от преглед"
+msgstr ""
 
 #: views/admin/items/browse.php:57
 msgid "Publication Status (click to change)"
@@ -415,15 +415,15 @@ msgstr ""
 
 #: views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr "Статус на публикуване"
+msgstr "Stato della pubblicazione"
 
 #: views/admin/items/browse.php:106
 msgid "Info and contributions"
-msgstr "Информация и сътрудници"
+msgstr "Informazioni e contributi"
 
 #: views/admin/items/browse.php:146
 msgid "Rejected"
-msgstr "Отказан"
+msgstr "Rifiutato"
 
 #: views/admin/items/browse.php:147
 msgid "Are you sure youo want to remove these contributions?"
@@ -440,28 +440,28 @@ msgstr ""
 
 #: views/admin/items/browse.php:158
 msgid "See all contributions."
-msgstr "Виж всички сътрудници."
+msgstr "Vedi tutti i contributi"
 
 #: views/admin/types/add-existing-element.php:27
 msgid "Prompt:"
-msgstr "Подсказка:"
+msgstr ""
 
 #: views/admin/types/add-existing-element.php:30
 msgid "Large text"
-msgstr "Голям текст"
+msgstr "Testo grande"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
 msgid "Types"
-msgstr "Типове"
+msgstr "Tipi"
 
 #: views/admin/types/add.php:35
 msgid "Add a new type"
-msgstr "Добавяне на нов тип"
+msgstr ""
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr "Качване на файл"
+msgstr ""
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
@@ -495,7 +495,7 @@ msgstr ""
 
 #: views/admin/types/form.php:60
 msgid "Multiple rows"
-msgstr "Няколко реда"
+msgstr ""
 
 #: views/public/contribution/contribute.php:47
 msgid "What type of item do you want to contribute?"
@@ -503,15 +503,15 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:62
 msgid "Publish my contribution on the web."
-msgstr ""
+msgstr "Pubblica il mio contributo sul web."
 
 #: views/public/contribution/contribute.php:67
 msgid "Contribute anonymously."
-msgstr ""
+msgstr "Contribuisci in maniera anonima."
 
 #: views/public/contribution/contribute.php:69
 msgid "Terms and Conditions"
-msgstr "Правила и условия"
+msgstr ""
 
 #: views/public/contribution/contribute.php:69
 #, php-format
@@ -520,31 +520,31 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:73
 msgid "I agree to the Terms and Conditions."
-msgstr "Съгласен съм с Правилата и условията"
+msgstr "Accetto le condizioni d'uso."
 
 #: views/public/contribution/contribute.php:75
 msgid "Contribute"
-msgstr ""
+msgstr "Contribuisci"
 
 #: views/public/contribution/my-contributions.php:11
 msgid "Added"
-msgstr "Добавен"
+msgstr "Aggiunto"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
-msgstr ""
+msgstr "Condizioni d'uso dei contributi"
 
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
-msgstr "Благодаря за сътрудничеството!"
+msgstr "Grazie per aver contribuito!"
 
 #: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
-msgstr ""
+msgstr "effettua un altro contributo"
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr "преглед на архива"
+msgstr "esplora l'archivio"
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
@@ -555,7 +555,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr "тази страница"
+msgstr "questa pagina"
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -567,18 +567,18 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:29
 msgid "Upload a file (Optional)"
-msgstr "Качване на файл (Опция)"
+msgstr "Carica un file (facoltativo)"
 
 #: views/public/contribution/type-form.php:37
 msgid "Email (Required)"
-msgstr "Имейл (задължителен)"
+msgstr "E-mail (richiesta)"
 
 #: views/public/contribution/type-form.php:49
 #, php-format
 msgid "You are logged in as: %s"
-msgstr "Вие сте влезли като: %s"
+msgstr "Hai effettuato l'accesso come: %s"
 
 #: views/public/contribution/type-form.php:64
 #, php-format
 msgid "Your %s profile"
-msgstr "Вашият %s профил"
+msgstr "Il tuo profilo %s"
