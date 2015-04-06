@@ -413,7 +413,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     array('contributor' => 'ContributionContributor',
                           'field'       => 'ContributionContributorField'
                             ));
-            //$adapters['contribution_contributor_values'] = $contributionValueAdapter;;
+            $adapters['contribution_contributor_values'] = $contributionValueAdapter;;
             
             return $adapters;
         }

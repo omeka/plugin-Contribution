@@ -9,7 +9,7 @@ class Api_ContributionContributor extends Omeka_Record_Api_AbstractRecordAdapter
             'url'   => self::getResourceUrl("/contribution_contributors/{$record->id}"),
             'name'  => $record->name,
             'email' => $record->email,
-            'ip_address' => $record->ip_address
+            'ip_address' => $record->getDottedIpAddress()
             );
         return $representation;
     }
