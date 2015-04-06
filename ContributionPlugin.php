@@ -377,10 +377,17 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         if ( (strpos($args['endpointUri'], 'omeka.net') !== false)
             || (strpos($args['endpointUri'], 'omeka-staging.net') !== false) ) {
+
+            $contributionContributorAdapter = 
+                new ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter(null, $args['endpointUri'], 'ContributionContributor');
+            $adapters['contribution_contributors'] = $contributionContributorAdapter;
             
             $contributedItemAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
-            $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
+            $contributedItemAdapter->setResourceProperties(
+                    array('item' => 'Item',
+                          'contributor' => 'ContributionContributor'
+                            ));
             $adapters['contribution_contributed_items'] = $contributedItemAdapter;
             
             $contributionTypeAdapter = 
@@ -397,10 +404,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                          )
                     );
             $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
-            
-            $contributionContributorAdapter = 
-                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributor');
-            $adapters['contribution_contributors'] = $contributionContributorAdapter;
 
             $contributionFieldAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributorField');
@@ -409,11 +412,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             
             $contributionValueAdapter = 
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributorValue');
-            $contributionTypeAdapter->setResourceProperties(
+            $contributionValueAdapter->setResourceProperties(
                     array('contributor' => 'ContributionContributor',
                           'field'       => 'ContributionContributorField'
                             ));
-            $adapters['contribution_contributor_values'] = $contributionValueAdapter;;
+            $adapters['contribution_contributor_values'] = $contributionValueAdapter;
             
             return $adapters;
         }
