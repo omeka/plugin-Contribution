@@ -47,6 +47,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'public_navigation_main',
         'simple_vocab_routes',
         'api_resources',
+        'api_import_omeka_adapters'
         );
 
     protected $_options = array(
@@ -371,7 +372,54 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                           'actions' => array('type-form', 'contribute'));
         return $routes;
     }
+    
+    public function filterApiImportOmekaAdapters($adapters, $args)
+    {
+        if ( (strpos($args['endpointUri'], 'omeka.net') !== false)
+            || (strpos($args['endpointUri'], 'omeka-staging.net') !== false) ) {
+            
+            $contributedItemAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
+            $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
+            $adapters['contribution_contributed_items'] = $contributedItemAdapter;
+            
+            $contributionTypeAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
+            $contributionTypeAdapter->setResourceProperties(array('item_type' => 'ItemType'));
+            $adapters['contribution_types'] = $contributionTypeAdapter;
+    
+            $contributionTypeElementsAdapter =
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
+            $contributionTypeElementsAdapter->setResourceProperties(
+                    array(
+                         'element' => 'Element',
+                         'type'    => 'ContributionType'
+                         )
+                    );
+            $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
+            
+            $contributionContributorAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributor');
+            $adapters['contribution_contributors'] = $contributionContributorAdapter;
 
+            $contributionFieldAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributorField');
+            $adapters['contribution_contributor_fields'] = $contributionFieldAdapter;
+            
+            
+            $contributionValueAdapter = 
+                new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributorValue');
+            $contributionTypeAdapter->setResourceProperties(
+                    array('contributor' => 'ContributionContributor',
+                          'field'       => 'ContributionContributorField'
+                            ));
+            //$adapters['contribution_contributor_values'] = $contributionValueAdapter;;
+            
+            return $adapters;
+        }
+        return $adapters;
+    }
+        
     /**
      * Append Contribution search selectors to the advanced search page.
      *
