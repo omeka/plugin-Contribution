@@ -10,6 +10,7 @@
  * Controller for editing and viewing Contribution plugin contributors.
  */
 class Contribution_ContributorsController extends Omeka_Controller_AbstractActionController
+     implements Zend_Acl_Resource_Interface
 {
     
     public function init()
@@ -25,4 +26,9 @@ class Contribution_ContributorsController extends Omeka_Controller_AbstractActio
     {
         $this->_forward('browse');
     }
+    
+    public function getResourceId()
+    {
+        return 'Contribution_Contributors';
+    } 
 }

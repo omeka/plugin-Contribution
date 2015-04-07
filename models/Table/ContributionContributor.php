@@ -15,6 +15,16 @@
  */
 class Table_ContributionContributor extends Omeka_Db_Table
 {
+    
+    public function getSelectForFindBy($params)
+    {
+        $select = parent::getSelectForFindBy($params);
+        //hide the browse page from the API if not allowed
+        if (! is_allowed('Contribution_Contributors')) {
+            $select->where(0);
+        }
+        return $select;
+    }
     /**
      * Retrieve a contributor by email address/name combination.
      * 
