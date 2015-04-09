@@ -20,7 +20,7 @@ class Table_ContributionContributor extends Omeka_Db_Table
     {
         $select = parent::getSelectForFindBy($params);
         //hide the browse page from the API if not allowed
-        if (! is_allowed('Contribution_Contributors')) {
+        if (! is_allowed('Contribution_Contributors', 'browse')) {
             $select->where(0);
         }
         return $select;
