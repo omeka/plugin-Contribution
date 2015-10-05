@@ -17,7 +17,7 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-    <h2><?php echo $contributor->name; ?><?php echo __("'s contributions"); ?></h2>
+    <h2><?php echo __("%s's contributions", $contributor->name); ?></h2>
     
     <?php if(plugin_is_active('UserProfiles')): ?>
     <div id='contribution-profile-info'>
