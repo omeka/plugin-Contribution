@@ -95,7 +95,7 @@ class Mixin_ContributionOrder extends Omeka_Record_Mixin_AbstractMixin
             array($parentId));
     }
 
-    public function addChild(Omeka_Record $child)
+    public function addChild(Omeka_Record_AbstractRecord $child)
     {
         if (!$this->_record->exists()) {
             throw new Omeka_Record_Exception(__('Cannot add a child to a record that does not exist yet!'));

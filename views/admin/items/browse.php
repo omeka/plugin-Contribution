@@ -45,7 +45,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
 
         <?php echo common('contribution-quick-filters'); ?>
 
-        <table id="contributions" cellspacing="0" cellpadding="0">
+        <table id="contributions">
         <thead id="types-table-head">
             <tr>
                 <?php if ($allowToManage): ?>

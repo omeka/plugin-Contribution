@@ -261,7 +261,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item->setOwner($user);
                 $item->save();
                 $item = update_item($item, $itemMetadata, array(), $fileMetadata);
-            } catch(Omeka_Validator_Exception $e) {
+            } catch(Omeka_Validate_Exception $e) {
                 $this->flashValidatonErrors($e);
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
@@ -282,7 +282,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
-            $this->_linkItemToContributedItem($item, $contributor, $post);
+            $this->_linkItemToContributedItem($item, null, $post);
             $this->_sendEmailNotifications($user, $item);
             return true;
         }
