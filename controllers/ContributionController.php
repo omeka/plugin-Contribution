@@ -61,12 +61,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $csrf = new Omeka_Form_SessionCsrf;
         $this->view->csrf = $csrf;
         if(!empty($_POST)) {
+            $defaultType = get_option('contribution_default_type');
             if (!$csrf->isValid($_POST)) {
                 $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
-                } else if ($defaultType = get_option('contribution_default_type')) {
+                } elseif ($defaultType) {
                     $typeId = $defaultType;
                 }
                 $this->_setupContributeSubmit($typeId);
@@ -79,7 +80,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
-                } else if ($defaultType = get_option('contribution_default_type')) {
+                } elseif ($defaultType) {
                     $typeId = $defaultType;
                 }
                 if ($this->_captcha) {
@@ -146,7 +147,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
 
-            if($user = current_user()) {
+            $user = current_user();
+            if($user) {
                 $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
             }
             if(empty($profile)) {
@@ -248,7 +250,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
             // This is a hack to allow the file upload job to succeed
             // even with the synchronous job dispatcher.
-            if ($acl = get_acl()) {
+            $acl = get_acl();
+            if ($acl) {
                 $acl->allow(null, 'Items', 'showNotPublic');
                 $acl->allow(null, 'Collections', 'showNotPublic');
             }

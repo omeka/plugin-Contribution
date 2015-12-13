@@ -181,7 +181,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             }
 
             $pagePath = get_option('contribution_page_path');
-            if ($pagePath = 'contribution/') {
+            $pagePath = 'contribution/';
+            if ($pagePath) {
                 delete_option('contribution_page_path');
             } else {
                 set_option('contribution_page_path', trim($pagePath, '/'));
@@ -524,11 +525,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookItemsBrowseSql($args)
     {
+        $select = $args['select'];
+        $params = $args['params'];
 
-    $select = $args['select'];
-    $params = $args['params'];
-
-        if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        if ($request) {
             $db = get_db();
 
             $contributed = $request->get('contributed');
