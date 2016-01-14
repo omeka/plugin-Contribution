@@ -29,61 +29,60 @@ msgstr ""
 msgid "Disallowed"
 msgstr ""
 
-#: models/ContributionContributedItem.php:46
 msgid "Deleted User"
 msgstr ""
 
-#: ContributionPlugin.php:304 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:415 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:307 ContributionPlugin.php:389
+#: ContributionPlugin.php:418 ContributionPlugin.php:500
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr ""
 
-#: ContributionPlugin.php:328
+#: ContributionPlugin.php:439
 msgid "Contribute an Item"
 msgstr ""
 
-#: ContributionPlugin.php:371
+#: ContributionPlugin.php:482
 msgid "Contribution Status"
 msgstr ""
 
-#: ContributionPlugin.php:377
+#: ContributionPlugin.php:488
 msgid "Only Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:378
+#: ContributionPlugin.php:489
 msgid "Only Non-Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:539
+#: ContributionPlugin.php:650
 msgid "Anonymous, "
 msgstr ""
 
-#: ContributionPlugin.php:565
+#: ContributionPlugin.php:676
 msgid "My Contributions"
 msgstr ""
 
-#: ContributionPlugin.php:576
+#: ContributionPlugin.php:687
 msgid "See all my contributions"
 msgstr ""
 
-#: ContributionPlugin.php:579
+#: ContributionPlugin.php:690
 msgid "No contribution yet."
 msgstr ""
 
-#: ContributionPlugin.php:593
+#: ContributionPlugin.php:704
 msgid "Contributed by:"
 msgstr ""
 
-#: ContributionPlugin.php:598
+#: ContributionPlugin.php:709
 msgid "This item can be made public."
 msgstr ""
 
-#: ContributionPlugin.php:600
+#: ContributionPlugin.php:711
 msgid "This item cannot be made public."
 msgstr ""
 
@@ -91,46 +90,46 @@ msgstr ""
 msgid "Your contributions have been updated."
 msgstr ""
 
-#: controllers/ContributionController.php:216
+#: controllers/ContributionController.php:226
 msgid "You must select a type for your contribution."
 msgstr ""
 
-#: controllers/ContributionController.php:365
+#: controllers/ContributionController.php:382
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr ""
 
-#: controllers/ContributionController.php:370
+#: controllers/ContributionController.php:387
 msgid "You must agree to the Terms and Conditions."
 msgstr ""
 
-#: controllers/ContributionController.php:399
+#: controllers/ContributionController.php:416
 msgid "Contribution URL (pending review by project staff): "
 msgstr ""
 
-#: controllers/ContributionController.php:400
+#: controllers/ContributionController.php:417
 #, php-format
 msgid "Your username is %s"
 msgstr ""
 
-#: controllers/ContributionController.php:403
+#: controllers/ContributionController.php:420
 msgid "To log in and change your username, request a password here: "
 msgstr ""
 
-#: controllers/ContributionController.php:407
+#: controllers/ContributionController.php:424
 #, php-format
 msgid "Your %s Contribution"
 msgstr ""
 
-#: controllers/ContributionController.php:426
+#: controllers/ContributionController.php:443
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr ""
 
-#: controllers/ContributionController.php:431
+#: controllers/ContributionController.php:448
 msgid "Contribution URL for review: "
 msgstr ""
 
-#: controllers/ContributionController.php:437
+#: controllers/ContributionController.php:454
 #, php-format
 msgid "New %s Contribution"
 msgstr ""
@@ -244,6 +243,10 @@ msgstr ""
 msgid "None"
 msgstr ""
 
+#: models/ContributionContributedItem.php:46
+msgid "Unknown User"
+msgstr ""
+
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:9
@@ -291,7 +294,8 @@ msgid "ID"
 msgstr ""
 
 #: views/admin/contributors/show.php:20
-msgid "'s contributions"
+#, php-format
+msgid "%s's contributions"
 msgstr ""
 
 #: views/admin/contributors/show.php:26
@@ -486,11 +490,11 @@ msgstr ""
 msgid "See all contributions."
 msgstr ""
 
-#: views/admin/types/add-existing-element.php:27
+#: views/admin/types/add-existing-element.php:15
 msgid "Prompt:"
 msgstr ""
 
-#: views/admin/types/add-existing-element.php:30 views/admin/types/form.php:60
+#: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
 msgid "Multiple rows"
 msgstr ""
 
@@ -618,34 +622,34 @@ msgstr ""
 msgid "Contribute a %s"
 msgstr ""
 
-#: views/public/contribution/type-form.php:13
+#: views/public/contribution/type-form.php:14
 msgid "Upload a file"
 msgstr ""
 
-#: views/public/contribution/type-form.php:29
+#: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
 msgstr ""
 
-#: views/public/contribution/type-form.php:37
+#: views/public/contribution/type-form.php:46
 msgid "Email (Required)"
 msgstr ""
 
-#: views/public/contribution/type-form.php:49
+#: views/public/contribution/type-form.php:61
 #, php-format
 msgid "You are logged in as: %s"
 msgstr ""
 
-#: views/public/contribution/type-form.php:64
+#: views/public/contribution/type-form.php:76
 #, php-format
 msgid "Your %s profile"
 msgstr ""
 
-#: views/public/contribution/type-form.php:67
-#: views/public/contribution/type-form.php:69
+#: views/public/contribution/type-form.php:79
+#: views/public/contribution/type-form.php:81
 msgid "Show"
 msgstr ""
 
-#: views/public/contribution/type-form.php:67
-#: views/public/contribution/type-form.php:69
+#: views/public/contribution/type-form.php:79
+#: views/public/contribution/type-form.php:81
 msgid "Hide"
 msgstr ""
