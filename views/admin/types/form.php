@@ -39,7 +39,7 @@
         <div class="inputs five columns omega">
             <p class="explanation"><?php echo __("Enable or disable file uploads through the public contribution form. If set to &#8220;Required,&#8220; users must add a file to their contribution when selecting this item type."); ?></p>
             <div class="input-block">
-               <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array(), ContributionType::getPossibleFilePermissions()); ?>
+               <?php echo $this->formSelect('file_permissions', $contribution_type->file_permissions, array(), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
      </div>  

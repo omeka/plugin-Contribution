@@ -536,11 +536,6 @@ msgid ""
 "selecting this item type."
 msgstr ""
 
-#: views/admin/types/form.php:42
-#, php-format
-msgid "%s"
-msgstr ""
-
 #: views/admin/types/form.php:58
 msgid "Prompt"
 msgstr ""
