@@ -461,6 +461,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         }
     }
 
+    
+    
+    
     protected function _createNewGuestUser($post)
     {
         $user = new User();
@@ -486,6 +489,29 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         } catch(Exception $e) {
             _log($e);
         }
+        return $user;
+    }
+    
+    protected function _createNewAnonymousUser($post)
+    {
+        $user = new User();
+        $userTable = $this->_helper->db->getTable('User');
+        $anonymousCount = $userTable->count(array('role' => 'contribution_anonymous'));
+        $email = "anonymous" . $anonymousCount . "@" . $_SERVER['HTTP_HOST'];
+        $split = explode('@', $email);
+        $name = $split[0];
+        if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
+            $username = str_replace('@', 'AT', $email);
+            $username = str_replace('.', 'DOT', $username);
+            $user->username = $username;
+        } else {
+            $user->username = $email;
+        }
+        $user->email = $email;
+        $user->name = $name;
+        $user->role = 'contribution_anonymous';
+        $user->active = 0;
+        $user->save();
         return $user;
     }
 }
