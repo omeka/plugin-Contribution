@@ -100,13 +100,22 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             'attribs'     => array('class' => 'html-editor', 'rows' => '15')
         ));
 
+        
         $form->addElementToEditGroup('checkbox', 'contribution_simple', array(
-            'label' => __("Use 'Simple' Options"),
+            'label' => __("Allow Non-registered Contributions"),
             'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, you cannot use the simple option. See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
             ),
             array('checked'=> (bool) get_option('contribution_simple') ? 'checked' : '')
         );
 
+
+        $form->addElementToEditGroup('checkbox', 'contribution_strict_anonymous', array(
+            'label' => __("Allow Anonymous Contributions"),
+            'description' => __("See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
+            ),
+            array('checked'=> (bool) get_option('contribution_strict_anonymous') ? 'checked' : '')
+        );
+        
         $form->addElementToEditGroup('textarea', 'contribution_email', array(
             'label' => __("Email text to send to contributors"),
             'description' => __("Email text to send to contributors when they submit an item. A link to their contribution will be appended. If using the 'Simple' option, we recommend that you notify contributors that a guest user account has been created for them, and what they gain by confirming their account."),

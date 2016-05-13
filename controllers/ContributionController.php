@@ -189,12 +189,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
-            $simple = get_option('contribution_simple');
+            $simple = get_option('contribution_simple'); //now means allow open
+            $strictAnonymous = isset($post['contribution-strict-anonymous']);
 
-            if(!$user && $simple) {
+            if(!$user && $simple && !$strictAnonymous) {
                 $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
             }
 
+            if (!$user && $strictAnonymous) {
+                $user = $this->_createNewAnonymousUser();
+            }
             // if still not a user, need to create one based on the email address
             if(!$user) {
                 $user = $this->_createNewGuestUser($post);
@@ -507,6 +511,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         } else {
             $user->username = $email;
         }
+        debug($email);
         $user->email = $email;
         $user->name = $name;
         $user->role = 'contribution_anonymous';

@@ -68,6 +68,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_user_profile_type',
         'contribution_simple',
         'contribution_email',
+        'contribution_strict_anonymous'
     );
 
     public function setUp()

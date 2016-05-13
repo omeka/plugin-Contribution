@@ -35,7 +35,10 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
     
     <h1><?php echo $head['title']; ?></h1>
 
-    <?php if(!get_option('contribution_simple') && !$user = current_user()) :?>
+    <?php if(! ($user = current_user() )
+              && !(get_option('contribution_simple') || get_option('contribution_strict_anonymous') )
+            ):
+    ?>
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>
@@ -67,7 +70,13 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <div class="inputs">
                     <?php $anonymous = isset($_POST['contribution-anonymous']) ? $_POST['contribution-anonymous'] : 0; ?>
                     <?php echo $this->formCheckbox('contribution-anonymous', $anonymous, null, array(1, 0)); ?>
-                    <?php echo $this->formLabel('contribution-anonymous', __("Contribute anonymously.")); ?>
+                    <?php echo $this->formLabel('contribution-anonymous', __("Keep identity private.")); ?>
+                </div>
+                
+                <div class="inputs">
+                    <?php $anonymous = isset($_POST['contribution-strict-anonymous']) ? $_POST['contribution-strict-anonymous'] : 0; ?>
+                    <?php echo $this->formCheckbox('contribution-strict-anonymous', $anonymous, null, array(1, 0)); ?>
+                    <?php echo $this->formLabel('contribution-strict-anonymous', __("Contribute anonymously.")); ?>
                 </div>
                 <p><?php echo __("In order to contribute, you must read and agree to the %s",  "<a href='" . contribution_contribute_url('terms') . "' target='_blank'>" . __('Terms and Conditions') . ".</a>"); ?></p>
                 <div class="inputs">
