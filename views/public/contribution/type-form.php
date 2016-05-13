@@ -58,11 +58,7 @@ if (!isset($required) && $type->isFileAllowed()):
         } else {
             $email = '';
         }
-    ?>
-    <?php
-        if (! get_option('contribution_strict_anonymous')) {
-            echo $this->formText('contribution_simple_email', $email );
-        }
+        echo $this->formText('contribution_simple_email', $email );
     ?>
     </div>
 </div>

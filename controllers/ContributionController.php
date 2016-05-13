@@ -190,7 +190,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             //If not, create the user and log them in.
             $user = current_user();
             $simple = get_option('contribution_simple'); //now means allow open
-            $strictAnonymous = isset($post['contribution-strict-anonymous']);
+            $strictAnonymous = $post['contribution-strict-anonymous'];
 
             if(!$user && $simple && !$strictAnonymous) {
                 $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
@@ -501,7 +501,11 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $user = new User();
         $userTable = $this->_helper->db->getTable('User');
         $anonymousCount = $userTable->count(array('role' => 'contribution_anonymous'));
-        $email = "anonymous" . $anonymousCount . "@" . $_SERVER['HTTP_HOST'];
+        $domain = $_SERVER['HTTP_HOST'];
+        if ($domain == 'localhost') {
+            $domain = 'localhost.info';
+        }
+        $email = "anonymous" . $anonymousCount . "@" . $domain;
         $split = explode('@', $email);
         $name = $split[0];
         if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
