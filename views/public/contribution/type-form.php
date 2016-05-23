@@ -40,7 +40,7 @@ if (!isset($required) && $type->isFileAllowed()):
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
-<?php if(( get_option('contribution_simple') || get_option('contribution_strict_anonymous') ) && !$user) : ?>
+<?php if(( get_option('contribution_open') || get_option('contribution_strict_anonymous') ) && !$user) : ?>
 <div class="field">
     <div class="two columns alpha">
     <?php

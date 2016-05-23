@@ -66,7 +66,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         'contribution_collection_id',
         'contribution_default_type',
         'contribution_user_profile_type',
-        'contribution_simple',
+        'contribution_open',
         'contribution_email',
         'contribution_strict_anonymous'
     );
@@ -254,6 +254,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 $this->_db->query($sql);
             }
         }
+        
+        if (version_compare($oldVersion, 3.1, '<')) {
+            set_option('contribution_open', get_option('contribution_simple'));
+            delete_option('contribution_simple');
+        }
     }
 
     public function hookUninstallMessage()
@@ -276,7 +281,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
-        if (get_option('contribution_simple')) {
+        if (get_option('contribution_open')) {
             $acl->allow(null, 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
         } else {
             $acl->allow('guest', 'Contribution_Contribution', array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form'));
