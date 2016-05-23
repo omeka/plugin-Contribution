@@ -45,20 +45,20 @@ if (!isset($required) && $type->isFileAllowed()):
     <div class="two columns alpha">
     <?php
         if (get_option('contribution_strict_anonymous')) {
-            echo $this->formLabel('contribution_simple_email', __('Email (Optional)')); 
+            echo $this->formLabel('contribution_email', __('Email (Optional)')); 
         } else {
-            echo $this->formLabel('contribution_simple_email', __('Email (Required)'));
+            echo $this->formLabel('contribution_email', __('Email (Required)'));
         }
     ?>
     </div>
     <div class="inputs five columns omega">
     <?php
-        if(isset($_POST['contribution_simple_email'])) {
-            $email = $_POST['contribution_simple_email'];
+        if(isset($_POST['contribution_email'])) {
+            $email = $_POST['contribution_email'];
         } else {
             $email = '';
         }
-        echo $this->formText('contribution_simple_email', $email );
+        echo $this->formText('contribution_email', $email );
     ?>
     </div>
 </div>

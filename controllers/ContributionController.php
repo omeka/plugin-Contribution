@@ -193,7 +193,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $strictAnonymous = $post['contribution-strict-anonymous'];
 
             if(!$user && $open && !$strictAnonymous) {
-                $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_simple_email']);
+                $user = $this->_helper->db->getTable('User')->findByEmail($post['contribution_email']);
             }
 
             if (!$user && $strictAnonymous) {
@@ -471,7 +471,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _createNewGuestUser($post)
     {
         $user = new User();
-        $email = $post['contribution_simple_email'];
+        $email = $post['contribution_email'];
         $split = explode('@', $email);
         $name = $split[0];
         if(version_compare(OMEKA_VERSION, '2.2-dev', '<')) {
