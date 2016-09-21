@@ -501,7 +501,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         return $user;
     }
     
-    protected function _createNewAnonymousUser($post)
+    protected function _createNewAnonymousUser()
     {
         $user = new User();
         $userTable = $this->_helper->db->getTable('User');
@@ -520,7 +520,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         } else {
             $user->username = $email;
         }
-        debug($email);
         $user->email = $email;
         $user->name = $name;
         $user->role = 'contribution_anonymous';
