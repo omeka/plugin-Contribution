@@ -111,7 +111,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
 
         $form->addElementToEditGroup('checkbox', 'contribution_strict_anonymous', array(
             'label' => __("Allow Anonymous Contributions"),
-            'description' => __("See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
+            'description' => __("If non-registered contributions are allowed above, this option allows contributors to remain completely anonymous, even to administrators. A dummy user account will be created that stores no identifyable information. See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
             ),
             array('checked'=> (bool) get_option('contribution_strict_anonymous') ? 'checked' : '')
         );
