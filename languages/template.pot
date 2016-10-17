@@ -32,57 +32,57 @@ msgstr ""
 msgid "Deleted User"
 msgstr ""
 
-#: ContributionPlugin.php:415 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:418 ContributionPlugin.php:500
+#: ContributionPlugin.php:427 ContributionPlugin.php:509
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr ""
 
-#: ContributionPlugin.php:439
+#: ContributionPlugin.php:448
 msgid "Contribute an Item"
 msgstr ""
 
-#: ContributionPlugin.php:482
+#: ContributionPlugin.php:491
 msgid "Contribution Status"
 msgstr ""
 
-#: ContributionPlugin.php:488
+#: ContributionPlugin.php:497
 msgid "Only Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:489
+#: ContributionPlugin.php:498
 msgid "Only Non-Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:650
+#: ContributionPlugin.php:659
 msgid "Anonymous, "
 msgstr ""
 
-#: ContributionPlugin.php:676
+#: ContributionPlugin.php:685
 msgid "My Contributions"
 msgstr ""
 
-#: ContributionPlugin.php:687
+#: ContributionPlugin.php:696
 msgid "See all my contributions"
 msgstr ""
 
-#: ContributionPlugin.php:690
+#: ContributionPlugin.php:699
 msgid "No contribution yet."
 msgstr ""
 
-#: ContributionPlugin.php:704
+#: ContributionPlugin.php:713
 msgid "Contributed by:"
 msgstr ""
 
-#: ContributionPlugin.php:709
+#: ContributionPlugin.php:718
 msgid "This item can be made public."
 msgstr ""
 
-#: ContributionPlugin.php:711
+#: ContributionPlugin.php:720
 msgid "This item cannot be made public."
 msgstr ""
 
@@ -90,46 +90,46 @@ msgstr ""
 msgid "Your contributions have been updated."
 msgstr ""
 
-#: controllers/ContributionController.php:226
+#: controllers/ContributionController.php:235
 msgid "You must select a type for your contribution."
 msgstr ""
 
-#: controllers/ContributionController.php:382
+#: controllers/ContributionController.php:391
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr ""
 
-#: controllers/ContributionController.php:387
+#: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
 msgstr ""
 
-#: controllers/ContributionController.php:416
+#: controllers/ContributionController.php:425
 msgid "Contribution URL (pending review by project staff): "
 msgstr ""
 
-#: controllers/ContributionController.php:417
+#: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
 msgstr ""
 
-#: controllers/ContributionController.php:420
+#: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
 msgstr ""
 
-#: controllers/ContributionController.php:424
+#: controllers/ContributionController.php:433
 #, php-format
 msgid "Your %s Contribution"
 msgstr ""
 
-#: controllers/ContributionController.php:443
+#: controllers/ContributionController.php:452
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr ""
 
-#: controllers/ContributionController.php:448
+#: controllers/ContributionController.php:457
 msgid "Contribution URL for review: "
 msgstr ""
 
-#: controllers/ContributionController.php:454
+#: controllers/ContributionController.php:463
 #, php-format
 msgid "New %s Contribution"
 msgstr ""
@@ -179,67 +179,81 @@ msgstr ""
 msgid "The text of the legal disclaimer to which contributors will agree."
 msgstr ""
 
-#: controllers/SettingsController.php:104
-msgid "Use 'Simple' Options"
+#: controllers/SettingsController.php:105
+msgid "Allow Non-registered Contributions"
 msgstr ""
 
-#: controllers/SettingsController.php:105
+#: controllers/SettingsController.php:106
 msgid ""
 "This will require an email address from contributors, and create a guest "
 "user from that information. If those users want to use the account, they "
 "will have to request a new password for the account. If you want to collect "
-"additional information about contributors, you cannot use the simple option. "
-"See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</"
-"a> for details. "
+"additional information about contributors, they must create an account. See "
+"<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> "
+"for details. "
 msgstr ""
 
-#: controllers/SettingsController.php:111
-msgid "Email text to send to contributors"
+#: controllers/SettingsController.php:113
+msgid "Allow Anonymous Contributions"
 msgstr ""
 
-#: controllers/SettingsController.php:112
+#: controllers/SettingsController.php:114
 msgid ""
-"Email text to send to contributors when they submit an item. A link to their "
-"contribution will be appended. If using the 'Simple' option, we recommend "
-"that you notify contributors that a guest user account has been created for "
-"them, and what they gain by confirming their account."
-msgstr ""
-
-#: controllers/SettingsController.php:117
-msgid "Do not put contributions in any collection"
+"If non-registered contributions are allowed above, this option allows "
+"contributors to remain completely anonymous, even to administrators. A dummy "
+"user account will be created that stores no identifing information. See <a "
+"href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for "
+"details. "
 msgstr ""
 
 #: controllers/SettingsController.php:120
-msgid "Contribution Collection"
+msgid "Email text to send to contributors"
 msgstr ""
 
 #: controllers/SettingsController.php:121
+msgid ""
+"Email text to send to contributors when they submit an item. A link to their "
+"contribution will be appended. If using the 'Non-registered', but not "
+"'Anonymous', options, we recommend that you notify contributors that a guest "
+"user account has been created for them, and what they gain by confirming "
+"their account."
+msgstr ""
+
+#: controllers/SettingsController.php:126
+msgid "Do not put contributions in any collection"
+msgstr ""
+
+#: controllers/SettingsController.php:129
+msgid "Contribution Collection"
+msgstr ""
+
+#: controllers/SettingsController.php:130
 msgid ""
 "The collection to which contributions will be added. Changes here will only "
 "affect new contributions."
 msgstr ""
 
-#: controllers/SettingsController.php:126
+#: controllers/SettingsController.php:135
 msgid "No default type"
 msgstr ""
 
-#: controllers/SettingsController.php:129
+#: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
 msgstr ""
 
-#: controllers/SettingsController.php:130
+#: controllers/SettingsController.php:139
 msgid "The type that will be chosen for contributors by default."
 msgstr ""
 
-#: controllers/SettingsController.php:137
+#: controllers/SettingsController.php:146
 msgid "Choose a profile type for contributors"
 msgstr ""
 
-#: controllers/SettingsController.php:138
+#: controllers/SettingsController.php:147
 msgid "Configure the profile type under User Profiles"
 msgstr ""
 
-#: controllers/SettingsController.php:139
+#: controllers/SettingsController.php:148
 msgid "None"
 msgstr ""
 
@@ -540,32 +554,32 @@ msgstr ""
 msgid "Prompt"
 msgstr ""
 
-#: views/public/contribution/contribute.php:47
+#: views/public/contribution/contribute.php:50
 msgid "What type of item do you want to contribute?"
 msgstr ""
 
-#: views/public/contribution/contribute.php:65
+#: views/public/contribution/contribute.php:68
 msgid "Publish my contribution on the web."
 msgstr ""
 
-#: views/public/contribution/contribute.php:70
-msgid "Contribute anonymously."
+#: views/public/contribution/contribute.php:73
+msgid "Keep identity private."
 msgstr ""
 
-#: views/public/contribution/contribute.php:72
+#: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
 msgstr ""
 
-#: views/public/contribution/contribute.php:72
+#: views/public/contribution/contribute.php:75
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
 msgstr ""
 
-#: views/public/contribution/contribute.php:76
+#: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
 msgstr ""
 
-#: views/public/contribution/contribute.php:78
+#: views/public/contribution/contribute.php:81
 msgid "Contribute"
 msgstr ""
 
@@ -625,26 +639,30 @@ msgstr ""
 msgid "Upload a file (Optional)"
 msgstr ""
 
-#: views/public/contribution/type-form.php:46
+#: views/public/contribution/type-form.php:48
+msgid "Email (Optional)"
+msgstr ""
+
+#: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
 msgstr ""
 
-#: views/public/contribution/type-form.php:61
+#: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
 msgstr ""
 
-#: views/public/contribution/type-form.php:76
+#: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
 msgstr ""
 
-#: views/public/contribution/type-form.php:79
-#: views/public/contribution/type-form.php:81
+#: views/public/contribution/type-form.php:85
+#: views/public/contribution/type-form.php:87
 msgid "Show"
 msgstr ""
 
-#: views/public/contribution/type-form.php:79
-#: views/public/contribution/type-form.php:81
+#: views/public/contribution/type-form.php:85
+#: views/public/contribution/type-form.php:87
 msgid "Hide"
 msgstr ""
