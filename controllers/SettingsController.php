@@ -103,7 +103,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
         
         $form->addElementToEditGroup('checkbox', 'contribution_open', array(
             'label' => __("Allow Non-registered Contributions"),
-            'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, you cannot use the simple option. See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
+            'description' => __("This will require an email address from contributors, and create a guest user from that information. If those users want to use the account, they will have to request a new password for the account. If you want to collect additional information about contributors, they must create an account. See <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for details. "),
             ),
             array('checked'=> (bool) get_option('contribution_open') ? 'checked' : '')
         );
@@ -118,7 +118,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
         
         $form->addElementToEditGroup('textarea', 'contribution_email', array(
             'label' => __("Email text to send to contributors"),
-            'description' => __("Email text to send to contributors when they submit an item. A link to their contribution will be appended. If using the 'Simple' option, we recommend that you notify contributors that a guest user account has been created for them, and what they gain by confirming their account."),
+            'description' => __("Email text to send to contributors when they submit an item. A link to their contribution will be appended. If using the 'Non-registered', but not 'Anonymous', options, we recommend that you notify contributors that a guest user account has been created for them, and what they gain by confirming their account."),
             'attribs'     => array('class' => 'html-editor', 'rows' => '15')
         ));
 
