@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Jiří Vírava <appukonrad@gmail.com>, 2014-2015
+# Silas Van Huyck <silas.vanhuyck@gmail.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
@@ -11,27 +11,27 @@ msgstr ""
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
 "PO-Revision-Date: 2016-10-17 18:25+0000\n"
 "Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
-"Language-Team: Czech (http://www.transifex.com/omeka/omeka/language/cs/)\n"
+"Language-Team: Dutch (Belgium) (http://www.transifex.com/omeka/omeka/language/nl_BE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: nl_BE\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: models/ContributionType.php:101
 msgid "Allowed"
-msgstr "Povoleno"
+msgstr "Toegestaan"
 
 #: models/ContributionType.php:102
 msgid "Required"
-msgstr "Vyžadováno"
+msgstr "Vereist"
 
 #: models/ContributionType.php:100
 msgid "Disallowed"
-msgstr "Nepovoleno"
+msgstr "Geweigerd"
 
 msgid "Deleted User"
-msgstr "Smazaný uživatel"
+msgstr "Verwijderde gebruiker"
 
 #: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
@@ -61,7 +61,7 @@ msgstr ""
 
 #: ContributionPlugin.php:659
 msgid "Anonymous, "
-msgstr ""
+msgstr "Anoniem,"
 
 #: ContributionPlugin.php:685
 msgid "My Contributions"
@@ -81,11 +81,11 @@ msgstr ""
 
 #: ContributionPlugin.php:718
 msgid "This item can be made public."
-msgstr ""
+msgstr "Dit item kan openbaar gemaakt worden."
 
 #: ContributionPlugin.php:720
 msgid "This item cannot be made public."
-msgstr ""
+msgstr "Dit item kan niet openbaar gemaakt worden."
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
@@ -97,11 +97,11 @@ msgstr ""
 
 #: controllers/ContributionController.php:391
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr ""
+msgstr "Uw CAPTCHA inzending was ongeldig, probeer het opnieuw."
 
 #: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
-msgstr ""
+msgstr "U moet akkoord gaan met de Algemene Voorwaarden."
 
 #: controllers/ContributionController.php:425
 msgid "Contribution URL (pending review by project staff): "
@@ -110,11 +110,11 @@ msgstr ""
 #: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
-msgstr ""
+msgstr " Uw gebruikersnaam is %s"
 
 #: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
-msgstr ""
+msgstr "Om in te loggen en je gebruikersnaam te veranderen, vraag hier een wachtwoord aan:"
 
 #: controllers/ContributionController.php:433
 #, php-format
@@ -137,7 +137,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:34
 msgid "Settings have been saved."
-msgstr ""
+msgstr "Instellingen zijn opgeslagen."
 
 #: controllers/SettingsController.php:80
 msgid "Contribution Slug"
@@ -236,7 +236,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:135
 msgid "No default type"
-msgstr ""
+msgstr "Geen standaardtype"
 
 #: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
@@ -256,41 +256,41 @@ msgstr ""
 
 #: controllers/SettingsController.php:148
 msgid "None"
-msgstr ""
+msgstr "Geen"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr ""
+msgstr "Onbekende gebruiker"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:9
 msgid "Anonymous"
-msgstr "Anonymní"
+msgstr "Anoniem"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
-msgstr "Nelze přidat potomka záznamu který dosud neexistuje!"
+msgstr "Kan geen kind toevoegen aan een record dat nog niet bestaat!"
 
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
-msgstr "Potomek musí být instancí \"%s\""
+msgstr ""
 
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Filtrovat podle stavu"
+msgstr "Filter op status"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
 msgid "Needs review"
-msgstr ""
+msgstr "Heeft goedkeuring nodig"
 
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
-msgstr ""
+msgstr "Aan de slag"
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
 msgid "Contribution Types"
@@ -315,7 +315,7 @@ msgstr ""
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
-msgstr "Profil:"
+msgstr "Profiel:"
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
 msgid "Private contribution"
@@ -451,7 +451,7 @@ msgstr ""
 
 #: views/admin/items/browse.php:27
 msgid "security settings"
-msgstr ""
+msgstr "Beveiligingsinstellingen"
 
 #: views/admin/items/browse.php:27
 #, php-format
@@ -470,15 +470,15 @@ msgstr ""
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr ""
+msgstr "publicatie-status"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr ""
+msgstr "Openbaar (klik om beoordeling in te voeren)"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr ""
+msgstr "Heeft beoordeling nodig (klik om openbaar te maken)"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
@@ -511,7 +511,7 @@ msgstr ""
 
 #: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
 msgid "Multiple rows"
-msgstr ""
+msgstr "meerdere rijen"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
@@ -528,7 +528,7 @@ msgstr ""
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr ""
+msgstr "Bestand Uploaden"
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
@@ -542,7 +542,7 @@ msgstr ""
 
 #: views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
-msgstr ""
+msgstr "Sta Bestand Uploaden Toe Via Formulier"
 
 #: views/admin/types/form.php:40
 msgid ""
@@ -569,7 +569,7 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Algemene Voorwaarden"
 
 #: views/public/contribution/contribute.php:75
 #, php-format
@@ -578,7 +578,7 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
-msgstr ""
+msgstr "Ik ga akkoord met de Algemene Voorwaarden."
 
 #: views/public/contribution/contribute.php:81
 msgid "Contribute"
@@ -586,7 +586,7 @@ msgstr ""
 
 #: views/public/contribution/my-contributions.php:11
 msgid "Added"
-msgstr "Přidáno"
+msgstr "Toegevoegd"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
@@ -602,7 +602,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr "procházet archiv"
+msgstr ""
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
@@ -613,7 +613,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr "tato stránka"
+msgstr "Deze pagina"
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -634,11 +634,11 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr ""
+msgstr "Een Bestand Uploaden"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
-msgstr ""
+msgstr "Een Bestand Uploaden (Optioneel)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
@@ -646,24 +646,24 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
-msgstr "Email (vyžadován)"
+msgstr "E-mail (vereist)"
 
 #: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
-msgstr "Jste přihlášeni jako: %s"
+msgstr "Je bent ingelogd als: %s"
 
 #: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
-msgstr "Váš %s profil"
+msgstr "Jouw %s profiel"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr ""
+msgstr "Toon"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr ""
+msgstr "Verbergen"

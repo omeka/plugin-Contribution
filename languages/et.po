@@ -3,7 +3,7 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Jiří Vírava <appukonrad@gmail.com>, 2014-2015
+# Rivo Zängov <eraser@eraser.ee>, 2015-2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
@@ -11,85 +11,85 @@ msgstr ""
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
 "PO-Revision-Date: 2016-10-17 18:25+0000\n"
 "Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
-"Language-Team: Czech (http://www.transifex.com/omeka/omeka/language/cs/)\n"
+"Language-Team: Estonian (http://www.transifex.com/omeka/omeka/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: et\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: models/ContributionType.php:101
 msgid "Allowed"
-msgstr "Povoleno"
+msgstr "Lubatud"
 
 #: models/ContributionType.php:102
 msgid "Required"
-msgstr "Vyžadováno"
+msgstr "Nõutud"
 
 #: models/ContributionType.php:100
 msgid "Disallowed"
-msgstr "Nepovoleno"
+msgstr "Keelatud"
 
 msgid "Deleted User"
-msgstr "Smazaný uživatel"
+msgstr "Kustuta kasutaja"
 
 #: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
-msgstr ""
+msgstr "Annetatud ühikud"
 
 #: ContributionPlugin.php:427 ContributionPlugin.php:509
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
-msgstr ""
+msgstr "Annetus"
 
 #: ContributionPlugin.php:448
 msgid "Contribute an Item"
-msgstr ""
+msgstr "Anneta ühik"
 
 #: ContributionPlugin.php:491
 msgid "Contribution Status"
-msgstr ""
+msgstr "Annetuse olek"
 
 #: ContributionPlugin.php:497
 msgid "Only Contributed Items"
-msgstr ""
+msgstr "Ainult annetatud ühikud"
 
 #: ContributionPlugin.php:498
 msgid "Only Non-Contributed Items"
-msgstr ""
+msgstr "Ainult mitte-annetatud ühikud"
 
 #: ContributionPlugin.php:659
 msgid "Anonymous, "
-msgstr ""
+msgstr "Anonüümne,"
 
 #: ContributionPlugin.php:685
 msgid "My Contributions"
-msgstr ""
+msgstr "Minu annetused"
 
 #: ContributionPlugin.php:696
 msgid "See all my contributions"
-msgstr ""
+msgstr "Vaata kõiki minu annetusi"
 
 #: ContributionPlugin.php:699
 msgid "No contribution yet."
-msgstr ""
+msgstr "Ühtegi annetust pole veel."
 
 #: ContributionPlugin.php:713
 msgid "Contributed by:"
-msgstr ""
+msgstr "Annetaja:"
 
 #: ContributionPlugin.php:718
 msgid "This item can be made public."
-msgstr ""
+msgstr "Selle ühiku võib teha avalikuks."
 
 #: ContributionPlugin.php:720
 msgid "This item cannot be made public."
-msgstr ""
+msgstr "Seda ühikut ei või teha avalikuks."
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
-msgstr ""
+msgstr "Sinu annetusi on uuendatud."
 
 #: controllers/ContributionController.php:235
 msgid "You must select a type for your contribution."
@@ -101,7 +101,7 @@ msgstr ""
 
 #: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
-msgstr ""
+msgstr "Sa pead nõustuma kasutustingimustega."
 
 #: controllers/ContributionController.php:425
 msgid "Contribution URL (pending review by project staff): "
@@ -110,7 +110,7 @@ msgstr ""
 #: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
-msgstr ""
+msgstr "Sinu kasutajanimi on %s"
 
 #: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
@@ -119,7 +119,7 @@ msgstr ""
 #: controllers/ContributionController.php:433
 #, php-format
 msgid "Your %s Contribution"
-msgstr ""
+msgstr "Sinu %s annetus"
 
 #: controllers/ContributionController.php:452
 #, php-format
@@ -128,16 +128,16 @@ msgstr ""
 
 #: controllers/ContributionController.php:457
 msgid "Contribution URL for review: "
-msgstr ""
+msgstr "Annetuse URL ülevaatamiseks:"
 
 #: controllers/ContributionController.php:463
 #, php-format
 msgid "New %s Contribution"
-msgstr ""
+msgstr "Uus %s annetus"
 
 #: controllers/SettingsController.php:34
 msgid "Settings have been saved."
-msgstr ""
+msgstr "Seaded on salvestatud."
 
 #: controllers/SettingsController.php:80
 msgid "Contribution Slug"
@@ -152,7 +152,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:86
 msgid "Contribution Confirmation Email"
-msgstr ""
+msgstr "Annetuse kinnituse e-kiri"
 
 #: controllers/SettingsController.php:87
 msgid ""
@@ -163,7 +163,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:92
 msgid "New Contribution Notification Emails"
-msgstr ""
+msgstr "Uue annetuse kinnituse e-kiri"
 
 #: controllers/SettingsController.php:93
 msgid ""
@@ -174,11 +174,11 @@ msgstr ""
 
 #: controllers/SettingsController.php:98
 msgid "Text of Terms of Service"
-msgstr ""
+msgstr "Kasutustingimuste sisu"
 
 #: controllers/SettingsController.php:99
 msgid "The text of the legal disclaimer to which contributors will agree."
-msgstr ""
+msgstr "Seaduslik tekst, millega annetajad peavad nõustuma."
 
 #: controllers/SettingsController.php:105
 msgid "Allow Non-registered Contributions"
@@ -209,7 +209,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:120
 msgid "Email text to send to contributors"
-msgstr ""
+msgstr "E-kirja tekst, mis saadetakse annetajale"
 
 #: controllers/SettingsController.php:121
 msgid ""
@@ -222,11 +222,11 @@ msgstr ""
 
 #: controllers/SettingsController.php:126
 msgid "Do not put contributions in any collection"
-msgstr ""
+msgstr "Ära pane annetust ühtegi kogusse"
 
 #: controllers/SettingsController.php:129
 msgid "Contribution Collection"
-msgstr ""
+msgstr "Annetatud kogu"
 
 #: controllers/SettingsController.php:130
 msgid ""
@@ -236,11 +236,11 @@ msgstr ""
 
 #: controllers/SettingsController.php:135
 msgid "No default type"
-msgstr ""
+msgstr "Vaikimisi tüüpi pole"
 
 #: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
-msgstr ""
+msgstr "Annetuse vaikimisi tüüp"
 
 #: controllers/SettingsController.php:139
 msgid "The type that will be chosen for contributors by default."
@@ -248,61 +248,61 @@ msgstr ""
 
 #: controllers/SettingsController.php:146
 msgid "Choose a profile type for contributors"
-msgstr ""
+msgstr "Vali annetaja profiili tüüp"
 
 #: controllers/SettingsController.php:147
 msgid "Configure the profile type under User Profiles"
-msgstr ""
+msgstr "Seadista profiili tüüpi kasutaja profiilide lehelt"
 
 #: controllers/SettingsController.php:148
 msgid "None"
-msgstr ""
+msgstr "Pole"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr ""
+msgstr "Tundamatu kasutaja"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:9
 msgid "Anonymous"
-msgstr "Anonymní"
+msgstr "Anonüümne"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
-msgstr "Nelze přidat potomka záznamu který dosud neexistuje!"
+msgstr "Sa ei saa lisada alamkirjet kirjele, mida pole veel olemas!"
 
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
-msgstr "Potomek musí být instancí \"%s\""
+msgstr ""
 
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Filtrovat podle stavu"
+msgstr "Filtreeri staatuse järgi"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
 msgid "Needs review"
-msgstr ""
+msgstr "Vajab ülevaadet"
 
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
-msgstr ""
+msgstr "Alustamine"
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
 msgid "Contribution Types"
-msgstr ""
+msgstr "Annetuse tüübid"
 
 #: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
 msgid "Submission Settings"
-msgstr ""
+msgstr "Lisamise seaded"
 
 #: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
 msgid "Contributions"
-msgstr ""
+msgstr "Annetused"
 
 #: views/admin/contributors/browse.php:28
 msgid "ID"
@@ -311,15 +311,15 @@ msgstr "ID"
 #: views/admin/contributors/show.php:20
 #, php-format
 msgid "%s's contributions"
-msgstr ""
+msgstr "%s annetused"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
-msgstr "Profil:"
+msgstr "Profiil:"
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
 msgid "Private contribution"
-msgstr ""
+msgstr "Privaatne annetus"
 
 #: views/admin/index/index.php:20
 msgid ""
@@ -344,7 +344,7 @@ msgstr ""
 
 #: views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
-msgstr ""
+msgstr "1. Seadista külalise info:"
 
 #: views/admin/index/index.php:26
 msgid ""
@@ -354,11 +354,11 @@ msgstr ""
 
 #: views/admin/index/index.php:26
 msgid "Configure Guest Users"
-msgstr ""
+msgstr "Külaliste seadistamine"
 
 #: views/admin/index/index.php:26
 msgid "with the following suggestions."
-msgstr ""
+msgstr "koos järgnevate soovitustega."
 
 #: views/admin/index/index.php:28
 msgid ""
@@ -381,7 +381,7 @@ msgstr ""
 
 #: views/admin/index/index.php:34
 msgid "2. Modify the contribution form:"
-msgstr ""
+msgstr "2. Muuda annetuse vormi:"
 
 #: views/admin/index/index.php:37
 #, php-format
@@ -392,7 +392,7 @@ msgstr ""
 
 #: views/admin/index/index.php:39
 msgid "user profiles type"
-msgstr ""
+msgstr "kasutaja profiili tüüp"
 
 #: views/admin/index/index.php:39
 #, php-format
@@ -410,7 +410,7 @@ msgstr ""
 
 #: views/admin/index/index.php:45
 msgid "submission settings"
-msgstr ""
+msgstr "lisamise seaded"
 
 #: views/admin/index/index.php:45
 #, php-format
@@ -419,7 +419,7 @@ msgstr ""
 
 #: views/admin/index/index.php:48
 msgid "Set the terms of service for contributing to the site."
-msgstr ""
+msgstr "Määra selle saidi annetamise tingimused."
 
 #: views/admin/index/index.php:49
 msgid ""
@@ -435,7 +435,7 @@ msgstr ""
 
 #: views/admin/index/index.php:51
 msgid "Specify a collection for new contributed items."
-msgstr ""
+msgstr "Määra kogu uutele annetatud ühikutele."
 
 #: views/admin/index/index.php:54
 #, php-format
@@ -447,11 +447,11 @@ msgstr ""
 #: views/admin/items/browse.php:13
 #, php-format
 msgid "Contributed Items (%d)"
-msgstr ""
+msgstr "Annetatud ühikud (%d)"
 
 #: views/admin/items/browse.php:27
 msgid "security settings"
-msgstr ""
+msgstr "turvalisuse seaded"
 
 #: views/admin/items/browse.php:27
 #, php-format
@@ -462,73 +462,73 @@ msgstr ""
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:137
 msgid "Set public"
-msgstr ""
+msgstr "Mära avalikuks"
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
-msgstr ""
+msgstr "Vajab ülevaadet"
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr ""
+msgstr "Avaldamise olek"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr ""
+msgstr "Avalik (kliki, et märkida ülevaatamiseks)"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr ""
+msgstr "Vajab ülevaatamist (kliki, et teha avalikuks)"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
-msgstr ""
+msgstr "Info ja annetused"
 
 #: views/admin/items/browse.php:158
 msgid "Rejected"
-msgstr ""
+msgstr "Tagasi lükatud"
 
 #: views/admin/items/browse.php:159
 msgid "Are you sure you want to remove these contributions?"
-msgstr ""
+msgstr "Oled sa kindel, et sa soovid neid annetusi eemaldada?"
 
 #: views/admin/items/browse.php:167
 msgid "There is no contribution yet."
-msgstr ""
+msgstr "Ühtegi annetust pole veel."
 
 #: views/admin/items/browse.php:169
 #, php-format
 msgid "The query searched %d contributions and returned no results."
-msgstr ""
+msgstr "Päring otsis läbi %d annetust ja ei leidnud ühtegi vastet."
 
 #: views/admin/items/browse.php:170
 msgid "See all contributions."
-msgstr ""
+msgstr "Vaata kõiki annetusi."
 
 #: views/admin/types/add-existing-element.php:15
 msgid "Prompt:"
-msgstr ""
+msgstr "Küsi:"
 
 #: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
 msgid "Multiple rows"
-msgstr ""
+msgstr "Mitu rida"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
 msgid "Types"
-msgstr ""
+msgstr "Tüübid"
 
 #: views/admin/types/add.php:35
 msgid "Add a new type"
-msgstr ""
+msgstr "Lisa uus tüüp"
 
 #: views/admin/types/browse.php:11
 msgid "Add a Type"
-msgstr ""
+msgstr "Lisa tüüp"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr ""
+msgstr "Faili üleslaadimine"
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
@@ -542,7 +542,7 @@ msgstr ""
 
 #: views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
-msgstr ""
+msgstr "Luba failide üleslaadimine läbi vormi"
 
 #: views/admin/types/form.php:40
 msgid ""
@@ -553,15 +553,15 @@ msgstr ""
 
 #: views/admin/types/form.php:58
 msgid "Prompt"
-msgstr ""
+msgstr "Küsi"
 
 #: views/public/contribution/contribute.php:50
 msgid "What type of item do you want to contribute?"
-msgstr ""
+msgstr "Mis tüüpi ühikut sa soovid annetada?"
 
 #: views/public/contribution/contribute.php:68
 msgid "Publish my contribution on the web."
-msgstr ""
+msgstr "Avalda minu annetus veebis"
 
 #: views/public/contribution/contribute.php:73
 msgid "Keep identity private."
@@ -569,40 +569,40 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Tingimused"
 
 #: views/public/contribution/contribute.php:75
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
-msgstr ""
+msgstr "Annetamiseks pead sa lugema ja nõustuma dokumendiga %s"
 
 #: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
-msgstr ""
+msgstr "Ma nõustun kasutustingimustega."
 
 #: views/public/contribution/contribute.php:81
 msgid "Contribute"
-msgstr ""
+msgstr "Anneta"
 
 #: views/public/contribution/my-contributions.php:11
 msgid "Added"
-msgstr "Přidáno"
+msgstr "Lisatud"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
-msgstr ""
+msgstr "Annetuse tingimused"
 
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
-msgstr ""
+msgstr "Täname sind annetuse eest!"
 
 #: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
-msgstr ""
+msgstr "tee veel mõni annetus"
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr "procházet archiv"
+msgstr "sirvi arhiivi"
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
@@ -613,7 +613,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr "tato stránka"
+msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -625,20 +625,20 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:3
 msgid "You must choose a contribution type to continue."
-msgstr ""
+msgstr "Sa pead jätkamiseks valima annetuse tüübi."
 
 #: views/public/contribution/type-form.php:5
 #, php-format
 msgid "Contribute a %s"
-msgstr ""
+msgstr "Anneta %s"
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr ""
+msgstr "Laadi fail üles"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
-msgstr ""
+msgstr "Laadi fail üles (valikuline)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
@@ -646,24 +646,24 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
-msgstr "Email (vyžadován)"
+msgstr "E-post (nõutud)"
 
 #: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
-msgstr "Jste přihlášeni jako: %s"
+msgstr "Sa oled sisse loginud kui: %s"
 
 #: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
-msgstr "Váš %s profil"
+msgstr "Sinu %s profiil"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr ""
+msgstr "Näita"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr ""
+msgstr "Peida"

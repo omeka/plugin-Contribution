@@ -3,35 +3,35 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Jiří Vírava <appukonrad@gmail.com>, 2014-2015
+# Khaidav T. <khaidaw@yahoo.com>, 2016
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-10-17 18:25+0000\n"
-"Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
-"Language-Team: Czech (http://www.transifex.com/omeka/omeka/language/cs/)\n"
+"PO-Revision-Date: 2016-10-18 09:19+0000\n"
+"Last-Translator: Khaidav T. <khaidaw@yahoo.com>\n"
+"Language-Team: Mongolian (http://www.transifex.com/omeka/omeka/language/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: cs\n"
-"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"Language: mn\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: models/ContributionType.php:101
 msgid "Allowed"
-msgstr "Povoleno"
+msgstr "Зөвшөөрсөн"
 
 #: models/ContributionType.php:102
 msgid "Required"
-msgstr "Vyžadováno"
+msgstr "Заавал бөглөх"
 
 #: models/ContributionType.php:100
 msgid "Disallowed"
-msgstr "Nepovoleno"
+msgstr "Татгалзах"
 
 msgid "Deleted User"
-msgstr "Smazaný uživatel"
+msgstr "Хэрэглэгчийг устгах"
 
 #: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
@@ -41,7 +41,7 @@ msgstr ""
 #: ContributionPlugin.php:427 ContributionPlugin.php:509
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
-msgstr ""
+msgstr "Хувь нэмэр оруулах /Туслагч/"
 
 #: ContributionPlugin.php:448
 msgid "Contribute an Item"
@@ -49,19 +49,19 @@ msgstr ""
 
 #: ContributionPlugin.php:491
 msgid "Contribution Status"
-msgstr ""
+msgstr "Хувь нэмэр оруулах /Туслагч/ статус"
 
 #: ContributionPlugin.php:497
 msgid "Only Contributed Items"
-msgstr ""
+msgstr "Зөвхөн дэмжлэг авсан мэдээллүүд /Contributed Items/"
 
 #: ContributionPlugin.php:498
 msgid "Only Non-Contributed Items"
-msgstr ""
+msgstr "Зөвхөн дэмжлэг аваагүй мэдээллүүд /Non-Contributed Items/"
 
 #: ContributionPlugin.php:659
 msgid "Anonymous, "
-msgstr ""
+msgstr "Тодорхой нэргүй,"
 
 #: ContributionPlugin.php:685
 msgid "My Contributions"
@@ -77,19 +77,19 @@ msgstr ""
 
 #: ContributionPlugin.php:713
 msgid "Contributed by:"
-msgstr ""
+msgstr "Туслагч:"
 
 #: ContributionPlugin.php:718
 msgid "This item can be made public."
-msgstr ""
+msgstr "Энэ мэдээлэл нийтэд харагдах боломжтой."
 
 #: ContributionPlugin.php:720
 msgid "This item cannot be made public."
-msgstr ""
+msgstr "Энэ мэдээлэл нийтэд харагдах боломжгүй."
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
-msgstr ""
+msgstr "Таны хувь нэмэр /contributions/ шинэчлэгдсэн байна."
 
 #: controllers/ContributionController.php:235
 msgid "You must select a type for your contribution."
@@ -97,11 +97,11 @@ msgstr ""
 
 #: controllers/ContributionController.php:391
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr ""
+msgstr "Таны CAPTCHA коод хүчингүй байн, дахин оролдоно уу."
 
 #: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
-msgstr ""
+msgstr "Та нөхцөлийг хүлээн зөвшөөрсөн байх шаардлагатай."
 
 #: controllers/ContributionController.php:425
 msgid "Contribution URL (pending review by project staff): "
@@ -110,7 +110,7 @@ msgstr ""
 #: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
-msgstr ""
+msgstr "Таны нэвтрэх нэр %s"
 
 #: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
@@ -137,7 +137,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:34
 msgid "Settings have been saved."
-msgstr ""
+msgstr "Тохиргоо хадгалагдлаа."
 
 #: controllers/SettingsController.php:80
 msgid "Contribution Slug"
@@ -174,7 +174,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:98
 msgid "Text of Terms of Service"
-msgstr ""
+msgstr "Үйлчилгээний нөхцлийн текст"
 
 #: controllers/SettingsController.php:99
 msgid "The text of the legal disclaimer to which contributors will agree."
@@ -209,7 +209,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:120
 msgid "Email text to send to contributors"
-msgstr ""
+msgstr "Зурвасыг Туслагчдад илгээх"
 
 #: controllers/SettingsController.php:121
 msgid ""
@@ -236,7 +236,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:135
 msgid "No default type"
-msgstr ""
+msgstr "Үндсэн төрөл байхгүй"
 
 #: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
@@ -256,31 +256,31 @@ msgstr ""
 
 #: controllers/SettingsController.php:148
 msgid "None"
-msgstr ""
+msgstr "Үгүй"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr ""
+msgstr "Үл мэдэгдэх хэрэглэгч"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:9
 msgid "Anonymous"
-msgstr "Anonymní"
+msgstr "Тодорхой нэргүй"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
-msgstr "Nelze přidat potomka záznamu který dosud neexistuje!"
+msgstr ""
 
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
-msgstr "Potomek musí být instancí \"%s\""
+msgstr ""
 
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Filtrovat podle stavu"
+msgstr "Статусаар нь шүүлт хийх"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
@@ -290,7 +290,7 @@ msgstr ""
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
-msgstr ""
+msgstr "Эхэлсэн"
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
 msgid "Contribution Types"
@@ -315,7 +315,7 @@ msgstr ""
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
-msgstr "Profil:"
+msgstr "Хувийн мэдээлэл:"
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
 msgid "Private contribution"
@@ -344,7 +344,7 @@ msgstr ""
 
 #: views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
-msgstr ""
+msgstr "1. Зочин хэрэглэгчийн мэдээллийг тохируулах:"
 
 #: views/admin/index/index.php:26
 msgid ""
@@ -354,7 +354,7 @@ msgstr ""
 
 #: views/admin/index/index.php:26
 msgid "Configure Guest Users"
-msgstr ""
+msgstr "Зочин хэрэглэгчийг тохируулах"
 
 #: views/admin/index/index.php:26
 msgid "with the following suggestions."
@@ -392,7 +392,7 @@ msgstr ""
 
 #: views/admin/index/index.php:39
 msgid "user profiles type"
-msgstr ""
+msgstr "Хэрэглэгчийн хувийн мэдээллийн төрөл"
 
 #: views/admin/index/index.php:39
 #, php-format
@@ -447,11 +447,11 @@ msgstr ""
 #: views/admin/items/browse.php:13
 #, php-format
 msgid "Contributed Items (%d)"
-msgstr ""
+msgstr "Дэмжлэг авсан мэдээлэл /Contributed Items/ (%d)"
 
 #: views/admin/items/browse.php:27
 msgid "security settings"
-msgstr ""
+msgstr "Хамгаалалтын тохиргоо"
 
 #: views/admin/items/browse.php:27
 #, php-format
@@ -462,7 +462,7 @@ msgstr ""
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:137
 msgid "Set public"
-msgstr ""
+msgstr "Нийтийнх болгох"
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
@@ -470,15 +470,15 @@ msgstr ""
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr ""
+msgstr "Хэвлэгдсэн байдал"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr ""
+msgstr "Нийтийн (дараад хянаарай)"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr ""
+msgstr "Хянах шаардлагатай (Сонголт хийхэд нийтэд харагдана)"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
@@ -486,7 +486,7 @@ msgstr ""
 
 #: views/admin/items/browse.php:158
 msgid "Rejected"
-msgstr ""
+msgstr "Татгалзсан"
 
 #: views/admin/items/browse.php:159
 msgid "Are you sure you want to remove these contributions?"
@@ -511,24 +511,24 @@ msgstr ""
 
 #: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
 msgid "Multiple rows"
-msgstr ""
+msgstr "Олон мөр"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
 msgid "Types"
-msgstr ""
+msgstr "Төрөл"
 
 #: views/admin/types/add.php:35
 msgid "Add a new type"
-msgstr ""
+msgstr "Шинэ төрөл нэмэх"
 
 #: views/admin/types/browse.php:11
 msgid "Add a Type"
-msgstr ""
+msgstr "Төрөл нэмэх"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr ""
+msgstr "Файл илгээх"
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
@@ -542,7 +542,7 @@ msgstr ""
 
 #: views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
-msgstr ""
+msgstr "Формын тусламжтай файл оруулах"
 
 #: views/admin/types/form.php:40
 msgid ""
@@ -569,7 +569,7 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
-msgstr ""
+msgstr "Нөхцөл, Болзол"
 
 #: views/public/contribution/contribute.php:75
 #, php-format
@@ -578,7 +578,7 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
-msgstr ""
+msgstr "Би нөхцлийг хүлээн зөвшөөрч байна."
 
 #: views/public/contribution/contribute.php:81
 msgid "Contribute"
@@ -586,23 +586,23 @@ msgstr ""
 
 #: views/public/contribution/my-contributions.php:11
 msgid "Added"
-msgstr "Přidáno"
+msgstr "Нэмэгдсэн"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
-msgstr ""
+msgstr "Дэмжлэг үзүүлэх нөхцөл"
 
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
-msgstr ""
+msgstr "Дэмжлэг үзүүлсэнд баярлалаа!"
 
 #: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
-msgstr ""
+msgstr "Өөр дэмжлэг үзүүлэх /contribution/"
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr "procházet archiv"
+msgstr "архив үзэх"
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
@@ -613,7 +613,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr "tato stránka"
+msgstr "энэ хуудас"
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -634,36 +634,36 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr ""
+msgstr "Файлыг илгээх"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
-msgstr ""
+msgstr "Файлыг илгээх (Заавал биш)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
-msgstr ""
+msgstr "и-мэйл (заавал биш)"
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
-msgstr "Email (vyžadován)"
+msgstr "Имэйл (Шаардлагатай)"
 
 #: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
-msgstr "Jste přihlášeni jako: %s"
+msgstr "Та системд нэвтэрсэн байна: %s"
 
 #: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
-msgstr "Váš %s profil"
+msgstr "Таны %s хувийн мэдээлэл"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr ""
+msgstr "Харуулах"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr ""
+msgstr "Нуух"

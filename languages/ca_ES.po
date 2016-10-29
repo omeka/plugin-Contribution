@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2014
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2014,2016
 # Sergi Montes <sergi.blanes@gmail.com>, 2014
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2014-08-03 21:10+0000\n"
-"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>\n"
-"Language-Team: Catalan (Spain) (http://www.transifex.com/projects/p/omeka/language/ca_ES/)\n"
+"PO-Revision-Date: 2016-10-17 18:25+0000\n"
+"Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
+"Language-Team: Catalan (Spain) (http://www.transifex.com/omeka/omeka/language/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -31,33 +31,60 @@ msgstr "Obligatori"
 msgid "Disallowed"
 msgstr "No permès"
 
-#: models/ContributionContributedItem.php:46
 msgid "Deleted User"
 msgstr "Usuari eliminat"
 
-#: ContributionPlugin.php:285 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr "Ítems aportats "
 
-#: ContributionPlugin.php:288 ContributionPlugin.php:370
+#: ContributionPlugin.php:427 ContributionPlugin.php:509
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr "Contribució"
 
-#: ContributionPlugin.php:309
+#: ContributionPlugin.php:448
 msgid "Contribute an Item"
 msgstr "Aporteu un ítem"
 
-#: ContributionPlugin.php:549
+#: ContributionPlugin.php:491
+msgid "Contribution Status"
+msgstr "Estat de la contribució"
+
+#: ContributionPlugin.php:497
+msgid "Only Contributed Items"
+msgstr "Només ítems aportats per col·laboradors"
+
+#: ContributionPlugin.php:498
+msgid "Only Non-Contributed Items"
+msgstr "Només ítems NO aportats per col·laboradors"
+
+#: ContributionPlugin.php:659
+msgid "Anonymous, "
+msgstr "Anònim,"
+
+#: ContributionPlugin.php:685
+msgid "My Contributions"
+msgstr "Les meves contribucions"
+
+#: ContributionPlugin.php:696
+msgid "See all my contributions"
+msgstr "Veure les meves contribucions"
+
+#: ContributionPlugin.php:699
+msgid "No contribution yet."
+msgstr "Encara no hi ha cap contribució."
+
+#: ContributionPlugin.php:713
 msgid "Contributed by:"
 msgstr "Contribució de:"
 
-#: ContributionPlugin.php:554
+#: ContributionPlugin.php:718
 msgid "This item can be made public."
 msgstr "Aquest ítem pot ser publicat."
 
-#: ContributionPlugin.php:556
+#: ContributionPlugin.php:720
 msgid "This item cannot be made public."
 msgstr "Aquest ítem no pot ser publicat."
 
@@ -65,33 +92,46 @@ msgstr "Aquest ítem no pot ser publicat."
 msgid "Your contributions have been updated."
 msgstr "Les teves contribucions s'han actualitzat."
 
-#: controllers/ContributionController.php:192
+#: controllers/ContributionController.php:235
 msgid "You must select a type for your contribution."
 msgstr "Heu de triar un tipus de contribució."
 
-#: controllers/ContributionController.php:339
+#: controllers/ContributionController.php:391
+msgid "Your CAPTCHA submission was invalid, please try again."
+msgstr "Heu fallat la prova CAPTCHA, proveu de nou."
+
+#: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
 msgstr "Heu d'acceptar les condicions d'ús."
 
-#: controllers/ContributionController.php:368
+#: controllers/ContributionController.php:425
 msgid "Contribution URL (pending review by project staff): "
 msgstr "URL de la contribució (pendent de revisió):"
 
-#: controllers/ContributionController.php:372
+#: controllers/ContributionController.php:426
+#, php-format
+msgid "Your username is %s"
+msgstr "El vostre nom d'usuari és %s"
+
+#: controllers/ContributionController.php:429
+msgid "To log in and change your username, request a password here: "
+msgstr "Per iniciar sessió i canviar el vostre nom d’usuari, demaneu una contrasenya aquí:"
+
+#: controllers/ContributionController.php:433
 #, php-format
 msgid "Your %s Contribution"
 msgstr "La vostra contribució %s"
 
-#: controllers/ContributionController.php:391
+#: controllers/ContributionController.php:452
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr "S'ha fet una nova contribució a %s"
 
-#: controllers/ContributionController.php:396
+#: controllers/ContributionController.php:457
 msgid "Contribution URL for review: "
 msgstr "URL de la contribució per revisar"
 
-#: controllers/ContributionController.php:402
+#: controllers/ContributionController.php:463
 #, php-format
 msgid "New %s Contribution"
 msgstr "Nova contribució %s"
@@ -100,112 +140,131 @@ msgstr "Nova contribució %s"
 msgid "Settings have been saved."
 msgstr "Els paràmetres s'han desat."
 
-#: controllers/SettingsController.php:78
+#: controllers/SettingsController.php:80
 msgid "Contribution Slug"
 msgstr "Identificador de la contribució"
 
-#: controllers/SettingsController.php:79
+#: controllers/SettingsController.php:81
 msgid ""
 "Relative path from the Omeka root to the desired location for the "
 "contribution form. If left blank, the default path will be named "
 "&#8220;contribution.&#8221;"
 msgstr "Ruta relativa des de l'arrel de l'Omeka a la ubicació desitjada pel formulari de contribució. Si es deixa en blanc, la ruta per defecte es dirà &#8220;contribution.&#8221;"
 
-#: controllers/SettingsController.php:84
+#: controllers/SettingsController.php:86
 msgid "Contribution Confirmation Email"
 msgstr "Correu electrònic de confirmació"
 
-#: controllers/SettingsController.php:85
+#: controllers/SettingsController.php:87
 msgid ""
 "An email message will be sent to each contributor from this address "
 "confirming that they submitted a contribution to this website. Leave blank "
 "if you do not want an email sent."
 msgstr "S'enviarà un correu electrònic a cada col·laborador des d'aquest compte per confirmar l'enviament de la seva contribució a aquest portal. Deixeu-lo en blanc si no voleu enviar cap missatge."
 
-#: controllers/SettingsController.php:90
+#: controllers/SettingsController.php:92
 msgid "New Contribution Notification Emails"
 msgstr "Correu electrònic de notificació de noves contribucions"
 
-#: controllers/SettingsController.php:91
+#: controllers/SettingsController.php:93
 msgid ""
 "An email message will be sent to each address here whenever a new item is "
 "contributed. Leave blank if you do not want anyone to be alerted of "
 "contributions by email."
 msgstr "S'enviarà un correu electrònic a cada col·laborador cada vegada que contribueixi amb un nou ítem. Deixeu-lo en blanc per ometre aquestes alertes via correu electrònic."
 
-#: controllers/SettingsController.php:96
+#: controllers/SettingsController.php:98
 msgid "Text of Terms of Service"
 msgstr "Text de les condicions d'ús"
 
-#: controllers/SettingsController.php:97
+#: controllers/SettingsController.php:99
 msgid "The text of the legal disclaimer to which contributors will agree."
 msgstr "El text de la nota legal, la qual hauran d'acceptar els col·laboradors."
 
-#: controllers/SettingsController.php:102
-msgid "Use 'Simple' Options"
-msgstr "Empreu les opcions 'simples'"
+#: controllers/SettingsController.php:105
+msgid "Allow Non-registered Contributions"
+msgstr ""
 
-#: controllers/SettingsController.php:103
+#: controllers/SettingsController.php:106
 msgid ""
 "This will require an email address from contributors, and create a guest "
 "user from that information. If those users want to use the account, they "
 "will have to request a new password for the account. If you want to collect "
-"additional information about contributors, you cannot use the simple option."
-" See documentation for details. "
-msgstr "Això requerirà una adreça de correu electrònic dels col·laboradors, i crear un usuari convidat a partir d'aquesta informació. Si aquests usuaris volen utilitzar el compte, hauran de sol·licitar una nova contrasenya pel mateix. Per obtenir informació addicional sobre els col·laboradors, no es pot utilitzar l'opció simple. Consulteu la documentació per obtenir més informació."
+"additional information about contributors, they must create an account. See "
+"<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> "
+"for details. "
+msgstr ""
 
-#: controllers/SettingsController.php:109
+#: controllers/SettingsController.php:113
+msgid "Allow Anonymous Contributions"
+msgstr ""
+
+#: controllers/SettingsController.php:114
+msgid ""
+"If non-registered contributions are allowed above, this option allows "
+"contributors to remain completely anonymous, even to administrators. A dummy"
+" user account will be created that stores no identifing information. See <a "
+"href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for"
+" details. "
+msgstr ""
+
+#: controllers/SettingsController.php:120
 msgid "Email text to send to contributors"
 msgstr "Text del correu electrònic que s'enviarà als contribuidors"
 
-#: controllers/SettingsController.php:110
+#: controllers/SettingsController.php:121
 msgid ""
 "Email text to send to contributors when they submit an item. A link to their"
-" contribution will be appended. If using the 'Simple' option, we recommend "
-"that you notify contributors that a guest user account has been created for "
-"them, and what they gain by confirming their account."
-msgstr "El contingut del correu electrònic que s'enviarà als col·laboradors quan facin una contribució. Aquest correu contindrà un enllaç a la seva contribució. Si feu servir l'opció 'simple', recomanem que notifiqueu als col·laboradors que el sistema els hi ha creat un compte d'usuari convidat, i els avantatges que això suposa. "
+" contribution will be appended. If using the 'Non-registered', but not "
+"'Anonymous', options, we recommend that you notify contributors that a guest"
+" user account has been created for them, and what they gain by confirming "
+"their account."
+msgstr ""
 
-#: controllers/SettingsController.php:115
+#: controllers/SettingsController.php:126
 msgid "Do not put contributions in any collection"
 msgstr "No posis les contribucions en cap col·lecció"
 
-#: controllers/SettingsController.php:118
+#: controllers/SettingsController.php:129
 msgid "Contribution Collection"
 msgstr "Col·lecció de contribucions"
 
-#: controllers/SettingsController.php:119
+#: controllers/SettingsController.php:130
 msgid ""
 "The collection to which contributions will be added. Changes here will only "
 "affect new contributions."
 msgstr "La col·lecció a la qual s'afegiran les contribucions. Els canvis només afectaran a les noves contribucions."
 
-#: controllers/SettingsController.php:124
+#: controllers/SettingsController.php:135
 msgid "No default type"
 msgstr "Tipus no definit per defecte"
 
-#: controllers/SettingsController.php:127
+#: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
 msgstr "Tipus de contribució per defecte"
 
-#: controllers/SettingsController.php:128
+#: controllers/SettingsController.php:139
 msgid "The type that will be chosen for contributors by default."
 msgstr "El tipus de contribució per defecte."
 
-#: controllers/SettingsController.php:135
+#: controllers/SettingsController.php:146
 msgid "Choose a profile type for contributors"
 msgstr "Tria un tipus de perfil per als col·laboradors"
 
-#: controllers/SettingsController.php:136
+#: controllers/SettingsController.php:147
 msgid "Configure the profile type under User Profiles"
 msgstr "Configura el tipus de perfil dins de Perfils d'usuari"
 
-#: controllers/SettingsController.php:137
+#: controllers/SettingsController.php:148
 msgid "None"
 msgstr "Cap"
 
+#: models/ContributionContributedItem.php:46
+msgid "Unknown User"
+msgstr "Usuari desconegut"
+
 #: models/ContributionContributedItem.php:56
-#: views/admin/contributors/show.php:48 views/admin/items/browse.php:103
+#: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:9
 msgid "Anonymous"
 msgstr "Anònim"
@@ -225,8 +284,7 @@ msgid "Filter by status"
 msgstr "Filtra per l'estat"
 
 #: views/admin/common/contribution-quick-filters.php:8
-#: views/admin/contributors/show.php:40 views/admin/items/browse.php:81
-#: views/admin/items/browse.php:143
+#: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
 msgid "Needs review"
 msgstr "Requereix aprovació"
 
@@ -252,14 +310,15 @@ msgid "ID"
 msgstr "ID"
 
 #: views/admin/contributors/show.php:20
-msgid "'s contributions"
-msgstr "les seves contribucions"
+#, php-format
+msgid "%s's contributions"
+msgstr "%s's contribucions"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
 msgstr "Perfil:"
 
-#: views/admin/contributors/show.php:42 views/admin/items/browse.php:85
+#: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
 msgid "Private contribution"
 msgstr "Contribució privada"
 
@@ -402,54 +461,58 @@ msgid ""
 "keys, or the contribution form will be vulnerable to spam."
 msgstr "No heu introduït la vostra clau %s API sota %s. Es recomana afegir aquestes claus, o els formularis de contribució seran vulnerables al correu brossa."
 
-#: views/admin/items/browse.php:36 views/admin/items/browse.php:125
+#: views/admin/items/browse.php:36 views/admin/items/browse.php:137
 msgid "Set public"
 msgstr "Fes públic aquest conjunt"
 
-#: views/admin/items/browse.php:39 views/admin/items/browse.php:128
+#: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
 msgstr "Aquest conjunt requereix aprovació"
 
-#: views/admin/items/browse.php:57
-msgid "Publication Status (click to change)"
-msgstr "Estat de la publicació (fes clic per a modificar)"
-
-#: views/admin/items/browse.php:59
+#: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
 msgstr "Estat de la publicació"
 
-#: views/admin/items/browse.php:106
+#: views/admin/items/browse.php:78 views/admin/items/browse.php:156
+msgid "Public (click to put in review)"
+msgstr "Pública (clic per enviar-la a revisió)"
+
+#: views/admin/items/browse.php:86 views/admin/items/browse.php:155
+msgid "Needs review (click to make public)"
+msgstr "Per revisar (clic per fer-la pública)"
+
+#: views/admin/items/browse.php:118
 msgid "Info and contributions"
 msgstr "Informació i contribucions"
 
-#: views/admin/items/browse.php:146
+#: views/admin/items/browse.php:158
 msgid "Rejected"
 msgstr "Rebutjat"
 
-#: views/admin/items/browse.php:147
-msgid "Are you sure youo want to remove these contributions?"
+#: views/admin/items/browse.php:159
+msgid "Are you sure you want to remove these contributions?"
 msgstr "Esteu segur que voleu eliminar aquestes contribucions?"
 
-#: views/admin/items/browse.php:155
+#: views/admin/items/browse.php:167
 msgid "There is no contribution yet."
 msgstr "Encara no hi ha contribucions."
 
-#: views/admin/items/browse.php:157
+#: views/admin/items/browse.php:169
 #, php-format
 msgid "The query searched %d contributions and returned no results."
 msgstr "La consulta ha cercat sobre %d contribucions i no ha trobat cap resultat."
 
-#: views/admin/items/browse.php:158
+#: views/admin/items/browse.php:170
 msgid "See all contributions."
 msgstr "Veure totes les contribucions"
 
-#: views/admin/types/add-existing-element.php:27
+#: views/admin/types/add-existing-element.php:15
 msgid "Prompt:"
 msgstr "Avís:"
 
-#: views/admin/types/add-existing-element.php:30
-msgid "Large text"
-msgstr "Lletra gran"
+#: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
+msgid "Multiple rows"
+msgstr "Múltiples files"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
@@ -459,6 +522,10 @@ msgstr "Tipus"
 #: views/admin/types/add.php:35
 msgid "Add a new type"
 msgstr "Afegeix un nou tipus"
+
+#: views/admin/types/browse.php:11
+msgid "Add a Type"
+msgstr "Afegeix un tipus"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
@@ -485,45 +552,36 @@ msgid ""
 "selecting this item type."
 msgstr "Activeu o desactiveu la càrrega d'arxius mitjançant el formulari públic. Si ho marqueu com &#8220;obligatori,&#8220; els usuaris hauran d'afegir un fitxer amb la seva contribució quan triïn aquest tipus d'ítem."
 
-#: views/admin/types/form.php:42
-#, php-format
-msgid "%s"
-msgstr "%s"
-
 #: views/admin/types/form.php:58
 msgid "Prompt"
 msgstr "Avís"
 
-#: views/admin/types/form.php:60
-msgid "Multiple rows"
-msgstr "Múltiples files"
-
-#: views/public/contribution/contribute.php:47
+#: views/public/contribution/contribute.php:50
 msgid "What type of item do you want to contribute?"
 msgstr "Amb quin tipus d'ítem voleu col·laborar?"
 
-#: views/public/contribution/contribute.php:62
+#: views/public/contribution/contribute.php:68
 msgid "Publish my contribution on the web."
 msgstr "Publica la meva contribució al web."
 
-#: views/public/contribution/contribute.php:67
-msgid "Contribute anonymously."
-msgstr "Contribuïu de manera anònima."
+#: views/public/contribution/contribute.php:73
+msgid "Keep identity private."
+msgstr ""
 
-#: views/public/contribution/contribute.php:69
+#: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
 msgstr "Termes i Condicions"
 
-#: views/public/contribution/contribute.php:69
+#: views/public/contribution/contribute.php:75
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
 msgstr "Per poder col·laborar, heu de llegir i acceptar els %s"
 
-#: views/public/contribution/contribute.php:73
+#: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
 msgstr "Estic d'acord amb les condicions d'ús."
 
-#: views/public/contribution/contribute.php:75
+#: views/public/contribution/contribute.php:81
 msgid "Contribute"
 msgstr "Contribuïu"
 
@@ -566,20 +624,47 @@ msgid ""
 "you used"
 msgstr "Si voleu tornar a interactuar amb el portal, podeu fer servir el compte que s’ha creat. Visiteu %s, i sol·liciteu una nova contrasenya per al vostre compte de correu."
 
-#: views/public/contribution/type-form.php:29
+#: views/public/contribution/type-form.php:3
+msgid "You must choose a contribution type to continue."
+msgstr "Heu de triar un tipus de contribució per continuar."
+
+#: views/public/contribution/type-form.php:5
+#, php-format
+msgid "Contribute a %s"
+msgstr "Contribuïu a %s"
+
+#: views/public/contribution/type-form.php:14
+msgid "Upload a file"
+msgstr "Carrega un fitxer"
+
+#: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
 msgstr "Carrega un fitxer (Opcional)"
 
-#: views/public/contribution/type-form.php:37
+#: views/public/contribution/type-form.php:48
+msgid "Email (Optional)"
+msgstr ""
+
+#: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
 msgstr "Correu electrònic (obligatori)"
 
-#: views/public/contribution/type-form.php:49
+#: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
 msgstr "Esteu validat com a: %s"
 
-#: views/public/contribution/type-form.php:64
+#: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
 msgstr "El vostre perfil %s"
+
+#: views/public/contribution/type-form.php:85
+#: views/public/contribution/type-form.php:87
+msgid "Show"
+msgstr "Mostra"
+
+#: views/public/contribution/type-form.php:85
+#: views/public/contribution/type-form.php:87
+msgid "Hide"
+msgstr "Oculta"
