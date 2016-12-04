@@ -111,7 +111,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
-            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
+            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
