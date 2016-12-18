@@ -8,9 +8,6 @@
 
 queue_js_file('contribution-public-form');
 $contributionPath = get_option('contribution_page_path');
-if(!$contributionPath) {
-    $contributionPath = 'contribution';
-}
 queue_css_file('form');
 
 //load user profiles js and css if needed
