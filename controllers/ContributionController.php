@@ -749,11 +749,12 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _getEditSuccessMessage($record)
     {
-        $itemTitle = $this->_getElementMetadata($record->Item, 'Dublin Core', 'Title');
+        $item = $record->Item;
+        $itemTitle = $this->_getElementMetadata($item, 'Dublin Core', 'Title');
         if ($itemTitle != '') {
             return __('The contributed item "%s" was successfully updated!', $itemTitle);
         } else {
-            return __('The contributed item #%s was successfully updated!', strval($item->id));
+            return __('The contributed item #%d was successfully updated!', $item->id);
         }
     }
 
