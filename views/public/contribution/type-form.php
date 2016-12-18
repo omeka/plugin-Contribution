@@ -28,10 +28,10 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 
 <?php if ($type->add_tags) : ?>
 <div id="tag-form" class="field">
-    <div>
+    <div class="two columns alpha">
         <?php echo $this->formLabel('tags', __('Add Tags')); ?>
     </div>
-    <div>
+    <div class="inputs five columns omega">
         <p id="add-tags-explanation" class="explanation"><?php echo __('Separate tags with %s', option('tag_delimiter')); ?></p>
         <?php echo $this->formText('tags'); ?>
     </div>
