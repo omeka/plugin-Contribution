@@ -1,7 +1,7 @@
 
 div#contribution-type-form div.inputs {
 	width: 60%;
-	
+
 }
 
 div#location_form {
@@ -24,4 +24,7 @@ p#contribution-userprofile-visibility {
 
 div.contribution-userprofile.exists {
 	display: none;
+}
+#upload-files input {
+    display: block;
 }

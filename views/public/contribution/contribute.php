@@ -6,10 +6,10 @@
  * @package Contribution
  */
 
-queue_js_file('contribution-public-form');
 $contributionPath = get_option('contribution_page_path');
 queue_css_file('form');
 
+queue_js_file('contribution-public-form');
 //load user profiles js and css if needed
 if(get_option('contribution_user_profile_type') && plugin_is_active('UserProfiles') ) {
     queue_js_file('admin-globals');
@@ -29,7 +29,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 
 <div id="primary">
 <?php echo flash(); ?>
-    
+
     <h1><?php echo $head['title']; ?></h1>
 
     <?php if(! ($user = current_user() )
@@ -54,7 +54,19 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                     <input type="submit" name="submit-type" id="submit-type" value="Select" />
                 </div>
                 <div id="contribution-type-form">
-                <?php if(isset($type)) { include('type-form.php'); }?>
+                    <?php if (isset($type)) {
+                        $partialOptions = array();
+                        $partialOptions['preset'] = true;
+                        $partialOptions['type'] = $type;
+                        $partialOptions['item'] = $item;
+                        if (isset($profileType)) {
+                            $partialOptions['profileType'] = $profileType;
+                        }
+                        if (isset($profile)) {
+                            $partialOptions['profile'] = $profile;
+                        }
+                        echo $this->partial('contribution/type-form.php', $partialOptions);
+                    }?>
                 </div>
             </fieldset>
 

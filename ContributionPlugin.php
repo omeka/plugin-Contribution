@@ -114,6 +114,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL,
+            `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=InnoDB;";
@@ -242,6 +243,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (version_compare($oldVersion, 3.1, '<')) {
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
+        }
+
+        if (version_compare($oldVersion, '3.1.1', '<')) {
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
         }
 
         if (version_compare($oldVersion, '3.1.4', '<')) {

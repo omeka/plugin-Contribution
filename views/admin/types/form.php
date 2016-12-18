@@ -1,8 +1,8 @@
-<?php 
+<?php
     $itemTypeOptions = get_db()->getTable('ContributionType')->getPossibleItemTypes();
     $itemTypeOptions = array('' => 'Select an Item Type') + $itemTypeOptions;
 ?>
-<form method='post'>  
+<form method='post'>
 <section class='seven columns alpha'>
 <?php if($action == 'add'): ?>
     <div class="field">
@@ -42,17 +42,27 @@
                <?php echo $this->formSelect('file_permissions', $contribution_type->file_permissions, array(), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
-     </div>  
-    
+     </div>
 
-    
+     <div class="field">
+        <div class="two columns alpha">
+            <label><?php echo __("Allow Multiple File Upload"); ?></label>
+        </div>
+        <div class="inputs five columns omega">
+            <p class="explanation"><?php echo __("Allow to upload multiple files for one item."); ?></p>
+            <div class="input-block">
+                <?php echo $this->formCheckbox("multiple_files", null, array('checked' => $contribution_type->multiple_files)); ?>
+            </div>
+        </div>
+     </div>
+
     <div id="element-list" class="seven columns alpha">
         <ul id="contribution-type-elements" class="sortable">
         <?php
         foreach ($contributionTypeElements as $contributionElement):
             if ($contributionElement):
         ?>
-        
+
             <li class="element">
                 <div class="sortable-item">
                 <strong><?php echo html_escape($contributionElement->Element->name); ?></strong><span class='prompt'><?php echo __('Prompt'); ?></span>
@@ -65,7 +75,7 @@
                 <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element"><?php echo __('Remove'); ?></a>
                 <?php endif; ?>
                 </div>
-                
+
                 <div class="drawer-contents">
                     <div class="element-description"><?php echo html_escape($contributionElement->Element->description); ?></div>
                 </div>
@@ -96,7 +106,7 @@
                 ?>
                 <?php endif; ?>
             <?php endif; ?>
-        <?php endforeach; // end for each $elementInfos ?> 
+        <?php endforeach; // end for each $elementInfos ?>
             <li>
                 <div class="add-new">
                     <?php echo __('Add Element'); ?>
@@ -112,7 +122,7 @@
 
 <section class='three columns omega'>
     <div id='save' class='panel'>
-            
+
             <input type="submit" class="big green button" value="<?php echo __('Save Changes');?>" id="submit" name="submit">
             <?php if($contribution_type->exists()): ?>
             <?php echo link_to($contribution_type, 'delete-confirm', __('Delete'), array('class' => 'big red button delete-confirm')); ?>
