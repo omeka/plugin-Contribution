@@ -53,3 +53,17 @@ function contribution_contribute_url($actionName = null)
     }
     return get_view()->url($options, 'contribution', array(), true);
 }
+
+/**
+ * Get a URL to the public contribution remove page.
+ *
+ * @param Record|integer $contributedItem.
+ * @return string URL
+ */
+function contribution_remove_url($contributedItem)
+{
+    $string = get_option('contribution_page_path');
+    $string .= '/remove/';
+    $string .= is_object($contributedItem) ? $contributedItem->id : (integer) $contributedItem;
+    return url($string);
+}
