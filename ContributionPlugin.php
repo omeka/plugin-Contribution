@@ -62,15 +62,15 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     protected $_options = array(
         'contribution_page_path' => 'contribution',
-        'contribution_email_sender',
-        'contribution_email_recipients',
-        'contribution_consent_text',
-        'contribution_collection_id',
-        'contribution_default_type',
-        'contribution_user_profile_type',
-        'contribution_open',
-        'contribution_email',
-        'contribution_strict_anonymous'
+        'contribution_email_sender' => '',
+        'contribution_email_recipients' => '',
+        'contribution_consent_text' => '',
+        'contribution_collection_id' => null,
+        'contribution_default_type' => null,
+        'contribution_user_profile_type' => null,
+        'contribution_open' => false,
+        'contribution_email' => '',
+        'contribution_strict_anonymous' => false,
     );
 
     public function setUp()
@@ -285,7 +285,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $view = $args['view'];
 
-        require_once dirname(__FILE__) . DIRECTORY_SEPARATOR . 'forms' . DIRECTORY_SEPARATOR . 'Settings.php';
         $form = new Contribution_Form_Settings;
         $defaults = $form->getCurrentOptions();
         $form->setDefaults($defaults);
@@ -311,8 +310,10 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $post['contribution_page_path'] = $this->_options['contribution_page_path'];
         }
 
-        foreach ($post as $key => $value) {
-            set_option($key, $value);
+        foreach ($this->_options as $optionKey => $optionValue) {
+            if (isset($post[$optionKey])) {
+                set_option($optionKey, $post[$optionKey]);
+            }
         }
     }
 
@@ -364,8 +365,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         // The wildcards on both routes make these routes always apply for the
         // contribution controller.
 
-        // Get the base path.
-        $basePath = get_option('contribution_page_path');
+        // Get the base path. The check is kept in case of error.
+        $basePath = get_option('contribution_page_path') ?: $this->_options['contribution_page_path'];
         $router->addRoute('contribution',
             new Zend_Controller_Router_Route(
                 "$basePath/:action/*",
