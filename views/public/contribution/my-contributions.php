@@ -1,6 +1,14 @@
-<?php echo head(); ?>
+<?php
+$title = __('My Contributions');
+$bodyClass = 'contribution';
+
+echo head(array(
+    'title' => $title,
+    'bodyclass' => $bodyClass,
+)); ?>
 <div id="primary">
 <?php echo flash(); ?>
+    <h1><?php echo $title; ?></h1>
 <form method='post'>
     <table>
         <thead>
@@ -30,4 +38,4 @@
     <input id="save-changes" class="submit big button" type="submit" value="Save Changes" name="submit">
 </form>
 </div>
-<?php echo foot(); ?>
+<?php echo foot();
