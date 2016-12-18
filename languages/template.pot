@@ -607,7 +607,7 @@ msgstr ""
 #, php-format
 msgid ""
 "Your contribution will show up in the archive once an administrator approves "
-"it. Meanwhile, feel free to %s or %s ."
+"it. Meanwhile, feel free to %s or %s."
 msgstr ""
 
 #: views/public/contribution/thankyou.php:7
@@ -619,7 +619,7 @@ msgstr ""
 msgid ""
 "If you would like to interact with the site further, you can use an account "
 "that is ready for you. Visit %s, and request a new password for the email "
-"you used"
+"you used."
 msgstr ""
 
 #: views/public/contribution/type-form.php:3

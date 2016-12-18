@@ -674,7 +674,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function filterGuestUserLinks($nav)
     {
         $nav['Contribution'] = array(
-            'label' => 'My Contributions',
+            'label' => __('My Contributions'),
              'uri' => contribution_contribute_url('my-contributions'),
         );
         return $nav;
