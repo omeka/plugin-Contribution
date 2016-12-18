@@ -65,6 +65,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             ));
         }
         $this->view->contrib_items = $contribItems;
+        $this->view->total_results = count($contribItems);
     }
 
     /**

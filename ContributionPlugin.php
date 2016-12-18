@@ -832,7 +832,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 __('See all my contributions'));
         }
         else {
-            $html = '<p>' . __('No contribution yet.') . '</p>';
+            $html = '<p>' . __('No contribution yet, or removed contributions.') . '</p>';
         }
         $widget['content'] = $html;
         $widgets[] = $widget;

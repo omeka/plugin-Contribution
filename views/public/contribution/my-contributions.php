@@ -1,14 +1,13 @@
 <?php
-$title = __('My Contributions');
-$bodyClass = 'contribution';
-
+$pageTitle = __('My Contributions');
 echo head(array(
-    'title' => $title,
-    'bodyclass' => $bodyClass,
+    'title' => $pageTitle,
+    'bodyclass' => 'contributions browse',
 )); ?>
 <div id="primary">
 <?php echo flash(); ?>
-    <h1><?php echo $title; ?></h1>
+<h1><?php echo $pageTitle;?> <?php echo __('(%s total)', $total_results); ?></h1>
+<?php if ($total_results): ?>
 <form method='post'>
     <table>
         <thead>
@@ -44,5 +43,15 @@ echo head(array(
     </table>
     <input id="save-changes" class="submit big button" type="submit" value="Save Changes" name="submit">
 </form>
+<?php else: ?>
+<p>
+    <?php echo __('No contribution yet, or removed contributions.'); ?>
+</p>
+<p>
+    <?php echo __('Feel free to %scontribute%s or %sbrowse the archive%s.',
+        '<a href="' . contribution_contribute_url() . '">', '</a>',
+        '<a href="' . url('items/browse') . '">', '</a>'); ?>
+</p>
+<?php endif; ?>
 </div>
 <?php echo foot();
