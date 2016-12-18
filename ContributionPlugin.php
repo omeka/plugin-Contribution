@@ -155,6 +155,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     public function hookUpgrade($args)
     {
+        $db = $this->_db;
+
         $oldVersion = $args['old_version'];
         $newVersion = $args['new_version'];
         // Catch-all for pre-2.0 versions
@@ -181,7 +183,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $this->hookInstall();
 
         }
-        
+
             if (version_compare($oldVersion, '3.0', '<')) {
             if(!is_writable(CONTRIBUTION_PLUGIN_DIR . "/upgrade_files")) {
                 throw new Omeka_Plugin_Installer_Exception("'upgrade_files' directory must be writable by the web server");
@@ -216,7 +218,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             $this->_db->query($sql);
         }
-        
+
         if (version_compare($oldVersion, '3.0.2', '<')) {
             //fix some previous bad upgrades
             //need to check if contributor_posting was properly changed to anonymous
@@ -243,28 +245,43 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 $this->_db->query($sql);
             }
         }
-        
+
         if (version_compare($oldVersion, 3.1, '<')) {
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
         }
 
         if (version_compare($oldVersion, '3.1.1', '<')) {
-            $db = $this->_db;
-            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
-            $db->query($sql);
+            // Need to check columns with old versions.
+            $sql = "SHOW COLUMNS IN `{$db->ContributionType}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+            if (!in_array('multiple_files', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+                $db->query($sql);
+            }
         }
 
         if (version_compare($oldVersion, '3.1.2', '<')) {
-            $db = $this->_db;
-            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
-            $db->query($sql);
+            // Need to check columns with old versions.
+            $sql = "SHOW COLUMNS IN `{$db->ContributionType}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+            if (!in_array('add_tags', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `add_tags` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+                $db->query($sql);
+            }
         }
 
         if (version_compare($oldVersion, '3.1.3', '<')) {
-            $db = $this->_db;
-            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `anonymous`";
-            $db->query($sql);
+            // Need to check columns with old versions.
+            $sql = "SHOW COLUMNS IN `{$db->ContributionContributedItem}`";
+            $result = $db->query($sql);
+            $cols = $result->fetchAll(Zend_Db::FETCH_COLUMN);
+            if (!in_array('deleted', $cols)) {
+                $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `anonymous`";
+                $db->query($sql);
+            }
         }
 
         if (version_compare($oldVersion, '3.1.4', '<')) {
@@ -348,9 +365,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookDefineAcl($args)
     {
         $acl = $args['acl'];
-    
+
         $acl->addRole(new Zend_Acl_Role('contribution-anonymous'), null);
-        
+
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
         $privileges = array('show', 'contribute', 'thankyou', 'my-contributions', 'type-form');
@@ -448,20 +465,20 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         );
         return $apiResources;
     }
-    
+
     public function filterApiImportOmekaAdapters($adapters, $args)
     {
         if (strpos($args['endpointUri'], 'omeka.net') !== false) {
-            $contributedItemAdapter = 
+            $contributedItemAdapter =
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionContributedItem');
             $contributedItemAdapter->setResourceProperties(array('item' => 'Item'));
             $adapters['contributions'] = $contributedItemAdapter;
-            
-            $contributionTypeAdapter = 
+
+            $contributionTypeAdapter =
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
             $contributionTypeAdapter->setResourceProperties(array('item_type' => 'ItemType'));
             $adapters['contribution_types'] = $contributionTypeAdapter;
-    
+
             $contributionTypeElementsAdapter =
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
             $contributionTypeElementsAdapter->setResourceProperties(
@@ -472,22 +489,22 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                     );
             $adapters['contribution_type_elements'] = $contributionTypeElementsAdapter;
         } else {
-            $contributionContributorsAdapter = 
+            $contributionContributorsAdapter =
                 new ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter(
                     null, $args['endpointUri'], 'User'
                     );
             $adapters['contribution_contributors'] = $contributionContributorsAdapter;
 
-            $contributedItemAdapter = 
+            $contributedItemAdapter =
                 new ApiImport_ResponseAdapter_OmekaNet_ContributedItemsAdapter(
                         null, $args['endpointUri'], 'ContributionContributedItem'
                     );
             $adapters['contribution_contributed_items'] = $contributedItemAdapter;
-            $typesAdapter = 
+            $typesAdapter =
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionType');
             $typesAdapter->setResourceProperties(array('item_type' => 'ItemType'));
             $adapters['contribution_types'] = $typesAdapter;
-            $typeElementsAdapter = 
+            $typeElementsAdapter =
                 new ApiImport_ResponseAdapter_Omeka_GenericAdapter(null, $args['endpointUri'], 'ContributionTypeElement');
             $typeElementsAdapter->setResourceProperties(
                     array('type' => 'ContributionType',
