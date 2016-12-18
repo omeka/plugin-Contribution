@@ -94,7 +94,7 @@ Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
 </div>
 
 <?php else: ?>
-    <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
+    <p><?php echo __('You are logged in as: %s', '<strong>' . metadata($user, 'name') . '</strong>'); ?></p>
 <?php endif; ?>
     <?php
     //pull in the user profile form if it is set
