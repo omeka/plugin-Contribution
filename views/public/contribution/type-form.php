@@ -5,6 +5,7 @@
 <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
 
 <?php
+// When a file is required, the upload element is displayed before other ones.
 $allow_multiple_files = (boolean) $type->multiple_files;
 
 if ($type->isFileRequired()):
@@ -13,9 +14,13 @@ if ($type->isFileRequired()):
 
 <?php if ($allow_multiple_files) : ?>
 <script type="text/javascript" charset="utf-8">
+<?php if (!empty($preset)): ?>
 jQuery(window).load(function () {
     Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
 });
+<?php else: ?>
+Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+<?php endif; ?>
 </script>
 <div id="files-form" class="field drawer-contents">
     <?php echo $this->formLabel('file', __('Upload a file'), array(
@@ -53,9 +58,13 @@ if (!isset($required) && $type->isFileAllowed()):
 ?>
 <?php if ($allow_multiple_files) : ?>
 <script type="text/javascript" charset="utf-8">
+<?php if (!empty($preset)): ?>
 jQuery(window).load(function () {
     Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
 });
+<?php else: ?>
+Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+<?php endif; ?>
 </script>
 <div id="files-form" class="field drawer-contents">
     <?php echo $this->formLabel('file', __('Upload a file (Optional)'), array(
@@ -88,7 +97,7 @@ jQuery(window).load(function () {
     <div class="two columns alpha">
     <?php
         if (get_option('contribution_strict_anonymous')) {
-            echo $this->formLabel('contribution_email', __('Email (Optional)')); 
+            echo $this->formLabel('contribution_email', __('Email (Optional)'));
         } else {
             echo $this->formLabel('contribution_email', __('Email (Required)'));
         }

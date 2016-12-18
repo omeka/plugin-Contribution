@@ -56,6 +56,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 <div id="contribution-type-form">
                     <?php if (isset($type)) {
                         $partialOptions = array();
+                        $partialOptions['preset'] = true;
                         $partialOptions['type'] = $type;
                         $partialOptions['item'] = $item;
                         if (isset($profileType)) {
