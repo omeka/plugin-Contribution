@@ -61,8 +61,8 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 </div>
             </fieldset>
 
-            <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
-                <?php if(isset($captchaScript)): ?>
+            <fieldset id="contribution-confirm-submit" <?php if (empty($type)) { echo 'style="display: none;"'; }?>>
+                <?php if(!empty($captchaScript)): ?>
                     <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
                 <?php endif; ?>
                 <div class="inputs">
