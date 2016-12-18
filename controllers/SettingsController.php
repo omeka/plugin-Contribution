@@ -31,7 +31,7 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
         if (isset($_POST['submit'])) {
             if ($form->isValid($_POST)) {
                 $this->_setOptions($form->getValues());
-                $this->_helper->flashMessenger(__('Settings have been saved.'));
+                $this->_helper->flashMessenger(__('Settings have been saved.'), 'success');
             } else {
                 $this->_helper->flashMessenger(__('There were errors found in your form. Please edit and resubmit.', 'error'));
             }
