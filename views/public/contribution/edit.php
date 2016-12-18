@@ -43,6 +43,10 @@ echo head(array(
             <span><?php echo $type->display_name; ?></span>
             <?php if (metadata('item', 'has files')): ?>
             <div id="file-list">
+                <div class="two columns alpha">
+                    <label class="control-label col-sm-2"><?php echo __('Files'); ?></label>
+                </div>
+                <div class="inputs five columns omega">
                 <ul class="sortable" style="list-style-type: none;">
                 <?php foreach ($item->Files as $key => $file): ?>
                     <li class="file" style="display: inline-block;">
@@ -52,6 +56,7 @@ echo head(array(
                     </li>
                 <?php endforeach; ?>
                 </ul>
+                </div>
             </div>
             <?php endif; ?>
             <div id="contribution-type-form">
