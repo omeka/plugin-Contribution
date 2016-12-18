@@ -66,7 +66,7 @@ Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
     </div>
     <div class="inputs five columns omega">
         <p id="add-tags-explanation" class="explanation"><?php echo __('Separate tags with %s', option('tag_delimiter')); ?></p>
-        <?php echo $this->formText('tags'); ?>
+        <?php echo $this->formText('tags', isset($tags) ? $tags : ''); ?>
     </div>
 </div>
 <?php endif; ?>
