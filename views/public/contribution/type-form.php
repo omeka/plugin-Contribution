@@ -55,6 +55,18 @@ Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
 </script>
 <?php endif; ?>
 
+<?php if ($type->add_tags) : ?>
+<div id="tag-form" class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('tags', __('Add Tags')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <p id="add-tags-explanation" class="explanation"><?php echo __('Separate tags with %s', option('tag_delimiter')); ?></p>
+        <?php echo $this->formText('tags'); ?>
+    </div>
+</div>
+<?php endif; ?>
+
 <?php $user = current_user(); ?>
 <?php if(( get_option('contribution_open') || get_option('contribution_strict_anonymous') ) && !$user) : ?>
 <div class="field">
