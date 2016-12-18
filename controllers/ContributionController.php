@@ -24,6 +24,10 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     public function myContributionsAction()
     {
         $user = current_user();
+        if (empty($user)) {
+            $this->_helper->redirector('login', 'users', 'default');
+        }
+
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
 
         $contribItems = array();
