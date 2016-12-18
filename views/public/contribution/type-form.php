@@ -1,50 +1,26 @@
-
 <?php if (!$type): ?>
 <p><?php echo __('You must choose a contribution type to continue.'); ?></p>
-<?php else: ?>
+<?php else:
+$isRequired = $type->isFileRequired();
+$isAllowed = $type->isFileAllowed();
+$allowMultipleFiles = $isAllowed && $type->multiple_files;
+?>
 <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
 
 <?php
 // When a file is required, the upload element is displayed before other ones.
-$allow_multiple_files = (boolean) $type->multiple_files;
-
-if ($type->isFileRequired()):
-    $required = true;
-?>
-
-<?php if ($allow_multiple_files) : ?>
-<script type="text/javascript" charset="utf-8">
-<?php if (!empty($preset)): ?>
-jQuery(window).load(function () {
-    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
-});
-<?php else: ?>
-Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
-<?php endif; ?>
-</script>
+if ($isRequired): ?>
 <div id="files-form" class="field drawer-contents">
-    <?php echo $this->formLabel('file', __('Upload a file'), array(
-        'id' => 'file-inputs',
-    )); ?>
-    <div id="files-metadata" class="field">
-        <div id="upload-files" class="files"><?php /* four columns omega */ ?>
-            <?php echo $this->formFile('file[0]', array('class' => 'fileinput button')); ?>
-            <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
-        </div>
-    </div>
-</div>
-<?php else: ?>
-<div class="field">
     <div class="two columns alpha">
         <?php echo $this->formLabel('file', __('Upload a file')); ?>
     </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('file', array('class' => 'fileinput button')); ?>
-        <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+        </div>
     </div>
 </div>
-<?php endif; ?>
-
 <?php endif; ?>
 
 <?php
@@ -53,42 +29,30 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 }
 ?>
 
-<?php
-if (!isset($required) && $type->isFileAllowed()):
-?>
-<?php if ($allow_multiple_files) : ?>
-<script type="text/javascript" charset="utf-8">
-<?php if (!empty($preset)): ?>
-jQuery(window).load(function () {
-    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
-});
-<?php else: ?>
-Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
-<?php endif; ?>
-</script>
+<?php if (!$isRequired && $isAllowed): ?>
 <div id="files-form" class="field drawer-contents">
-    <?php echo $this->formLabel('file', __('Upload a file (Optional)'), array(
-        'id' => 'file-inputs',
-    )); ?>
-    <div id="files-metadata" class="field">
-        <div id="upload-files" class="files"><?php /* four columns omega */ ?>
-            <?php echo $this->formFile('file[0]', array('class' => 'fileinput button')); ?>
-            <p><?php echo __('The maximum files size is %s.', max_file_size()); ?></p>
-        </div>
-    </div>
-</div>
-<?php else: ?>
-<div class="field">
     <div class="two columns alpha">
         <?php echo $this->formLabel('file', __('Upload a file (Optional)')); ?>
     </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('file', array('class' => 'fileinput button')); ?>
-        <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+        </div>
     </div>
 </div>
 <?php endif; ?>
 
+<?php if ($allowMultipleFiles): ?>
+<script type="text/javascript" charset="utf-8">
+    <?php if (!empty($preset)): ?>
+jQuery(window).load(function () {
+    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+});
+    <?php else: ?>
+Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+    <?php endif; ?>
+</script>
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
@@ -156,4 +120,4 @@ Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
 // on a type-by-type basis).
 fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
 ?>
-<?php endif; ?>
+<?php endif;
