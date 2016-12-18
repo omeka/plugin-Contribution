@@ -50,6 +50,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
         }
         $this->view->contrib_items = $contribItems;
+        $this->view->total_results = count($contribItems);
     }
 
     /**
