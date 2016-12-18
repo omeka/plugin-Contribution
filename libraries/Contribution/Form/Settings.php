@@ -93,7 +93,8 @@ class Contribution_Form_Settings extends Omeka_Form
 
         $this->addElement('checkbox', 'contribution_allow_edit', array(
             'label' => __("Allow to Edit Contribution"),
-            'description' => __('If checked, contributors will be able to edit and to delete their contributions.'),
+            'description' => __('If checked, contributors will be able to edit and to delete their contributions.')
+                . ' ' . __('Deleted contributions are only hidden for public and guest users.'),
             ),
             array('checked' => (bool) get_option('contribution_allow_edit') ? 'checked' : '')
         );
