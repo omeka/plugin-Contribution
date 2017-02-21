@@ -649,7 +649,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (!$contribItem) {
             return $cite;
         }
-        $title      = metadata('item',array('Dublin Core', 'Title'));
+        $title      = metadata($item, array('Dublin Core', 'Title'));
         $siteTitle  = strip_formatting(option('site_title'));
         $itemId     = $item->id;
         $accessDate = date('F j, Y');
