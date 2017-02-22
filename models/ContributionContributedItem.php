@@ -17,29 +17,29 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
     public $item_id;
     public $public;
     public $anonymous;
-    
+    public $deleted = 0;
+
     protected $_related = array(
         'Item' => 'getItem',
         'Contributor' => 'getContributor'
         );
-    
+
     public function getItem()
     {
         return $this->getDb()->getTable('Item')->find($this->item_id);
     }
 
-    public function makeNotPublic()
-    {
-        $this->public = false;
-        $item = $this->Item;
-        $item->public = false;
-        $item->save();
-        release_object($item);
-    }
-    
     public function getContributor()
     {
-        $owner = $this->Item->getOwner();
+        $item = $this->Item;
+        // If there is no item, make a fake user called "No User".
+        if (empty($item)) {
+            $owner = new User();
+            $owner->name = __('No User');
+            return $owner;
+        }
+
+        $owner = $item->getOwner();
         //if the user has been deleted, make a fake user called "Deleted User"
         if(!$owner) {
             $owner = new User();
@@ -56,5 +56,36 @@ class ContributionContributedItem extends Omeka_Record_AbstractRecord
             $owner->name = __('Anonymous');
         }
         return $owner;
+    }
+
+    /**
+     * Before-save hook.
+     *
+     * @param array $args
+     */
+    protected function beforeSave($args)
+    {
+        // Delete a contributed item. In fact, for security reason, make it
+        // private and invisible to contributor.
+        if ($this->deleted) {
+            $this->public = false;
+        }
+    }
+
+    /**
+     * After-save hook.
+     *
+     * @param array $args
+     */
+    protected function afterSave($args)
+    {
+        if (!$this->public) {
+            $item = $this->Item;
+            if ($item->public) {
+                $item->public = false;
+                $item->save(false);
+            }
+            release_object($item);
+        }
     }
 }

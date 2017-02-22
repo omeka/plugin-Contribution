@@ -45,7 +45,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
 
         <?php echo common('contribution-quick-filters'); ?>
 
-        <table id="contributions" cellspacing="0" cellpadding="0">
+        <table id="contributions">
         <thead id="types-table-head">
             <tr>
                 <?php if ($allowToManage): ?>
@@ -120,7 +120,9 @@ if (!Omeka_Captcha::isConfigured()): ?>
                     <?php endif; ?>
                 </td>
                 <td class="contribution-status">
-                    <?php if ($allowToManage && ($status != 'private')): ?>
+                    <?php if ($contributedItem->deleted): ?>
+                    <span class="contribution deleted"><?php echo __('User Deleted'); ?></span>
+                    <?php elseif ($allowToManage && ($status != 'private')): ?>
                     <a href="<?php echo ADMIN_BASE_URL; ?>" id="contribution-<?php echo $contributedItem->id; ?>" class="contribution toggle-status status <?php echo $status; ?>"><?php echo $statusText; ?></a>
                     <?php else: ?>
                     <span class="contribution toggle-status status <?php echo $status; ?>"><?php echo $statusText; ?></span>

@@ -25,13 +25,13 @@ class ContributionTypeTest extends PHPUnit_Framework_TestCase
         $type = new ContributionType;
         $this->assertFalse($type->isFileAllowed());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_ALLOWED;
+        $type->file_permissions = 'Allowed';
         $this->assertTrue($type->isFileAllowed());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_REQUIRED;
+        $type->file_permissions = 'Required';
         $this->assertTrue($type->isFileAllowed());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_DISALLOWED;
+        $type->file_permissions = 'Disallowed';
         $this->assertFalse($type->isFileAllowed());
     }
 
@@ -41,22 +41,22 @@ class ContributionTypeTest extends PHPUnit_Framework_TestCase
         $type = new ContributionType;
         $this->assertFalse($type->isFileRequired());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_ALLOWED;
+        $type->file_permissions = 'Allowed';
         $this->assertFalse($type->isFileRequired());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_REQUIRED;
+        $type->file_permissions = 'Required';
         $this->assertTrue($type->isFileRequired());
 
-        $type->file_permissions = ContributionType::FILE_PERMISSION_DISALLOWED;
+        $type->file_permissions = 'Disallowed';
         $this->assertFalse($type->isFileRequired());
     }
 
     public function testFilePermissionsCoverage()
     {
         $permissions = ContributionType::getPossibleFilePermissions();
-        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_ALLOWED, $permissions);
-        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_REQUIRED, $permissions);
-        $this->assertAndRemoveArrayKey(ContributionType::FILE_PERMISSION_DISALLOWED, $permissions);
+        $this->assertAndRemoveArrayKey('Allowed', $permissions);
+        $this->assertAndRemoveArrayKey('Required', $permissions);
+        $this->assertAndRemoveArrayKey('Disallowed', $permissions);
         $this->assertEquals(0, count($permissions), 'Not all file permission levels are covered by testing.');
     }
 

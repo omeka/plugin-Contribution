@@ -15,7 +15,6 @@
  * @return string
  */
 
-
 function contribution_admin_header($subsections = array())
 {
     $mainTitle = __('Contribution');
@@ -48,16 +47,43 @@ function contribution_link_to_contribute($linkText = 'Contribute', $actionName =
  */
 function contribution_contribute_url($actionName = null)
 {
-    $path = get_option('contribution_page_path');
-    if (empty($path)) {
-        $route = 'contributionDefault';
-    } else {
-        $route = 'contributionCustom';
-    }
     $options = array();
     if (!empty($actionName)) {
         $options['action'] = $actionName;
     }
-    return get_view()->url($options, $route, array(), true);
+    return get_view()->url($options, 'contribution', array(), true);
 }
 
+/**
+ * Get a link to the public contribution action page.
+ *
+ * @param Record|integer $contributedItem.
+ * @param string $action Action to link to, main index if none.
+ * @param string $linkText
+ * @return string HTML
+ */
+function contribution_link_to($contributedItem = null, $action = null, $linkText = 'Contribute')
+{
+    $url = contribution_url($action, $contributedItem);
+    return sprintf('<a href="%s">%s</a>', $url, $linkText);
+}
+
+/**
+ * Get a URL to the public contribution action page.
+ *
+ * @param string $action Action to link to, main index if none.
+ * @param Record|integer $contributedItem.
+ * @return string URL
+ */
+function contribution_url($action = null, $contributedItem = null)
+{
+    $string = get_option('contribution_page_path');
+    if (!empty($action)) {
+        $string .= '/' . $action;
+        if (!empty($contributedItem)) {
+            $string .= '/';
+            $string .= is_object($contributedItem) ? $contributedItem->id : (integer) $contributedItem;
+        }
+    }
+    return url($string);
+}

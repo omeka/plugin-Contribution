@@ -39,7 +39,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorFieldsAdapter extends ApiImp
         $userProfilesType->public = 0;
         $userProfilesType->required = 0;
         $userProfilesType->element_set_id = $this->elementSet->id;
-        $userProfileType->save();
+        $userProfilesType->save();
         return $this->elementSet;
     }
 }

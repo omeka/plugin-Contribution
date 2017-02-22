@@ -1,23 +1,28 @@
-
 <?php if (!$type): ?>
 <p><?php echo __('You must choose a contribution type to continue.'); ?></p>
-<?php else: ?>
+<?php else:
+$isRequired = $type->isFileRequired();
+$isAllowed = $type->isFileAllowed();
+$allowMultipleFiles = $isAllowed && $type->multiple_files;
+?>
+<?php if (!isset($process) || $process == 'add'): ?>
 <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
+<?php endif; ?>
 
 <?php
-if ($type->isFileRequired()):
-    $required = true;
-?>
-
-<div class="field">
+// When a file is required, the upload element is displayed before other ones.
+if ($isRequired): ?>
+<div id="files-form" class="field drawer-contents">
     <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a file')); ?>
+        <?php echo $this->formLabel('file', __('Upload a file')); ?>
     </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+        </div>
     </div>
 </div>
-
 <?php endif; ?>
 
 <?php
@@ -26,18 +31,51 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 }
 ?>
 
-<?php
-if (!isset($required) && $type->isFileAllowed()):
-?>
-<div class="field">
-        <div class="two columns alpha">
-            <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+<?php if (!$isRequired && $isAllowed): ?>
+<div id="files-form" class="field drawer-contents">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('file', __('Upload a file (Optional)')); ?>
+    </div>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
         </div>
-        <div class="inputs five columns omega">
-            <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
-        </div>
+    </div>
 </div>
 <?php endif; ?>
+
+<?php if ($allowMultipleFiles): ?>
+<script type="text/javascript" charset="utf-8">
+    <?php if (!empty($preset)): ?>
+jQuery(window).load(function () {
+    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+});
+    <?php else: ?>
+Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+    <?php endif; ?>
+</script>
+<?php endif; ?>
+
+<?php if ($type->add_tags) : ?>
+<div id="tag-form" class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('tags', __('Add Tags')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <p id="add-tags-explanation" class="explanation"><?php echo __('Separate tags with %s', option('tag_delimiter')); ?></p>
+        <?php echo $this->formText('tags', isset($tags) ? $tags : ''); ?>
+    </div>
+</div>
+<?php endif; ?>
+
+<div class="twelve columns alpha omega">
+<?php
+// Allow other plugins to append to the form (pass the type to allow decisions
+// on a type-by-type basis).
+fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
+?>
+</div>
 
 <?php $user = current_user(); ?>
 <?php if(( get_option('contribution_open') || get_option('contribution_strict_anonymous') ) && !$user) : ?>
@@ -45,7 +83,7 @@ if (!isset($required) && $type->isFileAllowed()):
     <div class="two columns alpha">
     <?php
         if (get_option('contribution_strict_anonymous')) {
-            echo $this->formLabel('contribution_email', __('Email (Optional)')); 
+            echo $this->formLabel('contribution_email', __('Email (Optional)'));
         } else {
             echo $this->formLabel('contribution_email', __('Email (Required)'));
         }
@@ -64,8 +102,11 @@ if (!isset($required) && $type->isFileAllowed()):
 </div>
 
 <?php else: ?>
-    <p><?php echo __('You are logged in as: %s', metadata($user, 'name')); ?>
+<div class="twelve columns alpha omega">
+    <p><?php echo __('You are logged in as: %s', '<strong>' . metadata($user, 'name') . '</strong>'); ?></p>
+</div>
 <?php endif; ?>
+
     <?php
     //pull in the user profile form if it is set
     if( isset($profileType) ): ?>
@@ -98,10 +139,4 @@ if (!isset($required) && $type->isFileAllowed()):
         </fieldset>
         </div>
         <?php endif; ?>
-
-<?php
-// Allow other plugins to append to the form (pass the type to allow decisions
-// on a type-by-type basis).
-fire_plugin_hook('contribution_type_form', array('type'=>$type, 'view'=>$this));
-?>
-<?php endif; ?>
+<?php endif;
