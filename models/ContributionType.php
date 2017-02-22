@@ -22,6 +22,7 @@ class ContributionType extends Omeka_Record_AbstractRecord
     public $item_type_id;
     public $display_name;
     public $file_permissions = 'Disallowed';
+    public $add_tags = 0;
     
     protected $_related = array('ContributionTypeElements' => 'getTypeElements',
                                 'ItemType' => 'getItemType');
