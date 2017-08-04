@@ -24,6 +24,10 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     public function myContributionsAction()
     {
         $user = current_user();
+        if (empty($user)) {
+            $this->_helper->redirector('login', 'users', 'default');
+        }
+
         $contribItemTable = $this->_helper->db->getTable('ContributionContributedItem');
 
         $contribItems = array();
@@ -62,12 +66,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         $csrf = new Omeka_Form_SessionCsrf;
         $this->view->csrf = $csrf;
         if(!empty($_POST)) {
+            $defaultType = get_option('contribution_default_type');
             if (!$csrf->isValid($_POST)) {
                 $this->_helper->_flashMessenger(__('There was an error on the form. Please try again.'), 'error');
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
-                } else if ($defaultType = get_option('contribution_default_type')) {
+                } elseif ($defaultType) {
                     $typeId = $defaultType;
                 }
                 $this->_setupContributeSubmit($typeId);
@@ -80,7 +85,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $typeId = null;
                 if (isset($_POST['contribution_type']) && ($postedType = $_POST['contribution_type'])) {
                     $typeId = $postedType;
-                } else if ($defaultType = get_option('contribution_default_type')) {
+                } elseif ($defaultType) {
                     $typeId = $defaultType;
                 }
                 if ($this->_captcha) {
@@ -147,7 +152,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $profileType = $this->_helper->db->getTable('UserProfilesType')->find($profileTypeId);
             $this->view->profileType = $profileType;
 
-            if($user = current_user()) {
+            $user = current_user();
+            if($user) {
                 $profile = $this->_helper->db->getTable('UserProfilesProfile')->findByUserIdAndTypeId($user->id, $profileTypeId);
             }
             if(empty($profile)) {
@@ -249,7 +255,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
             // This is a hack to allow the file upload job to succeed
             // even with the synchronous job dispatcher.
-            if ($acl = get_acl()) {
+            $acl = get_acl();
+            if ($acl) {
                 $acl->allow(null, 'Items', 'showNotPublic');
                 $acl->allow(null, 'Collections', 'showNotPublic');
             }
@@ -259,7 +266,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item->setOwner($user);
                 $item->save();
                 $item = update_item($item, $itemMetadata, array(), $fileMetadata);
-            } catch(Omeka_Validator_Exception $e) {
+            } catch(Omeka_Validate_Exception $e) {
                 $this->flashValidatonErrors($e);
                 $item->delete();
                 return false;
@@ -283,7 +290,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $item->save();
             //if not simple and the profile doesn't process, send back false for the error
             $this->_processUserProfile($post, $user);
-            $this->_linkItemToContributedItem($item, $contributor, $post);
+            $this->_linkItemToContributedItem($item, null, $post);
             $this->_sendEmailNotifications($user, $item);
             return true;
         }

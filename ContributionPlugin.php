@@ -111,7 +111,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `id` INT UNSIGNED NOT NULL AUTO_INCREMENT,
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
-            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
+            `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL,
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
@@ -181,7 +181,8 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             }
 
             $pagePath = get_option('contribution_page_path');
-            if ($pagePath = 'contribution/') {
+            $pagePath = 'contribution/';
+            if ($pagePath) {
                 delete_option('contribution_page_path');
             } else {
                 set_option('contribution_page_path', trim($pagePath, '/'));
@@ -524,11 +525,11 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
      */
     public function hookItemsBrowseSql($args)
     {
+        $select = $args['select'];
+        $params = $args['params'];
 
-    $select = $args['select'];
-    $params = $args['params'];
-
-        if (($request = Zend_Controller_Front::getInstance()->getRequest())) {
+        $request = Zend_Controller_Front::getInstance()->getRequest();
+        if ($request) {
             $db = get_db();
 
             $contributed = $request->get('contributed');
@@ -673,7 +674,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function filterGuestUserLinks($nav)
     {
         $nav['Contribution'] = array(
-            'label' => 'My Contributions',
+            'label' => __('My Contributions'),
              'uri' => contribution_contribute_url('my-contributions'),
         );
         return $nav;
@@ -800,7 +801,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $type = $view->type;
         $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
         $prompt = $contributionElement->prompt;
-        $components['label'] = '<label>' . $prompt . '</label>';
+        $components['label'] = $view->formLabel(null, $prompt, array('disableFor' => true));
         $components['add_input'] = null;
         return $components;
     }

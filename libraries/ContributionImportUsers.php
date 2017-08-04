@@ -19,7 +19,8 @@ class ContributionImportUsers extends Omeka_Job_AbstractJob
             //create username from email and set up for some validation checks
             $username = $contributor['email'];
             $email = $contributor['email'];
-            if($user = $db->getTable('User')->findByEmail($contributor['email'])) {
+            $user = $db->getTable('User')->findByEmail($contributor['email']);
+            if ($user) {
                 $userContributorMap[$user->id][] = $contributor['id'];
             } else {
                 if(!$emailValidator->isValid($email)) {

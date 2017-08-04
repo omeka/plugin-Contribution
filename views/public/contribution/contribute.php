@@ -42,7 +42,10 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
         <?php $session = new Zend_Session_Namespace;
               $session->redirect = absolute_url();
         ?>
-        <p>You must <a href='<?php echo url('guest-user/user/register'); ?>'>create an account</a> or <a href='<?php echo url('guest-user/user/login'); ?>'>log in</a> before contributing. You can still leave your identity to site visitors anonymous.</p>        
+        <p>
+        <?php echo __('You must %screate an account%s or %slog in%s before contributing.', '<a href="' . url('guest-user/user/register') .'">', '</a>', '<a href="' . url('guest-user/user/login') . '">', '</a>'); ?>
+        <?php echo __('You can still leave your identity to site visitors anonymous.'); ?>
+        </p>
     <?php else: ?>
         <form method="post" action="" enctype="multipart/form-data">
             <fieldset id="contribution-item-metadata">
@@ -58,8 +61,8 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
                 </div>
             </fieldset>
 
-            <fieldset id="contribution-confirm-submit" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
-                <?php if(isset($captchaScript)): ?>
+            <fieldset id="contribution-confirm-submit" <?php if (empty($type)) { echo 'style="display: none;"'; }?>>
+                <?php if(!empty($captchaScript)): ?>
                     <div id="captcha" class="inputs"><?php echo $captchaScript; ?></div>
                 <?php endif; ?>
                 <div class="inputs">
