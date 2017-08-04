@@ -30,13 +30,9 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
         if(!empty($_POST)) {
             foreach($_POST['contribution_public'] as $id=>$value) {
                 $contribItem = $contribItemTable->find($id);
-                if($value) {
-                    $contribItem->public = true;
-                } else {
-                    $contribItem->makeNotPublic();
-                }
-                $contribItem->public = $value;
-                $contribItem->anonymous = $_POST['contribution_anonymous'][$id];
+                $contribItem->public = (integer) $value;
+                $contribItem->anonymous = (integer) $_POST['contribution_anonymous'][$id];
+                $contribItem->deleted = (integer) $_POST['contribution_deleted'][$id];
 
                 if($contribItem->save()) {
                     $this->_helper->flashMessenger( __('Your contributions have been updated.'), 'success');
@@ -44,10 +40,16 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                     $this->_helper->flashMessenger($contribItem->getErrors());
                 }
 
-                $contribItems[] = $contribItem;
+                // Clean list for next view.
+                if (!$contribItem->deleted) {
+                    $contribItems[] = $contribItem;
+                }
             }
         } else {
-            $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
+            $contribItems = $contribItemTable->findBy(array(
+                'contributor' => $user->id,
+                'deleted' => false,
+            ));
         }
         $this->view->contrib_items = $contribItems;
         $this->view->total_results = count($contribItems);

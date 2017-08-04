@@ -135,6 +135,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_id` INT UNSIGNED NOT NULL,
             `public` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             `anonymous` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
+            `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
             UNIQUE KEY `item_id` (`item_id`)
             ) ENGINE=MyISAM;";
@@ -258,6 +259,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (version_compare($oldVersion, 3.1, '<')) {
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
+        }
+
+        if (version_compare($oldVersion, '3.1.3', '<')) {
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionContributedItem` ADD COLUMN `deleted` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0' AFTER `anonymous`";
+            $db->query($sql);
         }
     }
 
@@ -714,7 +721,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
             $publicMessage = '';
             if (is_allowed($item, 'edit')) {
-                if ($contributedItem->public) {
+                if ($contributedItem->deleted) {
+                    $publicMessage = __('This item has been deleted by user. It cannot be made public.');
+                } elseif ($contributedItem->public) {
                     $publicMessage = __("This item can be made public.");
                 } else {
                     $publicMessage = __("This item cannot be made public.");
