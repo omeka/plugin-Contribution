@@ -259,7 +259,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
         }
-        if (version_compare($oldVersion, '3.1.0.1', '<')) {
+        if (version_compare($oldVersion, '3.1.1', '<')) {
             $this->_db->query("ALTER TABLE `{$this->_db->ContributionType}`
                 DROP INDEX `item_type_id`,
                 ADD INDEX `item_type_id` (`item_type_id`)");
