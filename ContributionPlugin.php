@@ -282,7 +282,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $acl = $args['acl'];
     
-        $acl->addRole(new Zend_Acl_Role('contribution-anonymous'), null);
+        $acl->addRole(new Zend_Acl_Role('contribution_anonymous'), null);
         
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
