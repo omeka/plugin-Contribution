@@ -3,6 +3,7 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
+# Cédric Valmary <cvalmary@yahoo.fr>, 2016-2017
 # Cédric Valmary <cvalmary@yahoo.fr>, 2016
 # Stéphane Loret Sdj <stephane.loret@univ-nantes.fr>, 2015
 # symac <wikitipiac@laposte.net>, 2014
@@ -11,8 +12,8 @@ msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-10-17 18:25+0000\n"
-"Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
+"PO-Revision-Date: 2017-09-23 19:42+0000\n"
+"Last-Translator: Cédric Valmary <cvalmary@yahoo.fr>\n"
 "Language-Team: Occitan (post 1500) (http://www.transifex.com/omeka/omeka/language/oc/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,31 +52,31 @@ msgstr "Sometre un contengut"
 
 #: ContributionPlugin.php:491
 msgid "Contribution Status"
-msgstr ""
+msgstr "Estatut de la contribucion"
 
 #: ContributionPlugin.php:497
 msgid "Only Contributed Items"
-msgstr ""
+msgstr "Solament las contribucions"
 
 #: ContributionPlugin.php:498
 msgid "Only Non-Contributed Items"
-msgstr ""
+msgstr "Solament las non-contribucions"
 
 #: ContributionPlugin.php:659
 msgid "Anonymous, "
-msgstr ""
+msgstr "Anonim,"
 
 #: ContributionPlugin.php:685
 msgid "My Contributions"
-msgstr ""
+msgstr "Mas contribucions"
 
 #: ContributionPlugin.php:696
 msgid "See all my contributions"
-msgstr ""
+msgstr "Afichar totas mas contribucions"
 
 #: ContributionPlugin.php:699
 msgid "No contribution yet."
-msgstr ""
+msgstr "Pas encara cap de contribucion."
 
 #: ContributionPlugin.php:713
 msgid "Contributed by:"
@@ -99,7 +100,7 @@ msgstr "Vos cal seleccionar un tipe per vòstra contribucion."
 
 #: controllers/ContributionController.php:391
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr ""
+msgstr "Lo captcha somés es incorrècte. Mercé de tornar ensajar."
 
 #: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
@@ -112,11 +113,11 @@ msgstr "URL de la contribucion (per validacion per l'equipa) :"
 #: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
-msgstr ""
+msgstr "Vòstre nom d’utilizaire es %s"
 
 #: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
-msgstr ""
+msgstr "Per se connectar e cambiar vòstre nom d'utilizaire, demandatz un senhal aicí :"
 
 #: controllers/ContributionController.php:433
 #, php-format
@@ -184,7 +185,7 @@ msgstr "Lo tèxte de las mencions legalas que lo contributor deurà acceptar."
 
 #: controllers/SettingsController.php:105
 msgid "Allow Non-registered Contributions"
-msgstr ""
+msgstr "Autorizar las contribucions dels non-inscrits"
 
 #: controllers/SettingsController.php:106
 msgid ""
@@ -198,7 +199,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:113
 msgid "Allow Anonymous Contributions"
-msgstr ""
+msgstr "Autorizar las contribucions aninimas"
 
 #: controllers/SettingsController.php:114
 msgid ""
@@ -262,7 +263,7 @@ msgstr "Pas cap"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr ""
+msgstr "Utilizaire desconegut"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
@@ -313,7 +314,7 @@ msgstr "ID"
 #: views/admin/contributors/show.php:20
 #, php-format
 msgid "%s's contributions"
-msgstr ""
+msgstr "Contribucions de %s"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
@@ -379,7 +380,7 @@ msgstr ""
 msgid ""
 "Additional contribution-specific information for guest users can be created "
 "here."
-msgstr ""
+msgstr "Las informacions complementàrias relativas a las contribucions dels utilizaires convidats pòdon èsser precisadas aicí."
 
 #: views/admin/index/index.php:34
 msgid "2. Modify the contribution form:"
@@ -444,7 +445,7 @@ msgstr "Especificar una colleccion pels novèls enregistraments eissits de las c
 msgid ""
 "4. Browse contributions and their status, with links to more contributor "
 "information, in %s"
-msgstr ""
+msgstr "4. Percórrer las contribucions e lor estatut, amb de ligams per las informacions complementàrias suls contributors, dins %s"
 
 #: views/admin/items/browse.php:13
 #, php-format
@@ -468,7 +469,7 @@ msgstr "Rendre public"
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
-msgstr ""
+msgstr "Plaçar jos estatut Revisar"
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
@@ -476,11 +477,11 @@ msgstr "Estatut de publicacion"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr ""
+msgstr "Public (clicar per metre en revision)"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr ""
+msgstr "Revisar (clicar per rendre public)"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
@@ -492,7 +493,7 @@ msgstr "Regetat"
 
 #: views/admin/items/browse.php:159
 msgid "Are you sure you want to remove these contributions?"
-msgstr ""
+msgstr "Sètz segur que volètz suprimir aquestas contribucions ?"
 
 #: views/admin/items/browse.php:167
 msgid "There is no contribution yet."
@@ -567,7 +568,7 @@ msgstr "Publicar mas contribucions sul web."
 
 #: views/public/contribution/contribute.php:73
 msgid "Keep identity private."
-msgstr ""
+msgstr "Gardar l'identitat privada"
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
@@ -627,16 +628,16 @@ msgstr ""
 
 #: views/public/contribution/type-form.php:3
 msgid "You must choose a contribution type to continue."
-msgstr ""
+msgstr "Vos cal causir un tipe de contribucion per contunhar."
 
 #: views/public/contribution/type-form.php:5
 #, php-format
 msgid "Contribute a %s"
-msgstr ""
+msgstr "Contribuir un/una %s"
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr ""
+msgstr "Telecargar un fichièr"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
@@ -644,7 +645,7 @@ msgstr "Telecargar un fichièr (opcional)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
-msgstr ""
+msgstr "Adreça de messatjariá (facultativa)"
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
@@ -663,9 +664,9 @@ msgstr "Vòstre perfil %s"
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr ""
+msgstr "Afichar"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr ""
+msgstr "Amagar"

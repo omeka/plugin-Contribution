@@ -3,16 +3,16 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Gabriel Radev <gabosss@gmail.com>, 2014-2015
-# Svetlozar Kovachev <svetliok26@gmail.com>, 2015
+# Gabriel Radev <gabosss@gmail.com>, 2014-2015,2017
+# Svetaketi Aruni <svetliok26@gmail.com>, 2015
 # Tsvetan Nikolov <slakware@gmail.com>, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2016-10-17 18:25+0000\n"
-"Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
+"PO-Revision-Date: 2017-09-23 20:12+0000\n"
+"Last-Translator: Gabriel Radev <gabosss@gmail.com>\n"
 "Language-Team: Bulgarian (Bulgaria) (http://www.transifex.com/omeka/omeka/language/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,31 +51,31 @@ msgstr "Документ на Сътрудник"
 
 #: ContributionPlugin.php:491
 msgid "Contribution Status"
-msgstr ""
+msgstr "Статус на Сътрудника"
 
 #: ContributionPlugin.php:497
 msgid "Only Contributed Items"
-msgstr ""
+msgstr "Само документите на сътрудника"
 
 #: ContributionPlugin.php:498
 msgid "Only Non-Contributed Items"
-msgstr ""
+msgstr "Не само документите на сътрудника"
 
 #: ContributionPlugin.php:659
 msgid "Anonymous, "
-msgstr ""
+msgstr "Анонимен, "
 
 #: ContributionPlugin.php:685
 msgid "My Contributions"
-msgstr ""
+msgstr "Моите сътрудници"
 
 #: ContributionPlugin.php:696
 msgid "See all my contributions"
-msgstr ""
+msgstr "Виж всичките ми сътрудници"
 
 #: ContributionPlugin.php:699
 msgid "No contribution yet."
-msgstr ""
+msgstr "Няма сутрудници"
 
 #: ContributionPlugin.php:713
 msgid "Contributed by:"
@@ -99,7 +99,7 @@ msgstr "Трябва да изберете типа за вашият прино
 
 #: controllers/ContributionController.php:391
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr ""
+msgstr "Вашата КАПЧА е невалидно изпратена, моля опитайте отново."
 
 #: controllers/ContributionController.php:396
 msgid "You must agree to the Terms and Conditions."
@@ -112,11 +112,11 @@ msgstr "URL на Сътрудник (изчакване на преглед от
 #: controllers/ContributionController.php:426
 #, php-format
 msgid "Your username is %s"
-msgstr ""
+msgstr "Вашето потребителско име е %s"
 
 #: controllers/ContributionController.php:429
 msgid "To log in and change your username, request a password here: "
-msgstr ""
+msgstr "За влизане и смяна на вашето потребителско име, искайте парола тук:"
 
 #: controllers/ContributionController.php:433
 #, php-format
@@ -184,7 +184,7 @@ msgstr "Текст на юридическия отказ от права, ко�
 
 #: controllers/SettingsController.php:105
 msgid "Allow Non-registered Contributions"
-msgstr ""
+msgstr "Разрешаване на нерегистрирани Сътрудници"
 
 #: controllers/SettingsController.php:106
 msgid ""
@@ -194,11 +194,11 @@ msgid ""
 "additional information about contributors, they must create an account. See "
 "<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> "
 "for details. "
-msgstr ""
+msgstr "Изисква имейл адрес за Сътрудниците и създава профил Гост-потребител. Ако потребителите желаят да използват този профил, те трябва да поискат нова парола за него. Ако желаете да събирате повече информация за сътрудниците тази опция не е подходяща. За подробности вижте <a href='http://omeka.org/codex/Plugins/Contribution_2.0'> документацията. </a>"
 
 #: controllers/SettingsController.php:113
 msgid "Allow Anonymous Contributions"
-msgstr ""
+msgstr "Разрешава анонимни Сътрудници"
 
 #: controllers/SettingsController.php:114
 msgid ""
@@ -207,7 +207,7 @@ msgid ""
 " user account will be created that stores no identifing information. See <a "
 "href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for"
 " details. "
-msgstr ""
+msgstr "Ако нерегистрираните сътрудници допуснати по-горе, тази опция позволява на участниците да са анонимни, освен за Администраторите. Ще бъде създаден макетен потребителски акаунт, който няма да пази информация за идентичността. Вижте <a href='http://omeka.org/codex/Plugins/Contribution_2.0'>документ</a> за подробности."
 
 #: controllers/SettingsController.php:120
 msgid "Email text to send to contributors"
@@ -220,7 +220,7 @@ msgid ""
 "'Anonymous', options, we recommend that you notify contributors that a guest"
 " user account has been created for them, and what they gain by confirming "
 "their account."
-msgstr ""
+msgstr "Текст на емайл до Сътрудниците  при изпращане на документ. Ще бъде добавена връзка към приноса. Ако използвате \"Не-регистриран\", но не \"Анонимен\" опция, препоръчваме да предупредите сътрудника че гост-профила е създаден за документа и трябва да бъде потвърден"
 
 #: controllers/SettingsController.php:126
 msgid "Do not put contributions in any collection"
@@ -262,7 +262,7 @@ msgstr "Нищо"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr ""
+msgstr "Непознат потребител"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
@@ -313,7 +313,7 @@ msgstr "ID"
 #: views/admin/contributors/show.php:20
 #, php-format
 msgid "%s's contributions"
-msgstr ""
+msgstr "%s сътрудници"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
@@ -417,7 +417,7 @@ msgstr "настройки на изпращането"
 #: views/admin/index/index.php:45
 #, php-format
 msgid "3. Configure the %s for contributions:"
-msgstr "3. Конфигурирайте %s на вноските:"
+msgstr "3. Конфигурирайте %s на сътрудниците:"
 
 #: views/admin/index/index.php:48
 msgid "Set the terms of service for contributing to the site."
@@ -476,11 +476,11 @@ msgstr "Статус на публикуване"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr ""
+msgstr "Публичен (щракнете за добавяне в преглед)"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr ""
+msgstr "Очаква преглед (щракнете за да стане публичен)"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
@@ -492,7 +492,7 @@ msgstr "Отказан"
 
 #: views/admin/items/browse.php:159
 msgid "Are you sure you want to remove these contributions?"
-msgstr ""
+msgstr "Сигурен ли сте, че искате да премахнете тези?"
 
 #: views/admin/items/browse.php:167
 msgid "There is no contribution yet."
@@ -526,7 +526,7 @@ msgstr "Добавяне на нов тип"
 
 #: views/admin/types/browse.php:11
 msgid "Add a Type"
-msgstr ""
+msgstr "Добавете тип"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
@@ -567,7 +567,7 @@ msgstr "Публикуване на добавеното в мрежата."
 
 #: views/public/contribution/contribute.php:73
 msgid "Keep identity private."
-msgstr ""
+msgstr "Запазете идентичността в тайна."
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
@@ -611,7 +611,7 @@ msgstr "преглед на архива"
 msgid ""
 "Your contribution will show up in the archive once an administrator approves"
 " it. Meanwhile, feel free to %s or %s ."
-msgstr "Добавеното ще се появи в архива след като бъде одобрено от администратор. Междувременно, може да %s или %s ."
+msgstr "Вашият принос ще се появи в архива след като бъде одобрено от администратор. Междувременно, може да %s или %s ."
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
@@ -627,16 +627,16 @@ msgstr "Ако желаете да работите занапред със са
 
 #: views/public/contribution/type-form.php:3
 msgid "You must choose a contribution type to continue."
-msgstr ""
+msgstr "Трябва да изберете типа на приноса за да продължите."
 
 #: views/public/contribution/type-form.php:5
 #, php-format
 msgid "Contribute a %s"
-msgstr ""
+msgstr "Добавяне на %s"
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr ""
+msgstr "Качване на файл"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
@@ -644,7 +644,7 @@ msgstr "Качване на файл (Опция)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
-msgstr ""
+msgstr "Емайл (опция)"
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
@@ -663,9 +663,9 @@ msgstr "Вашият %s профил"
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr ""
+msgstr "Покажи"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr ""
+msgstr "Скрий"
