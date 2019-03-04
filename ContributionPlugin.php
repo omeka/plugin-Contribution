@@ -49,7 +49,6 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
 
     protected $_options = array(
         'contribution_page_path',
-        'contribution_email_sender',
         'contribution_email_recipients',
         'contribution_consent_text',
         'contribution_collection_id',
@@ -220,6 +219,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             $sql = "DELETE  FROM `{$this->_db->ContributionContributedItem}` WHERE NOT EXISTS (SELECT 1 FROM `{$this->_db->prefix}items`  WHERE `{$this->_db->prefix}contribution_contributed_items`.`item_id` = `{$this->_db->prefix}items`.`id`)";
            
             $this->_db->query($sql);           
+        }
+        if (version_compare($oldVersion, '3.2.1', '<')) {
+            delete_option('contribution_email_sender');
         }
     }
 
