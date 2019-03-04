@@ -16,7 +16,7 @@
 class Table_ContributionContributor extends Omeka_Db_Table
 {
     
-    public function getSelectForFindBy($params)
+    public function getSelectForFindBy($params = array())
     {
         $select = parent::getSelectForFindBy($params);
         //hide the browse page from the API if not allowed
@@ -39,4 +39,4 @@ class Table_ContributionContributor extends Omeka_Db_Table
                ->where('`name` = ?', $name);
         return $this->fetchObject($select);
     }
-} 
+}
