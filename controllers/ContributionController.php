@@ -179,7 +179,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
             $this->_linkItemToContributor($item, $contributor, $post);
 
-            $this->_sendEmailNotifications($contributor->email, $item);
+            $this->_sendEmailNotifications($item);
             
             return true;
         }
@@ -323,37 +323,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     }
     
     /**
-     * Send an email notification to the user who contributed the Item.
+     * Send an email notification to the configured addresses
      *
-     * This email will appear to have been sent from the address specified via
-     * the 'contribution_email_sender' option.
-     *
-     * @param string $email Address to send to.
      * @param Item $item Item that was contributed via the form.
      * @return void
      */
-    protected function _sendEmailNotifications($recipient, $item)
+    protected function _sendEmailNotifications($item)
     {
-        $fromAddress = get_option('contribution_email_sender');
         $siteTitle = get_option('site_title');
-
         $this->view->item = $item;
-
-        //If this field is empty, don't send the email
-        if (!empty($fromAddress)) {
-            $contributorMail = new Zend_Mail('UTF-8');
-            $body = "Thank you for your contribution to $siteTitle.  Your contribution has been accepted and will be preserved in the digital archive. For your records, the permanent URL for your contribution is noted at the end of this email. Please note that contributions may not appear immediately on the website while they await processing by project staff.";
-            $contributorMail->setBodyHtml($body);
-            $contributorMail->setFrom($fromAddress);
-            $contributorMail->addTo($recipient);
-            $contributorMail->setSubject(__("Your %s Contribution", $siteTitle));
-            $contributorMail->addHeader('X-Mailer', 'PHP/' . phpversion());
-            try {
-                $contributorMail->send();
-            } catch (Zend_Mail_Exception $e) {
-                _log($e);
-            }
-        }
 
         //notify admins who want notification
         $toAddresses = explode(",", get_option('contribution_email_recipients'));
@@ -365,7 +343,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             }
             $adminMail = new Zend_Mail('UTF-8');
             $body = "<p>";
-            $body .= __("A new contribution to %s has been made.", get_option('site_title'));
+            $body .= __("A new contribution to %s has been made.", $siteTitle);
             $body .= "</p>";
             set_theme_base_url('admin');
             $url = record_url($item, 'show', true);

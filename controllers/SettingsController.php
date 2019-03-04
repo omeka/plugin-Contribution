@@ -24,7 +24,6 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
      */
     public function editAction()
     {
-        require CONTRIBUTION_FORMS_DIR . DIRECTORY_SEPARATOR . 'Settings.php';
         $form = $this->_getForm();
         $defaults = $this->_getOptions();
         $form->setDefaults($defaults);
@@ -49,7 +48,6 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
     {
         $options = array(
                 'contribution_page_path',
-                'contribution_email_sender',
                 'contribution_email_recipients',
                 'contribution_consent_text',
                 'contribution_collection_id',
@@ -85,12 +83,6 @@ class Contribution_SettingsController extends Omeka_Controller_AbstractActionCon
             'label'       => __('Contribution Slug'),
             'description' => __('Relative path from the Omeka root to the desired location for the contribution form. If left blank, the default path will be named &#8220;contribution.&#8221;'),
             'filters'     => array(array('StringTrim', '/\\\s'))
-        ));
-        
-        $form->addElementToEditGroup('text', 'contribution_email_sender', array(
-            'label'       => __('Contribution Confirmation Email'),
-            'description' => __('An email message will be sent to each contributor from this address confirming that they submitted a contribution to this website. Leave blank if you do not want an email sent.'),
-            'validators'  => array('EmailAddress')
         ));
         
         $form->addElementToEditGroup('textarea', 'contribution_email_recipients', array(
