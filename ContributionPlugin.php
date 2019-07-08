@@ -112,8 +112,9 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             `item_type_id` INT UNSIGNED NOT NULL,
             `display_name` VARCHAR(255) NOT NULL,
             `file_permissions` ENUM('Disallowed', 'Allowed', 'Required') NOT NULL DEFAULT 'Disallowed',
+            `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0',
             PRIMARY KEY (`id`),
-            KEY `item_type_id` (`item_type_id`)
+            UNIQUE KEY `item_type_id` (`item_type_id`)
             ) ENGINE=MyISAM;";
         $this->_db->query($sql);
 
@@ -259,11 +260,12 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
             set_option('contribution_open', get_option('contribution_simple'));
             delete_option('contribution_simple');
         }
-        if (version_compare($oldVersion, '3.2', '<')) {
-            $this->_db->query("ALTER TABLE `{$this->_db->ContributionType}`
-                DROP INDEX `item_type_id`,
-                ADD INDEX `item_type_id` (`item_type_id`)");
-        }
+
+        if (version_compare($oldVersion, '3.1.1', '<')) {
+            $db = $this->_db;
+            $sql = "ALTER TABLE `$db->ContributionType` ADD COLUMN `multiple_files` TINYINT(1) UNSIGNED NOT NULL DEFAULT '0'";
+            $db->query($sql);
+       }
     }
 
     public function hookUninstallMessage()
@@ -282,7 +284,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     {
         $acl = $args['acl'];
     
-        $acl->addRole(new Zend_Acl_Role('contribution_anonymous'), null);
+        $acl->addRole(new Zend_Acl_Role('contribution-anonymous'), null);
         
         $acl->addResource('Contribution_Contribution');
         $acl->allow(array('super', 'admin', 'researcher', 'contributor'), 'Contribution_Contribution');
@@ -654,7 +656,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         if (!$contribItem) {
             return $cite;
         }
-        $title      = metadata($item, array('Dublin Core', 'Title'));
+        $title      = metadata('item',array('Dublin Core', 'Title'));
         $siteTitle  = strip_formatting(option('site_title'));
         $itemId     = $item->id;
         $accessDate = date('F j, Y');
@@ -701,7 +703,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
                 __('See all my contributions'));
         }
         else {
-            $html = '<p>' . __('No contribution yet, or removed contributions.') . '</p>';
+            $html = '<p>' . __('No contribution yet.') . '</p>';
         }
         $widget['content'] = $html;
         $widgets[] = $widget;
