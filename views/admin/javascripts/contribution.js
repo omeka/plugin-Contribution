@@ -1,7 +1,8 @@
 function setUpSettingsWysiwyg() {
     jQuery(window).load(function() {
         Omeka.wysiwyg({
-           selector: ".html-editor",
+           mode: "specific_textareas",
+           editor_selector: "html-editor",
            forced_root_block: ""
         });
     });

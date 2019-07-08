@@ -50,7 +50,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             $contribItems = $contribItemTable->findBy(array('contributor'=>$user->id));
         }
         $this->view->contrib_items = $contribItems;
-        $this->view->total_results = count($contribItems);
     }
 
     /**
@@ -186,7 +185,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processForm($post)
     {
         if (!empty($post)) {
-
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
@@ -261,7 +259,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $item = update_item($item, $itemMetadata, array(), $fileMetadata);
             } catch(Omeka_Validator_Exception $e) {
                 $this->flashValidatonErrors($e);
-                $item->delete();
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
@@ -270,14 +267,15 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 } else {
                     $this->_helper->flashMessenger($e->getMessage());
                 }
-                $item->delete();
                 return false;
             } catch (Exception $e) {
                 $this->_helper->flashMessenger($e->getMessage());
-                $item->delete();
                 return false;
             }
             $this->_addElementTextsToItem($item, $post['Elements']);
+            if ($contributionType->add_tags && isset($post['tags'])) {
+                $item->addTags($post['tags']);
+            }
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
             $item->save();
