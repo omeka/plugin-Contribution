@@ -11,10 +11,68 @@ if ($type->isFileRequired()):
 
 <div class="field">
     <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a file')); ?>
+        <?php echo $this->formLabel('contributed_file', __('Upload a Front Cover Image')); ?>
     </div>
     <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+        <?php echo $this->formFile('contributed_file1', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<!-- SB -->
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload a Spine Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file2', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload Back Cover Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file3', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file4', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file5', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file6', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file7', array('class' => 'fileinput')); ?>
+    </div>
+</div>
+<div class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formFile('contributed_file8', array('class' => 'fileinput')); ?>
     </div>
 </div>
 

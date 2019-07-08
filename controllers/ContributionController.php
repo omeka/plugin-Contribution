@@ -325,13 +325,14 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
             } else {
                 $options['ignoreNoFile'] = true;
             }
-
+//SB
             $fileMetadata = array(
                 'file_transfer_type' => 'Upload',
-                'files' => 'contributed_file',
+                'files' => array('contributed_file1', 'contributed_file2', 'contributed_file3', 'contributed_file4', 'contributed_file5', 'contributed_file6', 'contributed_file7', 'contributed_file8'),
                 'file_ingest_options' => $options
             );
-
+//var_dump($fileMetadata);
+//bob();
             // Add the whitelists for uploaded files
             $fileValidation = new ContributionFileValidation;
             $fileValidation->enableFilter();
