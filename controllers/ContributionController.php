@@ -159,7 +159,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
 
     /**
      * Creates the reCAPTCHA object and returns it.
-     *
+     * 
      * @return Zend_Captcha_Recaptcha|null
      */
     protected function _setupCaptcha()
@@ -185,7 +185,6 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     protected function _processForm($post)
     {
         if (!empty($post)) {
-
             //for the "Simple" configuration, look for the user if exists by email. Log them in.
             //If not, create the user and log them in.
             $user = current_user();
@@ -244,8 +243,7 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $itemMetadata['collection_id'] = (int) $collectionId;
             }
 
-            // TODO Check if there is at least one file if one file or more is required and remove the catch below.
-            $fileMetadata = $this->_processFilesUpload($contributionType);
+            $fileMetadata = $this->_processFileUpload($contributionType);
 
             // This is a hack to allow the file upload job to succeed
             // even with the synchronous job dispatcher.
@@ -264,13 +262,8 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 return false;
             } catch (Omeka_File_Ingest_InvalidException $e) {
                 // Copying this cruddy hack
-                if (strstr($e->getMessage(), "'file'")) {
+                if (strstr($e->getMessage(), "'contributed_file'")) {
                    $this->_helper->flashMessenger("You must upload a file when making a {$contributionType->display_name} contribution.", 'error');
-                }
-                // Check multiple files.
-                elseif (strstr($e->getMessage(), "file_")) {
-                    $this->_helper->flashMessenger(__('One or more files have not been uploaded.')
-                        . ' ' . __('You must upload a file when making a %s contribution.', $contributionType->display_name), 'error');
                 } else {
                     $this->_helper->flashMessenger($e->getMessage());
                 }
@@ -279,8 +272,10 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
                 $this->_helper->flashMessenger($e->getMessage());
                 return false;
             }
-
             $this->_addElementTextsToItem($item, $post['Elements']);
+            if ($contributionType->add_tags && isset($post['tags'])) {
+                $item->addTags($post['tags']);
+            }
             // Allow plugins to deal with the inputs they may have added to the form.
             fire_plugin_hook('contribution_save_form', array('contributionType'=>$contributionType,'record'=>$item, 'post'=>$post));
             $item->save();
@@ -317,21 +312,21 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
     /**
      * Deals with files specified on the contribution form.
      *
-     * @todo Check if multiple files are allowed.
-     * @todo Error when option is required and when multiple files are allowed: an empty contributed_file input generate an error.
-     *
      * @param ContributionType $contributionType Type of contribution.
-     * @return array Files upload array.
+     * @return array File upload array.
      */
-    protected function _processFilesUpload($contributionType)
-    {
+    protected function _processFileUpload($contributionType) {
         if ($contributionType->isFileAllowed()) {
             $options = array();
-            $options['ignoreNoFile'] = !$contributionType->isFileRequired();
+            if ($contributionType->isFileRequired()) {
+                $options['ignoreNoFile'] = false;
+            } else {
+                $options['ignoreNoFile'] = true;
+            }
 
             $fileMetadata = array(
                 'file_transfer_type' => 'Upload',
-                'files' => 'file',
+                'files' => 'contributed_file',
                 'file_ingest_options' => $options
             );
 
@@ -392,13 +387,13 @@ class Contribution_ContributionController extends Omeka_Controller_AbstractActio
      */
     protected function _validateContribution($post)
     {
-
+        
         // ReCaptcha ignores the first argument.
         if ($this->_captcha and !$this->_captcha->isValid(null, $_POST)) {
             $this->_helper->flashMessenger(__('Your CAPTCHA submission was invalid, please try again.'), 'error');
             return false;
         }
-
+                
         if ($post['terms-agree'] == 0) {
             $this->_helper->flashMessenger(__('You must agree to the Terms and Conditions.'), 'error');
             return false;
