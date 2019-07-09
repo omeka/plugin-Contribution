@@ -76,7 +76,7 @@ OLD:
             // The administrator can only make public/review a public
             // contributed item: he cannot change the choice of the user here
             // (public/private).
-            if (!in_array($status, array('proposed', 'approved', 'rejected'))) {
+            if (!in_array($status, array('proposed', 'approved', 'rejected','requested'))) {
                 $this->getResponse()->setHttpResponseCode(400);
                 return;
             }
@@ -95,10 +95,26 @@ OLD:
                 return;
             }
 
+
             // Update status (set public or to be reviewed).
             // TODO Currently, only "Public" and "Needs review" status are managed.
-            $contributedItem->Item->public = ($status === 'approved') ? 1 : 0;
+            if ($status === 'approved'){
+	            $contributedItem->Item->public = 1;
+            }elseif ($status === 'proposed'){
+	            $contributedItem->Item->public = 0;
+            	$contributedItem->rejected = 0;
+	            
+            }elseif ($status === 'requested'){
+	            $contributedItem->Item->public = 2;            
+            }elseif ($status === 'rejected'){
+	            $contributedItem->Item->public = 0;
+
+            	$contributedItem->rejected = $this->_getParam('reject');
+/*            	            error_log();*/
+
+            }
             $contributedItem->Item->save();
+            $contributedItem->save();
         } catch (Exception $e) {
             $this->getResponse()->setHttpResponseCode(500);
         }
