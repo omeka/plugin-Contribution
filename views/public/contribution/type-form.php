@@ -1,81 +1,28 @@
-
 <?php if (!$type): ?>
 <p><?php echo __('You must choose a contribution type to continue.'); ?></p>
-<?php else: ?>
+<?php else:
+$isRequired = $type->isFileRequired();
+$isAllowed = $type->isFileAllowed();
+$allowMultipleFiles = $isAllowed && $type->multiple_files;
+?>
 <h2><?php echo __('Contribute a %s', $type->display_name); ?></h2>
 
 <?php
-if ($type->isFileRequired()):
-    $required = true;
-?>
-
-<div class="field">
+// When a file is required, the upload element is displayed before other ones.
+if ($isRequired): ?>
+<div id="files-form" class="field drawer-contents">
     <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a Front Cover Image')); ?>
+        <?php echo $this->formLabel('file', __('Upload a file')); ?>
     </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file1', array('class' => 'fileinput')); ?>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[1]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+        </div>
     </div>
 </div>
-<!-- SB -->
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload a Spine Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file2', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload Back Cover Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file3', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file4', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file5', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file6', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file7', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-<div class="field">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('contributed_file', __('Upload an Image')); ?>
-    </div>
-    <div class="inputs five columns omega">
-        <?php echo $this->formFile('contributed_file8', array('class' => 'fileinput')); ?>
-    </div>
-</div>
-
 <?php endif; ?>
 
 <?php
@@ -84,17 +31,41 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 }
 ?>
 
-<?php
-if (!isset($required) && $type->isFileAllowed()):
-?>
-<div class="field">
-        <div class="two columns alpha">
-            <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
-        </div>
-        <div class="inputs five columns omega">
-            <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
-        </div>
+<?php if ($type->add_tags) : ?>
+<div id="tag-form" class="field">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('tags', __('Add Tags')); ?>
+    </div>
+    <div class="inputs five columns omega">
+        <?php echo $this->formText('tags'); ?>
+        <p id="add-tags-explanation" class="_explanation"><?php echo __('Separate tags with "%s"', option('tag_delimiter')); ?></p>
+    </div>
 </div>
+<?php endif; ?>
+
+<?php if (!$isRequired && $isAllowed): ?>
+<div id="files-form" class="field drawer-contents">
+    <div class="two columns alpha">
+        <?php echo $this->formLabel('file', __('Upload a file (Optional)')); ?>
+    </div>
+    <div id="files-metadata" class="inputs five columns omega">
+        <div id="upload-files" class="files">
+            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
+            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+        </div>
+    </div>
+</div>
+<?php endif; ?>
+<?php if ($allowMultipleFiles): ?>
+<script type="text/javascript" charset="utf-8">
+    <?php if (!empty($preset)): ?>
+jQuery(window).load(function () {
+    Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+});
+    <?php else: ?>
+Omeka.Items.enableAddFiles(<?php echo js_escape(__('Add Another File')); ?>);
+    <?php endif; ?>
+</script>
 <?php endif; ?>
 
 <?php $user = current_user(); ?>
