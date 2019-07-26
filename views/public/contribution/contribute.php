@@ -31,6 +31,7 @@ enableContributionAjaxForm(<?php echo js_escape(url($contributionPath.'/type-for
 </script>
 
 <div id="primary">
+
 <?php echo flash(); ?>
     
     <h1><?php echo $head['title']; ?></h1>

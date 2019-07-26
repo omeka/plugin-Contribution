@@ -46,11 +46,25 @@ SQL;
 
     /**
      * Get an array of possible item types for a new contribution type.
+     * "Possible types" here means any item type not currently used as the
+     * basis for a contribution type.
      *
      * @return array
      */
     public function getPossibleItemTypes()
     {
-        return $this->getDb()->getTable('ItemType')->findPairsForSelectForm();
+        $db = $this->getDb();
+        $sql = <<<SQL
+SELECT `it`.`id` AS `item_type_id`, `it`.`name` AS `item_type_name`
+    FROM `{$db->ItemType}` AS `it`
+    WHERE NOT `it`.`id` IN (SELECT `item_type_id` FROM `{$this->getTableName()}`)
+    ORDER BY `item_type_name` ASC;
+SQL;
+        $itemTypes = $db->fetchAll($sql);
+        $options = array();
+        foreach ($itemTypes as $itemType) {
+            $options[$itemType['item_type_id']] = $itemType['item_type_name'];
+        }
+        return $options;
     }
 } 

@@ -43,15 +43,16 @@ foreach ($type->getTypeElements() as $contributionTypeElement) {
 </div>
 <?php endif; ?>
 
-<?php if (!$isRequired && $isAllowed): ?>
-<div id="files-form" class="field drawer-contents">
-    <div class="two columns alpha">
-        <?php echo $this->formLabel('file', __('Upload a file (Optional)')); ?>
-    </div>
-    <div id="files-metadata" class="inputs five columns omega">
-        <div id="upload-files" class="files">
-            <?php echo $this->formFile($allowMultipleFiles ? 'file[0]' : 'file', array('class' => 'fileinput button')); ?>
-            <p class="explanation"><?php echo __('The maximum file size is %s.', max_file_size()); ?></p>
+<?php
+if (!isset($required) && $type->isFileAllowed()):
+?>
+<div class="field">
+        <div class="two columns alpha">
+            <?php echo $this->formLabel('contributed_file', __('Upload a file (Optional)')); ?>
+        </div>
+        <div class="inputs five columns omega">
+            <?php echo $this->formFile('contributed_file', array('class' => 'fileinput')); ?>
+
         </div>
     </div>
 </div>
