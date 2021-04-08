@@ -24,7 +24,7 @@ echo $this->partial('contribution-navigation.php');
 echo flash();
 
 if (!Omeka_Captcha::isConfigured()): ?>
-    <p class="alert"><?php echo __("You have not entered your %s API keys under %s. We recommend adding these keys, or the contribution form will be vulnerable to spam.", '<a href="http://recaptcha.net/">reCAPTCHA</a>', "<a href='" . url('settings/edit-security#fieldset-captcha') . "'>" . __('security settings') . "</a>");?></p>
+    <p class="alert flash"><?php echo __("You have not entered your %s API keys under %s. We recommend adding these keys, or the contribution form will be vulnerable to spam.", '<a href="http://recaptcha.net/">reCAPTCHA</a>', "<a href='" . url('settings/edit-security#fieldset-captcha') . "'>" . __('security settings') . "</a>");?></p>
 <?php endif;
 ?>
 <?php if ($total_results): ?>
