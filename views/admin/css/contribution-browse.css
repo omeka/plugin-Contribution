@@ -1,3 +1,7 @@
+.table-actions {
+    display: inline-block;
+}
+
 .contributions-list {
   padding: 0;
   margin: 0;
@@ -25,30 +29,39 @@
     width: 100%;
 }
 
-a.contribution.status {
-    position:relative;
-    padding-left: 20px;
-    margin-left: 3px;
-    margin-right: 3px;
-    cursor: pointer;
+.contribution.toggle-status {
+    display: flex;
+    align-items; center;
 }
 
-a.contribution.toggle-status.proposed {
-    background: url('../../../../../application/views/scripts/images/silk-icons/error.png') no-repeat scroll 0 0 transparent;
+.contribution.toggle-status:before {
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    display: inline-block;
+    margin-right: .5rem;
 }
-a.contribution.toggle-status.approved {
-    background: url('../../../../../application/views/scripts/images/silk-icons/tick.png') no-repeat scroll 0 0 transparent;
+
+.contribution.toggle-status.proposed:before {
+    content: "\f071";
 }
-a.contribution.toggle-status.rejected {
-    background: url('../../../../../application/views/scripts/images/silk-icons/cancel.png') no-repeat scroll 0 0 transparent;
+     
+.contribution.toggle-status.approved:before {
+    content: "\f00c";
 }
-a.contribution.toggle-status.private {
-    background: url('../../../../../application/views/scripts/images/silk-icons/asterisk_orange.png') no-repeat scroll 0 0 transparent;
+
+.contribution.toggle-status.private:before {
+    content: "\f069";
 }
+
 a.contribution.transmit {
     background: url('../../shared/images/waiting-mini.gif') no-repeat scroll 0 0 transparent !important;
 }
+
 .action {
     color: #338899;
     cursor: pointer;
 }
+
+.batch-edit-check {
+    text-align: center;
+} 
