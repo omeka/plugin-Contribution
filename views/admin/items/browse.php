@@ -159,6 +159,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 'confirmation':<?php echo json_encode(__('Are you sure you want to remove these contributions?')); ?>
             }}
         );
+        Omeka.quickFilter();
         Omeka.addReadyCallback(Omeka.ContributionBrowse.setupBatchEdit);
     </script>
 
