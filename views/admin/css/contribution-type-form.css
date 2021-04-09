@@ -27,3 +27,7 @@ input.prompt {
     width: 75%;
 	margin-bottom: 0;
 }
+
+.existing-element-drop-down + * {
+	margin-top: .5rem;
+}

@@ -77,7 +77,7 @@
                             <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
                         </div>
                     </div>
-            </div>
+                </div>
             </li>
             <?php else: ?>
                 <?php if (!$contributionElement->exists()):  ?>
@@ -106,7 +106,7 @@
                 <?php endif; ?>
             <?php endif; ?>
         <?php endforeach; // end for each $elementInfos ?> 
-            <li>
+                <li class="add-new-container">
                 <div class="add-new">
                     <?php echo __('Add Element'); ?>
                 </div>
