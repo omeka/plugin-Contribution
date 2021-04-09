@@ -9,3 +9,21 @@ span.prompt {
 input.prompt {
 	width: 130px;
 }
+
+.drawer-contents .field {
+    display: flex;
+	margin-top: 1rem;
+}
+
+.drawer-contents .field-meta {
+    width: 25%;
+}
+
+.drawer-contents .field label {
+	padding-bottom: 0;
+}
+
+.drawer-contents .inputs {
+    width: 75%;
+	margin-bottom: 0;
+}
