@@ -1,9 +1,20 @@
 
 div.element-set {
 	clear: both;
-	
 }
 
 section.contribution {
-	border-top: 1px solid black;
+	border-bottom: 1px solid #D8D8D8;
+	margin-bottom: 1rem;
+	padding-bottom: 1rem;
+	overflow: hidden;
+}
+
+#contribution-user-contributions {
+	border-top: 1px solid #D8D8D8;
+	padding-top: 1rem;
+}
+
+p.status {
+	margin: -1rem 0 1.5rem;
 }

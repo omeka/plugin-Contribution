@@ -31,7 +31,7 @@ echo $this->partial('contribution-navigation.php');
     <div id='contribution-user-contributions'>
         <?php foreach($items as $item): ?>
         <?php set_current_record('item', $item->Item); ?>
-        <section class="seven columns omega contribution">
+        <section class="contribution">
             <?php 
                 if ($item->Item->public) {
                     $status = __('Public');
@@ -45,13 +45,19 @@ echo $this->partial('contribution-navigation.php');
             ?>
         
             <h2><?php echo link_to_item(null, array(), 'edit'); ?></h2>
-            <p><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
-            <?php
-            echo item_image_gallery(
-                array('linkWrapper' => array('class' => 'admin-thumb panel')),
-                'square_thumbnail', true);
-            ?>
-            <?php echo all_element_texts('item'); ?>
+                <p class="status"><?php echo $status;?> <?php echo (boolean) $item->anonymous ? " | " . __('Anonymous') : "";  ?></p>
+            <div class="contribution-metadata seven columns alpha">
+                <?php echo all_element_texts('item'); ?>
+            </div>
+            <?php if (count($item->Item->Files) > 0): ?>
+                <div class="contribution-media three columns omega">
+                <?php
+                echo item_image_gallery(
+                    array('linkWrapper' => array('class' => 'admin-thumb panel')),
+                    'square_thumbnail', true);
+                ?>
+                </div>
+            <?php endif; ?>
         </section>   
         
         <?php endforeach; ?>
