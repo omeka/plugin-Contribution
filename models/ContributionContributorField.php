@@ -83,7 +83,8 @@ HTML;
         return $input;
     }
 
-    protected function  beforeSave() {
+    protected function beforeSave($args)
+    {
         if (empty($this->order)) {
             $this->order = 0;
         }
