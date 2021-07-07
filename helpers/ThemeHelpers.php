@@ -16,13 +16,13 @@
  */
 
 
-function contribution_admin_header($subsections = array())
+function contribution_admin_header($subsections = array(), $bodyClass = 'contribution')
 {
     $mainTitle = __('Contribution');
     $subsections = array_merge(array($mainTitle), $subsections);
     $displayTitle = implode(' | ', $subsections);
     $head = array('title' => $displayTitle,
-            'bodyclass' => 'contribution',
+            'bodyclass' => $bodyClass,
             'content_class' => 'horizontal-nav');
     echo head($head);
 }

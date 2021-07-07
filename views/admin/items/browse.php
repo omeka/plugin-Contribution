@@ -9,8 +9,7 @@
 queue_css_file('contribution-browse');
 queue_js_file('contribution-contributed-item');
 queue_js_file('contribution-browse');
-
-contribution_admin_header(array(__('Contributed Items (%d)', $total_results)));
+contribution_admin_header(array(__('Contributed Items (%d)', $total_results)), 'contribution items browse');
 
 // To avoid to determine rights for each record.
 $allowToManage = (is_allowed('Items', 'edit') || is_allowed('Items', 'update') || is_allowed('Items', 'delete'));
@@ -45,6 +44,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
 
         <?php echo common('contribution-quick-filters'); ?>
 
+        <div class="table-responsive">
         <table id="contributions" cellspacing="0" cellpadding="0">
         <thead id="types-table-head">
             <tr>
@@ -53,11 +53,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 <?php endif;
                 $browseHeadings[__('Item')] = null;
                 $browseHeadings[__('Contributor')] = 'contributor';
-                if($allowToManage) {
-                    $browseHeadings[__('Publication Status')] = null;
-                } else {
-                    $browseHeadings[__('Publication Status')] = null;
-                }
+                $browseHeadings[__('Publication Status')] = null;
                 $browseHeadings[__('Date Added')] = 'added';
                 echo browse_sort_links($browseHeadings, array('link_tag' => 'th scope="col"', 'list_tag' => ''));
                 ?>
@@ -103,12 +99,14 @@ if (!Omeka_Captcha::isConfigured()): ?>
                     <?php endif; ?>
                 </td>
                 <?php endif; ?>
-                <td class="record-info"><?php
-                    echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title')));
+                <td class="item-info">
+                <?php
                     if (metadata($item, 'has thumbnail')):
                         echo link_to_item(item_image('square_thumbnail', array(), 0, $item), array('class' => 'item-thumbnail'), 'show', $item);
                     endif;
-                ?></td>
+                ?>
+                <span class="title"><?php echo link_to($item, 'show', metadata($item, array('Dublin Core', 'Title'))); ?></span>
+                </td>
                 <td class="contributor"><?php echo metadata($contributor, 'name');?>
                     <?php if (!is_null($contributor->id)):
                         if ($contributedItem->anonymous && (is_allowed('Contribution_Items', 'view-anonymous') || $contributor->id == current_user()->id)): ?>
@@ -131,6 +129,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
             <?php endforeach; ?>
         </tbody>
         </table>
+        </div>
 
         <div class="table-actions batch-edit-option">
             <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>

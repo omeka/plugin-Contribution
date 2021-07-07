@@ -22,6 +22,7 @@ if (!has_loop_records('contribution_contributors')):
 else:
 ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
+    <div class="table-responsive">
     <table>
         <thead id="types-table-head">
             <tr>
@@ -45,6 +46,7 @@ foreach (loop('contribution_contributors') as $contributor):
 <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
     <div class="pagination"><?php echo pagination_links(); ?></div>
 <?php endif; ?>
 </div>

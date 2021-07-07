@@ -17,7 +17,7 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
-
+    <div class="table-responsive">
     <table>
         <thead id="types-table-head">
             <tr>
@@ -40,5 +40,6 @@ echo $this->partial('contribution-navigation.php');
 <?php endforeach; ?>
         </tbody>
     </table>
+    </div>
 </div>
 <?php echo foot(); ?>
