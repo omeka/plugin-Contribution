@@ -30,20 +30,19 @@ if (!Omeka_Captcha::isConfigured()): ?>
     <div class="pagination"><?php echo pagination_links(); ?></div>
 
     <form action="<?php echo html_escape(url('contribution/index/batch-edit')); ?>" method="post" accept-charset="utf-8">
-        <div class="table-actions batch-edit-option">
-            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
-            <input type="submit" class="green batch-action button" name="submit-batch-approve" value="<?php echo __('Set public'); ?>">
-            <?php endif; ?>
-            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
-            <input type="submit" class="green batch-action button" name="submit-batch-proposed" value="<?php echo __('Set Needs review'); ?>">
-            <?php endif; ?>
-            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'delete')): ?>
-            <input type="submit" class="red batch-action button" name="submit-batch-delete" value="<?php echo __('Delete'); ?>">
-            <?php endif; ?>
-        </div>
-
         <?php echo common('contribution-quick-filters'); ?>
 
+        <div class="table-actions batch-edit-option">
+            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
+            <input type="submit" class="green small batch-action button" name="submit-batch-approve" value="<?php echo __('Set public'); ?>">
+            <?php endif; ?>
+            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
+            <input type="submit" class="green small batch-action button" name="submit-batch-proposed" value="<?php echo __('Set Needs review'); ?>">
+            <?php endif; ?>
+            <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'delete')): ?>
+            <input type="submit" class="red small batch-action button" name="submit-batch-delete" value="<?php echo __('Delete'); ?>">
+            <?php endif; ?>
+        </div>
         <div class="table-responsive">
         <table id="contributions" cellspacing="0" cellpadding="0">
         <thead id="types-table-head">
@@ -94,6 +93,7 @@ if (!Omeka_Captcha::isConfigured()): ?>
                 <td class="batch-edit-check" scope="row">
                     <?php if ($status == 'private'): ?>
                     <span><?php echo $statusText; ?></span>
+                    <input type="checkbox" name="contributions[]" value="<?php echo $contributedItem->id; ?>" disabled />
                     <?php else: ?>
                     <input type="checkbox" name="contributions[]" value="<?php echo $contributedItem->id; ?>" />
                     <?php endif; ?>
@@ -133,17 +133,15 @@ if (!Omeka_Captcha::isConfigured()): ?>
 
         <div class="table-actions batch-edit-option">
             <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
-            <input type="submit" class="green batch-action button" name="submit-batch-approve" value="<?php echo __('Set public'); ?>">
+            <input type="submit" class="green small batch-action button" name="submit-batch-approve" value="<?php echo __('Set public'); ?>">
             <?php endif; ?>
             <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'update')): ?>
-            <input type="submit" class="green batch-action button" name="submit-batch-proposed" value="<?php echo __('Set Needs review'); ?>">
+            <input type="submit" class="green small batch-action button" name="submit-batch-proposed" value="<?php echo __('Set Needs review'); ?>">
             <?php endif; ?>
             <?php if (is_allowed('Items', 'edit') || is_allowed('Items', 'delete')): ?>
-            <input type="submit" class="red batch-action button" name="submit-batch-delete" value="<?php echo __('Delete'); ?>">
+            <input type="submit" class="red small batch-action button" name="submit-batch-delete" value="<?php echo __('Delete'); ?>">
             <?php endif; ?>
         </div>
-
-        <?php echo common('contribution-quick-filters'); ?>
     </form>
 
     <div class="pagination"><?php echo pagination_links(); ?></div>

@@ -6,7 +6,7 @@ Omeka.ContributionBrowse = {};
 
 (function ($) {
     Omeka.ContributionBrowse.setupBatchEdit = function () {
-        var contributionCheckboxes = $("table#contributions tbody input[type=checkbox]");
+        var contributionCheckboxes = $("table#contributions tbody input[type=checkbox]:not(:disabled)");
         var globalCheckbox = $('th.batch-edit-heading').html('<input type="checkbox">').find('input');
         var batchEditSubmit = $('.batch-edit-option input');
         /**
