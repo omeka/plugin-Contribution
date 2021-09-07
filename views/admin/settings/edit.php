@@ -9,7 +9,6 @@
 
 queue_js_file('contribution');
 queue_js_file('tinymce.min', 'javascripts/vendor/tinymce');
-queue_js_string('setUpSettingsWysiwyg();');
 contribution_admin_header(array(__('Submission Settings')));
 
 ?>
