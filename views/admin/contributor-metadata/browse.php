@@ -18,6 +18,7 @@ echo $this->partial('contribution-navigation.php');
 
 <div id="primary">
     <?php echo flash(); ?>
+    <div class="table-responsive">
     <table>
         <thead id="contributor-fields-table-head">
             <tr>
@@ -47,5 +48,6 @@ echo $this->partial('contribution-navigation.php');
 <?php endif; ?>
         </tbody>
     </table>
+    </div>
 </div>
 <?php echo foot();

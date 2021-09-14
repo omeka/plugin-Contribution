@@ -18,6 +18,7 @@ echo $this->partial('contribution-navigation.php');
 <div id="primary">
     <?php echo flash(); ?>
     <h2>Basic Metadata</h2>
+    <div class="table-responsive">
     <table>
         <tr>
             <th>Name</th>
@@ -32,7 +33,9 @@ echo $this->partial('contribution-navigation.php');
             <td><?php echo $contribution_contributor->getDottedIpAddress(); ?></td>
         </tr>
     </table>
+    </div>
     <h2>Custom Metadata</h2>
+    <div class="table-responsive">
     <table>
         <?php foreach ($customMetadata as $metadataName => $metadataValue): ?>
         <tr>
@@ -41,5 +44,6 @@ echo $this->partial('contribution-navigation.php');
         </tr>
         <?php endforeach; ?>
     </table>
+    </div>
 </div>
 <?php echo foot(); ?>
