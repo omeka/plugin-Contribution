@@ -35,3 +35,5 @@ $type = isset($contribution_contributor_field->type) ? $contribution_contributor
             </div>
         </section>
     </form>
+    <div class="clearfix"></div>
+
