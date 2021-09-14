@@ -21,7 +21,7 @@ echo $this->partial('contribution-navigation.php');
     <dl>
         <dt>1. Modify the contribution form:</dt>
         <dd>
-            <ul style="width: 100%;">
+            <ul>
                 <li>Choose item types you wish visitors to share in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
                 <li>Pick the fields you want users to complete by editing each item type in <a href="<?php echo url('contribution/types'); ?>">Contribution Types</a>.</li>
                 <li>Create questions about contributors in <a href="<?php echo url('contribution/contributor-metadata'); ?>">Contributor Questions</a>.</li>
@@ -29,7 +29,7 @@ echo $this->partial('contribution-navigation.php');
         </dd>
         <dt>2. Configure settings for submitting contributions:</dt>
         <dd>
-            <ul style="width: 100%;">
+            <ul>
                 <li>Set the terms of service for contributing to the site in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
                 <li>Set up an auto-generated email to send to all contributors after they submit their contribution in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
                 <li>Specify a collection for new contributed items in <a href="<?php echo url('contribution/settings'); ?>">Submission Settings</a>.</li>
