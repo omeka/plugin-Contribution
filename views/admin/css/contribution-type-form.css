@@ -2,10 +2,31 @@
     float: right;
 }
 
-span.prompt {
-	padding-left: 10px;
+.element .sortable-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: relative;
+	padding-right: 45px;
 }
 
-input.prompt {
-	width: 130px;
+.prompt input[type="text"] {
+	margin-right: 0;
+	width: 100%;
+}
+
+.element-name,
+.existing-element-drop-down,
+.prompt {
+	margin-right: 1em;
+	max-width: 30%;
+	display: flex;
+	align-items: center;
+}
+
+.delete-element,
+.undo-delete {
+	position: absolute;
+	top: 20px;
+	right: 15px;
 }

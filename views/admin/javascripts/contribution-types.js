@@ -158,7 +158,7 @@ Omeka.ContributionTypes = {};
                 data: {elementCount: elementCount, itemTypeId: itemTypeId},
                 success: function (responseText) {
                     var response = responseText || 'no response text';
-                    $('#add-element').parent().before(response);
+                    $('li.element').last().after(response);
                 },
                 error: function () {
                     alert('Unable to get a new element.');

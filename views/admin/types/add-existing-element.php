@@ -13,11 +13,12 @@
         echo $this->formSelect(
             $element_id_name, $element_id_value,
             array('class' => 'existing-element-drop-down'), $elementsArray );
-        echo "<span>" . __("Prompt:") . "</span>";
-        echo $this->formText($element_prompt_name, $element_prompt_value, array('class'=>'prompt'));
+        echo "<label class='prompt'>" . __("Prompt:") . $this->formText($element_prompt_name, $element_prompt_value) . "</label>";
         ?>
-        <span class='long-text'><?php echo __('Multiple rows'); ?></span>
-        <?php echo $this->formCheckbox($element_long_name, null);    ?>        
+        <label class='long-text'>
+            <?php echo __('Multiple rows'); ?>
+            <?php echo $this->formCheckbox($element_long_name, null); ?>
+        </label>
         <?php
         echo $this->formHidden(
             $element_order_name, $element_order_value,
