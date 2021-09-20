@@ -102,7 +102,7 @@
                 <?php endif; ?>
             <?php endif; ?>
         <?php endforeach; // end for each $elementInfos ?> 
-            <li>
+            <li id="new-element-item">
                 <div class="add-new">
                     <?php echo __('Add Element'); ?>
                 </div>
