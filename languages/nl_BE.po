@@ -6,11 +6,11 @@
 # Silas Van Huyck <silas.vanhuyck@gmail.com>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Omeka\n"
+"Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-20 01:42+0000\n"
-"Last-Translator: patrickmj <patrickmjchnm@gmail.com>\n"
+"PO-Revision-Date: 2018-02-14 19:58+0000\n"
+"Last-Translator: John Flatness <john@zerocrates.org>\n"
 "Language-Team: Dutch (Belgium) (http://www.transifex.com/omeka/omeka/language/nl_BE/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,57 +33,58 @@ msgstr "Geweigerd"
 msgid "Deleted User"
 msgstr "Verwijderde gebruiker"
 
-#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:427 ContributionPlugin.php:509
+#: ContributionPlugin.php:432 ContributionPlugin.php:514
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr ""
 
-#: ContributionPlugin.php:448
+#: ContributionPlugin.php:453
 msgid "Contribute an Item"
 msgstr ""
 
-#: ContributionPlugin.php:491
+#: ContributionPlugin.php:496
 msgid "Contribution Status"
 msgstr ""
 
-#: ContributionPlugin.php:497
+#: ContributionPlugin.php:502
 msgid "Only Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:498
+#: ContributionPlugin.php:503
 msgid "Only Non-Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:659
+#: ContributionPlugin.php:664
 msgid "Anonymous, "
 msgstr "Anoniem,"
 
-#: ContributionPlugin.php:685
+#: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
 msgstr ""
 
-#: ContributionPlugin.php:696
+#: ContributionPlugin.php:701
 msgid "See all my contributions"
 msgstr ""
 
-#: ContributionPlugin.php:699
-msgid "No contribution yet."
-msgstr ""
-
-#: ContributionPlugin.php:713
-msgid "Contributed by:"
+#: ContributionPlugin.php:704
+#: views/public/contribution/my-contributions.php:41
+msgid "No contribution yet, or removed contributions."
 msgstr ""
 
 #: ContributionPlugin.php:718
+msgid "Contributed by:"
+msgstr ""
+
+#: ContributionPlugin.php:723
 msgid "This item can be made public."
 msgstr "Dit item kan openbaar gemaakt worden."
 
-#: ContributionPlugin.php:720
+#: ContributionPlugin.php:725
 msgid "This item cannot be made public."
 msgstr "Dit item kan niet openbaar gemaakt worden."
 
@@ -91,46 +92,46 @@ msgstr "Dit item kan niet openbaar gemaakt worden."
 msgid "Your contributions have been updated."
 msgstr ""
 
-#: controllers/ContributionController.php:235
+#: controllers/ContributionController.php:236
 msgid "You must select a type for your contribution."
 msgstr ""
 
-#: controllers/ContributionController.php:391
+#: controllers/ContributionController.php:395
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr "Uw CAPTCHA inzending was ongeldig, probeer het opnieuw."
 
-#: controllers/ContributionController.php:396
+#: controllers/ContributionController.php:400
 msgid "You must agree to the Terms and Conditions."
 msgstr "U moet akkoord gaan met de Algemene Voorwaarden."
 
-#: controllers/ContributionController.php:425
+#: controllers/ContributionController.php:429
 msgid "Contribution URL (pending review by project staff): "
 msgstr ""
 
-#: controllers/ContributionController.php:426
+#: controllers/ContributionController.php:430
 #, php-format
 msgid "Your username is %s"
 msgstr " Uw gebruikersnaam is %s"
 
-#: controllers/ContributionController.php:429
+#: controllers/ContributionController.php:433
 msgid "To log in and change your username, request a password here: "
 msgstr "Om in te loggen en je gebruikersnaam te veranderen, vraag hier een wachtwoord aan:"
 
-#: controllers/ContributionController.php:433
+#: controllers/ContributionController.php:437
 #, php-format
 msgid "Your %s Contribution"
 msgstr ""
 
-#: controllers/ContributionController.php:452
+#: controllers/ContributionController.php:456
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr ""
 
-#: controllers/ContributionController.php:457
+#: controllers/ContributionController.php:461
 msgid "Contribution URL for review: "
 msgstr ""
 
-#: controllers/ContributionController.php:463
+#: controllers/ContributionController.php:467
 #, php-format
 msgid "New %s Contribution"
 msgstr ""
@@ -264,7 +265,7 @@ msgstr "Onbekende gebruiker"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
-#: views/public/contribution/my-contributions.php:9
+#: views/public/contribution/my-contributions.php:16
 msgid "Anonymous"
 msgstr "Anoniem"
 
@@ -468,6 +469,10 @@ msgstr ""
 msgid "Set Needs review"
 msgstr ""
 
+#: views/admin/items/browse.php:52
+msgid "Select"
+msgstr ""
+
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
 msgstr "publicatie-status"
@@ -584,9 +589,14 @@ msgstr "Ik ga akkoord met de Algemene Voorwaarden."
 msgid "Contribute"
 msgstr ""
 
-#: views/public/contribution/my-contributions.php:11
+#: views/public/contribution/my-contributions.php:18
 msgid "Added"
 msgstr "Toegevoegd"
+
+#: views/public/contribution/my-contributions.php:44
+#, php-format
+msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
+msgstr ""
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"

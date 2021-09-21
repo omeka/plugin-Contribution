@@ -3,188 +3,187 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Kai Metsävainio <kai.metsavainio@gmail.com>, 2021
-# Matti Lassila <matti.lassila@gmail.com>, 2014
+# Hong Zhang <zhangh@unlv.nevada.edu>, 2018
 msgid ""
 msgstr ""
 "Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2021-09-19 18:15+0000\n"
-"Last-Translator: Kai Metsävainio <kai.metsavainio@gmail.com>\n"
-"Language-Team: Finnish (Finland) (http://www.transifex.com/omeka/omeka/language/fi_FI/)\n"
+"PO-Revision-Date: 2018-03-06 08:04+0000\n"
+"Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>\n"
+"Language-Team: Chinese (China) (http://www.transifex.com/omeka/omeka/language/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: models/ContributionType.php:101
 msgid "Allowed"
-msgstr "Sallittu"
+msgstr "允许的"
 
 #: models/ContributionType.php:102
 msgid "Required"
-msgstr "Pakollinen"
+msgstr "要求的"
 
 #: models/ContributionType.php:100
 msgid "Disallowed"
-msgstr "Ei sallittu"
+msgstr "不允许的"
 
 msgid "Deleted User"
-msgstr "Poistettu käyttäjä"
+msgstr "被删除的用户"
 
 #: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
-msgstr "Osallistuja-aineistot"
+msgstr "贡献的条目"
 
 #: ContributionPlugin.php:432 ContributionPlugin.php:514
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
-msgstr "Osallistu"
+msgstr "贡献"
 
 #: ContributionPlugin.php:453
 msgid "Contribute an Item"
-msgstr "Lähetä aineistoja"
+msgstr "贡献一个条目"
 
 #: ContributionPlugin.php:496
 msgid "Contribution Status"
-msgstr "Osallistumisen tila"
+msgstr "贡献状态"
 
 #: ContributionPlugin.php:502
 msgid "Only Contributed Items"
-msgstr "Vain osallistuja-aineistot"
+msgstr "只选贡献条目"
 
 #: ContributionPlugin.php:503
 msgid "Only Non-Contributed Items"
-msgstr "Ei ostallistuja-aineistot"
+msgstr "只选非贡献条目"
 
 #: ContributionPlugin.php:664
 msgid "Anonymous, "
-msgstr "Anonyymi,"
+msgstr "匿名，"
 
 #: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
-msgstr "Lisäämäni aineistot"
+msgstr "我的贡献"
 
 #: ContributionPlugin.php:701
 msgid "See all my contributions"
-msgstr "Näytä kaikki lisäämäni aineistoni"
+msgstr "查看我的所有贡献"
 
 #: ContributionPlugin.php:704
 #: views/public/contribution/my-contributions.php:41
 msgid "No contribution yet, or removed contributions."
-msgstr "Ei aineistoja tai aineistot poistettu."
+msgstr "尚无贡献，或者贡献已被移除。"
 
 #: ContributionPlugin.php:718
 msgid "Contributed by:"
-msgstr "Aineiston lähetti:"
+msgstr "贡献者："
 
 #: ContributionPlugin.php:723
 msgid "This item can be made public."
-msgstr "Aineisto voidaan tehdä julkiseksi."
+msgstr "该条目可以公开。"
 
 #: ContributionPlugin.php:725
 msgid "This item cannot be made public."
-msgstr "Aineistoa ei voi tehdä julkiseksi."
+msgstr "该条目不能公开。"
 
 #: controllers/ContributionController.php:42
 msgid "Your contributions have been updated."
-msgstr "Lähettämäsi aineistot on päivitetty."
+msgstr "您的贡献已更新。"
 
 #: controllers/ContributionController.php:236
 msgid "You must select a type for your contribution."
-msgstr "Valitse aineiston tyyppi."
+msgstr "您必须选择贡献类型。"
 
 #: controllers/ContributionController.php:395
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr "CAPTCHAn lähetys oli virheellinen, ole hyvä ja yritä uudelleen."
+msgstr "您递交的CAPTCHA无效，请再试一次。"
 
 #: controllers/ContributionController.php:400
 msgid "You must agree to the Terms and Conditions."
-msgstr "Sinun täytyy hyväksyä osallistumisehdot."
+msgstr "您必须同意条款及条件。"
 
 #: controllers/ContributionController.php:429
 msgid "Contribution URL (pending review by project staff): "
-msgstr "Lähetetyn aineiston osoite (odottaa ylläpidon hyväksyntää):"
+msgstr "贡献URL（等待项目员工审核）："
 
 #: controllers/ContributionController.php:430
 #, php-format
 msgid "Your username is %s"
-msgstr "Käyttäjätunnuksesi on %s"
+msgstr "您的用户名是%s"
 
 #: controllers/ContributionController.php:433
 msgid "To log in and change your username, request a password here: "
-msgstr "Kirjaudu sisään ja vaihda käyttäjätunnuksesi, pyydä salasana täältä:"
+msgstr "如需登录并更新用户名，在这里申请密码："
 
 #: controllers/ContributionController.php:437
 #, php-format
 msgid "Your %s Contribution"
-msgstr "Sivustolle %s lähettämäsi sisällöt"
+msgstr "您的%s贡献"
 
 #: controllers/ContributionController.php:456
 #, php-format
 msgid "A new contribution to %s has been made."
-msgstr "Uusi aineisto on talllennettu %s sivustolle."
+msgstr "%s有一个新贡献。"
 
 #: controllers/ContributionController.php:461
 msgid "Contribution URL for review: "
-msgstr "Osallistuja-aineiston osoite:"
+msgstr "需审核的贡献URL："
 
 #: controllers/ContributionController.php:467
 #, php-format
 msgid "New %s Contribution"
-msgstr "%s : uusi osallistuja-aineisto"
+msgstr "新的%s贡献"
 
 #: controllers/SettingsController.php:34
 msgid "Settings have been saved."
-msgstr "Asetukset päivitettiin"
+msgstr "已保存设置。"
 
 #: controllers/SettingsController.php:80
 msgid "Contribution Slug"
-msgstr "Osallistuja-aineston URL-teksti"
+msgstr "贡献缩略词"
 
 #: controllers/SettingsController.php:81
 msgid ""
 "Relative path from the Omeka root to the desired location for the "
 "contribution form. If left blank, the default path will be named "
 "&#8220;contribution.&#8221;"
-msgstr "Omeka-asennuksen juuresta lähtevä suhteellinen polku osallistujalomakkeelle. Oletusarvoisesti lomakkeen URL-tekstinä on &#8220;contribution.&#8221;"
+msgstr "从Omeka根目录到给定的贡献表单位置的相对路径。如空白，默认路径将被命名为&#8220;贡献。&#8221;"
 
 #: controllers/SettingsController.php:86
 msgid "Contribution Confirmation Email"
-msgstr "Osallistujalle lähetettävä viesti"
+msgstr "贡献确认电邮"
 
 #: controllers/SettingsController.php:87
 msgid ""
 "An email message will be sent to each contributor from this address "
 "confirming that they submitted a contribution to this website. Leave blank "
 "if you do not want an email sent."
-msgstr "Osallistujalle lähetettävän viestin lähettäjäosoite. Mikäli osoite on tyhjä, viestiä ei lähetetä."
+msgstr "电邮信息将从这个地址发送至每个贡献者，确认他们为本站提交了贡献。如果您不想发送电邮，此处保持空白。"
 
 #: controllers/SettingsController.php:92
 msgid "New Contribution Notification Emails"
-msgstr "Ilmoitusviestin vastaanottajat"
+msgstr "新的贡献通知电邮"
 
 #: controllers/SettingsController.php:93
 msgid ""
 "An email message will be sent to each address here whenever a new item is "
 "contributed. Leave blank if you do not want anyone to be alerted of "
 "contributions by email."
-msgstr "Lähetä viesti jokaiseen tässä määritettyyn osoitteseen aina kun sivustolle tallennetaan uusi osallistuja-aineisto. Mikäli osoitteita ei ole määritetty, viestejä ei lähetetä."
+msgstr "每当有人贡献了一个新条目时，电邮信息将被发送至这里的每个地址。如果您不希望有人收到关于贡献的电邮提示，此处保持空白。"
 
 #: controllers/SettingsController.php:98
 msgid "Text of Terms of Service"
-msgstr "Osallistumisehtojen teksti"
+msgstr "服务条款文本"
 
 #: controllers/SettingsController.php:99
 msgid "The text of the legal disclaimer to which contributors will agree."
-msgstr "Ehdot, jotka sisältöjä lähettävien henkilöiden tulee hyväksyä."
+msgstr "贡献者需同意的合法免责声明文本。"
 
 #: controllers/SettingsController.php:105
 msgid "Allow Non-registered Contributions"
-msgstr "Salli ei rekisteröityneiden käyttäjien osallistuminen"
+msgstr "允许未注册贡献"
 
 #: controllers/SettingsController.php:106
 msgid ""
@@ -194,11 +193,11 @@ msgid ""
 "additional information about contributors, they must create an account. See "
 "<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> "
 "for details. "
-msgstr ""
+msgstr "这将要求贡献者提供一个电邮地址，并以此创建一个访客用户。如果那些用户想使用该账号，他们必须为该账号请求新密码。如果你想收集贡献者的更多信息，他们必须创建一个账号。更多细节请参见<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>文档</a>。"
 
 #: controllers/SettingsController.php:113
 msgid "Allow Anonymous Contributions"
-msgstr "Salli anonyymi osallistuminen"
+msgstr "允许匿名贡献"
 
 #: controllers/SettingsController.php:114
 msgid ""
@@ -207,11 +206,11 @@ msgid ""
 " user account will be created that stores no identifing information. See <a "
 "href='http://omeka.org/codex/Plugins/Contribution_2.0'>documentation</a> for"
 " details. "
-msgstr ""
+msgstr "如果以上允许未注册贡献，该选项允许贡献者即使对管理员也保持完全匿名。会创建一个不存储任何识别信息的伪用户账号。细节参见<a href='http://omeka.org/codex/Plugins/Contribution_2.0'>文档</a>。"
 
 #: controllers/SettingsController.php:120
 msgid "Email text to send to contributors"
-msgstr "Osallistujille lähetettävän sähköpostiviestin sisältö"
+msgstr "发送给贡献者的电邮文本"
 
 #: controllers/SettingsController.php:121
 msgid ""
@@ -220,91 +219,91 @@ msgid ""
 "'Anonymous', options, we recommend that you notify contributors that a guest"
 " user account has been created for them, and what they gain by confirming "
 "their account."
-msgstr ""
+msgstr "当贡献者提交条目时，发送给他们的电邮文本。他们贡献的链接会附加上。如果使用“非注册”，但是不是“匿名”选项，我们建议你通知贡献者，已为他们创建了一个访客用户账号以及确认他们的账号后能获得什么。"
 
 #: controllers/SettingsController.php:126
 msgid "Do not put contributions in any collection"
-msgstr "Älä tallenna osallistuja-aineistoja kokoelmaan"
+msgstr "不要把贡献加入任何馆藏"
 
 #: controllers/SettingsController.php:129
 msgid "Contribution Collection"
-msgstr "Osallistuja-aineistojen kokoelma"
+msgstr "贡献馆藏"
 
 #: controllers/SettingsController.php:130
 msgid ""
 "The collection to which contributions will be added. Changes here will only "
 "affect new contributions."
-msgstr "Kokoelma johon osallistuja-aineistot lisätään. Muutokset vaikuttavat vain uusiin lähetettyihin sisältöihin."
+msgstr "贡献将被加入的馆藏。此处的更新只影响到新贡献。"
 
 #: controllers/SettingsController.php:135
 msgid "No default type"
-msgstr "Ei oletustyyppiä"
+msgstr "无默认类型"
 
 #: controllers/SettingsController.php:138
 msgid "Default Contribution Type"
-msgstr "Osallistuja-aineistojen aineistotyyppi"
+msgstr "默认贡献类型"
 
 #: controllers/SettingsController.php:139
 msgid "The type that will be chosen for contributors by default."
-msgstr "Osallistuja-aineistolle oletuksena valittu aineistotyyppi."
+msgstr "为贡献者挑选的默认类型。"
 
 #: controllers/SettingsController.php:146
 msgid "Choose a profile type for contributors"
-msgstr "Osallistujien käyttäjäprofiili"
+msgstr "选择贡献者的资料类型"
 
 #: controllers/SettingsController.php:147
 msgid "Configure the profile type under User Profiles"
-msgstr "Määrittele käyttäjäasetukset profiileiden asetuksissa."
+msgstr "在用户资料中设置资料类型"
 
 #: controllers/SettingsController.php:148
 msgid "None"
-msgstr "EI saatavilla"
+msgstr "无"
 
 #: models/ContributionContributedItem.php:46
 msgid "Unknown User"
-msgstr "Tuntematon käyttäjä"
+msgstr "未知用户"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
 #: views/public/contribution/my-contributions.php:16
 msgid "Anonymous"
-msgstr "Anonyymi"
+msgstr "匿名"
 
 #: models/Mixin/ContributionOrder.php:101
 msgid "Cannot add a child to a record that does not exist yet!"
-msgstr "Lapsitietuetta ei voi lisätä tietueelle, jota ei ole vielä olemassa!"
+msgstr "无法给尚不存在的记录添加子项。"
 
 #: models/Mixin/ContributionOrder.php:105
 #, php-format
 msgid "Child must be an instance of \"%s\""
-msgstr "Lapsitietueen tulee olla instanssi tyyppiä \"%s\""
+msgstr "子项必须是“%s”的一个实例"
 
 #: views/admin/common/contribution-quick-filters.php:2
 #: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
-msgstr "Suodata tilan mukaan"
+msgstr "按状态过滤"
 
 #: views/admin/common/contribution-quick-filters.php:8
 #: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
 msgid "Needs review"
-msgstr "Odottaa toimitustyötä"
+msgstr "需要审核"
 
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
-msgstr "Konfigurointi"
+msgstr "开始"
 
 #: views/admin/contribution-navigation.php:7 views/admin/index/index.php:37
 msgid "Contribution Types"
-msgstr "Osallistuja-aineistojen tyypit"
+msgstr "贡献类型"
 
 #: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
 msgid "Submission Settings"
-msgstr "Tallennusasetukset"
+msgstr "递交设置"
 
 #: views/admin/contribution-navigation.php:15 views/admin/index/index.php:54
 msgid "Contributions"
-msgstr "Osallistuja-aineistot"
+msgstr "贡献"
 
 #: views/admin/contributors/browse.php:28
 msgid "ID"
@@ -313,28 +312,28 @@ msgstr "ID"
 #: views/admin/contributors/show.php:20
 #, php-format
 msgid "%s's contributions"
-msgstr "%s aineistot"
+msgstr "%s的贡献"
 
 #: views/admin/contributors/show.php:26
 msgid "Profile: "
-msgstr "Profiili:"
+msgstr "资料："
 
 #: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
 msgid "Private contribution"
-msgstr "Yksityinen aineisto"
+msgstr "私人贡献"
 
 #: views/admin/index/index.php:20
 msgid ""
 "A basic contribution form is installed and ready to ask users to submit a "
 "Story or Image type, and to include their name and email address. If you "
 "want to modify the form, follow the steps below."
-msgstr "Yksinkertainen tallennuslomake on luotu valmiiksi. Lomakkeella voi tallentaa tarina tai kuva-tyyppisiä sisältöjä. Osallistuja pyydetään liittämään sisältöjen oheen nimi ja sähköpostiosoite. Jos haluat muokata lomaketta, noudata seuraavia ohjeita."
+msgstr "安装了基本贡献表单，准备好请用户提交故事或图片类型，包括他们的名字和电邮地址。如果您想修改表单，请按照以下步骤。"
 
 #: views/admin/index/index.php:21
 msgid ""
 "While an account exists for all contributors, they can make any contribution"
 " anonymously. Only the admin and super roles can see the full information."
-msgstr "Vaikka osallistuminen vaatii käyttäjätilin, halutessaan käyttäjät voivat tallentaa aineistoja myös anonyymisti. Tällöin ainoastaan ylläpitäjät voivat nähdä aineiston tallentajan täydet tiedot."
+msgstr "虽然所有贡献者都有账号，他们仍可以匿名递交贡献。只有管理员和超级用户才能看见所有信息。"
 
 #: views/admin/index/index.php:22
 msgid ""
@@ -342,289 +341,289 @@ msgid ""
 "contributions cannot be made publicly available on the site, but they are "
 "visible to the super, admin, contributor, and researcher roles, as well as "
 "to the contributors themselves."
-msgstr "Osallistujat voivat halutessaan tallentaa sisältöjä siten, että sisällöt ovat ei-julkisia ja ainoastaan ylläpitäjien ja tutkija-roolissa olevien käyttäjien selailtavissa."
+msgstr "贡献者可以设定任意贡献公开或非公开。非公开贡献不能在网站上公开访问，但是它们可以被超级用户、管理员、贡献者和研究员角色看到，包括贡献者本身。"
 
 #: views/admin/index/index.php:24
 msgid "1. Set up Guest User information:"
-msgstr "1. Määrittele vierailijatunnuksen tiedot:"
+msgstr "1. 设置访客用户信息："
 
 #: views/admin/index/index.php:26
 msgid ""
 "To make repeat contributions easier, a reusable 'Guest User' account is "
 "created for contributors."
-msgstr "Toistuva osallistumista helpottaa jos sivustolla käytetään vierailijatunnusta."
+msgstr "为使重复贡献更方便，给贡献者创建了一个可重用的“访客用户”账号。"
 
 #: views/admin/index/index.php:26
 msgid "Configure Guest Users"
-msgstr "Luo vierailijatunnukset"
+msgstr "配置访客用户"
 
 #: views/admin/index/index.php:26
 msgid "with the following suggestions."
-msgstr "ottaen huomioon seuraavat ehdotukset, mikäli mahdollista"
+msgstr "利用这些建议。"
 
 #: views/admin/index/index.php:28
 msgid ""
 "Let visitors know a bit about how their contributions will be used and why "
 "they are so valuable in the 'Registration Features' information."
-msgstr "Kerro osallistujille kuinka heidän aineistojaan tullaan käyttämään ja miksi  heidän panoksensa on tärkeä."
+msgstr "在“注册功能“信息中让访问者知道一些他们的贡献将如何使用以及为何它们是很有价值的。"
 
 #: views/admin/index/index.php:29
 msgid ""
 "It is easiest to contribute if administrator approval is not required and "
 "you allow 20 minute instant access. To prevent spam, using ReCaptcha is "
 "recommended."
-msgstr "Osallistuminen on helpointa mikäli tunnuksen käyttöönotto ei vaadi ylläpitäjän hyväksyntää ja automaattinen 20 minuutin käyttöoikeus on sallittu. ReCapchan käyttö on suositeltavaa roskapostituksen välttämiseksi."
+msgstr "如果不需管理员批准并且您允许20分钟即时访问，贡献是最容易的。为防止垃圾邮件，推荐使用ReCaptcha。"
 
 #: views/admin/index/index.php:30
 msgid ""
 "Additional contribution-specific information for guest users can be created "
 "here."
-msgstr "Osallistu-lisäosan asetuksissa voi laatia lisäohjeita vierailijatunnuksen käyttäjille."
+msgstr "可在此处创建更多有关访客用户的与贡献相关的信息。"
 
 #: views/admin/index/index.php:34
 msgid "2. Modify the contribution form:"
-msgstr "2. Muokkaa tallennuslomaketta:"
+msgstr "2. 修改贡献表单："
 
 #: views/admin/index/index.php:37
 #, php-format
 msgid ""
 "Choose item types you wish visitors to share, and customize the fields they "
 "should use, in %s"
-msgstr "Valitse osallistujasisältöjen aineistotyypit ja muokkaa käytettäviä metatietokenttiä %s"
+msgstr "在%s，选择你希望访问者共享的条目类型，并定制他们要使用的字段。"
 
 #: views/admin/index/index.php:39
 msgid "user profiles type"
-msgstr "käyttäjäprofiilin tyyppi"
+msgstr "用户资料类型"
 
 #: views/admin/index/index.php:39
 #, php-format
 msgid ""
 "Set up profile information you would like from your contributors by setting "
 "up a %s "
-msgstr "Voit määritellä osallistujilta pyydettävät tiedot ottamalla käyttöön %s"
+msgstr "设置%s后，设置您想从贡献者那里得到的资料信息"
 
 #: views/admin/index/index.php:41
 msgid ""
 "The optional User Profiles plugin lets you set up additional information you"
 " would like to ask from your contributors. To use those features, please "
 "install that, then return here for additional guidance."
-msgstr "Valinnaisen Käyttäjäprofiilit -lisäosan  avulla voit määritellä osallistujilta pyydettävät lisätiedot."
+msgstr "可选用户资料插件是您能设定您想从贡献者那里得到的附加信息。要使用那些功能，请安装插件，然后返回这里得到更多帮助。"
 
 #: views/admin/index/index.php:45
 msgid "submission settings"
-msgstr "osallistuja-aineistojen asetukset"
+msgstr "递交设置"
 
 #: views/admin/index/index.php:45
 #, php-format
 msgid "3. Configure the %s for contributions:"
-msgstr "3. Määrittele %s :"
+msgstr "3. 为贡献设置%s："
 
 #: views/admin/index/index.php:48
 msgid "Set the terms of service for contributing to the site."
-msgstr "Laadi osallistujille käyttöehdot"
+msgstr "为网站贡献设置服务条款。"
 
 #: views/admin/index/index.php:49
 msgid ""
 "Set up an auto-generated email to send to all contributors after they submit"
 " their contribution."
-msgstr "Laadi viesti, joka lähetetään kaikille osallistujasisältöjä tallentaneille"
+msgstr "设置自动生成电邮，在他们提交贡献后发送给所有贡献者。"
 
 #: views/admin/index/index.php:50
 msgid ""
 "Decide whether to use the 'Simple' options. This requires only that "
 "contributors provide an email address."
-msgstr "Voit myös ottaa käyttöön yksinkertaistetun osallistumisen. Tällöin sisältöjä lähettäviltä henkilöiltä pyydetään ainoastaan sähköpostiosoite."
+msgstr "决定是否使用“简单”选项。这只要求贡献者提供一个电邮地址。"
 
 #: views/admin/index/index.php:51
 msgid "Specify a collection for new contributed items."
-msgstr "Määrittele kokoelma johon lähetetyt sisällöt tallennetaan."
+msgstr "为新贡献条目指定一个馆藏。"
 
 #: views/admin/index/index.php:54
 #, php-format
 msgid ""
 "4. Browse contributions and their status, with links to more contributor "
 "information, in %s"
-msgstr "4. Valikon kohdasta %s voit selata käyttäjien lähettämiä aineistoja"
+msgstr "4. 在%s中，浏览贡献及其状态，有更多贡献者信息的链接"
 
 #: views/admin/items/browse.php:13
 #, php-format
 msgid "Contributed Items (%d)"
-msgstr "Osallistuja-aineistot (%d)"
+msgstr "贡献了条目（%d）"
 
 #: views/admin/items/browse.php:27
 msgid "security settings"
-msgstr "turvallisuusasetukset"
+msgstr "安全设置"
 
 #: views/admin/items/browse.php:27
 #, php-format
 msgid ""
 "You have not entered your %s API keys under %s. We recommend adding these "
 "keys, or the contribution form will be vulnerable to spam."
-msgstr "Et ole ottanut käyttöön %s API-avaimia %s. Roskaviestisuodatuksen käyttö on suositeltavaa; muussa tapauksessa tallennuslomake houkuttaa roskapostittajia."
+msgstr "您尚未在%s下输入您的%sAPI密钥。我们建议添加这些密钥，否则贡献表单易受垃圾邮件攻击。"
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:137
 msgid "Set public"
-msgstr "Julkista"
+msgstr "设定为公开"
 
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
-msgstr "Siirrä toimitukseen"
+msgstr "设置为需要审核"
 
 #: views/admin/items/browse.php:52
 msgid "Select"
-msgstr "Valitse"
+msgstr "选择"
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
-msgstr "Julkisuus"
+msgstr "发布状态"
 
 #: views/admin/items/browse.php:78 views/admin/items/browse.php:156
 msgid "Public (click to put in review)"
-msgstr "Julkinen (siirrä toimitukseen klikkaamalla)"
+msgstr "公开（点击加入审核）"
 
 #: views/admin/items/browse.php:86 views/admin/items/browse.php:155
 msgid "Needs review (click to make public)"
-msgstr "Tarvitsee toimitustyötä (julkaise klikkaamalla)"
+msgstr "需要审核（点击发布）"
 
 #: views/admin/items/browse.php:118
 msgid "Info and contributions"
-msgstr "Tietoja ja osallistujat"
+msgstr "信息和贡献"
 
 #: views/admin/items/browse.php:158
 msgid "Rejected"
-msgstr "Hylätty"
+msgstr "被拒绝"
 
 #: views/admin/items/browse.php:159
 msgid "Are you sure you want to remove these contributions?"
-msgstr "Oletko varma, että haluat poistaa nämä aineistot?"
+msgstr "您确认要删除这些贡献吗？"
 
 #: views/admin/items/browse.php:167
 msgid "There is no contribution yet."
-msgstr "Ei osallistuja-aineistoja."
+msgstr "尚未有贡献。"
 
 #: views/admin/items/browse.php:169
 #, php-format
 msgid "The query searched %d contributions and returned no results."
-msgstr "Haettiin yhteensä %d osallistuja-aineistosta, mutta haku ei tuottanut tuloksia."
+msgstr "查询搜索了%d贡献，返回零结果。"
 
 #: views/admin/items/browse.php:170
 msgid "See all contributions."
-msgstr "Selaa osallistuja-aineistoja."
+msgstr "查看所有贡献"
 
 #: views/admin/types/add-existing-element.php:15
 msgid "Prompt:"
-msgstr "Käyttäjälle näytettävä kentän nimi:"
+msgstr "提示："
 
 #: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
 msgid "Multiple rows"
-msgstr "Monirivinen"
+msgstr "多行"
 
 #: views/admin/types/add.php:35 views/admin/types/browse.php:9
 #: views/admin/types/edit.php:30
 msgid "Types"
-msgstr "Tyypit"
+msgstr "类型"
 
 #: views/admin/types/add.php:35
 msgid "Add a new type"
-msgstr "Lisää uusi tyyppi"
+msgstr "添加新类型"
 
 #: views/admin/types/browse.php:11
 msgid "Add a Type"
-msgstr "Lisää tyyppi"
+msgstr "添加类型"
 
 #: views/admin/types/browse.php:27
 msgid "File Upload"
-msgstr "Tiedoston tallennus"
+msgstr "上传文件"
 
 #: views/admin/types/form.php:13
 msgid "The Item Type, from your site's list of types, you would like to use."
-msgstr "Aineistotyyppi jota käytetään osallistuja-aineistojen aineistotyyppinä."
+msgstr "您想从网站的类型列表中使用的条目类型。"
 
 #: views/admin/types/form.php:28
 msgid ""
 "The label you would like to use for this contribution type. If blank, the "
 "Item Type name will be used."
-msgstr "Aineistotyypin käyttäjälle näytettävä nimi. Oletusarvoisesti käytetään aineistotyypin nimeä."
+msgstr "您想用于此贡献类型的标签。如果空白，将使用条目类型名称。"
 
 #: views/admin/types/form.php:37
 msgid "Allow File Upload Via Form"
-msgstr "Salli tiedostojen tallennus lomakkeella"
+msgstr "允许通过表单上传文件"
 
 #: views/admin/types/form.php:40
 msgid ""
 "Enable or disable file uploads through the public contribution form. If set "
 "to &#8220;Required,&#8220; users must add a file to their contribution when "
 "selecting this item type."
-msgstr "Salli tai kiellä tiedostojen liittäminen tallennuslomakkeella. Valinnalla &#820;Vaaditaan&#8220; tiedosto on liitettävä aina."
+msgstr "在公开的贡献表单中启用或禁用文件上传功能。如设置为&#8220;必需&#8220;，用户在选择该条目类型时必须给他们的贡献添加一个文件。"
 
 #: views/admin/types/form.php:58
 msgid "Prompt"
-msgstr "Käyttäjälle näytettävä kentän nimi"
+msgstr "提示"
 
 #: views/public/contribution/contribute.php:50
 msgid "What type of item do you want to contribute?"
-msgstr "Millaista sisältöä haluaisit lähettää?"
+msgstr "您想贡献那个类型的条目？"
 
 #: views/public/contribution/contribute.php:68
 msgid "Publish my contribution on the web."
-msgstr "Julkaise lähettämäni sisältö julkisesti verkossa."
+msgstr "在万维网发布我的贡献。"
 
 #: views/public/contribution/contribute.php:73
 msgid "Keep identity private."
-msgstr "Pidä identiteetti yksityisenä."
+msgstr "保持身份私密。"
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
-msgstr "Osallistumisehdot"
+msgstr "条款及条件"
 
 #: views/public/contribution/contribute.php:75
 #, php-format
 msgid "In order to contribute, you must read and agree to the %s"
-msgstr "Aineistoja lähettääksesi sinun täytyy hyväksyä %s"
+msgstr "在贡献之前，您必须阅读并同意%s"
 
 #: views/public/contribution/contribute.php:79
 msgid "I agree to the Terms and Conditions."
-msgstr "Hyväksyn osallistuja-aineistojen ehdot"
+msgstr "我同意以上条款及条件。"
 
 #: views/public/contribution/contribute.php:81
 msgid "Contribute"
-msgstr "Osallistu"
+msgstr "贡献"
 
 #: views/public/contribution/my-contributions.php:18
 msgid "Added"
-msgstr "Lisätty"
+msgstr "添加于"
 
 #: views/public/contribution/my-contributions.php:44
 #, php-format
 msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
-msgstr "Voit %slisätä aineistoa%s tai %sselata arkistoa%s."
+msgstr "欢迎%s贡献%s或%s浏览文档%s。"
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
-msgstr "Osallistuja-aineistojen ehdot"
+msgstr "贡献的服务条款"
 
 #: views/public/contribution/thankyou.php:3
 msgid "Thank you for contributing!"
-msgstr "Kiitokset osallistumisesta!"
+msgstr "感谢您的贡献！"
 
 #: views/public/contribution/thankyou.php:4
 msgid "make another contribution"
-msgstr "lähettää lisää"
+msgstr "再做一次贡献"
 
 #: views/public/contribution/thankyou.php:4
 msgid "browse the archive"
-msgstr "selata"
+msgstr "浏览文档"
 
 #: views/public/contribution/thankyou.php:4
 #, php-format
 msgid ""
 "Your contribution will show up in the archive once an administrator approves"
 " it. Meanwhile, feel free to %s or %s ."
-msgstr "Lähettämäsi aineisto tulee näkyville pienellä viiveellä ylläpitäjän hyväksynnän jälkeen. Voit sillä välin %s tai %s aineistoja."
+msgstr "在管理员批准后，您的贡献会在文档中显示。同时，欢迎%s或%s。"
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr "tällä sivulla"
+msgstr "本页"
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -632,49 +631,49 @@ msgid ""
 "If you would like to interact with the site further, you can use an account "
 "that is ready for you. Visit %s, and request a new password for the email "
 "you used"
-msgstr "Jos haluat lähettää lisää aineistoja voit käyttää tunnusta joka on luotu valmiiksi. Vieraile %s ja pyydä salasana tunnuksellesi."
+msgstr "如果您想进一步和网站交互，您可以用已经为您准备好的账号。访问%s，给您使用的电邮地址请求一个新密码。"
 
 #: views/public/contribution/type-form.php:3
 msgid "You must choose a contribution type to continue."
-msgstr ""
+msgstr "您必须选择一个贡献类型以继续下一步。"
 
 #: views/public/contribution/type-form.php:5
 #, php-format
 msgid "Contribute a %s"
-msgstr ""
+msgstr "贡献一个%s"
 
 #: views/public/contribution/type-form.php:14
 msgid "Upload a file"
-msgstr "Lataa tiedosto"
+msgstr "上传文件"
 
 #: views/public/contribution/type-form.php:34
 msgid "Upload a file (Optional)"
-msgstr "Liitä tiedosto (valinnainen)"
+msgstr "上传文件（可选）"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
-msgstr "Sähköposti (vapaaehtoinen)"
+msgstr "电邮地址（可选）"
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"
-msgstr "Sähköpostiosoite (pakollinen)"
+msgstr "电邮地址（必需）"
 
 #: views/public/contribution/type-form.php:67
 #, php-format
 msgid "You are logged in as: %s"
-msgstr "Olet kirjautunut käyttäjänä: %s"
+msgstr "您已登录为：%s"
 
 #: views/public/contribution/type-form.php:82
 #, php-format
 msgid "Your %s profile"
-msgstr "Profiilisi %s"
+msgstr "您的%s资料"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Show"
-msgstr "Näytä"
+msgstr "显示"
 
 #: views/public/contribution/type-form.php:85
 #: views/public/contribution/type-form.php:87
 msgid "Hide"
-msgstr "Piilota"
+msgstr "隐藏"

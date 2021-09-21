@@ -3,13 +3,13 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Daniel Alves <daniel_r_alves@hotmail.com>, 2014,2016
+# Daniel Alves <daniel_r_alves@hotmail.com>, 2014,2016,2019
 msgid ""
 msgstr ""
-"Project-Id-Version: Omeka\n"
+"Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-23 19:42+0000\n"
+"PO-Revision-Date: 2019-03-29 20:09+0000\n"
 "Last-Translator: Daniel Alves <daniel_r_alves@hotmail.com>\n"
 "Language-Team: Portuguese (Portugal) (http://www.transifex.com/omeka/omeka/language/pt_PT/)\n"
 "MIME-Version: 1.0\n"
@@ -33,57 +33,58 @@ msgstr "Não permitido"
 msgid "Deleted User"
 msgstr "Utilizador eliminado"
 
-#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr "Itens contribuídos"
 
-#: ContributionPlugin.php:427 ContributionPlugin.php:509
+#: ContributionPlugin.php:432 ContributionPlugin.php:514
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr "Contribuição"
 
-#: ContributionPlugin.php:448
+#: ContributionPlugin.php:453
 msgid "Contribute an Item"
 msgstr "Contribua com um item"
 
-#: ContributionPlugin.php:491
+#: ContributionPlugin.php:496
 msgid "Contribution Status"
 msgstr "Estado da Contribuição"
 
-#: ContributionPlugin.php:497
+#: ContributionPlugin.php:502
 msgid "Only Contributed Items"
 msgstr "Apenas Itens Contribuídos"
 
-#: ContributionPlugin.php:498
+#: ContributionPlugin.php:503
 msgid "Only Non-Contributed Items"
 msgstr "Apenas Itens Não Contribuídos"
 
-#: ContributionPlugin.php:659
+#: ContributionPlugin.php:664
 msgid "Anonymous, "
 msgstr "Anónimo,"
 
-#: ContributionPlugin.php:685
+#: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
 msgstr "As Minhas Contribuições"
 
-#: ContributionPlugin.php:696
+#: ContributionPlugin.php:701
 msgid "See all my contributions"
 msgstr "Ver todas as minhas contribuições"
 
-#: ContributionPlugin.php:699
-msgid "No contribution yet."
-msgstr "Sem contribuições ainda."
+#: ContributionPlugin.php:704
+#: views/public/contribution/my-contributions.php:41
+msgid "No contribution yet, or removed contributions."
+msgstr "Sem contribuições ainda, ou contribuições removidas."
 
-#: ContributionPlugin.php:713
+#: ContributionPlugin.php:718
 msgid "Contributed by:"
 msgstr "Contribuído por:"
 
-#: ContributionPlugin.php:718
+#: ContributionPlugin.php:723
 msgid "This item can be made public."
 msgstr "Este item pode ser publicado."
 
-#: ContributionPlugin.php:720
+#: ContributionPlugin.php:725
 msgid "This item cannot be made public."
 msgstr "Estes itens não podem ser publicados."
 
@@ -91,46 +92,46 @@ msgstr "Estes itens não podem ser publicados."
 msgid "Your contributions have been updated."
 msgstr "A sua contribuição foi actualizada."
 
-#: controllers/ContributionController.php:235
+#: controllers/ContributionController.php:236
 msgid "You must select a type for your contribution."
 msgstr "Tem de escolher uma tipologia para a sua contribuição."
 
-#: controllers/ContributionController.php:391
+#: controllers/ContributionController.php:395
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr "O CAPTCHA que submeteu é inválido, tente de novo por favor."
 
-#: controllers/ContributionController.php:396
+#: controllers/ContributionController.php:400
 msgid "You must agree to the Terms and Conditions."
 msgstr "Tem de concordar com os Termos e Condições."
 
-#: controllers/ContributionController.php:425
+#: controllers/ContributionController.php:429
 msgid "Contribution URL (pending review by project staff): "
 msgstr "URL contribuído (a aguardar revisão pelos colaboradores do projecto):"
 
-#: controllers/ContributionController.php:426
+#: controllers/ContributionController.php:430
 #, php-format
 msgid "Your username is %s"
 msgstr "O seu nome de utilizador é %s"
 
-#: controllers/ContributionController.php:429
+#: controllers/ContributionController.php:433
 msgid "To log in and change your username, request a password here: "
 msgstr "Para entrar e alterar o seu nome de utilizador, peça uma password aqui:"
 
-#: controllers/ContributionController.php:433
+#: controllers/ContributionController.php:437
 #, php-format
 msgid "Your %s Contribution"
 msgstr "A sua %s contribuição"
 
-#: controllers/ContributionController.php:452
+#: controllers/ContributionController.php:456
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr "Foi feita uma nova contribuição para %s."
 
-#: controllers/ContributionController.php:457
+#: controllers/ContributionController.php:461
 msgid "Contribution URL for review: "
 msgstr "URL contribuído para revisão:"
 
-#: controllers/ContributionController.php:463
+#: controllers/ContributionController.php:467
 #, php-format
 msgid "New %s Contribution"
 msgstr "Nova contribuição de %s"
@@ -264,7 +265,7 @@ msgstr "Utilizador desconhecido"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
-#: views/public/contribution/my-contributions.php:9
+#: views/public/contribution/my-contributions.php:16
 msgid "Anonymous"
 msgstr "Anónimo"
 
@@ -468,6 +469,10 @@ msgstr "Definir como público"
 msgid "Set Needs review"
 msgstr "Definir como A Rever"
 
+#: views/admin/items/browse.php:52
+msgid "Select"
+msgstr "Seleccionar"
+
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
 msgstr "Estado da publicação"
@@ -584,9 +589,14 @@ msgstr "Eu concordo com os Termos e Condições."
 msgid "Contribute"
 msgstr "Contribuir"
 
-#: views/public/contribution/my-contributions.php:11
+#: views/public/contribution/my-contributions.php:18
 msgid "Added"
 msgstr "Adicionado"
+
+#: views/public/contribution/my-contributions.php:44
+#, php-format
+msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
+msgstr "Esteja à vontade para %scontribuir%s ou %sexplorar o arquivo%s."
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"

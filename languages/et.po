@@ -3,15 +3,15 @@
 # This file is distributed under the same license as the Omeka package.
 # 
 # Translators:
-# Moonika Teemus <m8nika@gmail.com>, 2017
-# Rivo Zängov <eraser@eraser.ee>, 2015-2017
+# Moon Ika, 2017
+# Rivo Zängov <eraser@eraser.ee>, 2015-2018,2020
 msgid ""
 msgstr ""
-"Project-Id-Version: Omeka\n"
+"Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-20 01:42+0000\n"
-"Last-Translator: Moonika Teemus <m8nika@gmail.com>\n"
+"PO-Revision-Date: 2020-05-03 20:48+0000\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>\n"
 "Language-Team: Estonian (http://www.transifex.com/omeka/omeka/language/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,57 +34,58 @@ msgstr "Keelatud"
 msgid "Deleted User"
 msgstr "Kustuta kasutaja"
 
-#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr "Annetatud ühikud"
 
-#: ContributionPlugin.php:427 ContributionPlugin.php:509
+#: ContributionPlugin.php:432 ContributionPlugin.php:514
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr "Annetus"
 
-#: ContributionPlugin.php:448
+#: ContributionPlugin.php:453
 msgid "Contribute an Item"
 msgstr "Anneta ühik"
 
-#: ContributionPlugin.php:491
+#: ContributionPlugin.php:496
 msgid "Contribution Status"
 msgstr "Annetuse olek"
 
-#: ContributionPlugin.php:497
+#: ContributionPlugin.php:502
 msgid "Only Contributed Items"
 msgstr "Ainult annetatud ühikud"
 
-#: ContributionPlugin.php:498
+#: ContributionPlugin.php:503
 msgid "Only Non-Contributed Items"
 msgstr "Ainult mitte-annetatud ühikud"
 
-#: ContributionPlugin.php:659
+#: ContributionPlugin.php:664
 msgid "Anonymous, "
 msgstr "Anonüümne,"
 
-#: ContributionPlugin.php:685
+#: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
 msgstr "Minu annetused"
 
-#: ContributionPlugin.php:696
+#: ContributionPlugin.php:701
 msgid "See all my contributions"
 msgstr "Vaata kõiki minu annetusi"
 
-#: ContributionPlugin.php:699
-msgid "No contribution yet."
-msgstr "Ühtegi annetust pole veel."
+#: ContributionPlugin.php:704
+#: views/public/contribution/my-contributions.php:41
+msgid "No contribution yet, or removed contributions."
+msgstr "Ühtegi annetust või eemaldatud annetust pole."
 
-#: ContributionPlugin.php:713
+#: ContributionPlugin.php:718
 msgid "Contributed by:"
 msgstr "Annetaja:"
 
-#: ContributionPlugin.php:718
+#: ContributionPlugin.php:723
 msgid "This item can be made public."
 msgstr "Selle ühiku võib teha avalikuks."
 
-#: ContributionPlugin.php:720
+#: ContributionPlugin.php:725
 msgid "This item cannot be made public."
 msgstr "Seda ühikut ei või teha avalikuks."
 
@@ -92,46 +93,46 @@ msgstr "Seda ühikut ei või teha avalikuks."
 msgid "Your contributions have been updated."
 msgstr "Sinu annetusi on uuendatud."
 
-#: controllers/ContributionController.php:235
+#: controllers/ContributionController.php:236
 msgid "You must select a type for your contribution."
 msgstr "Sa pead valima annetuse tüübi."
 
-#: controllers/ContributionController.php:391
+#: controllers/ContributionController.php:395
 msgid "Your CAPTCHA submission was invalid, please try again."
-msgstr ""
+msgstr "Sisestatud CAPTCHA kood oli vigane. Palun proovi uuesti."
 
-#: controllers/ContributionController.php:396
+#: controllers/ContributionController.php:400
 msgid "You must agree to the Terms and Conditions."
 msgstr "Sa pead nõustuma kasutustingimustega."
 
-#: controllers/ContributionController.php:425
+#: controllers/ContributionController.php:429
 msgid "Contribution URL (pending review by project staff): "
 msgstr "Annetuse URL (ootab projektimeeskonna heakskiitu):"
 
-#: controllers/ContributionController.php:426
+#: controllers/ContributionController.php:430
 #, php-format
 msgid "Your username is %s"
 msgstr "Sinu kasutajanimi on %s"
 
-#: controllers/ContributionController.php:429
+#: controllers/ContributionController.php:433
 msgid "To log in and change your username, request a password here: "
 msgstr "Sisselogimiseks ja kasutajanime vahetamiseks taotle salasõna siit:"
 
-#: controllers/ContributionController.php:433
+#: controllers/ContributionController.php:437
 #, php-format
 msgid "Your %s Contribution"
 msgstr "Sinu %s annetus"
 
-#: controllers/ContributionController.php:452
+#: controllers/ContributionController.php:456
 #, php-format
 msgid "A new contribution to %s has been made."
-msgstr ""
+msgstr "Lisati uus annetus %s."
 
-#: controllers/ContributionController.php:457
+#: controllers/ContributionController.php:461
 msgid "Contribution URL for review: "
 msgstr "Annetuse URL ülevaatamiseks:"
 
-#: controllers/ContributionController.php:463
+#: controllers/ContributionController.php:467
 #, php-format
 msgid "New %s Contribution"
 msgstr "Uus %s annetus"
@@ -142,7 +143,7 @@ msgstr "Seaded on salvestatud."
 
 #: controllers/SettingsController.php:80
 msgid "Contribution Slug"
-msgstr ""
+msgstr "Annetuse URL"
 
 #: controllers/SettingsController.php:81
 msgid ""
@@ -183,7 +184,7 @@ msgstr "Seaduslik tekst, millega annetajad peavad nõustuma."
 
 #: controllers/SettingsController.php:105
 msgid "Allow Non-registered Contributions"
-msgstr ""
+msgstr "Luba registreerumata kasutajatel annetusi teha"
 
 #: controllers/SettingsController.php:106
 msgid ""
@@ -197,7 +198,7 @@ msgstr ""
 
 #: controllers/SettingsController.php:113
 msgid "Allow Anonymous Contributions"
-msgstr ""
+msgstr "Luba anonüümseid annetusi teha"
 
 #: controllers/SettingsController.php:114
 msgid ""
@@ -265,7 +266,7 @@ msgstr "Tundamatu kasutaja"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
-#: views/public/contribution/my-contributions.php:9
+#: views/public/contribution/my-contributions.php:16
 msgid "Anonymous"
 msgstr "Anonüümne"
 
@@ -459,7 +460,7 @@ msgstr "turvalisuse seaded"
 msgid ""
 "You have not entered your %s API keys under %s. We recommend adding these "
 "keys, or the contribution form will be vulnerable to spam."
-msgstr ""
+msgstr "Sa pole sisestanud oma %s API võtit %s. Me soovitame need võtmed lisada või annetuste vorm võib olla haavatav rämpsposti poolt."
 
 #: views/admin/items/browse.php:36 views/admin/items/browse.php:137
 msgid "Set public"
@@ -468,6 +469,10 @@ msgstr "Mära avalikuks"
 #: views/admin/items/browse.php:39 views/admin/items/browse.php:140
 msgid "Set Needs review"
 msgstr "Vajab ülevaadet"
+
+#: views/admin/items/browse.php:52
+msgid "Select"
+msgstr "Vali"
 
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
@@ -566,7 +571,7 @@ msgstr "Avalda minu annetus veebis"
 
 #: views/public/contribution/contribute.php:73
 msgid "Keep identity private."
-msgstr ""
+msgstr "Hoia minu identiteet privaatsena."
 
 #: views/public/contribution/contribute.php:75
 msgid "Terms and Conditions"
@@ -585,9 +590,14 @@ msgstr "Ma nõustun kasutustingimustega."
 msgid "Contribute"
 msgstr "Anneta"
 
-#: views/public/contribution/my-contributions.php:11
+#: views/public/contribution/my-contributions.php:18
 msgid "Added"
 msgstr "Lisatud"
+
+#: views/public/contribution/my-contributions.php:44
+#, php-format
+msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
+msgstr ""
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
@@ -614,7 +624,7 @@ msgstr ""
 
 #: views/public/contribution/thankyou.php:7
 msgid "this page"
-msgstr ""
+msgstr "see lehekülg"
 
 #: views/public/contribution/thankyou.php:7
 #, php-format
@@ -643,7 +653,7 @@ msgstr "Laadi fail üles (valikuline)"
 
 #: views/public/contribution/type-form.php:48
 msgid "Email (Optional)"
-msgstr ""
+msgstr "E-post (valikuline)"
 
 #: views/public/contribution/type-form.php:50
 msgid "Email (Required)"

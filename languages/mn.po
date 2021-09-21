@@ -7,11 +7,11 @@
 # Khaidav T. <khaidaw@yahoo.com>, 2016
 msgid ""
 msgstr ""
-"Project-Id-Version: Omeka\n"
+"Project-Id-Version: Omeka Classic\n"
 "Report-Msgid-Bugs-To: http://github.com/omeka/plugin-Contribution/issues\n"
 "POT-Creation-Date: 2012-01-09 21:49-0500\n"
-"PO-Revision-Date: 2017-09-23 21:47+0000\n"
-"Last-Translator: Khaidav T. <khaidaw@yahoo.com>\n"
+"PO-Revision-Date: 2018-02-14 19:58+0000\n"
+"Last-Translator: John Flatness <john@zerocrates.org>\n"
 "Language-Team: Mongolian (http://www.transifex.com/omeka/omeka/language/mn/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -34,57 +34,58 @@ msgstr "Татгалзах"
 msgid "Deleted User"
 msgstr "Хэрэглэгчийг устгах"
 
-#: ContributionPlugin.php:424 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr "Дэмжлэг авсан мэдээллүүд"
 
-#: ContributionPlugin.php:427 ContributionPlugin.php:509
+#: ContributionPlugin.php:432 ContributionPlugin.php:514
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr "Хувь нэмэр оруулах /Туслагч/"
 
-#: ContributionPlugin.php:448
+#: ContributionPlugin.php:453
 msgid "Contribute an Item"
 msgstr "Зөвшөөрөгдсөн мэдээлэл"
 
-#: ContributionPlugin.php:491
+#: ContributionPlugin.php:496
 msgid "Contribution Status"
 msgstr "Хувь нэмэр оруулах /Туслагч/ статус"
 
-#: ContributionPlugin.php:497
+#: ContributionPlugin.php:502
 msgid "Only Contributed Items"
 msgstr "Зөвхөн дэмжлэг авсан мэдээллүүд /Contributed Items/"
 
-#: ContributionPlugin.php:498
+#: ContributionPlugin.php:503
 msgid "Only Non-Contributed Items"
 msgstr "Зөвхөн дэмжлэг аваагүй мэдээллүүд /Non-Contributed Items/"
 
-#: ContributionPlugin.php:659
+#: ContributionPlugin.php:664
 msgid "Anonymous, "
 msgstr "Тодорхой нэргүй,"
 
-#: ContributionPlugin.php:685
+#: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
 msgstr "Миний зөвшөөрөлүүд"
 
-#: ContributionPlugin.php:696
+#: ContributionPlugin.php:701
 msgid "See all my contributions"
 msgstr "Миний бүх зөвшөөрлийг үзэх"
 
-#: ContributionPlugin.php:699
-msgid "No contribution yet."
-msgstr "Одоогоор ямарч зөвшөөрөл алга"
+#: ContributionPlugin.php:704
+#: views/public/contribution/my-contributions.php:41
+msgid "No contribution yet, or removed contributions."
+msgstr ""
 
-#: ContributionPlugin.php:713
+#: ContributionPlugin.php:718
 msgid "Contributed by:"
 msgstr "Туслагч:"
 
-#: ContributionPlugin.php:718
+#: ContributionPlugin.php:723
 msgid "This item can be made public."
 msgstr "Энэ мэдээлэл нийтэд харагдах боломжтой."
 
-#: ContributionPlugin.php:720
+#: ContributionPlugin.php:725
 msgid "This item cannot be made public."
 msgstr "Энэ мэдээлэл нийтэд харагдах боломжгүй."
 
@@ -92,46 +93,46 @@ msgstr "Энэ мэдээлэл нийтэд харагдах боломжгүй
 msgid "Your contributions have been updated."
 msgstr "Таны хувь нэмэр /contributions/ шинэчлэгдсэн байна."
 
-#: controllers/ContributionController.php:235
+#: controllers/ContributionController.php:236
 msgid "You must select a type for your contribution."
 msgstr "Та өөрийн зөвшөөрсөн төрлийг сонгоно уу"
 
-#: controllers/ContributionController.php:391
+#: controllers/ContributionController.php:395
 msgid "Your CAPTCHA submission was invalid, please try again."
 msgstr "Таны CAPTCHA коод хүчингүй байн, дахин оролдоно уу."
 
-#: controllers/ContributionController.php:396
+#: controllers/ContributionController.php:400
 msgid "You must agree to the Terms and Conditions."
 msgstr "Та нөхцөлийг хүлээн зөвшөөрсөн байх шаардлагатай."
 
-#: controllers/ContributionController.php:425
+#: controllers/ContributionController.php:429
 msgid "Contribution URL (pending review by project staff): "
 msgstr "Зөвшөөрөгдсөн URL (ажилтнууд хяналт хийгдэх илгээгдсэн)"
 
-#: controllers/ContributionController.php:426
+#: controllers/ContributionController.php:430
 #, php-format
 msgid "Your username is %s"
 msgstr "Таны нэвтрэх нэр %s"
 
-#: controllers/ContributionController.php:429
+#: controllers/ContributionController.php:433
 msgid "To log in and change your username, request a password here: "
 msgstr "Та хэрэглэгчийн нэр өөрчлөх, нууц үг авах хүсэлт"
 
-#: controllers/ContributionController.php:433
+#: controllers/ContributionController.php:437
 #, php-format
 msgid "Your %s Contribution"
 msgstr "Таны %s зөвшөөрөл"
 
-#: controllers/ContributionController.php:452
+#: controllers/ContributionController.php:456
 #, php-format
 msgid "A new contribution to %s has been made."
 msgstr "Шинэ зөвшөөрөл %s оруулсан байна"
 
-#: controllers/ContributionController.php:457
+#: controllers/ContributionController.php:461
 msgid "Contribution URL for review: "
 msgstr "Зөвшөөрөгдсөн URL хянах"
 
-#: controllers/ContributionController.php:463
+#: controllers/ContributionController.php:467
 #, php-format
 msgid "New %s Contribution"
 msgstr "Шинэ %s зөвшөөрөл"
@@ -265,7 +266,7 @@ msgstr "Үл мэдэгдэх хэрэглэгч"
 
 #: models/ContributionContributedItem.php:56
 #: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
-#: views/public/contribution/my-contributions.php:9
+#: views/public/contribution/my-contributions.php:16
 msgid "Anonymous"
 msgstr "Тодорхой нэргүй"
 
@@ -469,6 +470,10 @@ msgstr "Нийтийнх болгох"
 msgid "Set Needs review"
 msgstr "Тойм хэрэгцээг тохируулах"
 
+#: views/admin/items/browse.php:52
+msgid "Select"
+msgstr ""
+
 #: views/admin/items/browse.php:57 views/admin/items/browse.php:59
 msgid "Publication Status"
 msgstr "Хэвлэгдсэн байдал"
@@ -585,9 +590,14 @@ msgstr "Би нөхцлийг хүлээн зөвшөөрч байна."
 msgid "Contribute"
 msgstr "Дэмжин ажиллах /Contribute/"
 
-#: views/public/contribution/my-contributions.php:11
+#: views/public/contribution/my-contributions.php:18
 msgid "Added"
 msgstr "Нэмэгдсэн"
+
+#: views/public/contribution/my-contributions.php:44
+#, php-format
+msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
+msgstr ""
 
 #: views/public/contribution/terms.php:2
 msgid "Contribution Terms of Service"
