@@ -34,9 +34,9 @@ echo $this->partial('contribution-navigation.php');
         <dt><?php echo __("2. Modify the contribution form:"); ?></dt>
         <dd>
             <ul>
-                <li><?php echo __("Choose item types you wish visitors to share, and customize the fields they should use, in %s", "<a href='" . url('contribution/types') . "'>" . __("Contribution Types") . ".</a>"); ?></li>
+                <li><?php echo __("Within %s, choose item types you wish visitors to share, and customize the fields they should use.", "<a href='" . url('contribution/types') . "'>" . __("Contribution Types") . "</a>"); ?></li>
                 <?php if(plugin_is_active('UserProfiles')):?>
-                <li><?php echo __("Set up profile information you would like from your contributors by setting up a %s ", "<a href='" . url('user-profiles') . "'>" . __('user profiles type') . "</a>"); ?> </li>
+                <li><?php echo __("Set up a %s to set up profile information you would like from your contributors.", "<a href='" . url('user-profiles') . "'>" . __('user profile type') . "</a>"); ?> </li>
                 <?php else:?>
                 <li><?php echo __("The optional User Profiles plugin lets you set up additional information you would like to ask from your contributors. To use those features, please install that, then return here for additional guidance.");?></li>
                 <?php endif; ?>
@@ -51,7 +51,7 @@ echo $this->partial('contribution-navigation.php');
                 <li><?php echo __("Specify a collection for new contributed items."); ?></li>
             </ul>
         </dd>
-        <dt><?php echo __("4. Browse contributions and their status, with links to more contributor information, in %s", "<a href='" . url('contribution/items'). "'>" . __('Contributions') . "</a>"); ?></dt>
+        <dt><?php echo __("4. Within %s, browse contributions and their status, with links to more contributor information.", "<a href='" . url('contribution/items'). "'>" . __('Contributions') . "</a>"); ?></dt>
     </dl>
     </div>
 </div>

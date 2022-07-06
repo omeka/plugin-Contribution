@@ -32,12 +32,12 @@ msgstr ""
 msgid "Deleted User"
 msgstr ""
 
-#: ContributionPlugin.php:429 views/admin/contributors/browse.php:31
+#: ContributionPlugin.php:429 views/admin/contributors/browse.php:32
 #: views/admin/types/browse.php:26
 msgid "Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:432 ContributionPlugin.php:514
+#: ContributionPlugin.php:432 ContributionPlugin.php:515
 #: helpers/ThemeHelpers.php:21
 msgid "Contribution"
 msgstr ""
@@ -58,31 +58,31 @@ msgstr ""
 msgid "Only Non-Contributed Items"
 msgstr ""
 
-#: ContributionPlugin.php:664
+#: ContributionPlugin.php:666
 msgid "Anonymous, "
 msgstr ""
 
-#: ContributionPlugin.php:690 views/public/contribution/my-contributions.php:2
+#: ContributionPlugin.php:692 views/public/contribution/my-contributions.php:2
 msgid "My Contributions"
 msgstr ""
 
-#: ContributionPlugin.php:701
+#: ContributionPlugin.php:703
 msgid "See all my contributions"
 msgstr ""
 
-#: ContributionPlugin.php:704 views/public/contribution/my-contributions.php:41
+#: ContributionPlugin.php:706 views/public/contribution/my-contributions.php:43
 msgid "No contribution yet, or removed contributions."
 msgstr ""
 
-#: ContributionPlugin.php:718
+#: ContributionPlugin.php:720
 msgid "Contributed by:"
 msgstr ""
 
-#: ContributionPlugin.php:723
+#: ContributionPlugin.php:725
 msgid "This item can be made public."
 msgstr ""
 
-#: ContributionPlugin.php:725
+#: ContributionPlugin.php:727
 msgid "This item cannot be made public."
 msgstr ""
 
@@ -262,8 +262,8 @@ msgid "Unknown User"
 msgstr ""
 
 #: models/ContributionContributedItem.php:56
-#: views/admin/contributors/show.php:48 views/admin/items/browse.php:115
-#: views/public/contribution/my-contributions.php:16
+#: views/admin/contributors/show.php:48 views/admin/items/browse.php:113
+#: views/public/contribution/my-contributions.php:17
 msgid "Anonymous"
 msgstr ""
 
@@ -277,15 +277,18 @@ msgid "Child must be an instance of \"%s\""
 msgstr ""
 
 #: views/admin/common/contribution-quick-filters.php:2
-#: views/admin/common/contribution-quick-filters.php:4
 msgid "Filter by status"
 msgstr ""
 
-#: views/admin/common/contribution-quick-filters.php:8
-#: views/admin/contributors/show.php:40 views/admin/items/browse.php:88
+#: views/admin/common/contribution-quick-filters.php:5
+#: views/admin/contributors/show.php:40 views/admin/items/browse.php:83
 msgid "Needs review"
 msgstr ""
 
+#. //www.gnu.org/licenses/gpl-3.0.txt
+#. * @copyright Center for History and New Media, 2010
+#. * @package Contribution
+#.
 #: views/admin/contribution-navigation.php:6 views/admin/index/index.php:9
 #: views/admin/index/index.php:19
 msgid "Getting Started"
@@ -295,7 +298,7 @@ msgstr ""
 msgid "Contribution Types"
 msgstr ""
 
-#: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:13
+#: views/admin/contribution-navigation.php:8 views/admin/settings/edit.php:12
 msgid "Submission Settings"
 msgstr ""
 
@@ -303,7 +306,7 @@ msgstr ""
 msgid "Contributions"
 msgstr ""
 
-#: views/admin/contributors/browse.php:28
+#: views/admin/contributors/browse.php:29
 msgid "ID"
 msgstr ""
 
@@ -316,7 +319,7 @@ msgstr ""
 msgid "Profile: "
 msgstr ""
 
-#: views/admin/contributors/show.php:42 views/admin/items/browse.php:93
+#: views/admin/contributors/show.php:42 views/admin/items/browse.php:88
 msgid "Private contribution"
 msgstr ""
 
@@ -385,19 +388,19 @@ msgstr ""
 #: views/admin/index/index.php:37
 #, php-format
 msgid ""
-"Choose item types you wish visitors to share, and customize the fields they "
-"should use, in %s"
+"Within %s, choose item types you wish visitors to share, and customize the "
+"fields they should use."
 msgstr ""
 
 #: views/admin/index/index.php:39
-msgid "user profiles type"
+msgid "user profile type"
 msgstr ""
 
 #: views/admin/index/index.php:39
 #, php-format
 msgid ""
-"Set up profile information you would like from your contributors by setting "
-"up a %s "
+"Set up a %s to set up profile information you would like from your "
+"contributors."
 msgstr ""
 
 #: views/admin/index/index.php:41
@@ -439,80 +442,80 @@ msgstr ""
 #: views/admin/index/index.php:54
 #, php-format
 msgid ""
-"4. Browse contributions and their status, with links to more contributor "
-"information, in %s"
+"4. Within %s, browse contributions and their status, with links to more "
+"contributor information."
 msgstr ""
 
-#: views/admin/items/browse.php:13
+#: views/admin/items/browse.php:12
 #, php-format
 msgid "Contributed Items (%d)"
 msgstr ""
 
-#: views/admin/items/browse.php:27
-msgid "security settings"
+#: views/admin/items/browse.php:26
+msgid "Security Settings"
 msgstr ""
 
-#: views/admin/items/browse.php:27
+#: views/admin/items/browse.php:26
 #, php-format
 msgid ""
-"You have not entered your %s API keys under %s. We recommend adding these "
-"keys, or the contribution form will be vulnerable to spam."
+"You have not entered your %s API keys. We recommend adding these keys using "
+"the form in %s, or the contribution form will be vulnerable to spam."
 msgstr ""
 
-#: views/admin/items/browse.php:36 views/admin/items/browse.php:137
+#: views/admin/items/browse.php:37 views/admin/items/browse.php:136
 msgid "Set public"
 msgstr ""
 
-#: views/admin/items/browse.php:39 views/admin/items/browse.php:140
+#: views/admin/items/browse.php:40 views/admin/items/browse.php:139
 msgid "Set Needs review"
 msgstr ""
 
-#: views/admin/items/browse.php:52
+#: views/admin/items/browse.php:51
 msgid "Select"
 msgstr ""
 
-#: views/admin/items/browse.php:57 views/admin/items/browse.php:59
+#: views/admin/items/browse.php:55
 msgid "Publication Status"
 msgstr ""
 
-#: views/admin/items/browse.php:78 views/admin/items/browse.php:156
+#: views/admin/items/browse.php:73 views/admin/items/browse.php:153
 msgid "Public (click to put in review)"
 msgstr ""
 
-#: views/admin/items/browse.php:86 views/admin/items/browse.php:155
+#: views/admin/items/browse.php:81 views/admin/items/browse.php:152
 msgid "Needs review (click to make public)"
 msgstr ""
 
-#: views/admin/items/browse.php:118
+#: views/admin/items/browse.php:116
 msgid "Info and contributions"
 msgstr ""
 
-#: views/admin/items/browse.php:158
+#: views/admin/items/browse.php:155
 msgid "Rejected"
 msgstr ""
 
-#: views/admin/items/browse.php:159
+#: views/admin/items/browse.php:156
 msgid "Are you sure you want to remove these contributions?"
 msgstr ""
 
-#: views/admin/items/browse.php:167
+#: views/admin/items/browse.php:165
 msgid "There is no contribution yet."
 msgstr ""
 
-#: views/admin/items/browse.php:169
+#: views/admin/items/browse.php:167
 #, php-format
 msgid "The query searched %d contributions and returned no results."
 msgstr ""
 
-#: views/admin/items/browse.php:170
+#: views/admin/items/browse.php:168
 msgid "See all contributions."
 msgstr ""
 
-#: views/admin/types/add-existing-element.php:15
-msgid "Prompt:"
+#: views/admin/types/add-existing-element.php:19 views/admin/types/form.php:59
+msgid "Prompt"
 msgstr ""
 
-#: views/admin/types/add-existing-element.php:18 views/admin/types/form.php:60
+#: views/admin/types/add-existing-element.php:21 views/admin/types/form.php:61
 msgid "Multiple rows"
 msgstr ""
 
@@ -554,10 +557,6 @@ msgid ""
 "selecting this item type."
 msgstr ""
 
-#: views/admin/types/form.php:58
-msgid "Prompt"
-msgstr ""
-
 #: views/public/contribution/contribute.php:50
 msgid "What type of item do you want to contribute?"
 msgstr ""
@@ -576,7 +575,7 @@ msgstr ""
 
 #: views/public/contribution/contribute.php:75
 #, php-format
-msgid "In order to contribute, you must read and agree to the %s"
+msgid "You must read and agree to the %s in order to contribute."
 msgstr ""
 
 #: views/public/contribution/contribute.php:79
@@ -587,13 +586,15 @@ msgstr ""
 msgid "Contribute"
 msgstr ""
 
-#: views/public/contribution/my-contributions.php:18
+#: views/public/contribution/my-contributions.php:19
 msgid "Added"
 msgstr ""
 
-#: views/public/contribution/my-contributions.php:44
+#: views/public/contribution/my-contributions.php:46
 #, php-format
-msgid "Feel free to %scontribute%s or %sbrowse the archive%s."
+msgid ""
+"Feel free to %sbrowse the archive%s to view all contributions, or "
+"%scontribute%s your own."
 msgstr ""
 
 #: views/public/contribution/terms.php:2

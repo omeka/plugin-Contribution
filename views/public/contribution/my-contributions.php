@@ -43,7 +43,7 @@ echo head(array(
     <?php echo __('No contribution yet, or removed contributions.'); ?>
 </p>
 <p>
-    <?php echo __('Feel free to %scontribute%s or %sbrowse the archive%s.',
+    <?php echo __('Feel free to %sbrowse the archive%s to view all contributions, or %scontribute%s your own.',
         '<a href="' . contribution_contribute_url() . '">', '</a>',
         '<a href="' . url('items/browse') . '">', '</a>'); ?>
 </p>
