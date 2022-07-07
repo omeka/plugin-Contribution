@@ -46,7 +46,7 @@
     
 
     
-    <div id="element-list" class="seven columns alpha">
+    <div id="element-list">
         <ul id="contribution-type-elements" class="sortable">
         <?php
         foreach ($contributionTypeElements as $contributionElement):
@@ -66,8 +66,8 @@
                 </label>
                 <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
-                <a id="return-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="undo-delete"><?php echo __('Undo'); ?></a>
-                <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element"><?php echo __('Remove'); ?></a>
+                <a id="return-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="undo-delete" role="button"><?php echo __('Undo %s removal', html_escape($contributionElement->Element->name)); ?></a>
+                <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element" role="button"><?php echo __('Remove %s', html_escape($contributionElement->Element->name)); ?></a>
                 <?php endif; ?>
                 </div>
                 

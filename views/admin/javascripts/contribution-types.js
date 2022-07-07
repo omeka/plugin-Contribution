@@ -114,7 +114,7 @@ Omeka.ContributionTypes = {};
                     $(button).prevAll('.element-order').attr('name', '');
                     $(button).parent().addClass('deleted');
                     $(button).parent().next().addClass('deleted');
-                    $(button).prev().toggle();
+                    $(button).prev().toggle().focus();
                     $(button).toggle();
                 } else {
                     var row = $(button).parent().parent();
@@ -136,7 +136,7 @@ Omeka.ContributionTypes = {};
                 elementsToRemove.attr('value', atts);
                 $(button).parent().removeClass('deleted');
                 $(button).parent().next().removeClass('deleted');
-                $(button).next().toggle();
+                $(button).next().toggle().focus();
                 $(button).toggle();
             }
         }
