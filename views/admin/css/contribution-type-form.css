@@ -27,6 +27,16 @@
 .delete-element,
 .undo-delete {
 	position: absolute;
-	top: 20px;
+	top: auto;
 	right: 15px;
+}
+
+.sortable-item.deleted .prompt,
+.sortable-item.deleted .long-text,
+.drawer-contents.deleted {
+	display: none;
+}
+
+#element-list {
+	clear: both;
 }

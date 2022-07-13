@@ -27,5 +27,5 @@
         ?>
         <a href="" class="delete-element"><?php echo __('Remove'); ?></a>
     </div>
-    <div class="drawer-contents"></div>
+    <div class="drawer-contents"><div class="flash success">Element successfully added.</div></div>
 </li>

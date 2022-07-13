@@ -159,6 +159,9 @@ class Contribution_TypesController extends Omeka_Controller_AbstractActionContro
                             $contribEl->delete();    
                         } 
                     }
+                    $viewAction = $this->view->action;
+                    $successMessage =($viewAction == 'edit') ? $this->_getEditSuccessMessage($record) : $this->_getAddSuccessMessage($record);
+                    $this->_helper->flashMessenger($successMessage, 'success');
                     $this->_helper->redirector('browse');
                     return;
                 }
