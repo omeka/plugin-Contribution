@@ -25,7 +25,7 @@ echo head($head); ?>
                 <?php $options = get_table_options('ContributionType' ); ?>
                 <?php $typeId = isset($type) ? $type->id : '' ; ?>
                 <?php echo $this->formSelect( 'contribution_type', $typeId, array('multiple' => false, 'id' => 'contribution-type') , $options); ?>
-                <input type="submit" name="submit-type" id="submit-type" value="Select" />
+                <button type="button" name="submit-type" id="submit-type"><?php echo $this->translate('Select'); ?></button>
             </div>
             <div id="contribution-type-form">
             <?php if(isset($type)) { include('type-form.php'); }?>
