@@ -590,7 +590,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $type = $view->type;
         $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
         if($contributionElement->long_text == 0) {
-            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value']); 
+            $components['input'] = $view->formText($args['input_name_stem'] . '[text]', $args['value'], array('aria-labelledby' => 'label_element_' . $element->id)); 
         }
         $components['form_controls'] = null;
         $components['html_checkbox'] = null;
@@ -609,7 +609,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
         $type = $view->type;
         $contributionElement = $this->_db->getTable('ContributionTypeElement')->findByElementAndType($element, $type);
         $prompt = $contributionElement->prompt;
-        $components['label'] = $prompt;
+        $components['label'] = '<label id="label_element_' . $contributionElement->element_id . '">' . $prompt . '</label>';
         $components['add_input'] = null;
         return $components;
     }    

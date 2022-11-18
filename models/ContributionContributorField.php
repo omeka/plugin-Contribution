@@ -43,7 +43,7 @@ class ContributionContributorField extends Omeka_Record_AbstractRecord implement
 
         return <<<HTML
 <div class="field" id="contributor-field-$id">
-    <label>$prompt</label>
+    <label id="contributor-field-$id-label">$prompt</label>
     <div class="inputs">
         <div class="input">
             $input
@@ -74,7 +74,7 @@ HTML;
         }
         switch ($this->type) {
             case 'Tiny Text':
-                $input = get_view()->formText($inputName, $defaultValue, array('class' => 'textinput'));
+                $input = get_view()->formText($inputName, $defaultValue, array('class' => 'textinput', 'aria-labelledby' => 'contributor-field-' . $this->id . '-label'));
                 break;
             case 'Text':
                 $input = get_view()->formTextarea($inputName, $defaultValue, array('class' => 'textinput', 'rows' => 15));
