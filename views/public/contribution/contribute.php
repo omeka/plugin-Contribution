@@ -34,20 +34,20 @@ echo head($head); ?>
         <fieldset id="contribution-contributor-metadata" <?php if (!isset($type)) { echo 'style="display: none;"'; }?>>
             <legend>Personal Information</legend>
             <div class="field">
-                <label for="contributor-name">Name</label>
+                <label for="contributor-name">Name (Required)</label>
                 <div class="inputs">
                     <div class="input">
                     <?php $name = isset($_POST['contributor-name']) ? $_POST['contributor-name'] : ''; ?>
-                        <?php echo $this->formText('contributor-name', $name, array('class' => 'textinput')); ?>
+                        <?php echo $this->formText('contributor-name', $name, array('class' => 'textinput', 'required' => 'true')); ?>
                     </div>
                 </div>
             </div>
             <div class="field">
-                <label for="contributor-email">Email Address</label>
+                <label for="contributor-email">Email Address (Required)</label>
                 <div class="inputs">
                     <div class="input">
                     <?php $email = isset($_POST['contributor-email']) ? $_POST['contributor-email'] : ''; ?>
-                        <?php echo $this->formText('contributor-email', $email, array('class' => 'textinput')); ?>
+                        <?php echo $this->formText('contributor-email', $email, array('class' => 'textinput', 'required' => 'true')); ?>
                     </div>
                 </div>
             </div>
