@@ -18,7 +18,7 @@ class Table_ContributionContributorField extends Omeka_Db_Table
     public function getSelect()
     {
         $select = parent::getSelect();
-        $select->order('order ASC');
+        $select->order('order ASC')->order('id ASC');
         return $select;
     }
 
