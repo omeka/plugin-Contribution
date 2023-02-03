@@ -451,7 +451,7 @@ class ContributionPlugin extends Omeka_Plugin_AbstractPlugin
     public function hookPublicItemsSearch($args)
     {
         $view = get_view();
-        $html = '<div class="field">';
+        $html = '<div id="search-by-contribution" class="field">';
         $html .= '<div class="two columns alpha">';
         $html .= $view->formLabel('contributed', 'Contribution Status');
         $html .= '</div>';
