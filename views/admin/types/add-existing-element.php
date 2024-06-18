@@ -1,5 +1,5 @@
 <li class="element">
-    <div class="flash success sr-only">Element successfully added.</div>
+    <div class="flash success sr-only" role="alert">Element successfully added.</div>
     <div class="sortable-item">
         <label class="existing-element-dropdown" id="<?php echo $element_id_name; ?>-label"><?php echo __('Element'); ?></label>
         <?php
