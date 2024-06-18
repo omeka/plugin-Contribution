@@ -22,24 +22,24 @@
 
     <div class="field">
         <div class="two columns alpha">
-            <label><?php echo __("Display Name"); ?></label>
+            <label id="display-name-label"><?php echo __("Display Name"); ?></label>
         </div>
         <div class="inputs five columns omega">
             <p class="explanation"><?php echo __("The label you would like to use for this contribution type. If blank, the Item Type name will be used."); ?></p>
             <div class="input-block">
-             <?php echo $this->formText('display_name', $contribution_type->display_name, array()); ?>
+             <?php echo $this->formText('display_name', $contribution_type->display_name, array('aria-labelledby' => 'display-name-label')); ?>
             </div>
         </div>
      </div>
 
      <div class="field">
         <div class="two columns alpha">
-            <label><?php echo __("Allow File Upload Via Form"); ?></label>
+            <label id="file-permissions-label"><?php echo __("Allow File Upload Via Form"); ?></label>
         </div>
         <div class="inputs five columns omega">
             <p class="explanation"><?php echo __("Enable or disable file uploads through the public contribution form. If set to &#8220;Required,&#8220; users must add a file to their contribution when selecting this item type."); ?></p>
             <div class="input-block">
-               <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array(), ContributionType::getPossibleFilePermissions()); ?>
+               <?php echo $this->formSelect('file_permissions', __('%s', $contribution_type->file_permissions), array('aria-labelledby' => 'file-permissions-label'), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
      </div>  
@@ -47,32 +47,45 @@
 
     
     <div id="element-list">
-        <ul id="contribution-type-elements" class="sortable">
-        <?php
-        foreach ($contributionTypeElements as $contributionElement):
-            if ($contributionElement):
-        ?>
-        
+        <ul id="contribution-type-elements" class="sortable" aria-live="polite" aria-atomic="false">
+        <?php foreach ($contributionTypeElements as $contributionElement): ?>
+            <?php if ($contributionElement): ?>
+            <?php 
+                $contributionElementId = $contributionElement->id; 
+                $contributionElementName = $contributionElement->Element->name;
+            ?>
             <li class="element">
                 <div class="sortable-item">
-                <strong class="element-name"><?php echo html_escape($contributionElement->Element->name); ?></strong>
-                <label class='prompt'>
-                    <?php echo __('Prompt'); ?>
-                    <?php echo $this->formText("elements[$contributionElement->id][prompt]" , $contributionElement->prompt); ?>
-                </label>
-                <label class='long-text'>
-                    <?php echo __('Multiple rows'); ?>
-                    <?php echo $this->formCheckbox("elements[$contributionElement->id][long_text]", null, array('checked'=>$contributionElement->long_text)); ?>
-                </label>
-                <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
+                <strong class="element-name"><?php echo html_escape($contributionElementName); ?></strong>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
-                <a id="return-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="undo-delete" role="button"><?php echo __('Undo %s removal', html_escape($contributionElement->Element->name)); ?></a>
-                <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element" role="button"><?php echo __('Remove %s', html_escape($contributionElement->Element->name)); ?></a>
+                <a id="return-element-link-<?php echo html_escape($contributionElementId); ?>" href="" class="undo-delete" role="button"><?php echo __('Undo %s removal', html_escape($contributionElementName)); ?></a>
+                <a id="remove-element-link-<?php echo html_escape($contributionElementid); ?>" href="" class="delete-element" role="button"><?php echo __('Remove %s', html_escape($contributionElementName)); ?></a>
                 <?php endif; ?>
                 </div>
                 
                 <div class="drawer-contents">
                     <div class="element-description"><?php echo html_escape($contributionElement->Element->description); ?></div>
+                    <?php 
+                        echo $this->formHidden("elements[$contributionElementId][order]", $contributionElement->order, array(
+                            'size'=>2, 
+                            'class' => 'element-order'
+                        )); 
+                    ?>
+                    <div class="field">
+                        <div class="field-meta"><label class="prompt" id="elements[<?php echo $contributionElementId; ?>][prompt]-label"><?php echo __('Prompt'); ?></label></div>
+                        <div class="inputs"><?php echo $this->formText("elements[$contributionElementId][prompt]" , $contributionElement->prompt, array('aria-labelledby' => "elements[$contributionElementId][prompt]-label")); ?></div>
+                    </div>
+                    <div class="field">
+                        <div class="field-meta"><label class='long-text' id="elements[<?php echo $contributionElementId; ?>][long_text]-label"><?php echo __('Multiple rows'); ?></label></div>
+                        <div class="inputs">
+                            <?php 
+                            echo $this->formCheckbox("elements[$contributionElementId][long_text]", null, array(
+                                'checked'=>$contributionElement->long_text, 
+                                'aria-labelledby' => "elements[$contributionElementId][long_text]-label"
+                            )); 
+                            ?>
+                        </div>
+                    </div>
                 </div>
             </li>
             <?php else: ?>
