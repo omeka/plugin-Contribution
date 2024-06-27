@@ -47,7 +47,7 @@
 
     
     <div id="element-list">
-        <ul id="contribution-type-elements" class="sortable" aria-live="polite">
+        <ul id="contribution-type-elements" class="sortable">
         <?php foreach ($contributionTypeElements as $contributionElement): ?>
             <?php if ($contributionElement): ?>
             <?php 
