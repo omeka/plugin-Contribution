@@ -13,6 +13,10 @@
  */
 class Mixin_ContributionOrder extends Omeka_Record_Mixin_AbstractMixin
 {
+    public $childClass;
+    public $childFk;
+    public $pluralized;
+
     public function __construct($record, $childClass, $childFk, $childPluralized)
     {
         parent::__construct($record);
