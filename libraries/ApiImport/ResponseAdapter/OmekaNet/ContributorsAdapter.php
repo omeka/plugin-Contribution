@@ -5,7 +5,7 @@ class ApiImport_ResponseAdapter_OmekaNet_ContributorsAdapter extends ApiImport_R
     protected $recordType = 'User';
     protected $valuesAdapter;
     
-    public function construct($responseData, $endpointUri, $recordType)
+    public function construct($responseData, $endpointUri, $recordType = null)
     {
         global $contributionImportValuesAdapter;
 
