@@ -11,7 +11,7 @@ if ($type->isFileRequired()):
 
 <div class="field">
         <?php echo $this->formLabel('contributed_file', 'Upload a file (Required)'); ?>
-        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput', 'required' => true)); ?>
+        <?php echo $this->formFile('contributed_file', array('class' => 'fileinput', 'required' => true, 'attribs' => array('required' => 'required'))); ?>
 </div>
 
 <?php endif; ?>

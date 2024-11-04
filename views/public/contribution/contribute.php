@@ -38,7 +38,7 @@ echo head($head); ?>
                 <div class="inputs">
                     <div class="input">
                     <?php $name = isset($_POST['contributor-name']) ? $_POST['contributor-name'] : ''; ?>
-                        <?php echo $this->formText('contributor-name', $name, array('class' => 'textinput', 'required' => 'true')); ?>
+                        <?php echo $this->formText('contributor-name', $name, array('class' => 'textinput', 'required' => 'true', 'attribs' => array('required' => 'required'))); ?>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@ echo head($head); ?>
                 <div class="inputs">
                     <div class="input">
                     <?php $email = isset($_POST['contributor-email']) ? $_POST['contributor-email'] : ''; ?>
-                        <?php echo $this->formText('contributor-email', $email, array('class' => 'textinput', 'required' => 'true')); ?>
+                        <?php echo $this->formText('contributor-email', $email, array('class' => 'textinput', 'required' => 'true', 'attribs' => array('required' => 'required'))); ?>
                     </div>
                 </div>
             </div>
@@ -71,7 +71,7 @@ echo head($head); ?>
             <p>In order to contribute, you must read and agree to the <a href="<?php echo url('contribution/terms') ?>" target="_blank">Terms and Conditions.</a></p>
             <div class="inputs">
                 <?php $agree = isset( $_POST['terms-agree']) ?  $_POST['terms-agree'] : 0 ?>
-                <?php echo $this->formCheckbox('terms-agree', $agree, null, array('1', '0')); ?>
+                <?php echo $this->formCheckbox('terms-agree', $agree, array('required' => 'required'), array('1', '0')); ?>
                 <?php echo $this->formLabel('terms-agree', 'I agree to the Terms and Conditions.'); ?>
             </div>
             <?php echo $this->formSubmit('form-submit', 'Contribute', array('class' => 'submitinput')); ?>
