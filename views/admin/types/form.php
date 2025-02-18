@@ -42,10 +42,10 @@
                <?php echo $this->formSelect('file_permissions', $contribution_type->file_permissions, array(), ContributionType::getPossibleFilePermissions()); ?>
             </div>
         </div>
-     </div>  
-    
+     </div>
 
-    
+    <div class="clearfix"></div>
+
     <div id="element-list">
         <ul id="contribution-type-elements" class="sortable">
         <?php
