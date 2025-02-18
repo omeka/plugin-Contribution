@@ -46,7 +46,7 @@
     
 
     
-    <div id="element-list" class="seven columns alpha">
+    <div id="element-list">
         <ul id="contribution-type-elements" class="sortable">
         <?php
         foreach ($contributionTypeElements as $contributionElement):
