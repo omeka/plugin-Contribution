@@ -59,7 +59,7 @@
                 <label class='prompt'><?php echo __('Prompt'); ?> <?php echo $this->formText("elements[$contributionElement->id][prompt]" , $contributionElement->prompt); ?></label>
                 <label>
                     <?php echo __('Multiple rows'); ?> 
-                    <?php echo $this->formCheckbox("elements[$contributionElement->id][[long_text]", null, array('checked'=>$contributionElement->long_text));    ?>
+                    <?php echo $this->formCheckbox("elements[$contributionElement->id][long_text]", $contributionElement->long_text, array(), array('1', '0')); ?>
                     <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
                 </label>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
