@@ -12,7 +12,7 @@
             array('class' => 'element-order')
         );
         ?>
-        <a href="" class="delete-element"><?php echo __('Remove'); ?></a>
+        <button type="button" class="delete-drawer" ata-action-selector="deleted" title="<?php echo __('Remove'); ?>" aria-label="<?php echo __('Remove'); ?>"><span class="icon" aria-hidden="true"></button>
     </div>
     <div class="drawer-contents">
         <?php

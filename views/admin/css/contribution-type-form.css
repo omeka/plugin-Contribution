@@ -7,7 +7,6 @@
 	flex-wrap: wrap;
 	align-items: center;
 	position: relative;
-	padding-right: 45px;
 }
 
 .prompt input[type="text"] {
@@ -18,13 +17,6 @@
 .existing-element-dropdown {
 	margin-right: 1em;
 	font-weight: bold;
-}
-
-.delete-element,
-.undo-delete {
-	position: absolute;
-	top: auto;
-	right: 15px;
 }
 
 .sortable-item.deleted .prompt,
