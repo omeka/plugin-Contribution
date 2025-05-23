@@ -149,6 +149,9 @@ Omeka.ContributionTypes = {};
                 success: function (responseText) {
                     var response = responseText || 'no response text';
                     $('#new-element-item').before(response);
+                    setTimeout(function() {
+                        $('#element-list li.element').last().find('select.drawer-name').focus();
+                    }, 100);
                 },
                 error: function () {
                     alert('Unable to get a new element.');
