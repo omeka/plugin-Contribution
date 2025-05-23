@@ -99,7 +99,7 @@
                     <?php echo __('Add Element'); ?>
                 </div>
                 <div class="drawer-contents opened">
-                    <button id="add-element" name="add-element"><?php echo __('Add Element'); ?></button>
+                    <button type="button" id="add-element" name="add-element"><?php echo __('Add Element'); ?></button>
                 </div>
             </li>
         </ul>
