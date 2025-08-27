@@ -2,11 +2,16 @@
     float: right;
 }
 
-.element .sortable-item {
+.element .sortable-item.drawer {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	position: relative;
+	justify-content: flex-start;
+}
+
+.element .sortable-item.drawer button {
+	margin-left: auto;
 }
 
 input.prompt {
