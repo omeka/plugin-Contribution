@@ -11,7 +11,7 @@
                         'item_type_id' => $item_type_id,
                     )
                 );
-        echo $this->formSelect($element_id_name, $element_id_value, array('aria-labelledby' => $element_id_name . '-label', 'class' => 'drawer-name'), $elementsArray);
+        echo $this->formSelect($element_id_name, $element_id_value, array('aria-labelledby' => $element_id_name . '-label', 'class' => 'drawer-name', 'required' => "true"), $elementsArray);
         ?>
         </label>
         <button type="button" aria-expanded="false" aria-label="<?php echo __('Undo %s removal', __('new element')); ?>" class="undo-delete" data-action-selector="deleted" title="<?php echo __('Undo %s removal', __('new element')); ?>"><span class="icon" aria-hidden="true"></span></button>
@@ -20,7 +20,7 @@
     <div class="drawer-contents opened">
         <div class="field">
             <div class="field-meta"><label class="prompt" id="<?php echo $element_prompt_name; ?>-label"><?php echo __("Prompt"); ?></label></div>
-            <div class="inputs"><?php echo $this->formText($element_prompt_name, $element_prompt_value, array('aria-labelledby' => $element_prompt_name . '-label')); ?></div>
+            <div class="inputs"><?php echo $this->formText($element_prompt_name, $element_prompt_value, array('aria-labelledby' => $element_prompt_name . '-label', 'required' => "true")); ?></div>
         </div>
         <div class="field">
             <div class="field-meta"><label class="long-text" id="<?php echo $element_long_name; ?>-label"><?php echo __('Multiple rows'); ?></label></div>
