@@ -54,7 +54,7 @@
                 $contributionElementId = $contributionElement->id; 
                 $contributionElementName = $contributionElement->Element->name; 
             ?>
-            <li class="element" id="<?php echo html_escape($contributionElementId); ?>-group" role="group">>
+            <li class="element" id="<?php echo html_escape($contributionElementId); ?>-group" role="group">
                 <div class="sortable-item drawer">
                 <strong class="drawer-name"><?php echo html_escape($contributionElementName); ?></strong>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
