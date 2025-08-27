@@ -54,7 +54,7 @@
         ?>
         
             <li class="element">
-                <div class="sortable-item element-head">
+                <div class="sortable-item drawer element-head">
                 <strong><?php echo html_escape($contributionElement->Element->name); ?></strong>
                 <label class='prompt'><?php echo __('Prompt'); ?> <?php echo $this->formText("elements[$contributionElement->id][prompt]" , $contributionElement->prompt); ?></label>
                 <label>
@@ -63,12 +63,12 @@
                     <?php echo $this->formHidden("elements[$contributionElement->id][order]", $contributionElement->order, array('size'=>2, 'class' => 'element-order')); ?>
                 </label>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
-                <a id="return-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="undo-delete"><?php echo __('Undo'); ?></a>
-                <a id="remove-element-link-<?php echo html_escape($contributionElement->id); ?>" href="" class="delete-element"><?php echo __('Remove'); ?></a>
+                <button type="button" id="return-element-link-<?php echo html_escape($contributionElementId); ?>" aria-expanded="false" aria-label="<?php echo __('Undo %s removal', html_escape($contributionElementName)); ?>" class="undo-delete" data-action-selector="deleted" title="<?php echo __('Undo %s removal', html_escape($contributionElementName)); ?>"><span class="icon" aria-hidden="true"></span></button>
+                <button type="button" id="remove-element-link-<?php echo html_escape($contributionElementId); ?>" class="delete-drawer" data-action-selector="deleted" title="<?php echo __('Remove %s', html_escape($contributionElementName)); ?>" aria-label="<?php echo __('Remove %s', html_escape($contributionElementName)); ?>"><span class="icon" aria-hidden="true"></span></button>
                 <?php endif; ?>
                 </div>
                 
-                <div class="drawer-contents">
+                <div class="drawer-contents opened">
                     <div class="element-description"><?php echo html_escape($contributionElement->Element->description); ?></div>
                 </div>
             </li>
@@ -103,7 +103,7 @@
                 <div class="add-new">
                     <?php echo __('Add Element'); ?>
                 </div>
-                <div class="drawer-contents">
+                <div class="drawer-contents opened">
                     <button id="add-element" name="add-element"><?php echo __('Add Element'); ?></button>
                 </div>
             </li>
@@ -122,3 +122,6 @@
     </div>
 </section>
 </form>
+<script>
+Omeka.manageDrawers('#element-list');
+</script>

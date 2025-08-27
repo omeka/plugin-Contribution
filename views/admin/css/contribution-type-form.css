@@ -2,17 +2,20 @@
     float: right;
 }
 
-span.prompt {
-	padding-left: 10px;
+.element .sortable-item {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	position: relative;
 }
 
 input.prompt {
 	width: 130px;
 }
 
-.drawer-contents .field {
-    display: flex;
-	margin-top: 1rem;
+.existing-element-dropdown {
+	margin-right: 1em;
+	font-weight: bold;
 }
 
 .drawer-contents .field-meta {
