@@ -113,6 +113,7 @@ Omeka.ContributionTypes = {};
                 } else {
                     var row = $(button).parent().parent();
                     row.remove();
+                    $('#add-element').focus();
                 }
             } else {
                 if (removeElementLinkId) {
