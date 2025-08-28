@@ -17,6 +17,7 @@
 
 .element .sortable-item.drawer button {
 	margin-left: auto;
+	min-width: 24px;
 }
 
 .element .drawer.deleted label {
