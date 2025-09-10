@@ -1,5 +1,6 @@
 
-<li class="element" id="<?php echo html_escape($element_id_name); ?>-container" aria-label="<?php echo __('New existing element'); ?>" role="group">
+<li class="element" aria-label="<?php echo __('New existing element'); ?>">
+    <div id="<?php echo html_escape($element_id_name); ?>-container" role="group">
     <div class="flash success sr-only" role="alert">Element successfully added.</div>
     <div class="sortable-item drawer">
         <label class="existing-element-dropdown" id="<?php echo $element_id_name; ?>-label"><?php echo __('Element'); ?></label>
