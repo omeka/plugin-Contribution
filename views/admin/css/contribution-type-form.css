@@ -2,16 +2,30 @@
     float: right;
 }
 
-.element .sortable-item {
+.element .sortable-item.drawer {
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	position: relative;
+	justify-content: flex-start;
 }
 
-.prompt input[type="text"] {
-	margin-right: 0;
-	width: 100%;
+.element .sortable-item.drawer > .drawer-name,
+.element .sortable-item.drawer > label {
+	margin-right: 1rem !important;
+}
+
+.element .sortable-item.drawer button {
+	margin-left: auto;
+	min-width: 24px;
+}
+
+.element .drawer.deleted label {
+	display: none;
+}
+
+input.prompt {
+	width: 130px;
 }
 
 .existing-element-dropdown {
@@ -27,12 +41,6 @@
 
 #element-list {
 	clear: both;
-}
-
-.element-description {
-	padding-bottom: 1em;
-	margin-bottom: 1em;
-	border-bottom: 1px solid #dfdfdf;
 }
 
 .drawer-contents .field label {

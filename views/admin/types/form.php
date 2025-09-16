@@ -57,35 +57,23 @@
             <li class="element" id="<?php echo html_escape($contributionElementId); ?>-group" role="group">
                 <div class="sortable-item drawer">
                 <strong class="drawer-name"><?php echo html_escape($contributionElementName); ?></strong>
+                <label class='prompt'><?php echo __('Prompt'); ?> <?php echo $this->formText("elements[$contributionElementId][prompt]" , $contributionElement->prompt); ?></label>
+                <label>
+                    <?php echo __('Multiple rows'); ?> 
+                    <?php echo $this->formCheckbox("elements[$contributionElementId][long_text]", null, array('checked'=>$contributionElement->long_text)); ?>
+                </label> 
+                <?php echo $this->formHidden("elements[$contributionElementId][order]", $contributionElement->order, array(
+                        'size'=>2, 
+                        'class' => 'element-order'
+                    )); 
+                ?>
                 <?php if (is_allowed('Contribution_Types', 'delete-element')): ?>
                 <button type="button" id="return-element-link-<?php echo html_escape($contributionElementId); ?>" aria-expanded="false" aria-controls="<?php echo html_escape($contributionElementId); ?>-group" aria-label="<?php echo __('Undo %s removal', html_escape($contributionElementName)); ?>" class="undo-delete" data-action-selector="deleted" title="<?php echo __('Undo %s removal', html_escape($contributionElementName)); ?>"><span class="icon" aria-hidden="true"></span></button>
                 <button type="button" id="remove-element-link-<?php echo html_escape($contributionElementId); ?>" aria-expanded="true" aria-controls="<?php echo html_escape($contributionElementId); ?>-group" class="delete-drawer" data-action-selector="deleted" title="<?php echo __('Remove %s', html_escape($contributionElementName)); ?>" aria-label="<?php echo __('Remove %s', html_escape($contributionElementName)); ?>"><span class="icon" aria-hidden="true"></span></button>
                 <?php endif; ?>
-                </div>
-                
+                </div>                
                 <div class="drawer-contents opened">
                     <div class="element-description"><?php echo html_escape($contributionElement->Element->description); ?></div>
-                    <?php 
-                        echo $this->formHidden("elements[$contributionElementId][order]", $contributionElement->order, array(
-                            'size'=>2, 
-                            'class' => 'element-order'
-                        )); 
-                    ?>
-                    <div class="field">
-                        <div class="field-meta"><label class="prompt" id="elements[<?php echo $contributionElementId; ?>][prompt]-label"><?php echo __('Prompt'); ?></label></div>
-                        <div class="inputs"><?php echo $this->formText("elements[$contributionElementId][prompt]" , $contributionElement->prompt, array('aria-labelledby' => "elements[$contributionElementId][prompt]-label")); ?></div>
-                    </div>
-                    <div class="field">
-                        <div class="field-meta"><label class='long-text' id="elements[<?php echo $contributionElementId; ?>][long_text]-label"><?php echo __('Multiple rows'); ?></label></div>
-                        <div class="inputs">
-                            <?php 
-                            echo $this->formCheckbox("elements[$contributionElementId][long_text]", null, array(
-                                'checked'=>$contributionElement->long_text, 
-                                'aria-labelledby' => "elements[$contributionElementId][long_text]-label"
-                            )); 
-                            ?>
-                        </div>
-                    </div>
                 </div>
             </li>
             <?php else: ?>
