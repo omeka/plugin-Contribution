@@ -55,7 +55,7 @@
                 $contributionElementName = $contributionElement->Element->name; 
             ?>
             <li class="element">
-                <div id="<?php echo html_escape($contributionElementId); ?>-group" role="group" aria-labelledby="drawer-<?php echo $contributionElementId; ?>-label">
+                <div class="element-drawer-group" id="<?php echo html_escape($contributionElementId); ?>-group" role="group" aria-labelledby="drawer-<?php echo $contributionElementId; ?>-label">
                     <div class="sortable-item drawer">
                     <strong class="drawer-name" id="drawer-<?php echo $contributionElementId; ?>-label"><?php echo html_escape($contributionElementName); ?></strong>
                     <label class='prompt'><?php echo __('Prompt'); ?> <?php echo $this->formText("elements[$contributionElement->id][prompt]" , $contributionElement->prompt); ?></label>
@@ -126,5 +126,5 @@
 </section>
 </form>
 <script>
-Omeka.manageDrawers('#element-list');
+Omeka.manageDrawers('#element-list', '.element-drawer-group');
 </script>
